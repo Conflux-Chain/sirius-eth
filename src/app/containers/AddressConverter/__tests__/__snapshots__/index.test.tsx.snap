@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddressConverter /> should match the snapshot 1`] = `
+.c0 {
+  font-size: 1.7143rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  line-height: 2.2857rem;
+  margin-bottom: 1.1429rem;
+  margin-top: 2.2857rem;
+}
+
+.c1 {
+  font-size: 1rem;
+  color: #74798c;
+  margin-top: 0.8571rem;
+  line-height: 1.2857rem;
+}
+
+@media (max-width:600px) {
+  .c0 {
+    font-size: 1.2857rem;
+    font-weight: 500;
+    color: #050505;
+    line-height: 1.8571rem;
+  }
+}
+
+@media (max-width:600px) {
+
+}
+
+@media (max-width:600px) {
+
+}
+
+@media (max-width:600px) {
+
+}
+
+<div
+  class="c0"
+>
+  Address Format Conversion
+  <div
+    class="c1"
+  />
+</div>
+`;

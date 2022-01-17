@@ -1,0 +1,1472 @@
+{
+  "metadata": {
+    "title": "Conflux BlockChain Explorer",
+    "description": "BlockChain Explorer for Conflux Network"
+  },
+  "fccfx": {
+    "title": "FC-CFX Non-reversible Exchange",
+    "titleAccountInfo": "Address Staking Info",
+    "titleStakeAndSign": "FC Exchange",
+    "titleWithdrawCFX": "Withdraw Principal",
+    "titleMyNFT": "My NFT",
+    "rulesLink": "FC-CFX Remark",
+    "titleGenerate": "Interest-bearing CFX",
+    "titleAPY": "FC mining yields APY",
+    "titleStakedFC": "Current Staked FC",
+    "titleStakedHistory": "Cumulatively Staked FC",
+    "titleFCStaked": "Signed FC",
+    "titleFCUnsigned": "Unsigned FC",
+    "titleFCStakedHistory": "Cumulatively Staked FC",
+    "titleCFXWithdrawed": "Cumulatively Withdrawal Inertests",
+    "titleAvailableProfit": "Extractable Inertests",
+    "titleRemainingInterests": "Remaining Interests",
+    "titleStakeFCToEarnCFX": "FC to CFX (Non-reversible)",
+    "titleSignToEarnAPY": "Sign up for subsidy",
+    "titleWithdrawCapital": "Withdraw principal",
+    "titleSignToSyncInterest": "Announce Agreement",
+    "buttonWithdrawInterest": "Withdraw Interests",
+    "buttonWithdraw": "Withdraw",
+    "buttonAnnounce": "Announce",
+    "buttonSign": "Sign Up",
+    "buttonStake": "Exchange",
+    "availableBalance": "Available balance to exchange: ",
+    "availableToSign": "",
+    "max": "All",
+    "notice": {
+      "title": "Notice",
+      "items": {
+        "first": "1. The FC to CFX conversion rules will be updated on September 28: To generate interest, users need to actively sign up for the subsidy plan after depositing their funds.",
+        "second": "2. Under the previous FC exchange CFX rules, interest was generated automatically by depositing funds, whereas the new rules require users to self-notify a new contract (the subsidy plan contract). Interest is generated when users sign up for the subsidy plan but not when they do not.",
+        "third": "3. Note: This rule does not force users to sign up for the subsidy plan, and whether or not the subsidy plan is signed does not cause any loss to users.",
+        "fourth": "4. If the user has staked CFX and generated interest before the subsidy plan, after the rule update, the user must withdraw all the interest before proceeding with subsequent operations.",
+        "fifth": "5. If the user wants to withdraw the principal after implementing the new rules, they need to withdraw the early interest generated before proceeding with the withdrawal of the principal."
+      },
+      "confirm": "I Know"
+    },
+    "tip": {
+      "myNFT": "Users who stake amount reaches 1000FC will receive a NFT as a commemorative badge (Each address can get 1 NFT at most)",
+      "unsignedFC": "Attention: You have {{ value }} FC that is not yet eligible for the subsidy program, please sign up in time!",
+      "legacyProfit": "Please withdraw remaining interests first!",
+      "beforeWithdraw": "Please withdraw the interest first, otherwise it will be cleared!",
+      "withdrawTitle": "To ensure that the user receives interest properly, the agreement must be notified manually after withdrawing the principal.",
+      "exchangeTitle": "You won't get interest if you don't sign up for a subsidy plan",
+      "signed": "The amount of interest-bearing FC",
+      "unsigned": "The amount of non-interest-bearing FC",
+      "APY": "Calculation formula: Interests-bearing CFX / Current Staked FC * 4%",
+      "beforeWithdrawInModal": "Please click the \"Withdraw Interest\" button above before withdrawing your principal, otherwise your interest will be cleared.",
+      "beforeExchangeInModal": "Clicking this button will permanently convert your FC to CFX and the process is irreversible.",
+      "required": "Please enter the amount"
+    },
+    "buttonCancel": "Cancel",
+    "buttonOk": "Confirm and next"
+  },
+  "contract": {
+    "address": "Contract Address",
+    "nameTag": "Contract Name Tag",
+    "registered": "Registered",
+    "site": "Official Site",
+    "tokenSite": "Official Site",
+    "contractIcon": "Contract Icon",
+    "remove": "Remove",
+    "tokenTracker": "Token Tracker",
+    "tokenIcon": "Token Icon",
+    "sourceCode": "Contract Source Code",
+    "abi": "Contract ABI",
+    "enterPassword": "Please enter your password",
+    "contractAdmin": "Contract Admin",
+    "creator": "Contract Creator",
+    "storageSponsor": "Storage Sponsor",
+    "gasSponsor": "Gas Fee Sponsor",
+    "create": {
+      "title": "Contract Registration"
+    },
+    "edit": {
+      "title": "Update Contract Info"
+    },
+    "updateContract": "Update Contract Info",
+    "updateToken": "Update Token Info",
+    "verify": {
+      "contractCodeVerified": "Contract Source Code Verified",
+      "contractName": "Contract Name: ",
+      "optimizationEnabled": "Optimization Enabled: ",
+      "otherSettings": "Other Settings: ",
+      "compilerVersion": "Compiler Version: ",
+      "runs": "{{status}} with {{count}} runs",
+      "tipLeft": "You can ",
+      "tipCenter": "verify your contract",
+      "tipRight": " now!",
+      "isVerifiedTip": "The contract has been verified, the source code and ABI cannot be modified"
+    },
+    "code": "Code",
+    "sourceCodeShort": "Source Code",
+    "abiShort": "ABI",
+    "maxSize": "Max size of 30KB",
+    "namePlaceholder": "Support up to 35 characters",
+    "requiredAddress": "Please enter a conflux address",
+    "requiredNameTag": "Please enter a contract name tag",
+    "sitePlaceholder": "http(s)://",
+    "invalidContractAddress": "Invalid contract address, or incorrect format",
+    "invalidNameTag": "The character length has reached the maximum limit",
+    "duplicatedNameTag": "The name tag has been registered {{times}} time",
+    "invalidUrl": "Incorrect URL",
+    "errorNotAdmin": "You are not the creator or admin of the contract, please disconnect and try again. ",
+    "invalidIconSize": "Invalid icon size, please try again.",
+    "errorTokenICon": "For the non-CRC20 contract, the token icon cannot be uploaded",
+    "beforeContractSubmitTip": "Before submitting, you need to connect to ConfluxPortal to prove that you are the admin or creator of the contract.",
+    "invalidJsonAbi": "Unable to parse the valid ABI in the JSON file, please try again.",
+    "abiNotUploaded": "ABI not uploaded",
+    "abiError": "ABI error",
+    "readContract": "Read Contract",
+    "writeContract": "Write Contract",
+    "readAsProxyContract": "Read as Proxy",
+    "writeAsProxyContract": "Write as Proxy",
+    "readContractInformation": "Read Contract Information",
+    "writeContractInformation": "Write Contract Information",
+    "noReadContract": "Sorry, no public Read functions were found for this contract.",
+    "noWriteContract": "Sorry, no public Write functions were found for this contract.",
+    "notVerifyImplementContract": "Read / Write as Proxy function is available after the proxy and implementation <0>contract verification.</0>",
+    "pattern": "ABI for the implementation contract at <0>address</0>, using <1>pattern</1> proxy pattern.",
+    "expandAll": "Expand All",
+    "reset": "Reset",
+    "payableAmountCfx": "payableAmount (cfx) ",
+    "error": {
+      "address": "Please enter a conflux address",
+      "bool": "Please enter true/false or 0/1",
+      "int": "Please enter an integer in the range -(2^{{num}}-1) ~ 2^{{num}}-1",
+      "uint": "Please enter a non-negative integer in the range of 0 ~ 2^{{num}}-1",
+      "bytes": "Please enter an hexadecimal byte array starting with 0x",
+      "bytesM": "Please enter an hexadecimal {{length}} byte array starting with 0x",
+      "cfx": "Please enter a non-negative number with no more than 18 decimal places",
+      "array": "Please enter a valid {{type}} array with square brackets",
+      "tuple": "Please enter a valid tuple (JSON array or object that conforms to the parameter order and format)",
+      "tupleArray": "Please enter a valid tuple (JSON array or object that conforms to the parameter order and format) array",
+      "notSupport": "{{type}} support will be coming soon",
+      "testnet": "Please switch network to Conflux Test Network in ConfluxPortal",
+      "mainnet": "Please switch network to Conflux Tethys in ConfluxPortal"
+    },
+    "tupleFormat": "Tuple type：<code>{{type}}</code><br />Parameter name：<code>{{params}}</code><br />Tuple parameter array：<code>{{paramsArray}}</code><br />Tuple parameter object：<code>{{paramsObject}}</code>",
+    "tupleTips": "Remark: You can refer to <code>Tuple parameter array</code> or <code>Tuple parameter object</code> for tuple input.<br />Tuple input format should be a <code>JSON array or object</code> that is legal and conforms to the order and format of the parameters. For example, tuple is declared as <code>{ uint num; string str; }</code>, then the tuple input format should be: <code>[1, \"text\"]</code> or <code>{ \"num\": 1, \"str\": \"text\" }</code>. <br />For nested tuples, the input format should be <code>nested JSON array or object</code> that are legal and conform to the parameter order and format. For example, tuples declared as <code>struct A { string name; uint age; } struct B { uint id; A a; }</code>, the tuple B input format should be: <code>[1, [\"Tom\", 28]]</code> or <code>{ \"id\": 1, \"a\": {\"name\": \"Tom\", \"age\": 28 }}</code>.",
+    "query": "Query",
+    "write": "Write",
+    "viewTx": "View your transaction",
+    "collapseAll": "Collapse All"
+  },
+  "contractDeployment": {
+    "title": "Contract Deployment",
+    "description": "Contract Deployment",
+    "tip": "Constructor parameters should have an ABI-ENCODED value, which only accepts contracts that contain constructor parameters.",
+    "notice": {
+      "first": "1. Contract deployment means publishing a contract code to the Conflux network by sending a transaction. Before you deploy the contract, please ensure the CFX balance in your account is sufficient.",
+      "second": "2. Only ConfluxStudio, cfxtruffle, remix-compiled .json file imports are supported, and manual copy bytecode (required) and ABI (optional) are supported.",
+      "third": "3. You can click on the account in the upper right corner of the page to view the contract deployment details in your transaction history."
+    }
+  },
+  "contractVerification": {
+    "title": "Contract Verification",
+    "description": "Contract Verification",
+    "tip": "To be defined.",
+    "notice": {
+      "first": "1. You can provide transparency to users who interact with a contract by verifying the source code of a contract.",
+      "second": "2. ConfluxScan compares the code you upload with the code on the blockchain and the configuration of the code; the contract you upload will pass the verification if the codes are matched successfully.",
+      "third": "3. Only single-file verification is supported.",
+      "fourth": "4. Constructor arguments are not supported currently."
+    },
+    "upload": "Upload Contract File",
+    "submit": "Submit",
+    "contractAddress": "Contract Address",
+    "runs": "Runs",
+    "contractName": "Contract Name",
+    "compiler": "Compiler",
+    "optimization": "Optimization",
+    "license": "License",
+    "contractSourceCode": "Contract Source Code",
+    "error": {
+      "required": "Required",
+      "min": "The minimum value is 0",
+      "isNotAddress": "Invalid address format",
+      "isNotMainnet": "Please enter Conflux Tethys address",
+      "isNotTestnet": "Please enter Conflux Testnet address",
+      "pleaseSelect": "Please Select",
+      "pleaseEnter": "Please Enter",
+      "notMatch": "The resulting bytecode does NOT match with the bytecode that is stored on the address"
+    },
+    "OptimizationOption": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "placeholder": {
+      "contractAddress": "Pleaser enter a contract address",
+      "runs": "Please enter an integer",
+      "contractName": "Please enter the contract name",
+      "compiler": "Please select a compiler",
+      "optimization": "Please select a optimization",
+      "license": "Please select a license",
+      "contractSourceCode": "Please upload contract source code"
+    },
+    "status": {
+      "loading": "Verifying...",
+      "success": "Verification Succeed",
+      "error": "Verification Failed"
+    }
+  },
+  "contractDetail": {
+    "title": "Contract Detail",
+    "content": "Details of contract",
+    "contractAdminWarning": "The address which owns the contract administration authority. The admin is able to destroy the contract. (Tethys zero address: cfx:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa0sfbnjm2; Testnet zero address: cfxtest:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa6f0vrcsw)",
+    "at": "at",
+    "txOnlyEn": "txn",
+    "txOnlyZh": "",
+    "clickToApply": "Click to apply contract sponsorships",
+    "clickToReport": "Report the address",
+    "notDeployed": "This contract has not been deployed"
+  },
+  "addressDetail": {
+    "minedBlocks": "Mined Blocks",
+    "NFTAsset": "NFT Assets",
+    "title": "Address Detail",
+    "content": "Details of Address",
+    "staked": "Staked CFX",
+    "stakingEarned": "Staking CFX Earned",
+    "locked": "Locked CFX",
+    "unlockTime": "Unlock after about {{days}} days",
+    "lockedDetailTitle": "Lock History",
+    "lockedDetailLocked": "Locked CFX",
+    "lockedDetailUnlockBlockNumber": "Unlock Blocknumber",
+    "lockedDetailUnlockTime": "Estimated Unlock Time",
+    "currentVotingRights": "Current Voting Rights",
+    "apy": "(APY 4%)",
+    "viewLockedDetails": "Click to view lock history"
+  },
+  "blocks": {
+    "title": "Blocks",
+    "description": "Blocks",
+    "tipCountBefore": "A total of",
+    "tipCountAfter": "blocks",
+    "latestBlocks": "Latest Blocks"
+  },
+  "transactions": {
+    "title": "Transactions",
+    "description": "Transactions",
+    "tipCountBefore": "A total of",
+    "tipCountAfter": "transactions",
+    "latestTransactions": "Latest Transactions",
+    "pending": "Pending Txns",
+    "executed": "Executed Txns",
+    "pendingTxnGasFee": "pending",
+    "executedTotal": "A total of {{total}} executed txns",
+    "pendingTotalLt10": "A total of {{total}} pending txns",
+    "pendingTotal": "Showing the last 10 pending txns (A total of {{total}} pending txns)",
+    "pendingTip": "Only pending transactions with a confirmation time of more than 5 minutes are shown.",
+    "pendingReasonTip": "; the reason of pending txn: ",
+    "pendingReason": {
+      "futureNonce": "Wrong nonce",
+      "notEnoughCash": "Insufficient balance",
+      "ready": "Ready to pack"
+    },
+    "viewTxn": "View {{type}}"
+  },
+  "cfxTransfers": {
+    "title": "CFX Txns",
+    "description": "Show only CFX txns on the Conflux network.",
+    "tipCountBefore": "A total of",
+    "tipCountAfter": "records"
+  },
+  "tokens": {
+    "title": "Tokens",
+    "description": "Tokens",
+    "tipCountBefore": "Showing",
+    "tipCountAfter": "tokens (The following list only displays certain tokens, undisplayed tokens can be found by searching contract address)",
+    "dataSource": "Market Data Source: <a href='https://coinmarketcap.com/' target='_blank'>CoinMarketCap</a>",
+    "crcTip": "The {{crc}} is a digital asset published on the Conflux network using the {{erc}} standard.",
+    "table": {
+      "number": "#",
+      "token": "Token",
+      "transfer": "Transfers",
+      "totalSupply": "Total Supply",
+      "holders": "Holders",
+      "price": "Price",
+      "change": "Change (%)",
+      "volume": "Volume (24H)",
+      "marketCap": "Market Cap",
+      "contract": "Contract"
+    }
+  },
+  "accounts": {
+    "title": "Accounts",
+    "description": "Accounts",
+    "tipLeft": "Only the top",
+    "tipRight": "accounts for CFX {{type}} are displayed, sorted by default in descending order of CFX {{type}}.",
+    "totalBalance": "Total Balance",
+    "stakingBalance": "Staking Balance",
+    "balance": "Balance",
+    "sortButtonBefore": "Sort By ",
+    "sortButtonAfter": "",
+    "table": {
+      "number": "Rank",
+      "address": "Address",
+      "balance": "Balance",
+      "percentage": "Percentage",
+      "count": "Txn Count"
+    }
+  },
+  "contracts": {
+    "title": "Internal Contracts",
+    "description": "Internal Contracts",
+    "tipCountBefore": "Showing",
+    "tipCountAfter": "internal contracts"
+  },
+  "registeredContracts": {
+    "title": "Registered Contracts",
+    "description": "Registered Contracts",
+    "tipCountBefore": "Showing",
+    "tipCountAfter": "registered contracts"
+  },
+  "header": {
+    "home": "Home",
+    "bnt": "Blocks & Transactions",
+    "block": "Blocks",
+    "txn": "Transactions",
+    "cfxTransfers": "CFX Txns",
+    "blockchain": "Blockchain",
+    "accounts": "Accounts",
+    "tokens": "Tokens",
+    "tokens20": "CRC-20 Tokens",
+    "tokens721": "CRC-721 Tokens",
+    "tokens1155": "CRC-1155 Tokens",
+    "contract": "Contract",
+    "contractCreation": "Contract Registration",
+    "contractSponsor": "Contract Sponsor",
+    "contractDeployment": "Contract Deployment",
+    "contractVerification": "Contract Verification",
+    "contracts": "Internal Contracts",
+    "chartsAndStatistics": "Charts & Stats",
+    "ecosystem": "Ecosystem",
+    "stakingAndGovernance": "Staking & Governance",
+    "developerAPI": "API Documentation",
+    "fcCfx": "FC-CFX Non-reversible Exchange",
+    "more": "More",
+    "tools": "Tools",
+    "balanceChecker": "Balance Checker",
+    "charts": "Charts",
+    "statistics": "Top Statistics",
+    "support": "Support & Help",
+    "faq": "FAQ",
+    "feedback": "Feedback",
+    "techIssue": "Tech Issue",
+    "report": "Report",
+    "supportCenter": "Support Center",
+    "suggestionBox": "Suggestion Box",
+    "testnet": "Conflux Testnet",
+    "oceanus": "Conflux Tethys",
+    "searchPlaceHolder": "Search by Epoch / Block Hash / Txn Hash / Address / Token / Contract Name Tag",
+    "searchPlaceHolderMobile": "Epoch/Block Hash/Txn Hash/Address/Token/Contract Name Tag",
+    "addressConverter": "Address Format Conversion",
+    "broadcastTx": "Broadcast Transaction",
+    "blocknumberCalc": "Blocknumber Calculator",
+    "nftChecker": "NFT Checker",
+    "notice": "Notice Center",
+    "search": {
+      "tokens": "Tokens",
+      "contracts": "Contracts",
+      "contractsTip": "Only the 10 contracts with the earliest registration date are displayed"
+    }
+  },
+  "footer": {
+    "currency": {
+      "usd": "USD",
+      "cny": "CNY",
+      "gbp": "GBP",
+      "krw": "KRW",
+      "rub": "RUB",
+      "eur": "EUR"
+    },
+    "aboutUs": {
+      "title": "About Us",
+      "supportCenter": "Support Center",
+      "privacyPolicy": "Privacy Policy",
+      "terms": "Terms"
+    },
+    "cookie": "This website uses cookies to improve your experience. View <a href='https://confluxnetwork.org/zh/policy/' target='_blank'>Privacy Policy</a> for more information.",
+    "addressWarning": "To prevent loss of assets, please review <a href='https://forum.conflux.fun/t/announcement-conflux-address-formats-and-their-implications-of-asset-transfers/6727' target='_blank'>THE DESCRIPTION OF THE RULES RELATING TO THE ADDRESS INVOLVED IN THE TRANSFER OF ASSETS</a> carefully. ",
+    "cookieAgree": "Got it",
+    "product": "Product",
+    "confluxnetwork": "Conflux Network",
+    "confluxportal": "ConfluxPortal",
+    "confluxbounty": "ConfluxBounty",
+    "copryRight": "© 2021 Conflux. All Rights Reserved.",
+    "tool": "Tool",
+    "addressFormatConversion": "Address Format Conversion",
+    "broadcastTx": "Broadcast Transaction",
+    "blocknumberCalc": "Blocknumber Calculator",
+    "preference": "Preference",
+    "contactUs": "Contact Us",
+    "techIssue": "Tech Issue",
+    "report": "Report",
+    "suggestionBox": "Suggestion Box",
+    "developResource": {
+      "title": "Developer Resources",
+      "developerDocuments": "Developer Documents",
+      "developerAPI": "API Documentation",
+      "confluxStudio": "Conflux Studio",
+      "confluxTruffle": "Conflux Truffle"
+    }
+  },
+  "packing": {
+    "title": "Your transaction is packing，please wait...",
+    "btn": "Go TO HOMEPAGE"
+  },
+  "notFound": {
+    "title": "There’s nothing here!",
+    "label": "Sorry! This is an invalid search string.",
+    "addressTip": "If you're searching for Conflux addresses, please search for a valid address format (hex address or a checksummed-base32 address).",
+    "btn": "Go TO HOMEPAGE"
+  },
+  "notFoundAddress": {
+    "title": "The {{type}} can not be found",
+    "label": "Sorry! The {{type}} does not exist.",
+    "btn": "Go TO HOMEPAGE",
+    "defaultType": "address",
+    "contract": "contract",
+    "block": "block",
+    "transaction": "transaction"
+  },
+  "networkError": {
+    "title": "Tip",
+    "label": "The address you are searching for is Conflux {{network}} address, please switch the network before searching.",
+    "btn": "Switch the network to {{network}}"
+  },
+  "token": {
+    "website": "Official Site",
+    "token": "Token",
+    "totalSupplay": "Total Supply",
+    "contract": "Contract",
+    "holders": "Holders",
+    "decimals": "Decimals",
+    "transfers": "Transfers",
+    "analysis": "Analysis",
+    "price": "Price",
+    "change": "Change (%)",
+    "volume": "Volume (24H)",
+    "marketCap": "Market Cap",
+    "shuttleflow": "This Token is cross-chained from the BTC/Ethereum network to the Conflux network via ",
+    "fcMining": "FC-CFX Non-reversible Exchange",
+    "notRegistered": "The token has not been registered.",
+    "tokenRegistration": "Register now",
+    "transferList": {
+      "searchError": "Sorry! This is an invalid search string.",
+      "balance": "Balance: "
+    },
+    "NFT": "Inventory",
+    "total": "A total of",
+    "tokens": "tokens",
+    "sortBy": "sort by",
+    "recentlyActive": "Recently Active",
+    "newest": "Newest",
+    "oldest": "Oldest"
+  },
+  "charts": {
+    "title": "Charts",
+    "subtitle1": "Market Data",
+    "subtitle2": "Blockchain Data",
+    "subtitle3": "Transaction",
+    "subtitle4": "Account",
+    "subtitle5": "Contract",
+    "description": "Charts",
+    "tps": {
+      "title": "Transaction TPS",
+      "description": "Number of transactions on the chain per second"
+    },
+    "tokenTransferTps": {
+      "title": "Token Transfer TPS",
+      "description": "Number of token transfer on the chain per second"
+    },
+    "blockTime": {
+      "title": "Block Time",
+      "description": "The time required to generate a block"
+    },
+    "difficulty": {
+      "title": "Difficulty",
+      "description": "Calculation difficulty of all blocks currently generated"
+    },
+    "hashRate": {
+      "title": "Hash Rate",
+      "description": "The number of times a miner calculates hashes per second"
+    },
+    "cfxPrice": {
+      "title": "CFX Price",
+      "description": "Market Data Source: <a href='https://moondex.io/trade/cfxusdt' target='_blank'>MoonDEX</a>"
+    },
+    "cfxMarketCap": {
+      "title": "Market Cap",
+      "description": "Market Cap = Current Price x Circulating Supply"
+    },
+    "cfxCirculatingSupply": {
+      "title": "Circulating Supply",
+      "description": "Circulating supply contains the CFX in the Zero Address."
+    },
+    "circulating": {
+      "title": "Circulating Supply",
+      "description": "Circulating supply contains the CFX in the Zero Address.",
+      "labelZeroAddress": "Zero Address",
+      "labelOthers": "Others"
+    },
+    "issued": {
+      "title": "Total Supply",
+      "description": "The amount of CFX that are created in the market.",
+      "labelFourYearUnlockBalance": "Four Year Unlock",
+      "labelTwoYearUnlockBalance": "Two Year Unlock",
+      "labelTotalCirculating": "Circulating Supply"
+    },
+    "zeroAddress": {
+      "title": "Zero Address",
+      "description": "CFX in Zero address is burned CFX."
+    },
+    "dailyTransaction": {
+      "title": "Daily Txn Count",
+      "description": "The total number of transactions per day on the Conflux network."
+    },
+    "dailyTransactionCFX": {
+      "title": "Daily Transactions -- CFX",
+      "description": "Daily transactions statistics for CFX on the Conflux network.",
+      "amount": "CFX Daily Volume",
+      "txnCount": "CFX Daily Txn Count",
+      "userCount": "CFX Daily Txn Accounts Count"
+    },
+    "dailyTransactionTokens": {
+      "title": "Daily Transfers -- Tokens",
+      "description": "Daily transfer statistics for all tokens on the Conflux network.",
+      "txnCount": "Daily Token Transfers Count",
+      "userCount": "Daily Transfer Accounts Count"
+    },
+    "cfxHoldingAccounts": {
+      "title": "CFX Holding Accounts",
+      "description": "The total number of CFX accounts held on the Conflux network."
+    },
+    "activeAccounts": {
+      "title": "Active Accounts",
+      "description": "The number of active accounts per day on the Conflux network."
+    },
+    "accountGrowth": {
+      "title": "Account Growth",
+      "description": "The number of new accounts added per day on the Conflux network."
+    },
+    "contractGrowth": {
+      "title": "Contract Growth",
+      "description": "The number of new contracts added per day on the Conflux network."
+    },
+    "contractAmount": {
+      "title": "Contract Amount",
+      "description": "The number of contracts on the Conflux network."
+    },
+    "contractDeploy": {
+      "title": "All Contracts",
+      "description": "The statistics of contracts on the Conflux network.",
+      "contractCount": "Daily Contract Growth",
+      "contractTotalCount": "Contract Amount"
+    },
+    "tokenAnalysis": {
+      "title": "Token Analysis",
+      "description": "{{token}} daily transfers statistics.",
+      "transferAmount": "Transfers Amount",
+      "transferCount": "Transfers Count",
+      "uniqueReceiver": "Unique Receivers",
+      "uniqueSender": "Unique Senders"
+    },
+    "contractAnalysis": {
+      "title": "Contract Analysis",
+      "description": "daily transfers statistics.",
+      "tx": "Transactions",
+      "cfxTransfer": "CFX Transfers",
+      "tokenTransfer": "Token Transfers"
+    }
+  },
+  "general": {
+    "networks": {
+      "mainnet": "mainnet",
+      "testnet": "testnet",
+      "privatenet": "privatenet"
+    },
+    "errors": {
+      "address": "Please enter a valid {{network}} address"
+    },
+    "advancedSearch": {
+      "label": {
+        "txnHash": "Txn Hash",
+        "blockHash": "Block Hash",
+        "fromOrTo": "From or To",
+        "address": "Address",
+        "from": "From",
+        "to": "To",
+        "tokenId": "TokenID",
+        "nonce": "Nonce",
+        "token": "Token",
+        "tokenSubTitle": "(Up to 3 tokens can be selected)",
+        "rangePicker": "Date",
+        "epochNumber": "Epoch",
+        "minEpochNumber": "Min Epoch",
+        "maxEpochNumber": "Max Epoch"
+      },
+      "error": {
+        "invalidHash": "Invalid hash format",
+        "invalidAddress": "Invalid address format"
+      },
+      "placeholder": {
+        "pleaseSelect": "Search by Token",
+        "pleaseEnter": "Please enter",
+        "pleaseEnterTxnHash": "0x...",
+        "pleaseEnterBlockHash": "0x...",
+        "pleaseEnterTokenId": "e.g. 10",
+        "pleaseEnterNonce": "Please enter a nonce",
+        "pleaseEnterEpochStart": "e.g. 100",
+        "pleaseEnterEpochEnd": "e.g. 200"
+      },
+      "button": {
+        "lookup": "Search",
+        "reset": "Reset"
+      },
+      "others": {
+        "recommend": "Active Tokens",
+        "recommendTip": "Only tokens found in the table are displayed",
+        "searchResult": "Search Result",
+        "noData": "No data"
+      }
+    },
+    "tokenTypeTag": {
+      "token": "Token"
+    },
+    "searchInputPlaceholder": {
+      "txnHash": "Txn Hash",
+      "address": "Address",
+      "holderAddress": "Holder Address",
+      "tokenID": "TokenID",
+      "blockHash": "Block Hash",
+      "epoch": "Epoch"
+    },
+    "totalRecord": "A total of {{total}} records",
+    "totalRecordWithLimit": "Showing the last {{limit}} records (A total of {{total}} records)",
+    "totalRecordWithType": "A total of {{total}} {{type}}",
+    "totalRecordWithLimitWithType": "Showing the last {{limit}} {{type}} (A total of {{total}} {{type}})",
+    "totalHolders": "A total of {{total}} holders",
+    "totalRecordLimit": "Showing the last 10k records (A total of {{total}} records)",
+    "remark": "Remark:",
+    "invalidBytecode": "Invaild bytecode",
+    "invalidABI": "Invaild ABI",
+    "invalidJsonFile": "Invaild JSON file",
+    "importJsonFile": "Import JSON file",
+    "showLess": "Show Less",
+    "viewMore": "View More",
+    "viewAll": "View All",
+    "viewAllBlocks": "View All Blocks",
+    "viewAllTxns": "View All Transactions",
+    "back": "Back",
+    "address": {
+      "editContract": "Click to edit contract",
+      "website": "Click to enter the official site",
+      "address": "address",
+      "more": {
+        "title": "More",
+        "report": "Report",
+        "editContract": "Update Contract Info",
+        "editToken": "Update Token Info",
+        "sponsor": "Apply Sponsorship",
+        "website": "Official Website",
+        "balanceChecker": "Balance Checker",
+        "verifyContract": "Verify Contract",
+        "NFTChecker": "NFT Checker"
+      }
+    },
+    "loading": "loading...",
+    "contract": "contract",
+    "verifiedContract": "Verified Contract",
+    "unverifiedContract": "Unverified Contract",
+    "internalContract": "internal contract",
+    "specialAddress": "invalid address",
+    "zeroAddress": "Zero Address",
+    "invalidAddress": "Invalid Conflux Address",
+    "invalidPosAddress": "Invalid Conflux PoS Address",
+    "invalidAddressWarning": "This address is illegal, please be careful.",
+    "balance": "balance",
+    "token": "token",
+    "storageStaking": "Storage Collateral",
+    "nonce": "nonce",
+    "transaction": "transaction",
+    "transactions": "transactions",
+    "tokenTxns": "Token Txns",
+    "cfxTransfer": "CFX Txns",
+    "tokenTxnsErc20": "CRC20 Txns",
+    "tokenTxnsErc721": "CRC721 Txns",
+    "tokenTxnsErc1155": "CRC1155 Txns",
+    "table": {
+      "noData": "There are no matching entries.",
+      "whoops": "Whoops!",
+      "dateTime": "Date Time (Local)",
+      "switchAgeTip": "Click to show {{format}} format",
+      "block": {
+        "epoch": "Epoch",
+        "position": "Position",
+        "txns": "Txn",
+        "hash": "Block Hash",
+        "miner": "Miner",
+        "avgGasPrice": "Avg.Gas Price",
+        "gasUsedPercent": "Gas Used/Limit",
+        "reward": "Reward",
+        "age": "Age",
+        "difficulty": "Difficulty",
+        "gasLimit": "Gas Limit"
+      },
+      "transaction": {
+        "hash": "Txn Hash",
+        "method": "Method",
+        "from": "From",
+        "to": "To",
+        "value": "Value",
+        "gasPrice": "Gas Price",
+        "gasFee": "Gas Fee",
+        "age": "Age",
+        "pendingReason": "Reason"
+      },
+      "token": {
+        "number": "#",
+        "token": "Token",
+        "price": "Price",
+        "change": "Change (%)",
+        "volume": "Volume (24H)",
+        "marketCap": "Market Cap",
+        "transfer": "Transfer",
+        "totalSupply": "Total Supply",
+        "holders": "Holders",
+        "contract": "Contract",
+        "txnHash": "Txn Hash",
+        "age": "Age",
+        "from": "From",
+        "fromType": "Type",
+        "fromTypeIn": "In",
+        "fromTypeOut": "Out",
+        "fromTypeArrow": "Out",
+        "to": "To",
+        "accountAddress": "Address",
+        "tokenId": "TokenID",
+        "quantity": "Quantity",
+        "erc1155QuantityTip": "The quantity of CRC-1155 tokens in an address is equal to the total number of categories with TokenIDs it owns.",
+        "percentage": "Percentage",
+        "traceType": "Trace Type",
+        "traceResult": "Result",
+        "traceStatusTitle": "Status",
+        "traceStatus": {
+          "success": "success",
+          "fail": "fail",
+          "revert": "revert"
+        },
+        "projectInfo": {
+          "projectInfo": "Project Info",
+          "security": "The token may have security issues, please be aware of risks",
+          "verify": "The contract has been verified",
+          "unverify": "Attention: The contract has not been verified ",
+          "audit": "The contract code passes the audit",
+          "sponsor": "Accepted by Conflux’s Global Ecosystem Grants Program ",
+          "zeroAddress": "The admin of the contract is zero address",
+          "notZeroAddress": "Attention: The contract owner is non-zero address",
+          "listedByCentralized": "Listed by a centralized exchange",
+          "listedByDecentralized": "Listed by a decentralized exchange ",
+          "listedByCMC": "Listed by CoinMarketCap",
+          "blackList": "The Token is blacklisted",
+          "modal": {
+            "security": "The token may have security issues, please be aware of risks (Refer to the \"Remark\" below)",
+            "verify": "The contract has been verified",
+            "unverify": "Attention: The contract has not been verified (<1>Verify the contract</1> now!)",
+            "unaudit": "The contract code passes the audit (Have an audit report or related link? <1>Submit</1> it now!)",
+            "audit": "The contract code passes the audit (<1>View the audit report</1>)",
+            "sponsor": "Accepted by Conflux’s Global Ecosystem Grants Program (<1>Apply for Grants</1> now!)",
+            "zeroAddress": "The contract admin is zero address",
+            "notZeroAddress": "Attention: The contract owner is non-zero address",
+            "uncex": "Listed by a centralized exchange (<1>Submit</1> proof)",
+            "cex": "Listed by a centralized exchange",
+            "binance": "- <1>Binance</1>",
+            "huoBi": "- <1>HuoBi</1>",
+            "ok": "- <1>OK</1>",
+            "undex": "Listed by a decentralized exchange (<1>Submit</1> proof)",
+            "dex": "Listed by a decentralized exchange",
+            "moonswap": "- <1>Moonswap</1>",
+            "uncmc": "Listed by <0>CoinMarketCap</0> (<1>Submit</1> proof)",
+            "cmc": "Listed by <0>CoinMarketCap</0>",
+            "remarkTitle": "Additional Remark:",
+            "remarkContent1": "If any one of the following actions occurs, the token will be removed and will never be re-listed again:",
+            "remarkContent2": "- Involved in phishing, pyramid scheme, frauds, etc.",
+            "remarkContent3": "- Filled out false information in the any relevant application.",
+            "remarkContent4": "- The names and symbols of the token involve any political stance, terrorism, fraud, eroticism, vulgarity, gambling, infringement, rumors, and other undesirable behaviors.",
+            "disclaimer": "Click to view the <1>Disclaimer</1>"
+          }
+        }
+      },
+      "contracts": {
+        "number": "#",
+        "name": "Contract Name Tag",
+        "address": "Contract Address",
+        "transactionCount": "Txn"
+      }
+    },
+    "pagination": {
+      "labelPageSizeBefore": "Show",
+      "labelPageSizeAfter": "Records",
+      "labelJumperBefore": "Go to",
+      "labelJumperAfter": "Page"
+    },
+    "copyButton": {
+      "copyToClipboard": "Copy to clipboard",
+      "success": "Copied",
+      "failed": "Copy failed"
+    },
+    "submit": "Submit",
+    "apply": "Apply",
+    "search": "Search",
+    "qrcodeButton": {
+      "clickToShow": "Click to view QR code",
+      "contract": "Contract",
+      "address": "Address",
+      "scanQRCode": "Scan QR Code"
+    },
+    "notAvailable": "Not Available",
+    "security": {
+      "notAvailable": "Not available",
+      "high": "Great",
+      "medium": "Good",
+      "low": "Weak",
+      "veryLow": "Poor"
+    },
+    "status": {
+      "skip": {
+        "text": "Skip",
+        "explanation": "Possible reasons: Wrong nonce; insufficient balance; the transactions fail to execute at the appropriate epoch height; the transaction executed in earlier blocks."
+      },
+      "error": {
+        "text": "Error",
+        "explanation": "Encountered during contract execution, or out of gas."
+      },
+      "success": {
+        "text": "Success",
+        "explanation": ""
+      },
+      "unexecuted": {
+        "text": "Unexecuted",
+        "explanation": "Transaction has not been executed yet, please wait."
+      },
+      "pending": {
+        "text": "Pending",
+        "explanation": ""
+      }
+    },
+    "countdown": {
+      "year": "{{count}} year",
+      "year_plural": "{{count}} years",
+      "month": "{{count}} month",
+      "month_plural": "{{count}} months",
+      "day": "{{count}} day",
+      "day_plural": "{{count}} days",
+      "hour": "{{count}} hr",
+      "hour_plural": "{{count}} hrs",
+      "minute": "{{count}} min",
+      "minute_plural": "{{count}} mins",
+      "second": "{{count}} sec",
+      "second_plural": "{{count}} secs",
+      "ago": "ago"
+    },
+    "startDate": "Start date",
+    "endDate": "End date",
+    "submitSucceed": "Submit succeed",
+    "tabLabel": {
+      "lt10000": "A total of {{total}} records",
+      "gte10000": "A total of {{realTotal}} records found (showing the last {{total}} records)"
+    },
+    "errorOccurred": "Error occurred",
+    "error": {
+      "title": "System Error",
+      "description": {
+        "10001": "ParameterError",
+        "10403": "PermissionsError",
+        "10501": "AssertError",
+        "10503": "ApiBusyError",
+        "40414": "AnnounceTooLongError",
+        "40400": "SendAnnounceError",
+        "40404": "AnnouncementNotExistError",
+        "50404": "ContractNotFoundError",
+        "50600": "CompilerError",
+        "50601": "ContractDecompileError",
+        "20000": "Unknow error.",
+        "20001": "Response data parsing error.",
+        "20002": "Request timeout.",
+        "20003": "Request abort.",
+        "20004": "Network error.",
+        "30001": "RPC call error.",
+        "400": "Bad request.",
+        "401": "Unauthorized.",
+        "403": "Forbidden.",
+        "404": "Not Found.",
+        "405": "Method Not Allowed.",
+        "500": "Internal Server Error.",
+        "501": "Not Implemented.",
+        "502": "Bad Gateway.",
+        "503": "Service Unavailable.",
+        "504": "Gateway Timeout."
+      }
+    },
+    "connnectWalletSubmit": "Submit",
+    "waitForConfirm": "Waiting For Confirmation",
+    "txRejected": "Transaction Rejected",
+    "exportRecords": "Export Current Records",
+    "downloadCSV": {
+      "latest5000records": "Only the latest 5000 records are supported",
+      "download": "Download ",
+      "csvFile": "CSV file"
+    },
+    "preview": "Preview"
+  },
+  "sponsor": {
+    "title": "Contract Sponsor",
+    "storageSponsor": "STORAGE SPONSOR",
+    "gasFeeSponsor": "GAS FEE SPONSOR",
+    "currentAvialStorageFee": "Available Storage Fee Balance",
+    "currentAvialGasFee": "Available Gas Fee Balance",
+    "providedStorage": "Storage Fees Provided By Conflux Foundation",
+    "providedGas": "Gas Fees Provided By Conflux Foundation",
+    "availStorage": "Remaining Storage Fees By Conflux Foundation",
+    "availGas": "Remaining Gas Fees By Conflux Foundation",
+    "connectToApply": "Apply",
+    "notice": "Remark",
+    "noticeFirst": "1. Conflux Foundation will sponsor Storage and Gas Fees. The amount of the sponsored funds and the application amount may vary.",
+    "noticeSecond": "2. To request the Smart Contract Sponsorship, you need to connect to ConfluxPortal.",
+    "noticeFourthOne": "3. If you don't have ConfluxPortal as a browser extension installed yet, please visit",
+    "noticeFourthTwo": "for instructions.",
+    "notice4": "4. For more information on sponsorship application, please refer to ",
+    "notice4link": "https://forum.conflux.fun/t/announcement-usage-adjustment-of-ecosystem-fund-for-the-conflux-sponsorship-mechanism-2022-11-11/12056",
+    "notice4linkContent": "Ecosystem Funds for the Sponsorship Mechanism.",
+    "errReachToMax": "The available balance storage fees or gas fees has reached or exceeded the maximum value",
+    "errInsufficientFee": "Insufficient storage fees or gas fees by Conflux Foundation",
+    "errReplaceThird": "Unable to replace the third-party sponsors of storage or gas fees",
+    "errContractNotFound": "The contract cannot be found",
+    "errCannotReplaced": "Third party sponsors cannot be replaced",
+    "errUpgraded": "Third party sponsors cannot be replaced",
+    "upperBound": "Upper Bound",
+    "submitted": "Transaction Submitted",
+    "txHash": "Transaction Hash",
+    "searchAddress": "Search contract address",
+    "applicationUnit": "application",
+    "tx": "tx",
+    "byFoundation": " (by Foundation)"
+  },
+  "transaction": {
+    "tipOfTokenTransferCount": "Show up to 100 records",
+    "gotoDetail": "Click to view details",
+    "inThePosition": "(in the position {{position}})",
+    "overview": "Overview",
+    "viewOutgoingTxns": "View Outgoing Txns",
+    "viewIncomingTxns": "View Incoming Txns",
+    "viewFailedTxns": "View Failed Txns",
+    "viewCreationTxns": "View Contract Creation Txns",
+    "title": "Transaction",
+    "description": "Transaction",
+    "hash": "Transaction Hash",
+    "executedEpoch": "Executed Epoch",
+    "proposedEpoch": "Proposed Epoch",
+    "timestamp": "Timestamp",
+    "status": "Status",
+    "from": "From",
+    "to": "To",
+    "tokenTransferred": "Token Transferred",
+    "value": "Value",
+    "gasUsed": "Gas Used/Limit",
+    "gasPrice": "Gas Price",
+    "gasFee": "Gas Fee",
+    "gasCharged": "Gas Charged",
+    "nonce": "Nonce",
+    "blockHash": "Block Hash",
+    "position": "Position",
+    "storageLimit": "Storage Used/Limit",
+    "storageCollateralized": "Storage Collateralize Fee",
+    "storageReleased": "Storage Released",
+    "chainID": "Chain ID",
+    "inputData": "Input Data",
+    "select": {
+      "decodeInputData": "Decode Input Data",
+      "original": "Original",
+      "utf8": "UTF-8",
+      "json": "Decode as JSON",
+      "generalDecode": "General Decode",
+      "optimizationDecode": "Optimization Decode"
+    },
+    "contract": "Contract",
+    "created": "Created",
+    "contractCreation": "Contract Creation",
+    "for": "For",
+    "tokenId": "TokenID",
+    "inputTips": "The binary data that formed the input to the transaction, either the input data if it was a message call or the contract initialisation if it was a contract registration",
+    "epochConfirmations": "{{count}} Epoch Confirmations",
+    "statusError": {
+      "0": "Unknown error.",
+      "1": "Contract error: ",
+      "2": "Insufficient storage fees.",
+      "3": "Insufficient address balance. ",
+      "4": "Insufficient gas fee.",
+      "5": "Unknown contract error.",
+      "6": "Contract deployment failed."
+    },
+    "internalTxns": {
+      "title": "Internal Txns",
+      "simple": "Simple",
+      "advanced": "Advanced"
+    },
+    "internalTxnsTip": {
+      "from": "The contract call from",
+      "to": "to",
+      "produced": "produced",
+      "txns": "internal transactions.",
+      "tip": "The 'Advanced' view also shows zero value CFX transfers, while the 'Simple' view only shows CFX transfers with value."
+    },
+    "logs": {
+      "title": "logs",
+      "address": "Address",
+      "name": "Name",
+      "topics": "Topics",
+      "data": "Data",
+      "decode": "Decode",
+      "hex": "Hex",
+      "text": "Text",
+      "number": "Number"
+    }
+  },
+  "block": {
+    "overview": "Overview",
+    "title": "Block",
+    "description": "Block",
+    "blockHeight": "Block Height",
+    "epoch": "Epoch",
+    "difficulty": "Difficulty",
+    "miner": "Miner",
+    "reward": "Reward",
+    "security": "Security",
+    "blame": "Blame Block Count",
+    "blockHash": "Block Hash",
+    "parentHash": "Parent Hash",
+    "nonce": "Nonce",
+    "gasUsed": "Gas Used/Limit",
+    "timestamp": "Timestamp",
+    "size": "Size",
+    "transactions": "Transactions",
+    "referenceBlocks": "Reference Blocks",
+    "tabs": {
+      "transactions": "Transactions",
+      "referenceBlocks": "Reference Blocks",
+      "labelCountBefore": "A total of",
+      "labelCountAfter": "{{type}} found"
+    }
+  },
+  "epoch": {
+    "title": "Epoch",
+    "description": "Epoch",
+    "tipCountBefore": "A total of",
+    "tipCountAfter": "{{type}} found",
+    "labelCountBefore": "A total of",
+    "labelCountAfter": "{{type}} found",
+    "blocks": "Blocks",
+    "transactions": "Transactions",
+    "table": {
+      "position": "Position",
+      "hash": "Hash",
+      "txns": "Txn",
+      "miner": "Miner",
+      "difficulty": "Difficulty",
+      "gasUsedPercent": "Gas Used/Limit",
+      "age": "Age"
+    }
+  },
+  "addressConverter": {
+    "title": "Address Format Conversion",
+    "subtitle": "The old Conflux address will be converted to a new address by using the advanced checksum method.",
+    "button": "Convert",
+    "inputPlaceholder": "Input address",
+    "networkId": "network id (optional)",
+    "incorrectFormat": "Invalid address format",
+    "lowercase": "Address in lowercase",
+    "checksum": "Old checksummed address",
+    "newMainnetAddress": "Conflux Tethys new address (both address types are valid)",
+    "newTestnetAddress": "Conflux Testnet new address (both address types are valid)",
+    "newCustomnetAddress": "Conflux new address with customized network-id (both address types are valid)",
+    "notice": "Attention, CFX cannot be transferred directly to the BSC address with any wallet, and cross-chain transfers are required via ",
+    "noticeLinkText": "Shuttleflow",
+    "noticeend": ".",
+    "noticeLink": "https://shuttleflow.io/",
+    "remark": "Remark:",
+    "tip1": "1. The last eight bits of the new address are checksums, which are generated by the original address through the check algorithm and give the address the ability to self-verify.",
+    "tip2": "2. Conflux adopts a new checksum method different from the EIP55 standard.",
+    "tip3": "3. The network- id represents the network prefix of the address and is only used for privately deployed Conflux networks. For information about the valid network-id, please visit ",
+    "tip3Link": "https://github.com/Conflux-Chain/CIPs/blob/master/CIPs/cip-37.md",
+    "tip3end": "CIP-37.",
+    "tip5": "5. To prevent loss of assets, please review ",
+    "tip5Link": "https://forum.conflux.fun/t/conflux-address-formats-and-their-implications-of-asset-transfers/6727",
+    "tip5Middle": "Conflux Address-Formats and Their Implications of Asset Transfers",
+    "tip5end": " carefully.",
+    "tip4": "4. Contract addresses starting with 0x0 cannot be converted, except for build-in contracts and zero-address.",
+    "errorMessage": {
+      "0x0": "The address is a non-built-in contract or a non-zero address",
+      "0x8": "The contract does not exist, please be careful"
+    }
+  },
+  "broadcastTx": {
+    "title": "Broadcast Transaction",
+    "subtitle": "Below you can enter a signed raw transaction in hex format (i.e. characters 0-9, a-f) that starts with 0x and broadcast it over the Conflux network.",
+    "broadcastBtn": "Broadcast",
+    "success": "Broadcast Succeed",
+    "error": "Error: ",
+    "unknownError": "Unable to broadcast transaction"
+  },
+  "blocknumberCalc": {
+    "title": "Blocknumber Calculator",
+    "placeholder": "Please enter target blocknumber",
+    "higherError": "Please enter a higher blocknumber ",
+    "calcBtn": "Calculate",
+    "currentBlocknumber": "Current Blocknumber",
+    "remainingBlocks": "Remaining Blocks",
+    "targetDate": "Estimated Target Date",
+    "day": "Day",
+    "hour": "Hour",
+    "min": "Min",
+    "sec": "Sec"
+  },
+  "notice": {
+    "mainnet": [
+      "1. ConfluxScan is currently on the Mainnet Phase III - Tethys, Conflux-Rust version: {{version}}.",
+      "2. ConfluxPortal will be upgraded to v0.6.0 between 11:00 - 13:00 (GMT+8) on March 9th, 2021. After this upgrade, Portal will be fully adapted to CIP-37",
+      "3. The new address format is only a conversion of the old format. Users can still log into their Conflux wallet via private keys or secret phrases. User assets will not be affected."
+    ],
+    "testnet": [
+      "1. ConfluxScan is currently on the testnet network, Conflux-Rust version: {{version}}, all data shown are from the testnet.",
+      "2. ConfluxPortal will be upgraded to v0.6.0 between 11:00 - 13:00 (GMT+8) on March 9th, 2021. After this upgrade, Portal will be fully adapted to CIP-37",
+      "3. The new address format is only a conversion of the old format. Users can still log into their Conflux wallet via private keys or secret phrases. User assets will not be affected."
+    ],
+    "link": "https://forum.conflux.fun/t/topic/5387",
+    "testnetLink": "https://forum.conflux.fun/t/topic/5387"
+  },
+  "toolTip": {
+    "block": {
+      "blockHeight": "The number of blocks on the path to Genesis block via parent references. The block height of a newly mined block is obtained by increasing the height of its parent block by 1. In particular, the block height of Genesis block is 0.",
+      "epoch": "Epoch refers to the block height of the first pivot block that (directly or indirectly) references this block. The epoch number of a block represents the time when this block is first observed by pivot blocks. A block in an earlier epoch always precedes blocks in later epoches in the total order of all blocks.",
+      "difficulty": "The amount of effort required to mine a new block. The difficulty may adjust according to time.",
+      "miner": "Miner who successfully generate the block onto the blockchain.",
+      "reward": "The miner of this block is rewarded with a finite amount of CFX, consists of base reward, reward from storage collateral interest and transaction fee.",
+      "security": "The security of block, higher security requires more block confirmations.",
+      "blame": "The number of consecutive ancestor blocks whose state commitments are incorrect and need revision. The state commitments can be realized as digests of transaction execution receipts and account status. An incorrect state commitment may affect the miner's reward, but has nothing to do with the consensus of total order of all blocks.",
+      "blockHash": "The hash of the block header of the current block.",
+      "parentHash": "The hash of the block from which this block was generated, also known as its parent block.",
+      "nonce": "Block nonce is a value used during mining to demonstrate proof of work for a block.",
+      "gasUsedLimit": "The exact units of gas that was used for the transaction; Maximum amount of gas provided for the transaction.",
+      "timestamp": "The date and time at which a block is mined.",
+      "size": "The block size is actually determined by the block's gas limit.",
+      "transactions": "The amout of transactions which belong to the block.",
+      "referenceBlocks": "The other blocks referred by the current block."
+    },
+    "tx": {
+      "transactionHash": "A TxHash or transaction hash is a unique 66 characters identifier that is generated whenever a transaction is executed.",
+      "executedEpoch": "The epoch when the transaction is actually executed.",
+      "proposedEpoch": "The epoch that the sender wants the transaction to be executed. The transaction cannot be executed in epochs of number more than 100,000 from the proposed epoch number.",
+      "timestamp": "The date and time at which a transaction is mined.",
+      "status": "The status of the transaction.",
+      "security": "The security of block, higher security requires more block confirmations.",
+      "from": "The sending party of the transaction (could be from a contract address).",
+      "to": "The receiving party of the transaction (could be a contract address).",
+      "tokenTransferred": "List of token transferred in the transaction.",
+      "value": "The value being transacted in CFX. ",
+      "gasUsedLimit": "The exact units of gas that was used for the transaction; Maximum amount of gas provided for the transaction.",
+      "gasPrice": "Cost per unit of gas specified for the transaction in GDrip. The higher the gas price the higher chance of getting included in a block.",
+      "gasFee": "The exact fee of gas that was used for the transaction.",
+      "gasCharged": "Conflux protocol requires that the gas-charged should be at least 3/4 of the gas limit. Usually, gas-charged equals the gas used. But if the gas used is less than 3/4 of the gas limit, gas-charged equals 3/4 of the gas limit.",
+      "nonce": "Sequential running number for an address, beginning with 0 for the first transaction. For example, if the nonce of a transaction is 10, it would be the 11th transaction sent from the sender's address.",
+      "blockHash": "A block hash is a unique 66 characters identifier that is generated whenever a transaction is executed.",
+      "position": "Index position of Transaction in the block.",
+      "storageLimit": "Storage Used ÷ 1024 = Storage Collateralize Fee; Maximum amount of storage(byte) the sender is willing to pay for storage collateral.",
+      "storageCollateralized": "The cost of storage that needs to be paid.",
+      "storageReleased": "The refund of storage collateralize fees.",
+      "chainID": "The ID indicating which blockchain this transaction is meant to send to. Provides protection against replay-attack.",
+      "inputData": "Additional information that is required for the transaction."
+    },
+    "address": {
+      "balance": "The amout of assets which belong to the address.",
+      "token": "The amout of tokens which belong to the address.",
+      "storageCollateral": "The amount of storage collaterals paid by the current address, the unit is the CFX. ",
+      "nonce": "Sequential running number for an address, beginning with 0 for the first transaction. For example, if the nonce of a transaction is 10, it would be the 11th transaction sent from the sender's address.",
+      "stakedBegin": "Total CFX staked. Access ",
+      "stakedEnd": " to stake CFX for interest.",
+      "stakingEarned": "Staking CFX Earned (APY 4%) does not contain withdrawn interest. Staked interest will be automatically sent to your wallet address each time it is withdrawn.",
+      "lockedBegin": "Total CFX locked. Access ",
+      "lockedEnd": " to lock CFX for voting rights.",
+      "currentVotingRights": "The voting rights will be awarded according to: number of quarters × number of tokens × 0.25."
+    },
+    "token": {
+      "price": "Token price.",
+      "volume": "The total dollar value of all cryptocurrency transactions over the past 24 hours.",
+      "marketCap": "The market value of a cryptocurrency's total supply. Market Cap = Current Price x Total Supply.",
+      "fullyDilutedMarketCap": "The market cap if the max supply was in circulation. Fully-diluted market cap = price x max supply.",
+      "totalSupply": "Total supply of the token.",
+      "holders": "The amount of addresses which hold the token.",
+      "transfers": "The amount of token transactions which belongs to the address.",
+      "contract": "The contract which deploys the token.",
+      "decimals": "Decimals of the token. "
+    },
+    "contract": {
+      "balance": "The amount of assets which belongs to the address.",
+      "token": "The amount of tokens which belongs to the address.",
+      "storageCollateral": "The amount of storage collaterals paid by the contract sponsor, the unit is the CFX.",
+      "nameTag": "Name tags can be attached to an address for identifying addresses of interest.",
+      "tokenTracker": "The token which was deployed by the contract.",
+      "contractCreator": "The address which deploys the contract.",
+      "contractAdmin": "The address which owns the contract administration authority. The admin is able to destroy the contract. (Tethys zero address: cfx:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa0sfbnjm2; Testnet zero address: cfxtest:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa6f0vrcsw)",
+      "storageSponsor": "The sponsor address which pays storage collateral for transactions interacts with such a contract. ",
+      "gasFeeSponsor": "The sponsor address which pays gas fee for transactions interacts with such a contract. "
+    }
+  },
+  "connectWallet": {
+    "button": {
+      "text": "Connect Wallet",
+      "nPending": "{{count}} Pending"
+    },
+    "modal": {
+      "title": "Connect to a wallet",
+      "installConfluxPortal": "Install ConfluxPortal",
+      "confluxPortal": "ConfluxPortal",
+      "initializing": "Initializing...",
+      "errorConnecting": "Error connecting...",
+      "tryAgain": "Try again",
+      "newToConflux": "New to Conflux?",
+      "learnMore": "Learn more about wallets.",
+      "account": "Account",
+      "connectedWithConfluxPortal": "Connected with ConfluxPortal",
+      "copyAddress": "Copy address",
+      "viewOnConfluxScan": "View on ConfluxScan",
+      "networkNotice": "Network Notice",
+      "versionNotice": "Version Notice",
+      "switchToMainnet": "Please switch the network to Conflux Tethys in ConfluxPortal.",
+      "switchToTestnet": "Please switch the network to Conflux Test Network in ConfluxPortal.",
+      "switchToScanNetwork": "Please switch the network to {{networkID}} in ConfluxPortal.",
+      "cannotProcess": "Cannot Process",
+      "upgradeTipVersion": "Please update ConfluxPortal to the latest version."
+    },
+    "history": {
+      "emptyRecordsTip": "Your transactions will appear here...",
+      "recentlyRecordsTip": "Recent transactions",
+      "clearAll": "Clear all",
+      "recentlyTenRecordsTip": "Only the latest 10 transactions will be shown.",
+      "contractCreation": "Contract registration",
+      "contractEdit": "Contract edit",
+      "sponsorApplication": "Sponsor application",
+      "writeContract": "Write contract",
+      "viewYourtransaction": "View your transaction"
+    },
+    "notify": {
+      "link": "View on ConfluxScan",
+      "action": {
+        "100": "Transaction Status",
+        "101": "Contract Registration",
+        "102": "Contract Edit",
+        "103": "Write contract",
+        "104": "read contract",
+        "105": "Sponsor application",
+        "106": "Contract Deployment",
+        "107": "Swap {{wcfxValue}} WCFX for {{cfxValue}} CFX",
+        "108": "Swap {{cfxValue}} CFX for {{wcfxValue}} WCFX ",
+        "109": "Withdraw of interest {{value}} CFX",
+        "110": "Non-reversible exchanged {{value}} FC",
+        "111": "{{value}} FC sign up for subsidy",
+        "112": "Announce Agreement",
+        "113": "Withdraw of principal {{value}} CFX"
+      }
+    },
+    "tip": "Please connect to ConfluxPortal first!"
+  },
+  "statistics": {
+    "statistics": "Top Statistics",
+    "overview": "Overview",
+    "transactions": "Transactions",
+    "tokens": "Tokens",
+    "miners": "Miners",
+    "network": "Network",
+    "overviewTransactions": "Transactions",
+    "overviewTokens": "Tokens",
+    "overviewMiners": "Miners",
+    "overviewNetwork": "Network",
+    "overviewMore": "View Charts",
+    "topTxnCountSent": "Top Txn Count Sent",
+    "topTxnCountReceived": "Top Txn Count Received",
+    "topCFXSend": "Top CFX Sent",
+    "topCFXReceived": "Top CFX Received",
+    "topTokensBySenders": "Top Tokens by Senders",
+    "topTokensByReceivers": "Top Tokens by Receivers",
+    "topTokensByTxnCount": "Top Tokens by Txn Count",
+    "topTokensByTxnAccountsCount": "Top Tokens by Txn Accounts Count",
+    "topMinersByBlocksMined": "Top Miners by Blocks Mined",
+    "topAccountsByGasUsed": "Top Accounts by Gas Used",
+    "topAccountsByTxnCount": "Top Accounts by Txn Count",
+    "valueInTotal": "Value in total",
+    "txnCountInTotal": "Txn Count in total",
+    "span": {
+      "24h": "24 Hours",
+      "3d": "3 Days",
+      "7d": "7 Days"
+    },
+    "overviewColumns": {
+      "totalCFXSent": "Total CFX Sent",
+      "totalCFXReceived": "Total CFX Received",
+      "totalTxnCount": "Total Txn Count",
+      "totalTxnCountSent": "Total Txn Count Sent",
+      "totalTxnCountReceived": "Total Txn Count Received",
+      "totalTokenSent": "Total Token Sent",
+      "totalTokenReceived": "Total Token Received",
+      "totalTokenTransfersCount": "Total Token Transfers Count",
+      "totalTokenTransfersAccountsCount": "Total Token Transfers Accounts Count",
+      "totalMiners": "Total Miners",
+      "totalBlocksMined": "Total Blocks Mined",
+      "totalGasUsed": "Total Gas Used",
+      "top10": "View Top 10"
+    },
+    "column": {
+      "rank": "Rank",
+      "address": "Address",
+      "txn": "Txn Count",
+      "txnValue": "Value",
+      "txnAccounts": "Txn Accounts",
+      "percentage": "Percentage",
+      "token": "Token",
+      "senders": "Senders",
+      "receivers": "Receivers",
+      "totalBlocksMined": "Total Blocks Mined",
+      "totalRewards": "Total Rewards",
+      "totalTxnFees": "Total Txn Fees",
+      "hashRate": "Est. Hash Rate (GH/s)",
+      "gasUsed": "Gas Used"
+    },
+    "home": {
+      "currentBlockNumber": "Current Block Number",
+      "currentEpoch": "Current Epoch",
+      "account": "Accounts",
+      "transactions": "Transactions",
+      "contract": "Contracts"
+    }
+  },
+  "swap": {
+    "swap": "Swap",
+    "from": "From",
+    "to": "To",
+    "balance": "Balance",
+    "availableBalance": "Available Balance",
+    "availableBalanceTip": "CFX conversion to WCFX requires a minimum of 0.1 CFX as a storage or gas fee.",
+    "connectWallet": "Connect Wallet",
+    "enterAmount": "Enter an amount",
+    "insufficientBalance": "Insufficient {{type}} balance",
+    "max": "MAX",
+    "selectAToken": "Select a Token",
+    "cfx": "CFX",
+    "wcfx": "WCFX",
+    "swapNCFXToWCFX": "Swap N CFX for WCFX",
+    "swapNWCFXToCFX": "Swap N WCFX for N CFX"
+  },
+  "report": {
+    "title": "Report",
+    "subtitle": "You can label and upload addresses you do not trust",
+    "address": "Address",
+    "txnHash": "Txn Hash",
+    "selectType": "Please select a report type (multiselect):",
+    "phishHack": "Phish / Hack",
+    "scam": "Scam",
+    "fishy": "Fishy",
+    "highRisk": "High Risk",
+    "spam": "Spam",
+    "others": "Others",
+    "description": "Description",
+    "tip": "At least 30 characters, no more than 200 characters",
+    "nCharacters": "N character(s)",
+    "code": "Code",
+    "submit": "Submit",
+    "error": {
+      "addressRequired": "Please enter the address",
+      "addressInvalid": "Invalid address format",
+      "typeRequired": "Please select at least one type",
+      "descriptionRequired": "Please enter a discription of at least 30 characters",
+      "recaptchaRequired": "Invalid captcha response",
+      "txnHashInvalid": "Invalid txn hash format",
+      "isNotMainnet": "Please enter Conflux Tethys address",
+      "isNotTestnet": "Please enter Conflux Testnet address"
+    },
+    "status": {
+      "success": "Submit Succeed",
+      "fail": "Submit Failed"
+    }
+  },
+  "balanceChecker": {
+    "tokenBalanceChecker": "Token Balance Checker",
+    "balanceChecker": "Balance Checker",
+    "subtitle": "You can lookup the address historical balance on the Conflux network at a specific Epoch No or Date",
+    "tokenQuantity": "Token Quantity",
+    "tokenSupply": "Token Supply",
+    "cfxBalance": "CFX Balance",
+    "address": "Address",
+    "contractAddress": "Contract Address",
+    "epochNoOrDate": "Epoch No or Date",
+    "or": "OR",
+    "chooseDate": "Please select date",
+    "enterEpochNo": "Enter a Epoch No",
+    "invalidEpochNo": "Invalid Epoch No",
+    "error": "Can not be empty",
+    "lookUp": "Search",
+    "reset": "Reset",
+    "tokenQuantityForAccountAddress": "Token Quantity for Account Address",
+    "totalSupplyForContractAddress": "Total Supply for Contract Address",
+    "cfxBalanceForAddress": "CFX Balance for Address",
+    "snapshotDate": "Snapshot Date",
+    "epoch": "Epoch",
+    "epochNo": "Epoch No"
+  },
+  "nftChecker": {
+    "title": "NFT Checker",
+    "subtitle": "Check NFT owned by an account by searching for an address (Only support the NFTs in the current token list)",
+    "inputPlaceholder": "Please enter an address",
+    "incorrectFormat": "Invalid address format",
+    "incorrectAddressType": "Invalid address type, only support for account address",
+    "tokenId": "TokenID",
+    "plzSearch": "Plz Search",
+    "plzSearchDesc": "Please enter an address above to load the NFTs it owned"
+  },
+  "pos": {
+    "accounts": {
+      "title": "PoS Account List",
+      "description": "PoS Account List",
+      "address": "PoS Address",
+      "availableVotes": "Available Votes",
+      "currentCommitteeMember": "Current Committee Member",
+      "votesInCommittee": "Votes in Committee",
+      "registerDate": "Register Date"
+    },
+    "account": {
+      "title": "PoS Account",
+      "description": "PoS Account",
+      "overview": {
+        "title": "Overview",
+        "posAddress": "PoS Address",
+        "lockedRights": "Locked Rights",
+        "unlockRights": "Unlock Rights",
+        "retiredRights": "Retired Rights",
+        "availableVotes": "Available Votes",
+        "currentCommitteeMember": "Current Committee Member",
+        "rightsInCommittee ": "Rights in Committee",
+        "unlockedVotes": "Unlocked Votes",
+        "totalIncoming": "Total Incoming",
+        "punishment": "Punishment"
+      },
+      "incominghistory": {
+        "title": "Incoming History"
+      },
+      "votinghistory": {
+        "title": "Voting History"
+      },
+      "votingStatus": {
+        "title": "Voting Status"
+      }
+    }
+  }
+}
