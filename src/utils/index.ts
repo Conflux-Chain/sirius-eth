@@ -12,23 +12,26 @@ import {
 } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
+// @ts-ignore
+window.SDK = SDK;
+
 dayjs.extend(relativeTime);
 
-export const isPosAddress = (address: string): boolean => {
-  try {
-    return address.startsWith('0x') && address.length === 66;
-  } catch (e) {
-    return false;
-  }
-};
+// export const isPosAddress = (address: string): boolean => {
+//   try {
+//     return address.startsWith('0x') && address.length === 66;
+//   } catch (e) {
+//     return false;
+//   }
+// };
 
-export const isCfxHexAddress = (address: string): boolean => {
-  try {
-    return SDK.address.isValidCfxHexAddress(address);
-  } catch (e) {
-    return false;
-  }
-};
+// export const isCfxHexAddress = (address: string): boolean => {
+//   try {
+//     return SDK.address.isValidCfxHexAddress(address);
+//   } catch (e) {
+//     return false;
+//   }
+// };
 
 export const isBase32Address = (address: string): boolean => {
   try {
@@ -40,15 +43,20 @@ export const isBase32Address = (address: string): boolean => {
 
 export const formatAddress = (
   address: string,
-  outputType = 'base32', // base32 or hex
+  outputType = 'hex', // base32 or hex
 ): string => {
+  // TODO, eth space, remove base32 address condition
   // return input address as default value if it can not convert to conflux chain base32/hex format
   // if necessary, check for errors at the call site
   const invalidAddressReturnValue = address;
   try {
-    if (isCfxHexAddress(address)) {
+    if (isAddress(address)) {
       if (outputType === 'hex') {
-        return address;
+        if (isBase32Address(address)) {
+          return SDK.format.hexAddress(address);
+        } else {
+          return address;
+        }
       } else if (outputType === 'base32') {
         return SDK.format.address(address, NETWORK_ID);
       } else {
@@ -85,7 +93,7 @@ export const getAddressInfo = (
   hexAddress: ArrayBuffer | string;
 } | null => {
   try {
-    if (isCfxHexAddress(address)) {
+    if (isAddress(address)) {
       const base32Address = formatAddress(address, 'base32');
       return SDK.address.decodeCfxAddress(base32Address);
     } else if (isBase32Address(address)) {
@@ -98,22 +106,24 @@ export const getAddressInfo = (
   }
 };
 
-export const isSimplyBase32Address = (address: string): boolean => {
-  try {
-    return (
-      SDK.address.isValidCfxAddress(address) &&
-      SDK.address.simplifyCfxAddress(address) === address
-    );
-  } catch (e) {
-    return false;
-  }
-};
+// export const isSimplyBase32Address = (address: string): boolean => {
+//   try {
+//     return (
+//       SDK.address.isValidCfxAddress(address) &&
+//       SDK.address.simplifyCfxAddress(address) === address
+//     );
+//   } catch (e) {
+//     return false;
+//   }
+// };
 
 // support hex and base32
 export const isAddress = (address: string): boolean => {
+  // TODO, eth space, remove base32 address condition
   try {
     if (address.startsWith('0x')) {
-      return isCfxHexAddress(address);
+      // return isCfxHexAddress(address);
+      return SDK.address.isValidHexAddress(address);
     } else {
       return isBase32Address(address);
     }
@@ -136,24 +146,27 @@ export function isAccountAddress(address: string): boolean {
 }
 
 export function isContractAddress(address: string): boolean {
+  // TODO, eth space, check if needed
   return getAddressInfo(address)?.type === 'contract';
 }
 
 export function isInnerContractAddress(address: string): boolean {
-  try {
-    // @todo, wait for sdk upgrade to accept both base32 and hex address
-    return SDK.address.isInternalContractAddress(formatAddress(address, 'hex'));
-  } catch (e) {
-    return false;
-  }
+  return false; // TODO, eth space, check if needed
+  // try {
+  //   // @todo, wait for sdk upgrade to accept both base32 and hex address
+  //   return SDK.address.isInternalContractAddress(formatAddress(address, 'hex'));
+  // } catch (e) {
+  //   return false;
+  // }
 }
 
 // address start with 0x0, not valid internal contract, but fullnode support
 export function isSpecialAddress(address: string): boolean {
-  return (
-    getAddressInfo(address)?.type === 'builtin' &&
-    !isInnerContractAddress(address)
-  );
+  return false; // TODO, eth space, check if needed
+  // return (
+  //   getAddressInfo(address)?.type === 'builtin' &&
+  //   !isInnerContractAddress(address)
+  // );
 }
 
 export function isCurrentNetworkAddress(address: string): boolean {

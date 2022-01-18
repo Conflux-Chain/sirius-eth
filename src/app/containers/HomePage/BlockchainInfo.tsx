@@ -7,7 +7,7 @@ import { translations } from '../../../locales/i18n';
 import { media } from '../../../styles/media';
 import { formatNumber } from '../../../utils';
 import {
-  LineChart as Chart,
+  // LineChart as Chart,
   SmallChart,
 } from '../../components/Chart/Loadable';
 import { reqHomeDashboard, reqTransferTPS } from '../../../utils/httpRequest';
@@ -156,7 +156,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
         </Grid.Container>
       </Card>
 
-      <div className="charts">
+      {/* <div className="charts">
         <Grid.Container gap={2.7} justify="center">
           <Grid xs={24} sm={24} md={12} className="overview-chart-item">
             <Chart
@@ -179,7 +179,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
             />
           </Grid>
         </Grid.Container>
-      </div>
+      </div> */}
     </CardWrapper>
   );
 }

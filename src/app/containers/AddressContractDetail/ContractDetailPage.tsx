@@ -18,7 +18,7 @@ import {
 } from './AddressInfoCards';
 import { AddressMetadata, ContractMetadata, Table } from './Loadable';
 import { useContract } from 'utils/api';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+// import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 import {
   Bottom,
   Head,
@@ -76,9 +76,9 @@ export const ContractDetailPage = memo(() => {
     // contractInfo.transactionHash === undefined
     // if (!isInnerContractAddress(address) && !contractInfo.transactionHash) {
     if (
-      !isContractAddress(address) &&
-      !isInnerContractAddress(address) &&
-      !isSpecialAddress(address)
+      !isContractAddress(address)
+      // && !isInnerContractAddress(address) &&
+      // !isSpecialAddress(address)
     ) {
       history.replace(`/notfound/${address}`, {
         type: 'contract',
@@ -112,13 +112,13 @@ export const ContractDetailPage = memo(() => {
           {t(translations.general.address.more.editContract)}
         </RouterLink>
       </Menu.Item>
-      {[NETWORK_TYPES.testnet, NETWORK_TYPES.mainnet].includes(NETWORK_TYPE) ? (
+      {/* {[NETWORK_TYPES.testnet, NETWORK_TYPES.mainnet].includes(NETWORK_TYPE) ? (
         <Menu.Item>
           <RouterLink to={`/sponsor/${address}`}>
             {t(translations.general.address.more.sponsor)}
           </RouterLink>
         </Menu.Item>
-      ) : null}
+      ) : null} */}
       <Menu.Item>
         <RouterLink to={`/report?address=${address}`}>
           {t(translations.general.address.more.report)}

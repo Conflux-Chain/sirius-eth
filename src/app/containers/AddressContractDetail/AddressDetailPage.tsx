@@ -13,7 +13,7 @@ import { Copy, Qrcode } from './HeadLineButtons';
 import {
   BalanceCard,
   TokensCard,
-  StorageStakingCard,
+  // StorageStakingCard,
   NonceCard,
 } from './AddressInfoCards';
 import {
@@ -23,9 +23,9 @@ import {
   HeadAddressLine,
   Top,
   Head,
-  Middle,
+  // Middle,
 } from './layouts';
-import { AddressMetadata, Table } from './Loadable';
+import { /*AddressMetadata,*/ Table } from './Loadable';
 import { isZeroAddress } from '../../../utils';
 import { useAccount } from '../../../utils/api';
 import { Dropdown, Menu } from '@cfxjs/antd';
@@ -33,7 +33,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
 import { media } from '../../../styles/media';
-import { NETWORK_TYPES, NETWORK_TYPE } from '../../../utils/constants';
+// import { NETWORK_TYPES, NETWORK_TYPE } from '../../../utils/constants';
 
 interface RouteParams {
   address: string;
@@ -100,23 +100,22 @@ export const AddressDetailPage = memo(() => {
                   />
                 </span>
               </DropdownWrapper>
-              {/*<Report address={address} />*/}
             </div>
           </HeadAddressLine>
         </Head>
         <Top>
           <BalanceCard accountInfo={accountInfo} />
           <TokensCard address={address} />
-          <StorageStakingCard accountInfo={accountInfo} />
+          {/* <StorageStakingCard accountInfo={accountInfo} /> */}
           <NonceCard accountInfo={accountInfo} />
         </Top>
-        {[NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(
+        {/* {[NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(
           NETWORK_TYPE,
         ) ? (
           <Middle key="middle">
             <AddressMetadata address={address} accountInfo={accountInfo} />
           </Middle>
-        ) : null}
+        ) : null} */}
         <Bottom>
           <Table address={address} addressInfo={accountInfo} key={address} />
         </Bottom>

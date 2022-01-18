@@ -29,7 +29,7 @@ import { TxnHistoryProvider } from 'utils/hooks/useTxnHistory';
 import { GlobalProvider, useGlobalData } from 'utils/hooks/useGlobal';
 import { reqProjectConfig } from 'utils/httpRequest';
 import { LOCALSTORAGE_KEYS_MAP, NETWORK_ID, CFX } from 'utils/constants';
-import { formatAddress, isSimplyBase32Address, isAddress } from 'utils';
+import { isAddress } from 'utils';
 import MD5 from 'md5.js';
 // import lodash from 'lodash';
 
@@ -123,6 +123,13 @@ export function App() {
     setLoading(true);
     reqProjectConfig()
       .then(resp => {
+        if (resp?.networks.every(n => n.id !== resp?.networkId)) {
+          resp?.networks.push({
+            name: resp?.networkId,
+            id: resp?.networkId,
+          });
+        }
+
         // @ts-ignore
         const networkId = resp?.networkId;
         // @ts-ignore
@@ -340,22 +347,12 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (isSimplyBase32Address(address)) {
+                              if (isAddress(address)) {
                                 return (
                                   <AddressContractDetailPage {...routeProps} />
                                 );
                               } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`/address/${formatAddress(address)}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
+                                return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
                           />
@@ -380,20 +377,12 @@ export function App() {
                               const address =
                                 routeProps.match.params.contractAddress;
 
-                              if (isSimplyBase32Address(address)) {
+                              if (isAddress(address)) {
                                 return <Contract {...routeProps} />;
                               } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`${path}${formatAddress(address)}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
+                                return (
+                                  <Redirect to={`/notfound/${address}`} />
+                                );
                               }
                             }}
                           />
@@ -414,20 +403,12 @@ export function App() {
                               const address =
                                 routeProps.match.params.tokenAddress;
 
-                              if (isSimplyBase32Address(address)) {
+                              if (isAddress(address)) {
                                 return <TokenDetail {...routeProps} />;
                               } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`/token/${formatAddress(address)}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
+                                return (
+                                  <Redirect to={`/notfound/${address}`} />
+                                );
                               }
                             }}
                           />
@@ -508,25 +489,12 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (
-                                isSimplyBase32Address(address) ||
-                                lodash.isNil(address)
-                              ) {
+                              if (isAddress(address) || lodash.isNil(address)) {
                                 return <NFTChecker {...routeProps} />;
                               } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`/nft-checker/${formatAddress(
-                                        address,
-                                      )}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
+                                return (
+                                  <Redirect to={`/notfound/${address}`} />
+                                );
                               }
                             }}
                           /> */}
