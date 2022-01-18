@@ -11,10 +11,15 @@ import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';
-import { getPercent, fromDripToCfx, formatTimeStamp, toThousands } from 'utils';
-import { AddressContainer } from 'app/components/AddressContainer';
-import { formatAddress } from 'utils';
+import {
+  getPercent,
+  /*fromDripToCfx,*/ formatTimeStamp,
+  toThousands,
+} from 'utils';
+// import { AddressContainer } from 'app/components/AddressContainer';
+// import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
+import BigNumber from 'bignumber.js';
 
 export function DescriptionPanel() {
   const { hash: blockHash } = useParams<{
@@ -42,15 +47,16 @@ export function DescriptionPanel() {
     height,
     epochNumber,
     difficulty,
-    miner,
+    // miner,
     parentHash,
     nonce,
-    blame,
-    totalReward,
+    // blame,
+    // totalReward,
     gasUsed,
     syncTimestamp,
     size,
     gasLimit,
+    pivotHash,
   } = data || {};
 
   useEffect(() => {
@@ -81,10 +87,10 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {toThousands(height)} <CopyButton copyText={height} />
+            {toThousands(epochNumber)} <CopyButton copyText={height} />
           </SkeletonContainer>
         </Description>
-        <Description
+        {/* <Description
           title={
             <Tooltip text={t(translations.toolTip.block.epoch)} placement="top">
               {t(translations.block.epoch)}
@@ -97,7 +103,7 @@ export function DescriptionPanel() {
             </Link>{' '}
             <CopyButton copyText={epochNumber} />
           </SkeletonContainer>
-        </Description>
+        </Description> */}
         <Description
           title={
             <Tooltip
@@ -112,7 +118,7 @@ export function DescriptionPanel() {
             {toThousands(difficulty)} <CopyButton copyText={difficulty} />
           </SkeletonContainer>
         </Description>
-        <Description
+        {/* <Description
           title={
             <Tooltip text={t(translations.toolTip.block.miner)} placement="top">
               {t(translations.block.miner)}
@@ -141,7 +147,7 @@ export function DescriptionPanel() {
           <SkeletonContainer shown={loading}>
             {totalReward ? `${fromDripToCfx(totalReward, true)} CFX` : '--'}
           </SkeletonContainer>
-        </Description>
+        </Description> */}
         <Description
           title={
             <Tooltip
@@ -156,7 +162,7 @@ export function DescriptionPanel() {
             <Security blockHash={hash}></Security>
           </SkeletonContainer>
         </Description>
-        <Description
+        {/* <Description
           title={
             <Tooltip text={t(translations.toolTip.block.blame)} placement="top">
               {t(translations.block.blame)}
@@ -164,7 +170,7 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>{blame}</SkeletonContainer>
-        </Description>
+        </Description> */}
         <Description
           title={
             <Tooltip
@@ -176,7 +182,7 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {hash} <CopyButton copyText={hash} />
+            {pivotHash} <CopyButton copyText={pivotHash} />
           </SkeletonContainer>
         </Description>
         <Description
@@ -205,7 +211,9 @@ export function DescriptionPanel() {
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>{nonce}</SkeletonContainer>
+          <SkeletonContainer shown={loading}>
+            {new BigNumber(nonce).toString()}
+          </SkeletonContainer>
         </Description>
         <Description
           title={

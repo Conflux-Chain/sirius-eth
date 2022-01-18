@@ -11,14 +11,24 @@ import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
 
+// export const epoch = {
+//   title: (
+//     <Translation>{t => t(translations.general.table.block.epoch)}</Translation>
+//   ),
+//   dataIndex: 'epochNumber',
+//   key: 'epochNumber',
+//   width: 1,
+//   render: value => <Link href={`/epoch/${value}`}>{value}</Link>,
+// };
+
 export const epoch = {
   title: (
-    <Translation>{t => t(translations.general.table.block.epoch)}</Translation>
+    <Translation>{t => t(translations.general.table.block.height)}</Translation>
   ),
   dataIndex: 'epochNumber',
   key: 'epochNumber',
   width: 1,
-  render: value => <Link href={`/epoch/${value}`}>{value}</Link>,
+  render: (value, row) => <Link href={`/block/${row.hash}`}>{value}</Link>,
 };
 
 export const position = {
