@@ -3,16 +3,41 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 // cra doc https://create-react-app.dev/docs/proxying-api-requests-in-development/#configuring-the-proxy-manually
 // http-proxy-middleware doc https://www.npmjs.com/package/http-proxy-middleware#example
 
+const scantest = 'https://scantest.confluxnetwork.org';
+let stat = `${scantest}`;
+let v1 = `${scantest}`;
+let rpc = `${scantest}/rpc`;
+let rpcv2 = `${scantest}/rpcv2`;
+let confluxDag = `${scantest}`;
+
+if (process.env.REACT_APP_TestNet === 'true') {
+  const testnet = 'https://testnet-scantest.confluxnetwork.org';
+  stat = `${testnet}`;
+  v1 = `${testnet}`;
+  rpc = `${testnet}/rpc`;
+  rpcv2 = `${testnet}/rpcv2`;
+  confluxDag = `${testnet}`;
+} else if (process.env.REACT_APP_PrivateNet === 'true') {
+  const pos = 'https://posrc.confluxscan.net/';
+  stat = pos;
+  v1 = pos;
+  rpc = 'https://39.100.97.209:12537/rpc';
+  rpcv2 = 'https://39.100.97.209:12537/rpc';
+  confluxDag = pos;
+} else if (process.env.REACT_APP_ETHNet === 'true') {
+  const net12000 = 'https://net12000evm.confluxscan.net/';
+  stat = `${net12000}/`;
+  v1 = `${net12000}/`;
+  rpc = `${net12000}/rpc`;
+  rpcv2 = `${net12000}/rpcv2`;
+  confluxDag = `${net12000}/`;
+}
+
 module.exports = app => {
   app.use(
     '/stat',
     createProxyMiddleware({
-      target:
-        process.env.REACT_APP_TestNet === 'true'
-          ? 'https://testnet-scantest.confluxnetwork.org'
-          : process.env.REACT_APP_PrivateNet === 'true'
-          ? 'https://posrc.confluxscan.net/'
-          : 'https://scantest.confluxnetwork.org',
+      target: stat,
       changeOrigin: true,
       secure: false,
     }),
@@ -29,12 +54,7 @@ module.exports = app => {
   app.use(
     '/v1',
     createProxyMiddleware({
-      target:
-        process.env.REACT_APP_TestNet === 'true'
-          ? 'https://testnet-scantest.confluxnetwork.org'
-          : process.env.REACT_APP_PrivateNet === 'true'
-          ? 'https://posrc.confluxscan.net/'
-          : 'https://scantest.confluxnetwork.org',
+      target: v1,
       changeOrigin: true,
       secure: false,
     }),
@@ -42,12 +62,7 @@ module.exports = app => {
   app.use(
     '/rpc',
     createProxyMiddleware({
-      target:
-        process.env.REACT_APP_TestNet === 'true'
-          ? 'https://testnet-scantest.confluxnetwork.org/rpc'
-          : process.env.REACT_APP_PrivateNet === 'true'
-          ? 'http://39.100.97.209:12537/rpc'
-          : 'https://scantest.confluxnetwork.org/rpc',
+      target: rpc,
       changeOrigin: true,
       secure: false,
     }),
@@ -55,12 +70,7 @@ module.exports = app => {
   app.use(
     '/rpcv2',
     createProxyMiddleware({
-      target:
-        process.env.REACT_APP_TestNet === 'true'
-          ? 'https://testnet-scantest.confluxnetwork.org/rpcv2'
-          : process.env.REACT_APP_PrivateNet === 'true'
-          ? 'http://39.100.97.209:12537/rpc'
-          : 'https://scantest.confluxnetwork.org/rpcv2',
+      target: rpcv2,
       changeOrigin: true,
       secure: false,
     }),
@@ -68,12 +78,7 @@ module.exports = app => {
   app.use(
     /\/\d?\.?conflux-dag\.js/,
     createProxyMiddleware({
-      target:
-        process.env.REACT_APP_TestNet === 'true'
-          ? 'http://testnet-scantest.confluxnetwork.org'
-          : process.env.REACT_APP_PrivateNet === 'true'
-          ? 'https://posrc.confluxscan.net/'
-          : 'http://scantest.confluxnetwork.org',
+      target: confluxDag,
       changeOrigin: true,
       secure: false,
     }),
