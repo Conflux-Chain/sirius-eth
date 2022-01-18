@@ -12,13 +12,12 @@ export function Blocks() {
   const url = '/block';
   const [ageFormat, toggleAgeFormat] = useAge();
 
-  const columnsBlocksWidth = [4, 2, 2, 5, 5, 4, 5, 3, 5];
+  const columnsBlocksWidth = [4, 3, 5, 4, 5, 3, 5];
   const columnsBlocks = [
     blockColunms.epoch,
-    blockColunms.position,
     blockColunms.txns,
     blockColunms.hashWithPivot,
-    blockColunms.miner,
+    // blockColunms.miner,
     blockColunms.avgGasPrice,
     blockColunms.gasUsedPercentWithProgress,
     blockColunms.reward,

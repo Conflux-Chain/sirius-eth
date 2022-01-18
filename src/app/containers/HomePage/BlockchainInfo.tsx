@@ -57,19 +57,19 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           justify="flex-start"
           className="stats-container stats-container-pow-top"
         >
-          <Grid xs={24} sm={24} md={4}>
+          {/* <Grid xs={24} sm={24} md={4}>
             {Info(
               t(translations.statistics.home.currentEpoch),
               `${dashboardData.epochNumber ? dashboardData.epochNumber : '--'}`,
             )}
-          </Grid>
+          </Grid> */}
           <Grid xs={24} sm={24} md={4.5}>
             {Info(
               t(translations.statistics.home.currentBlockNumber),
               `${dashboardData.blockNumber ? dashboardData.blockNumber : '--'}`,
             )}
           </Grid>
-          <Grid xs={24} sm={24} md={5}>
+          <Grid xs={24} sm={24} md={4}>
             {Info(
               t(translations.statistics.home.account),
               `${

@@ -10,13 +10,12 @@ interface Props {
 export const Blocks = ({ url }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
 
-  const columnsWidth = [4, 2, 2, 5, 5, 3, 5, 5];
+  const columnsWidth = [4, 4, 5, 3, 5, 5];
   const columns = [
     blockColunms.epoch,
-    blockColunms.position,
     blockColunms.txns,
     blockColunms.hashWithPivot,
-    blockColunms.miner,
+    // blockColunms.miner,
     blockColunms.avgGasPrice,
     blockColunms.gasUsedPercentWithProgress,
     blockColunms.age(ageFormat, toggleAgeFormat),
