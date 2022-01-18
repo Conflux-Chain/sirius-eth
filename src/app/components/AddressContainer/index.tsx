@@ -11,7 +11,7 @@ import {
   isZeroAddress,
   isAddress,
   formatString,
-  isPosAddress,
+  // isPosAddress,
 } from 'utils';
 import { AlertTriangle } from '@zeit-ui/react-icons';
 import ContractIcon from 'images/contract-icon.png';
@@ -45,7 +45,7 @@ const defaultMobileMaxWidth =
   NETWORK_TYPE === NETWORK_TYPES.mainnet ? 106 : 140;
 const defaultPCSuffixAddressSize =
   NETWORK_TYPE === NETWORK_TYPES.mainnet ? 8 : 4;
-const defaultPCSuffixPosAddressSize = 10;
+// const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
 
 // ≈ 2.5 ms
@@ -286,100 +286,100 @@ export const AddressContainer = withTranslation()(
   ),
 );
 
-export const PoSAddressContainer = withTranslation()(
-  React.memo(
-    ({
-      value,
-      alias,
-      maxWidth,
-      isFull = false,
-      isLink = true,
-      isMe = false,
-      suffixAddressSize,
-      prefixFloat = false,
-      t,
-    }: Props & WithTranslation) => {
-      const suffixSize =
-        suffixAddressSize ||
-        (window.innerWidth <= sizes.m
-          ? defaultMobileSuffixAddressSize
-          : defaultPCSuffixPosAddressSize);
+// export const PoSAddressContainer = withTranslation()(
+//   React.memo(
+//     ({
+//       value,
+//       alias,
+//       maxWidth,
+//       isFull = false,
+//       isLink = true,
+//       isMe = false,
+//       suffixAddressSize,
+//       prefixFloat = false,
+//       t,
+//     }: Props & WithTranslation) => {
+//       const suffixSize =
+//         suffixAddressSize ||
+//         (window.innerWidth <= sizes.m
+//           ? defaultMobileSuffixAddressSize
+//           : defaultPCSuffixPosAddressSize);
 
-      if (!value) {
-        return <>--</>;
-      }
+//       if (!value) {
+//         return <>--</>;
+//       }
 
-      // first check if the address is a valid conflux address
-      if (!isPosAddress(value)) {
-        const tip = t(translations.general.invalidPosAddress);
-        return RenderAddress({
-          cfxAddress: value,
-          alias,
-          hoverValue: `${tip}: ${value}`,
-          content: alias
-            ? formatString(alias, 'tag')
-            : formatString(value, 'posAddress'),
-          isLink: false,
-          isFull,
-          maxWidth,
-          suffixSize,
-          style: { color: '#e00909' },
-          prefix: (
-            <IconWrapper className={prefixFloat ? 'float' : ''}>
-              <Text span hoverValue={tip}>
-                <AlertTriangle size={16} color="#e00909" />
-              </Text>
-            </IconWrapper>
-          ),
-          type: 'pos',
-        });
-      }
+//       // first check if the address is a valid conflux address
+//       // if (!isPosAddress(value)) {
+//       //   const tip = t(translations.general.invalidPosAddress);
+//       //   return RenderAddress({
+//       //     cfxAddress: value,
+//       //     alias,
+//       //     hoverValue: `${tip}: ${value}`,
+//       //     content: alias
+//       //       ? formatString(alias, 'tag')
+//       //       : formatString(value, 'posAddress'),
+//       //     isLink: false,
+//       //     isFull,
+//       //     maxWidth,
+//       //     suffixSize,
+//       //     style: { color: '#e00909' },
+//       //     prefix: (
+//       //       <IconWrapper className={prefixFloat ? 'float' : ''}>
+//       //         <Text span hoverValue={tip}>
+//       //           <AlertTriangle size={16} color="#e00909" />
+//       //         </Text>
+//       //       </IconWrapper>
+//       //     ),
+//       //     type: 'pos',
+//       //   });
+//       // }
 
-      const content = formatString(value, 'posAddress');
+//       const content = formatString(value, 'posAddress');
 
-      // if (!alias) {
-      //   alias = CONTRACTS_NAME_LABEL[cfxAddress]; // may use later
-      // }
+//       // if (!alias) {
+//       //   alias = CONTRACTS_NAME_LABEL[cfxAddress]; // may use later
+//       // }
 
-      if (isMe) {
-        return RenderAddress({
-          cfxAddress: value,
-          alias,
-          isLink,
-          isFull,
-          maxWidth,
-          suffixSize,
-          suffix: (
-            <IconWrapper className={prefixFloat ? 'float' : ''}>
-              <img
-                src={isMeIcon}
-                alt="is me"
-                style={{
-                  width: 38.5,
-                  marginLeft: 3,
-                  marginBottom: isFull ? 6 : 4,
-                }}
-              />
-            </IconWrapper>
-          ),
-          content: content,
-          type: 'pos',
-        });
-      }
+//       if (isMe) {
+//         return RenderAddress({
+//           cfxAddress: value,
+//           alias,
+//           isLink,
+//           isFull,
+//           maxWidth,
+//           suffixSize,
+//           suffix: (
+//             <IconWrapper className={prefixFloat ? 'float' : ''}>
+//               <img
+//                 src={isMeIcon}
+//                 alt="is me"
+//                 style={{
+//                   width: 38.5,
+//                   marginLeft: 3,
+//                   marginBottom: isFull ? 6 : 4,
+//                 }}
+//               />
+//             </IconWrapper>
+//           ),
+//           content: content,
+//           type: 'pos',
+//         });
+//       }
 
-      return RenderAddress({
-        cfxAddress: value,
-        alias,
-        isLink,
-        isFull,
-        maxWidth,
-        suffixSize,
-        type: 'pos',
-        content: content,
-      });
-    },
-  ),
-);
+//       return RenderAddress({
+//         cfxAddress: value,
+//         alias,
+//         isLink,
+//         isFull,
+//         maxWidth,
+//         suffixSize,
+//         type: 'pos',
+//         content: content,
+//       });
+//     },
+//   ),
+// );
 
 const ImgWrapper = styled.span`
   position: relative;
