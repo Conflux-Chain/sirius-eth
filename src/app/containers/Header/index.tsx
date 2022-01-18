@@ -16,7 +16,7 @@ import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
 import { Check } from '@zeit-ui/react-icons';
 import { translations } from 'locales/i18n';
-// import { useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import imgConfiPlanet from 'images/confi-planet.png';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
@@ -35,7 +35,7 @@ export const Header = memo(() => {
   const en = 'EN';
   const iszh = i18n.language.includes('zh');
 
-  // const location = useLocation();
+  const location = useLocation();
   // const contractMatched =
   //   location.pathname.startsWith('/sponsor') ||
   //   location.pathname.startsWith('/contract');
@@ -199,7 +199,6 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.home,
       afterClick: menuClick,
       href: '/',
-      className: 'home',
     },
     {
       // block
@@ -207,7 +206,6 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.blocks,
       afterClick: menuClick,
       href: '/blockchain/blocks',
-      className: 'home',
     },
     {
       // txn
@@ -215,7 +213,42 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.transactions,
       afterClick: menuClick,
       href: '/blockchain/transactions',
-      className: 'home',
+    },
+    {
+      title: t(translations.header.tokens),
+      matched: location?.pathname?.startsWith('/tokens'),
+      children: [
+        {
+          // erc 20
+          title: [
+            t(translations.header.tokens20),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tokens20,
+          afterClick: menuClick,
+          href: '/tokens/crc20',
+        },
+        {
+          // erc 721
+          title: [
+            t(translations.header.tokens721),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tokens721,
+          afterClick: menuClick,
+          href: '/tokens/crc721',
+        },
+        {
+          // erc 1155
+          title: [
+            t(translations.header.tokens1155),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tokens1155,
+          afterClick: menuClick,
+          href: '/tokens/crc1155',
+        },
+      ],
     },
     // blockchain
     // {
