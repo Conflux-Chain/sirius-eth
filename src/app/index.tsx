@@ -123,6 +123,13 @@ export function App() {
     setLoading(true);
     reqProjectConfig()
       .then(resp => {
+        if (resp?.networks.every(n => n.id !== resp?.networkId)) {
+          resp?.networks.push({
+            name: resp?.networkId,
+            id: resp?.networkId,
+          });
+        }
+
         // @ts-ignore
         const networkId = resp?.networkId;
         // @ts-ignore
