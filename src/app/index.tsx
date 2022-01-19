@@ -47,12 +47,16 @@ import { Block } from './containers/Block/Loadable';
 import { AddressContractDetailPage } from './containers/AddressContractDetail/Loadable';
 import { GlobalNotify } from './containers/GlobalNotify';
 import { Search } from './containers/Search';
+import { BalanceChecker } from './containers/BalanceChecker/Loadable';
+import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
+import { AddressConverter } from './containers/AddressConverter';
+import { NetworkError } from './containers/NetworkError/Loadable';
+import { Report } from './containers/Report';
 
 import Loading from 'app/components/Loading';
 import { CookieTip } from './components/CookieTip';
 import { GlobalTip } from './components/GlobalTip';
 
-// import { Report } from './containers/Report';
 // import { Swap } from './containers/Swap';
 // import { Contract } from './containers/Contract/Loadable';
 // import { ContractDeployment } from './containers/ContractDeployment/Loadable';
@@ -65,13 +69,9 @@ import { GlobalTip } from './components/GlobalTip';
 // import { Chart } from './containers/Charts/Loadable';
 // import { Statistics } from './containers/Statistics/Loadable';
 // import { Epoch } from './containers/Epoch/Loadable';
-// import { AddressConverter } from './containers/AddressConverter';
 
-// import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
 // import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 // import { ChartDetail } from './containers/ChartDetail/Loadable';
-// import { NetworkError } from './containers/NetworkError/Loadable';
-// import { BalanceChecker } from './containers/BalanceChecker/Loadable';
 // import { NFTChecker } from './containers/NFTChecker/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
@@ -357,6 +357,33 @@ export function App() {
                             }}
                           />
                           <Route path="/search/:text" component={Search} />
+                          <Route
+                            exact
+                            path={[
+                              '/address-converter',
+                              '/address-converter/:address',
+                            ]}
+                            component={AddressConverter}
+                          />
+                          <Route
+                            exact
+                            path={[
+                              '/block-countdown',
+                              '/block-countdown/:block',
+                            ]}
+                            component={BlocknumberCalc}
+                          />
+                          <Route exact path="/report" component={Report} />
+                          <Route
+                            exact
+                            path={['/networkError', '/networkError/:network']}
+                            component={NetworkError}
+                          />
+                          <Route
+                            exact
+                            path="/balance-checker"
+                            component={BalanceChecker}
+                          />
 
                           {/* <Route
                             exact
@@ -452,39 +479,6 @@ export function App() {
                           />
                           <Route
                             exact
-                            path={[
-                              '/address-converter',
-                              '/address-converter/:address',
-                            ]}
-                            component={AddressConverter}
-                          />
-                          <Route
-                            exact
-                            path="/push-tx"
-                            component={BroadcastTx}
-                          />
-                          <Route
-                            exact
-                            path={[
-                              '/block-countdown',
-                              '/block-countdown/:block',
-                            ]}
-                            component={BlocknumberCalc}
-                          />
-                          <Route exact path="/swap" component={Swap} />
-                          <Route exact path="/report" component={Report} />
-                          <Route
-                            exact
-                            path={['/networkError', '/networkError/:network']}
-                            component={NetworkError}
-                          />
-                          <Route
-                            exact
-                            path="/balance-checker"
-                            component={BalanceChecker}
-                          />
-                          <Route
-                            exact
                             path={['/nft-checker', '/nft-checker/:address']}
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
@@ -492,12 +486,17 @@ export function App() {
                               if (isAddress(address) || lodash.isNil(address)) {
                                 return <NFTChecker {...routeProps} />;
                               } else {
-                                return (
-                                  <Redirect to={`/notfound/${address}`} />
-                                );
+                                return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
-                          /> */}
+                          />
+                          <Route
+                            exact
+                            path="/push-tx"
+                            component={BroadcastTx}
+                          />
+                          <Route exact path="/swap" component={Swap} />
+                          */}
                           <Route component={NotFoundPage} />
                         </Switch>
                       </ScrollToTop>

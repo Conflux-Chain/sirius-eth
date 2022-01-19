@@ -63,7 +63,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               `${dashboardData.epochNumber ? dashboardData.epochNumber : '--'}`,
             )}
           </Grid> */}
-          <Grid xs={24} sm={24} md={4.5}>
+          <Grid xs={24} sm={24} md={4}>
             {Info(
               t(translations.statistics.home.currentBlockNumber),
               `${dashboardData.blockNumber ? dashboardData.blockNumber : '--'}`,
@@ -82,7 +82,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               }`,
             )}
           </Grid>
-          <Grid xs={24} sm={24} md={4}>
+          <Grid xs={24} sm={24} md={5}>
             {Info(
               <Link to={'/chart/dailyTransaction'} className="info-link">
                 {t(translations.statistics.home.transactions)}
@@ -127,7 +127,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               <SmallChart plain={true} indicator="tps" />,
             )}
           </Grid>
-          <Grid xs={24} sm={24} md={4.5}>
+          <Grid xs={24} sm={24} md={4}>
             {Info(
               t(translations.charts.tokenTransferTps.title),
               lodash.isNil(transferData?.tps)
@@ -233,7 +233,7 @@ const CardWrapper = styled.div`
 
       &:nth-child(3),
       &:nth-child(6) {
-        padding-left: 5rem;
+        padding-left: 8rem;
       }
     }
 

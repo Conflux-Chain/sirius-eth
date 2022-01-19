@@ -42,11 +42,11 @@ export const Header = memo(() => {
   // const statisticsMatched =
   //   location.pathname.startsWith('/chart') ||
   //   location.pathname.startsWith('/statistics');
-  // const moreMatched =
-  //   location.pathname.startsWith('/address-converter') ||
-  //   location.pathname.startsWith('/push-tx') ||
-  //   location.pathname.startsWith('/block-countdown') ||
-  //   location.pathname.startsWith('/nft-checker');
+  const moreMatched =
+    location.pathname.startsWith('/address-converter') ||
+    location.pathname.startsWith('/push-tx') ||
+    location.pathname.startsWith('/block-countdown') ||
+    location.pathname.startsWith('/nft-checker');
   // const blockchainMatched =
   //   location?.pathname?.startsWith('/blockchain') ||
   //   location.pathname.startsWith('/contract') ||
@@ -250,6 +250,78 @@ export const Header = memo(() => {
         },
       ],
     },
+    // more
+    {
+      title: t(translations.header.more),
+      matched: moreMatched,
+      className: 'plain',
+      children: [
+        {
+          title: [
+            t(translations.header.tools),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tools,
+          plain: true,
+          children: [
+            {
+              title: [
+                t(translations.header.addressConverter),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.addressConverter,
+              afterClick: menuClick,
+              href: '/address-converter',
+            },
+            // {
+            //   title: [
+            //     t(translations.header.broadcastTx),
+            //     <Check size={18} key="check" />,
+            //   ],
+            //   name: ScanEvent.menu.action.broadcastTx,
+            //   afterClick: menuClick,
+            //   href: '/push-tx',
+            // },
+            {
+              title: [
+                t(translations.header.blocknumberCalc),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.blocknumberCalc,
+              afterClick: menuClick,
+              href: '/block-countdown',
+            },
+            // {
+            //   title: [
+            //     t(translations.header.nftChecker),
+            //     <Check size={18} key="check" />,
+            //   ],
+            //   name: ScanEvent.menu.action.nftChecker,
+            //   afterClick: menuClick,
+            //   href: '/nft-checker',
+            // },
+            {
+              title: [
+                t(translations.header.balanceChecker),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.balanceChecker,
+              afterClick: menuClick,
+              href: '/balance-checker',
+            },
+          ],
+        },
+        {
+          title: [
+            t(translations.header.support),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.support,
+          plain: true,
+          children: supportAndHelpMenuItems,
+        },
+      ],
+    },
     // blockchain
     // {
     //   title: t(translations.header.blockchain),
@@ -426,78 +498,6 @@ export const Header = memo(() => {
     //   title: t(translations.header.ecosystem),
     //   matched: ecosystemMatched,
     //   children: ecosystemItems,
-    // },
-    // // more
-    // {
-    //   title: t(translations.header.more),
-    //   matched: moreMatched,
-    //   className: 'plain',
-    //   children: [
-    //     {
-    //       title: [
-    //         t(translations.header.tools),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tools,
-    //       plain: true,
-    //       children: [
-    //         {
-    //           title: [
-    //             t(translations.header.addressConverter),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.addressConverter,
-    //           afterClick: menuClick,
-    //           href: '/address-converter',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.broadcastTx),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.broadcastTx,
-    //           afterClick: menuClick,
-    //           href: '/push-tx',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.blocknumberCalc),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.blocknumberCalc,
-    //           afterClick: menuClick,
-    //           href: '/block-countdown',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.nftChecker),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.nftChecker,
-    //           afterClick: menuClick,
-    //           href: '/nft-checker',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.balanceChecker),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.balanceChecker,
-    //           afterClick: menuClick,
-    //           href: '/balance-checker',
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       title: [
-    //         t(translations.header.support),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.support,
-    //       plain: true,
-    //       children: supportAndHelpMenuItems,
-    //     },
-    //   ],
     // },
   ];
 

@@ -38,6 +38,7 @@ interface Props {
   prefixFloat?: boolean; // prefix icon float or take up space, default false
   showIcon?: boolean; // whether show contract icon, default true
   verify?: boolean; // show verified contract icon or unverified contract icon
+  isContract?: boolean;
 }
 
 const defaultPCMaxWidth = 138;
@@ -121,6 +122,7 @@ export const AddressContainer = withTranslation()(
       showIcon = true,
       t,
       verify = false,
+      isContract = false,
     }: Props & WithTranslation) => {
       const suffixSize =
         suffixAddressSize ||

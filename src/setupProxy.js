@@ -25,7 +25,7 @@ if (process.env.REACT_APP_TestNet === 'true') {
   rpcv2 = 'https://39.100.97.209:12537/rpc';
   confluxDag = pos;
 } else if (process.env.REACT_APP_ETHNet === 'true') {
-  const net12000 = 'https://net12000evm.confluxscan.net/';
+  const net12000 = 'https://net12001eth.confluxscan.net/';
   stat = `${net12000}/`;
   v1 = `${net12000}/`;
   rpc = `${net12000}/rpc`;
