@@ -264,15 +264,15 @@ export const Header = memo(() => {
           name: ScanEvent.menu.action.tools,
           plain: true,
           children: [
-            {
-              title: [
-                t(translations.header.addressConverter),
-                <Check size={18} key="check" />,
-              ],
-              name: ScanEvent.menu.action.addressConverter,
-              afterClick: menuClick,
-              href: '/address-converter',
-            },
+            // {
+            //   title: [
+            //     t(translations.header.addressConverter),
+            //     <Check size={18} key="check" />,
+            //   ],
+            //   name: ScanEvent.menu.action.addressConverter,
+            //   afterClick: menuClick,
+            //   href: '/address-converter',
+            // },
             // {
             //   title: [
             //     t(translations.header.broadcastTx),

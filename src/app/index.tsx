@@ -49,7 +49,7 @@ import { GlobalNotify } from './containers/GlobalNotify';
 import { Search } from './containers/Search';
 import { BalanceChecker } from './containers/BalanceChecker/Loadable';
 import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
-import { AddressConverter } from './containers/AddressConverter';
+// import { AddressConverter } from './containers/AddressConverter';
 import { NetworkError } from './containers/NetworkError/Loadable';
 import { Report } from './containers/Report';
 
@@ -360,14 +360,6 @@ export function App() {
                           <Route
                             exact
                             path={[
-                              '/address-converter',
-                              '/address-converter/:address',
-                            ]}
-                            component={AddressConverter}
-                          />
-                          <Route
-                            exact
-                            path={[
                               '/block-countdown',
                               '/block-countdown/:block',
                             ]}
@@ -496,6 +488,14 @@ export function App() {
                             component={BroadcastTx}
                           />
                           <Route exact path="/swap" component={Swap} />
+                          <Route
+                            exact
+                            path={[
+                              '/address-converter',
+                              '/address-converter/:address',
+                            ]}
+                            component={AddressConverter}
+                          />
                           */}
                           <Route component={NotFoundPage} />
                         </Switch>
