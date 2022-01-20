@@ -15,8 +15,9 @@ import { Input } from '@cfxjs/antd';
 import { useParams, useHistory } from 'react-router-dom';
 import {
   isCurrentNetworkAddress,
-  isAccountAddress,
+  // isAccountAddress,
   getAddressInputPlaceholder,
+  isAddress,
 } from 'utils';
 import { NFTAsset } from 'app/containers/NFTAsset';
 
@@ -38,7 +39,9 @@ export function NFTChecker() {
 
   const validateAddress = (address, cb) => {
     if (isCurrentNetworkAddress(address)) {
-      if (isAccountAddress(address)) {
+      if (isAddress(address)) {
+        // TODO, eth space, use isAddress replaced
+        // if (isAccountAddress(address)) {
         cb && cb();
       } else {
         setAddressFormatErrorMsg(

@@ -26,10 +26,11 @@ if (process.env.REACT_APP_TestNet === 'true') {
   confluxDag = pos;
 } else if (process.env.REACT_APP_ETHNet === 'true') {
   const net12000 = 'https://net12001eth.confluxscan.net/';
+  const rpcBrigde = 'http://39.103.222.8:32537/';
   stat = `${net12000}/`;
   v1 = `${net12000}/`;
-  rpc = `${net12000}/rpc`;
-  rpcv2 = `${net12000}/rpcv2`;
+  rpc = `${rpcBrigde}/rpc`;
+  rpcv2 = `${rpcBrigde}/rpcv2`;
   confluxDag = `${net12000}/`;
 }
 

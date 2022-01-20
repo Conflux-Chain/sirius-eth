@@ -587,7 +587,8 @@
       "privatenet": "privatenet"
     },
     "errors": {
-      "address": "Please enter a valid {{network}} address"
+      "address": "Please enter a valid {{network}} address",
+      "getAccountInfoError": "Get address info error, please reload page to retry."
     },
     "advancedSearch": {
       "label": {

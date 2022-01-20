@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { useAge } from 'utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
 import { Title, Footer, TxnSwitcher } from './components';
-import { isAccountAddress } from 'utils';
+import { isAccountAddress, isAddress } from 'utils';
 
 interface Props {
   address: string;
@@ -11,9 +11,9 @@ interface Props {
 
 export const ExcutedTxns = ({ address }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
+  const [isAccount, setIsAccount] = useState(false);
 
   const url = `/transaction?accountAddress=${address}`;
-  const isAccount = isAccountAddress(address);
 
   const columnsWidth = [4, 3, 7, 6, 2, 3, 3, 3, 5];
   const columns = [
@@ -49,6 +49,15 @@ export const ExcutedTxns = ({ address }: Props) => {
       },
     },
   };
+
+  useEffect(() => {
+    async function fn() {
+      if (isAddress(address)) {
+        setIsAccount(await isAccountAddress(address));
+      }
+    }
+    fn();
+  }, [address]);
 
   if (!isAccount) {
     // @ts-ignore

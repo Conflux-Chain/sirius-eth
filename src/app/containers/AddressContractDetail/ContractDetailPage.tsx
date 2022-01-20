@@ -32,6 +32,7 @@ import {
   isContractAddress,
   isInnerContractAddress,
   isSpecialAddress,
+  isCurrentNetworkAddress,
 } from 'utils';
 import ContractIcon from '../../../images/contract-icon.png';
 import warningInfo from '../../../images/info-white.svg';
@@ -41,6 +42,7 @@ import DownIcon from '../../../images/down.png';
 import { Menu } from '@cfxjs/antd';
 import { DropdownWrapper, MenuWrapper } from './AddressDetailPage';
 import { tokenTypeTag } from '../TokenDetail/Basic';
+import { useEffectOnce } from 'react-use';
 
 interface RouteParams {
   address: string;
@@ -70,6 +72,10 @@ export const ContractDetailPage = memo(() => {
     'isRegistered',
     'verifyInfo',
   ]);
+
+  useEffectOnce(() => {
+    if (!isCurrentNetworkAddress(address)) history.push('/404');
+  });
 
   useEffect(() => {
     // contract created by other contract, such as 0x8a497f33c6f9e12adf918594ffb5ab5083448e45

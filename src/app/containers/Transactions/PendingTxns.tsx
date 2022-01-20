@@ -7,9 +7,8 @@ import { CFX } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { translations } from 'locales/i18n';
 import BigNumber from 'bignumber.js';
-// import { toThousands } from 'utils';
 import { TxnSwitcher, Title } from './components';
-import { isAccountAddress } from 'utils';
+import { isAccountAddress, isAddress } from 'utils';
 
 interface Props {
   address: string;
@@ -17,6 +16,7 @@ interface Props {
 
 export const PendingTxns = ({ address }: Props) => {
   const { t } = useTranslation();
+  const [isAccount, setIsAccount] = useState(false);
   const [state, setState] = useState<{
     total: number;
     data: any;
@@ -78,6 +78,15 @@ export const PendingTxns = ({ address }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
+  useEffect(() => {
+    async function fn() {
+      if (isAddress(address)) {
+        setIsAccount(await isAccountAddress(address));
+      }
+    }
+    fn();
+  }, [address]);
+
   const columnsWidth = [4, 6, 5, 3, 2, 3, 5];
   const columns = [
     transactionColunms.hash,
@@ -101,10 +110,7 @@ export const PendingTxns = ({ address }: Props) => {
       listLimit={listLimit}
       showFilter={false}
       extraContent={
-        <TxnSwitcher
-          total={total}
-          isAccount={isAccountAddress(address)}
-        ></TxnSwitcher>
+        <TxnSwitcher total={total} isAccount={isAccount}></TxnSwitcher>
       }
     />
   );

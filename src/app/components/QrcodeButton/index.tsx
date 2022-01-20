@@ -10,7 +10,6 @@ import { Modal } from '@cfxjs/react-ui';
 import { Tooltip } from 'app/components/Tooltip';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { isAccountAddress } from 'utils';
 import { AddressContainer } from 'app/components/AddressContainer/Loadable';
 
 interface QrcodeButtonProps {
@@ -78,10 +77,7 @@ export const QrcodeButton = ({
           </QRCodeWrapper>
           <Title>{t(translations.general.qrcodeButton.scanQRCode)}</Title>
           <AddressType>
-            {isAccountAddress(value)
-              ? t(translations.general.qrcodeButton.address)
-              : t(translations.general.qrcodeButton.contract)}
-            ：
+            {t(translations.general.qrcodeButton.address)}:
           </AddressType>
           <AddressWrapper onClick={handleClose}>
             <AddressContainer value={value} showIcon={false} isLink={false} />

@@ -1,7 +1,5 @@
 import { useHistory } from 'react-router';
 import {
-  isAccountAddress,
-  isContractAddress,
   isBlockHash,
   isHash,
   isEpochNumber,
@@ -67,17 +65,6 @@ export const useSearch = (value?: string) => {
       }
 
       history.push(`/address/${formatAddress(innerValue)}`);
-
-      trackEvent({
-        category: ScanEvent.search.category,
-        action: isAccountAddress(innerValue)
-          ? ScanEvent.search.action.account
-          : isContractAddress(innerValue)
-          ? ScanEvent.search.action.contract
-          : ScanEvent.search.action.innerContract,
-        label: innerValue,
-      });
-
       return;
     }
 

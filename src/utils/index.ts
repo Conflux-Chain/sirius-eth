@@ -9,11 +9,14 @@ import {
   NETWORK_ID,
   NETWORK_TYPE,
   NETWORK_TYPES,
+  CFX,
 } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 // @ts-ignore
 window.SDK = SDK;
+// @ts-ignore
+window.CFX = CFX;
 
 dayjs.extend(relativeTime);
 
@@ -141,13 +144,39 @@ export function isZeroAddress(address: string): boolean {
   }
 }
 
-export function isAccountAddress(address: string): boolean {
-  return getAddressInfo(address)?.type === 'user' || isZeroAddress(address);
+export async function getAddressType(address: string): Promise<string> {
+  // TODO, use SDK util fn replace after new version released
+  try {
+    const account = await CFX.getAccount(address);
+    if (
+      account.codeHash ===
+      '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
+    ) {
+      return 'account';
+    }
+    return 'contract';
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function isAccountAddress(address: string): Promise<boolean> {
+  try {
+    return (await getAddressType(address)) === 'account';
+  } catch (e) {
+    return false;
+  }
 }
 
 export function isContractAddress(address: string): boolean {
   // TODO, eth space, check if needed
   return getAddressInfo(address)?.type === 'contract';
+
+  // try {
+  //   return getAddressType(address) === 'contract';
+  // } catch (e) {
+  //   return false;
+  // }
 }
 
 export function isInnerContractAddress(address: string): boolean {
@@ -170,7 +199,9 @@ export function isSpecialAddress(address: string): boolean {
 }
 
 export function isCurrentNetworkAddress(address: string): boolean {
-  return getAddressInfo(address)?.netId === NETWORK_ID;
+  // TODO, eth space, check if needed
+  return true;
+  // return getAddressInfo(address)?.netId === NETWORK_ID;
 }
 
 /**

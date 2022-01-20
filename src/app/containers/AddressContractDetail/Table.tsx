@@ -60,24 +60,7 @@ export function Table({ address, addressInfo }) {
       label: t(translations.general.transactions),
       content: <ExcutedAndPendingTxns address={address} />,
     },
-    // {
-    //   value: 'transaction',
-    //   action: 'accountTransactions',
-    //   label: isAccountAddress(address)
-    //     ? t(translations.transactions.executed)
-    //     : t(translations.general.transactions),
-    //   content: <ExcutedTxns address={address} />,
-    // },
   ];
-
-  // if (isAccountAddress(address)) {
-  //   tabs.push({
-  //     value: 'transaction-pending',
-  //     action: 'accountTransactions-pending',
-  //     label: t(translations.transactions.pending),
-  //     content: <PendingTxns address={address} />,
-  //   });
-  // }
 
   tabs.push({
     value: `transfers-${CFX_TOKEN_TYPES.cfx}`,

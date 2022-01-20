@@ -587,7 +587,8 @@
       "privatenet": "私有链"
     },
     "errors": {
-      "address": "请输入一个合法的{{network}}地址"
+      "address": "请输入一个合法的{{network}}地址",
+      "getAccountInfoError": "获取地址信息错误，请重新加载页面重试。"
     },
     "advancedSearch": {
       "label": {
