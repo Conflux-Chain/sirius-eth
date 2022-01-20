@@ -437,6 +437,21 @@ exports[`<App /> should render and match the snapshot 1`] = `
                       path="/balance-checker"
                     />
                     <Route
+                      exact={true}
+                      path={
+                        Array [
+                          "/contract-info/:contractAddress",
+                          "/token-info/:contractAddress",
+                        ]
+                      }
+                      render={[Function]}
+                    />
+                    <Route
+                      exact={true}
+                      path="/token/:tokenAddress"
+                      render={[Function]}
+                    />
+                    <Route
                       component={[Function]}
                     />
                   </Switch>

@@ -23,7 +23,7 @@ import {
   getPercent,
   toThousands,
   isContractAddress,
-  isInnerContractAddress,
+  // isInnerContractAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
@@ -94,6 +94,64 @@ export const Detail = () => {
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
 
+  const fetchTxTransfer = async (toCheckAddress, txnhash) => {
+    try {
+      const isContract = await isContractAddress(toCheckAddress);
+      if (isContract) {
+        setIsContract(true);
+        const fields = [
+          'address',
+          'type',
+          'name',
+          'website',
+          'tokenName',
+          'tokenSymbol',
+          'token',
+          'tokenDecimal',
+          'abi',
+          'bytecode',
+          'iconUrl',
+          'sourceCode',
+          'typeCode',
+        ];
+        const proArr: Array<any> = [];
+        proArr.push(reqContract({ address: toCheckAddress, fields: fields }));
+        proArr.push(
+          reqTransferList({
+            transactionHash: txnhash,
+            fields: 'token',
+            limit: 100,
+            reverse: true,
+          }),
+        );
+        Promise.all(proArr)
+          .then(proRes => {
+            const contractResponse = proRes[0];
+            // update contract info
+            setContractInfo(contractResponse);
+            const transferListReponse = proRes[1];
+            const resultTransferList = transferListReponse;
+            const list = resultTransferList['list'];
+            setTransferList(list);
+            let addressList = list.map(v => v.address);
+            addressList = Array.from(new Set(addressList));
+            reqTokenList({
+              addressArray: addressList,
+              fields: ['iconUrl'],
+            })
+              .then(res => {
+                setLoading(false);
+                setTokenList(res.list);
+              })
+              .catch(() => {});
+          })
+          .catch(() => {});
+      } else {
+        setLoading(false);
+      }
+    } catch (e) {}
+  };
+
   // get txn detail info
   const fetchTxDetail = useCallback(
     txnhash => {
@@ -137,63 +195,65 @@ export const Detail = () => {
 
           let toCheckAddress = txDetailDta.to;
 
-          if (
-            isContractAddress(toCheckAddress) ||
-            isInnerContractAddress(toCheckAddress)
-          ) {
-            setIsContract(true);
-            const fields = [
-              'address',
-              'type',
-              'name',
-              'website',
-              'tokenName',
-              'tokenSymbol',
-              'token',
-              'tokenDecimal',
-              'abi',
-              'bytecode',
-              'iconUrl',
-              'sourceCode',
-              'typeCode',
-            ];
-            const proArr: Array<any> = [];
-            proArr.push(
-              reqContract({ address: toCheckAddress, fields: fields }),
-            );
-            proArr.push(
-              reqTransferList({
-                transactionHash: txnhash,
-                fields: 'token',
-                limit: 100,
-                reverse: true,
-              }),
-            );
-            Promise.all(proArr)
-              .then(proRes => {
-                const contractResponse = proRes[0];
-                // update contract info
-                setContractInfo(contractResponse);
-                const transferListReponse = proRes[1];
-                const resultTransferList = transferListReponse;
-                const list = resultTransferList['list'];
-                setTransferList(list);
-                let addressList = list.map(v => v.address);
-                addressList = Array.from(new Set(addressList));
-                reqTokenList({
-                  addressArray: addressList,
-                  fields: ['iconUrl'],
-                })
-                  .then(res => {
-                    setLoading(false);
-                    setTokenList(res.list);
-                  })
-                  .catch(() => {});
-              })
-              .catch(() => {});
-          } else {
-            setLoading(false);
-          }
+          fetchTxTransfer(toCheckAddress, txnhash);
+
+          // if (
+          //   isContractAddress(toCheckAddress) ||
+          //   isInnerContractAddress(toCheckAddress)
+          // ) {
+          //   setIsContract(true);
+          //   const fields = [
+          //     'address',
+          //     'type',
+          //     'name',
+          //     'website',
+          //     'tokenName',
+          //     'tokenSymbol',
+          //     'token',
+          //     'tokenDecimal',
+          //     'abi',
+          //     'bytecode',
+          //     'iconUrl',
+          //     'sourceCode',
+          //     'typeCode',
+          //   ];
+          //   const proArr: Array<any> = [];
+          //   proArr.push(
+          //     reqContract({ address: toCheckAddress, fields: fields }),
+          //   );
+          //   proArr.push(
+          //     reqTransferList({
+          //       transactionHash: txnhash,
+          //       fields: 'token',
+          //       limit: 100,
+          //       reverse: true,
+          //     }),
+          //   );
+          //   Promise.all(proArr)
+          //     .then(proRes => {
+          //       const contractResponse = proRes[0];
+          //       // update contract info
+          //       setContractInfo(contractResponse);
+          //       const transferListReponse = proRes[1];
+          //       const resultTransferList = transferListReponse;
+          //       const list = resultTransferList['list'];
+          //       setTransferList(list);
+          //       let addressList = list.map(v => v.address);
+          //       addressList = Array.from(new Set(addressList));
+          //       reqTokenList({
+          //         addressArray: addressList,
+          //         fields: ['iconUrl'],
+          //       })
+          //         .then(res => {
+          //           setLoading(false);
+          //           setTokenList(res.list);
+          //         })
+          //         .catch(() => {});
+          //     })
+          //     .catch(() => {});
+          // } else {
+          //   setLoading(false);
+          // }
         }
       });
     },

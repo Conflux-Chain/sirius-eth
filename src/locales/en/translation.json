@@ -106,6 +106,7 @@
     "requiredNameTag": "Please enter a contract name tag",
     "sitePlaceholder": "http(s)://",
     "invalidContractAddress": "Invalid contract address, or incorrect format",
+    "invalidAddress": "Invalid address, or incorrect format",
     "invalidNameTag": "The character length has reached the maximum limit",
     "duplicatedNameTag": "The name tag has been registered {{times}} time",
     "invalidUrl": "Incorrect URL",

@@ -5,9 +5,9 @@ import { translations } from 'locales/i18n';
 // import { useHistory, useLocation } from 'react-router';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
 import {
-  isContractAddress,
-  isInnerContractAddress,
+  // isContractAddress,
   isZeroAddress,
+  isContractCodeHashEmpty,
   // isAccountAddress,
 } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
@@ -36,8 +36,9 @@ export function Table({ address, addressInfo }) {
   // const history = useHistory();
   // const queries = queryString.parse(location.search);
   const isContract = useMemo(
-    () => isContractAddress(address) || isInnerContractAddress(address),
-    [address],
+    // () => isContractAddress(address) || isInnerContractAddress(address),
+    () => !isContractCodeHashEmpty(addressInfo?.codeHash),
+    [addressInfo],
   );
 
   // useEffect(() => {

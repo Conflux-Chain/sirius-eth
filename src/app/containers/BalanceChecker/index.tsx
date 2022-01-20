@@ -9,9 +9,10 @@ import { DatePicker } from '@cfxjs/react-ui';
 import { translations } from '../../../locales/i18n';
 import {
   isCurrentNetworkAddress,
-  isContractAddress,
+  // isContractAddress,
   isZeroOrPositiveInteger,
   getAddressInputPlaceholder,
+  isAddress,
 } from '../../../utils';
 import { Result } from './Result';
 import dayjs from 'dayjs';
@@ -94,7 +95,8 @@ export function BalanceChecker() {
     return Promise.resolve();
   };
   const validateContractAddress = (rule, contractAddress) => {
-    if (contractAddress && !isContractAddress(contractAddress)) {
+    if (contractAddress && !isAddress(contractAddress)) {
+      // if (contractAddress && !isContractAddress(contractAddress)) {
       return Promise.reject(
         new Error(t(translations.contract.invalidContractAddress)),
       );

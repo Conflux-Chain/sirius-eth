@@ -48,6 +48,11 @@ export const AddressContractDetailPage = () => {
       }
     }
     fn();
+
+    return () => {
+      setError(false);
+      setIsAccount(null);
+    };
   }, [address]);
 
   if (isAccount === null) {

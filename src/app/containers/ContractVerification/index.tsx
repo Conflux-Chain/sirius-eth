@@ -7,7 +7,7 @@ import { Remark } from 'app/components/Remark';
 import styled from 'styled-components/macro';
 import { Card } from 'app/components/Card/Loadable';
 import { Form, Input, Button, Row, Col, Select } from '@cfxjs/antd';
-import { isContractAddress } from 'utils';
+import { /*isContractAddress,*/ isAddress } from 'utils';
 import {
   reqContractCompiler,
   reqContractLicense,
@@ -23,7 +23,7 @@ import { useMessages } from '@cfxjs/react-ui';
 import { StatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useLocation } from 'react-router-dom';
 import querystring from 'query-string';
-import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
+// import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 const { Option } = Select;
 const AceEditorStyle = {
@@ -215,8 +215,9 @@ export const ContractVerification = () => {
                       const address = value.trim();
 
                       if (
-                        isContractAddress(address) &&
-                        SDK.address.isValidCfxAddress(address)
+                        isAddress(address)
+                        // isContractAddress(address) &&
+                        // SDK.address.isValidCfxAddress(address)
                       ) {
                         return Promise.resolve();
                       } else {

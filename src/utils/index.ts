@@ -144,14 +144,20 @@ export function isZeroAddress(address: string): boolean {
   }
 }
 
+export function isContractCodeHashEmpty(codeHash) {
+  return (
+    codeHash ===
+      '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470' ||
+    codeHash === '0x' ||
+    codeHash === ''
+  );
+}
+
 export async function getAddressType(address: string): Promise<string> {
   // TODO, use SDK util fn replace after new version released
   try {
     const account = await CFX.getAccount(address);
-    if (
-      account.codeHash ===
-      '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
-    ) {
+    if (isContractCodeHashEmpty(account.codeHash)) {
       return 'account';
     }
     return 'contract';
@@ -168,9 +174,15 @@ export async function isAccountAddress(address: string): Promise<boolean> {
   }
 }
 
-export function isContractAddress(address: string): boolean {
+export async function isContractAddress(address: string): Promise<boolean> {
+  try {
+    return (await getAddressType(address)) === 'contract';
+  } catch (e) {
+    return false;
+  }
+
   // TODO, eth space, check if needed
-  return getAddressInfo(address)?.type === 'contract';
+  // return getAddressInfo(address)?.type === 'contract';
 
   // try {
   //   return getAddressType(address) === 'contract';

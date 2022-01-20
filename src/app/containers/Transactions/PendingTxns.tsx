@@ -80,9 +80,11 @@ export const PendingTxns = ({ address }: Props) => {
 
   useEffect(() => {
     async function fn() {
-      if (isAddress(address)) {
-        setIsAccount(await isAccountAddress(address));
-      }
+      try {
+        if (isAddress(address)) {
+          setIsAccount(await isAccountAddress(address));
+        }
+      } catch (e) {}
     }
     fn();
   }, [address]);

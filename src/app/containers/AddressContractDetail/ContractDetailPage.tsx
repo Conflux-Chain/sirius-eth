@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink, useHistory, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -16,9 +16,8 @@ import {
   StorageStakingCard,
   TokensCard,
 } from './AddressInfoCards';
-import { AddressMetadata, ContractMetadata, Table } from './Loadable';
+import { ContractMetadata, Table } from './Loadable';
 import { useContract } from 'utils/api';
-// import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 import {
   Bottom,
   Head,
@@ -29,7 +28,6 @@ import {
   Top,
 } from './layouts';
 import {
-  isContractAddress,
   isInnerContractAddress,
   isSpecialAddress,
   isCurrentNetworkAddress,
@@ -77,21 +75,6 @@ export const ContractDetailPage = memo(() => {
     if (!isCurrentNetworkAddress(address)) history.push('/404');
   });
 
-  useEffect(() => {
-    // contract created by other contract, such as 0x8a497f33c6f9e12adf918594ffb5ab5083448e45
-    // contractInfo.transactionHash === undefined
-    // if (!isInnerContractAddress(address) && !contractInfo.transactionHash) {
-    if (
-      !isContractAddress(address)
-      // && !isInnerContractAddress(address) &&
-      // !isSpecialAddress(address)
-    ) {
-      history.replace(`/notfound/${address}`, {
-        type: 'contract',
-      });
-    }
-  }, [address, history]);
-
   const websiteUrl = contractInfo?.website || '';
   const hasWebsite =
     !!websiteUrl &&
@@ -118,13 +101,6 @@ export const ContractDetailPage = memo(() => {
           {t(translations.general.address.more.editContract)}
         </RouterLink>
       </Menu.Item>
-      {/* {[NETWORK_TYPES.testnet, NETWORK_TYPES.mainnet].includes(NETWORK_TYPE) ? (
-        <Menu.Item>
-          <RouterLink to={`/sponsor/${address}`}>
-            {t(translations.general.address.more.sponsor)}
-          </RouterLink>
-        </Menu.Item>
-      ) : null} */}
       <Menu.Item>
         <RouterLink to={`/report?address=${address}`}>
           {t(translations.general.address.more.report)}
@@ -215,21 +191,12 @@ export const ContractDetailPage = memo(() => {
           <StorageStakingCard accountInfo={contractInfo} />
           <NonceCard accountInfo={contractInfo} />
         </Top>
-        {/* internal contract hide meta data panel */}
-        {isContractAddress(address) && (
-          <Middle key="middle">
-            {contractInfo.stakingBalance != null &&
-            contractInfo.stakingBalance !== '0' ? (
-              <StakingWrapper>
-                <AddressMetadata address={address} accountInfo={contractInfo} />
-              </StakingWrapper>
-            ) : null}
-            <div style={{ position: 'relative' }}>
-              <ContractMetadata address={address} contractInfo={contractInfo} />
-              {contractInfo.isRegistered && tokenTypeTag(t, 'registered')}
-            </div>
-          </Middle>
-        )}
+        <Middle key="middle">
+          <div style={{ position: 'relative' }}>
+            <ContractMetadata address={address} contractInfo={contractInfo} />
+            {contractInfo.isRegistered && tokenTypeTag(t, 'registered')}
+          </div>
+        </Middle>
         <Bottom key="bottom">
           <Table key="table" address={address} addressInfo={contractInfo} />
         </Bottom>
@@ -237,10 +204,6 @@ export const ContractDetailPage = memo(() => {
     </>
   );
 });
-
-const StakingWrapper = styled.div`
-  margin-bottom: 24px;
-`;
 
 const IconWrapper = styled.span`
   margin-right: 2px;

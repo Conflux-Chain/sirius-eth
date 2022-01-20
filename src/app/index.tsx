@@ -52,20 +52,20 @@ import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
 // import { AddressConverter } from './containers/AddressConverter';
 import { NetworkError } from './containers/NetworkError/Loadable';
 import { Report } from './containers/Report';
+import { Contract } from './containers/Contract/Loadable';
+import { TokenDetail } from './containers/TokenDetail/Loadable';
 
 import Loading from 'app/components/Loading';
 import { CookieTip } from './components/CookieTip';
 import { GlobalTip } from './components/GlobalTip';
 
 // import { Swap } from './containers/Swap';
-// import { Contract } from './containers/Contract/Loadable';
 // import { ContractDeployment } from './containers/ContractDeployment/Loadable';
 // import { ContractVerification } from './containers/ContractVerification/Loadable';
 // import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
 // import { RegisteredContracts } from './containers/Contracts/Loadable';
-// import { TokenDetail } from './containers/TokenDetail/Loadable';
 // import { Chart } from './containers/Charts/Loadable';
 // import { Statistics } from './containers/Statistics/Loadable';
 // import { Epoch } from './containers/Epoch/Loadable';
@@ -376,12 +376,6 @@ export function App() {
                             path="/balance-checker"
                             component={BalanceChecker}
                           />
-
-                          {/* <Route
-                            exact
-                            path="/packing/:txHash"
-                            component={PackingPage}
-                          />
                           <Route
                             exact
                             path={[
@@ -389,31 +383,15 @@ export function App() {
                               '/token-info/:contractAddress',
                             ]}
                             render={(routeProps: any) => {
-                              const path = routeProps.match.path.match(
-                                /(\/.*\/)/,
-                              )[1];
-
                               const address =
                                 routeProps.match.params.contractAddress;
 
                               if (isAddress(address)) {
                                 return <Contract {...routeProps} />;
                               } else {
-                                return (
-                                  <Redirect to={`/notfound/${address}`} />
-                                );
+                                return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
-                          />
-                          <Route
-                            exact
-                            path="/contracts"
-                            component={Contracts}
-                          />
-                          <Route
-                            exact
-                            path="/registered-contracts"
-                            component={RegisteredContracts}
                           />
                           <Route
                             exact
@@ -425,11 +403,25 @@ export function App() {
                               if (isAddress(address)) {
                                 return <TokenDetail {...routeProps} />;
                               } else {
-                                return (
-                                  <Redirect to={`/notfound/${address}`} />
-                                );
+                                return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
+                          />
+
+                          {/* <Route
+                            exact
+                            path="/packing/:txHash"
+                            component={PackingPage}
+                          />
+                          <Route
+                            exact
+                            path="/contracts"
+                            component={Contracts}
+                          />
+                          <Route
+                            exact
+                            path="/registered-contracts"
+                            component={RegisteredContracts}
                           />
                           <Route
                             exact
