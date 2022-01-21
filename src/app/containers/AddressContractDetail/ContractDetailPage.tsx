@@ -6,16 +6,11 @@
 
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink, useHistory, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Copy, Qrcode } from './HeadLineButtons';
-import {
-  BalanceCard,
-  NonceCard,
-  StorageStakingCard,
-  TokensCard,
-} from './AddressInfoCards';
+import { BalanceCard, NonceCard, TokensCard } from './AddressInfoCards';
 import { ContractMetadata, Table } from './Loadable';
 import { useContract } from 'utils/api';
 import {
@@ -27,20 +22,12 @@ import {
   Title,
   Top,
 } from './layouts';
-import {
-  isInnerContractAddress,
-  isSpecialAddress,
-  isCurrentNetworkAddress,
-} from 'utils';
 import ContractIcon from '../../../images/contract-icon.png';
-import warningInfo from '../../../images/info-white.svg';
-import InternalContractIcon from '../../../images/internal-contract-icon.png';
 import styled from 'styled-components/macro';
 import DownIcon from '../../../images/down.png';
 import { Menu } from '@cfxjs/antd';
 import { DropdownWrapper, MenuWrapper } from './AddressDetailPage';
 import { tokenTypeTag } from '../TokenDetail/Basic';
-import { useEffectOnce } from 'react-use';
 
 interface RouteParams {
   address: string;
@@ -49,7 +36,6 @@ interface RouteParams {
 export const ContractDetailPage = memo(() => {
   const { t } = useTranslation();
   const { address } = useParams<RouteParams>();
-  const history = useHistory();
 
   const { data: contractInfo } = useContract(address, [
     'name',
@@ -70,10 +56,6 @@ export const ContractDetailPage = memo(() => {
     'isRegistered',
     'verifyInfo',
   ]);
-
-  useEffectOnce(() => {
-    if (!isCurrentNetworkAddress(address)) history.push('/404');
-  });
 
   const websiteUrl = contractInfo?.website || '';
   const hasWebsite =
@@ -139,28 +121,10 @@ export const ContractDetailPage = memo(() => {
       </Helmet>
       <Main key="main">
         <Head key="head">
-          <Title>
-            {isInnerContractAddress(address)
-              ? `${t(translations.general.internalContract)}: ${
-                  contractInfo.name
-                }`
-              : isSpecialAddress(address)
-              ? t(translations.general.specialAddress)
-              : t(translations.general.contract)}
-          </Title>
+          <Title>{contractInfo.name || t(translations.general.contract)}</Title>
           <HeadAddressLine>
             <IconWrapper className="address">
-              {isInnerContractAddress(address) ? (
-                <img
-                  src={InternalContractIcon}
-                  alt={t(translations.general.internalContract)}
-                />
-              ) : isSpecialAddress(address) ? null : (
-                <img
-                  src={ContractIcon}
-                  alt={t(translations.general.contract)}
-                />
-              )}
+              <img src={ContractIcon} alt={t(translations.general.contract)} />
               &nbsp;
               <span>{address}</span>
             </IconWrapper>
@@ -176,19 +140,12 @@ export const ContractDetailPage = memo(() => {
                   />
                 </span>
               </DropdownWrapper>
-              {isSpecialAddress(address) ? (
-                <WarningInfoWrapper>
-                  <img src={warningInfo} alt="warning" />
-                  <span>{t(translations.general.invalidAddressWarning)}</span>
-                </WarningInfoWrapper>
-              ) : null}
             </div>
           </HeadAddressLine>
         </Head>
         <Top key="top">
           <BalanceCard accountInfo={contractInfo} />
           <TokensCard address={address} />
-          <StorageStakingCard accountInfo={contractInfo} />
           <NonceCard accountInfo={contractInfo} />
         </Top>
         <Middle key="middle">
@@ -198,7 +155,12 @@ export const ContractDetailPage = memo(() => {
           </div>
         </Middle>
         <Bottom key="bottom">
-          <Table key="table" address={address} addressInfo={contractInfo} />
+          <Table
+            key="table"
+            address={address}
+            addressInfo={contractInfo}
+            type="contract"
+          />
         </Bottom>
       </Main>
     </>
@@ -212,21 +174,5 @@ const IconWrapper = styled.span`
     width: 16px;
     height: 16px;
     margin-bottom: 4px;
-  }
-`;
-
-const WarningInfoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 12px;
-  background-color: #c65252;
-  padding: 5px 16px;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  color: #fff;
-
-  span {
-    margin-left: 5px;
   }
 `;

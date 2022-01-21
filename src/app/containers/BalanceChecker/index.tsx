@@ -8,8 +8,6 @@ import { PageHeader } from '../../components/PageHeader/Loadable';
 import { DatePicker } from '@cfxjs/react-ui';
 import { translations } from '../../../locales/i18n';
 import {
-  isCurrentNetworkAddress,
-  // isContractAddress,
   isZeroOrPositiveInteger,
   getAddressInputPlaceholder,
   isAddress,
@@ -87,7 +85,7 @@ export function BalanceChecker() {
     form.resetFields();
   };
   const validateAddress = (rule, address) => {
-    if (address && !isCurrentNetworkAddress(address)) {
+    if (address && !isAddress(address)) {
       return Promise.reject(
         new Error(t(translations.addressConverter.incorrectFormat)),
       );

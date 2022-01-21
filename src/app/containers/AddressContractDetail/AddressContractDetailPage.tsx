@@ -9,11 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import { AddressDetailPage, ContractDetailPage } from './Loadable';
-import {
-  isCurrentNetworkAddress,
-  isAccountAddress,
-  isAddress,
-} from '../../../utils';
+import { isAccountAddress, isAddress, isZeroAddress } from '../../../utils';
 import { Spin } from '@cfxjs/antd';
 import styled from 'styled-components/macro';
 import { Card } from 'app/components/Card';
@@ -28,12 +24,13 @@ export const AddressContractDetailPage = () => {
   const { t } = useTranslation();
   const { address } = useParams<RouteParams>();
   const history = useHistory();
-  const [isAccount, setIsAccount] = useState<null | boolean>(null);
+  const [isAccount, setIsAccount] = useState<null | boolean>(() => {
+    return isZeroAddress(address) ? true : null;
+  });
   const [error, setError] = useState(false);
 
   useEffectOnce(() => {
-    if (!isAddress(address) || !isCurrentNetworkAddress(address))
-      history.push('/404');
+    if (!isAddress(address)) history.push('/404');
   });
 
   useEffect(() => {
@@ -47,12 +44,10 @@ export const AddressContractDetailPage = () => {
         setError(true);
       }
     }
-    fn();
 
-    return () => {
-      setError(false);
-      setIsAccount(null);
-    };
+    if (!isZeroAddress(address)) {
+      fn();
+    }
   }, [address]);
 
   if (isAccount === null) {

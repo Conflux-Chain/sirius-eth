@@ -21,9 +21,9 @@ import { useParams } from 'react-router-dom';
 import { List } from './List';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
-import { isZeroAddress, isInnerContractAddress } from 'utils';
+import { isAddress } from 'utils';
 import imgWarning from 'images/warning.png';
-import { CFX, NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 interface FormattedAddressesType {
   hexAddress: string;
@@ -61,26 +61,11 @@ export function AddressConverter() {
   >(DEFAULT_FORMATTED_ADDRESSES);
 
   const checkAddress = address => {
-    return new Promise((resolve, reject) => {
-      if (address.startsWith('0x0')) {
-        if (!(isInnerContractAddress(address) || isZeroAddress(address))) {
-          reject(new Error(translations.addressConverter.errorMessage['0x0']));
-        }
-        resolve('');
-      } else if (address.startsWith('0x8')) {
-        CFX.getCode(address)
-          .then(code => {
-            resolve('');
-          })
-          .catch(() => {
-            reject(
-              new Error(translations.addressConverter.errorMessage['0x8']),
-            );
-          });
-      } else {
-        resolve('');
-      }
-    });
+    return new Promise((resolve, reject) =>
+      isAddress(address)
+        ? resolve('')
+        : reject(new Error(translations.general.errors.invalidAddress)),
+    );
   };
 
   const handleConvert = () => {

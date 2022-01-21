@@ -1,15 +1,13 @@
-import React, { /*useEffect,*/ useMemo } from 'react';
+import React /*useEffect,*/ from 'react';
 // import queryString from 'query-string';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 // import { useHistory, useLocation } from 'react-router';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
-import {
-  // isContractAddress,
-  isZeroAddress,
-  isContractCodeHashEmpty,
-  // isAccountAddress,
-} from 'utils';
+import // isContractAddress,
+// isZeroAddress,
+// isAccountAddress,
+'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ContractContent, CheckCircleIcon } from './ContractContent';
 import AlertCircle from '@zeit-ui/react-icons/alertCircle';
@@ -18,41 +16,25 @@ import lodash from 'lodash';
 
 import {
   // ExcutedTxns,
-  CFXTxns,
+  // CFXTxns,
   CRC20Txns,
   CRC721Txns,
   CRC1155Txns,
   // PendingTxns,
 } from 'app/containers/Transactions/Loadable';
 // import { MinedBlocks } from 'app/containers/Blocks/Loadable';
-import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
+// import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
 // import { Card } from '../../components/Card';
 // import { LineChart as Chart } from '../../components/Chart/Loadable';
 // import styled from 'styled-components/macro';
 
-export function Table({ address, addressInfo }) {
+export function Table({ address, addressInfo, type }) {
   const { t } = useTranslation();
   // const location = useLocation();
   // const history = useHistory();
   // const queries = queryString.parse(location.search);
-  const isContract = useMemo(
-    // () => isContractAddress(address) || isInnerContractAddress(address),
-    () => !isContractCodeHashEmpty(addressInfo?.codeHash),
-    [addressInfo],
-  );
 
-  // useEffect(() => {
-  //   history.replace(
-  //     queryString.stringifyUrl({
-  //       url: location.pathname,
-  //       query: {
-  //         accountAddress: address,
-  //         ...queries,
-  //       },
-  //     }),
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [location.search, location.pathname, address, history]);
+  const isContract = type === 'contract';
 
   const tabs: any = [
     {
@@ -62,13 +44,6 @@ export function Table({ address, addressInfo }) {
       content: <ExcutedAndPendingTxns address={address} />,
     },
   ];
-
-  tabs.push({
-    value: `transfers-${CFX_TOKEN_TYPES.cfx}`,
-    action: 'cfxTransfers',
-    label: t(translations.general.cfxTransfer),
-    content: <CFXTxns address={address} />,
-  });
 
   tabs.push({
     hidden: !addressInfo.erc20TransferCount,
@@ -144,24 +119,24 @@ export function Table({ address, addressInfo }) {
     });
   }
 
-  if (!(isContract || isZeroAddress(address))) {
-    tabs.push(
-      ...[
-        {
-          value: 'nft-asset',
-          action: 'NFTAsset',
-          label: t(translations.addressDetail.NFTAsset),
-          content: <NFTAsset />,
-        },
-        // {
-        //   value: 'mined-blocks',
-        //   action: 'minedBlocks',
-        //   label: t(translations.addressDetail.minedBlocks),
-        //   content: <MinedBlocks address={address} />,
-        // },
-      ],
-    );
-  }
+  // if (!(isContract || isZeroAddress(address))) {
+  //   tabs.push(
+  //     ...[
+  //       {
+  //         value: 'nft-asset',
+  //         action: 'NFTAsset',
+  //         label: t(translations.addressDetail.NFTAsset),
+  //         content: <NFTAsset />,
+  //       },
+  //       {
+  //         value: 'mined-blocks',
+  //         action: 'minedBlocks',
+  //         label: t(translations.addressDetail.minedBlocks),
+  //         content: <MinedBlocks address={address} />,
+  //       },
+  //     ],
+  //   );
+  // }
 
   return <TabsTablePanel key="table" tabs={tabs} />;
 }

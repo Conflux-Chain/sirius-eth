@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { TextLogo } from 'app/components/TextLogo';
 import { Search } from './Search';
-import { ConnectWallet } from 'app/components/ConnectWallet';
+// import { ConnectWallet } from 'app/components/ConnectWallet';
 import { media, useBreakpoint } from 'styles/media';
 import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
@@ -603,9 +603,10 @@ export const Header = memo(() => {
         <SearchWrapper>
           <Search />
         </SearchWrapper>
-        <WalletWrapper>
+        {/* TODO, eth space, hide temporary */}
+        {/* <WalletWrapper>
           <ConnectWallet />
-        </WalletWrapper>
+        </WalletWrapper> */}
       </>
     ),
     endLinksJSX,
@@ -741,18 +742,18 @@ const SearchWrapper = styled.div`
   }
 `;
 
-const WalletWrapper = styled.div`
-  min-width: 180px;
+// const WalletWrapper = styled.div`
+//   min-width: 180px;
 
-  .connect-wallet-button.notConnected {
-    .connect-wallet-button-left {
-      //color: #fff;
-      width: 100%;
-      justify-content: center;
-      //background: #424a71;
-      &:hover {
-        //background: #68719c;
-      }
-    }
-  }
-`;
+//   .connect-wallet-button.notConnected {
+//     .connect-wallet-button-left {
+//       //color: #fff;
+//       width: 100%;
+//       justify-content: center;
+//       //background: #424a71;
+//       &:hover {
+//         //background: #68719c;
+//       }
+//     }
+//   }
+// `;

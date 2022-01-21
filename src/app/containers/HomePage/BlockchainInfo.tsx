@@ -11,7 +11,7 @@ import {
   SmallChart,
 } from '../../components/Chart/Loadable';
 import { reqHomeDashboard, reqTransferTPS } from '../../../utils/httpRequest';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import lodash from 'lodash';
 
 function Info(title, number: any) {
@@ -84,9 +84,10 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           </Grid>
           <Grid xs={24} sm={24} md={5}>
             {Info(
-              <Link to={'/chart/dailyTransaction'} className="info-link">
-                {t(translations.statistics.home.transactions)}
-              </Link>,
+              t(translations.statistics.home.transactions),
+              // <Link to={'/chart/dailyTransaction'} className="info-link">
+              //   {t(translations.statistics.home.transactions)}
+              // </Link>,
               `${
                 dashboardData.transactionCount
                   ? formatNumber(dashboardData.transactionCount, {
@@ -99,9 +100,10 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           </Grid>
           <Grid xs={24} sm={24} md={4}>
             {Info(
-              <Link to={'/chart/contractDeploy'} className="info-link">
-                {t(translations.statistics.home.contract)}
-              </Link>,
+              t(translations.statistics.home.contract),
+              // <Link to={'/chart/contractDeploy'} className="info-link">
+              //   {t(translations.statistics.home.contract)}
+              // </Link>,
               `${
                 dashboardData.contractCount
                   ? formatNumber(dashboardData.contractCount, {
@@ -121,9 +123,10 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
         >
           <Grid xs={24} sm={24} md={4}>
             {Info(
-              <Link to="/chart/tps" className="info-link">
-                {t(translations.charts.tps.title)}
-              </Link>,
+              t(translations.charts.tps.title),
+              // <Link to="/chart/tps" className="info-link">
+              //   {t(translations.charts.tps.title)}
+              // </Link>,
               <SmallChart plain={true} indicator="tps" />,
             )}
           </Grid>
@@ -139,17 +142,19 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           </Grid>
           <Grid xs={24} sm={24} md={5}>
             {Info(
-              <Link to="/chart/blockTime" className="info-link">
-                {t(translations.charts.blockTime.title)}
-              </Link>,
+              t(translations.charts.blockTime.title),
+              // <Link to="/chart/blockTime" className="info-link">
+              //   {t(translations.charts.blockTime.title)}
+              // </Link>,
               <SmallChart plain={true} indicator="blockTime" />,
             )}
           </Grid>
           <Grid xs={24} sm={24} md={4}>
             {Info(
-              <Link to="/chart/hashRate" className="info-link">
-                {t(translations.charts.hashRate.title)}
-              </Link>,
+              t(translations.charts.hashRate.title),
+              // <Link to="/chart/hashRate" className="info-link">
+              //   {t(translations.charts.hashRate.title)}
+              // </Link>,
               <SmallChart plain={true} indicator="hashRate" />,
             )}
           </Grid>

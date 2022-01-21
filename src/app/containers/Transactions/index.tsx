@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { transactionColunms } from 'utils/tableColumns';
+import { transactionColunms, blockColunms } from 'utils/tableColumns';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { useAge } from 'utils/hooks/useAge';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
@@ -11,10 +11,11 @@ export function Transactions() {
   const { t } = useTranslation();
   const [ageFormat, toggleAgeFormat] = useAge();
 
-  const columnsTransactionsWidth = [4, 3, 6, 6, 3, 4, 4, 5];
+  const columnsTransactionsWidth = [4, 3, 3, 6, 6, 3, 4, 4, 5];
   const columnsTransactions = [
     transactionColunms.hash,
     transactionColunms.method,
+    blockColunms.epochWithNoLink,
     transactionColunms.from,
     transactionColunms.to,
     transactionColunms.value,

@@ -23,7 +23,6 @@ import {
   getPercent,
   toThousands,
   isContractAddress,
-  // isInnerContractAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
@@ -198,8 +197,7 @@ export const Detail = () => {
           fetchTxTransfer(toCheckAddress, txnhash);
 
           // if (
-          //   isContractAddress(toCheckAddress) ||
-          //   isInnerContractAddress(toCheckAddress)
+          //   isContractAddress(toCheckAddress)
           // ) {
           //   setIsContract(true);
           //   const fields = [

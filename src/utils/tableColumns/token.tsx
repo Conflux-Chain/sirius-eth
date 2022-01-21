@@ -7,7 +7,12 @@ import { Text } from 'app/components/Text/Loadable';
 import queryString from 'query-string';
 import { media } from 'styles/media';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
-import { formatBalance, formatNumber, formatString } from 'utils';
+import {
+  formatBalance,
+  formatNumber,
+  formatString,
+  checkIfContractByInfo,
+} from 'utils';
 import imgArrow from 'images/token/arrow.svg';
 import imgOut from 'images/token/out.svg';
 import imgIn from 'images/token/in.svg';
@@ -120,6 +125,7 @@ export const renderAddress = (
   }
 
   let verify = false;
+  const isContract = checkIfContractByInfo(value, row);
 
   try {
     // default verify info
@@ -144,6 +150,7 @@ export const renderAddress = (
         isLink={formatAddress(filter) !== formatAddress(value)}
         contractCreated={row.contractCreated}
         verify={verify}
+        isContract={isContract}
       />
       {type === 'from' && withArrow && (
         <ImgWrap src={fromTypeInfo[getFromType(value)].src} />
@@ -434,7 +441,14 @@ export const contract = (isFull = false) => ({
     } else if (row.verified === true) {
       verify = true;
     }
-    return <AddressContainer value={value} isFull={isFull} verify={verify} />;
+    return (
+      <AddressContainer
+        value={value}
+        isFull={isFull}
+        verify={verify}
+        isContract={true}
+      />
+    );
   },
 });
 
@@ -522,18 +536,23 @@ export const account = {
   ),
   dataIndex: 'account',
   key: 'account',
-  render: (value, row) => (
-    <AccountWrapper>
-      <AddressContainer
-        value={value.address}
-        alias={
-          value.name ||
-          (row.tokenInfo && row.tokenInfo.name ? row.tokenInfo.name : null)
-        }
-        isFull={true}
-      />
-    </AccountWrapper>
-  ),
+  render: (value, row) => {
+    const isContract = checkIfContractByInfo(value.address, row);
+
+    return (
+      <AccountWrapper>
+        <AddressContainer
+          value={value.address}
+          alias={
+            value.name ||
+            (row.tokenInfo && row.tokenInfo.name ? row.tokenInfo.name : null)
+          }
+          isFull={true}
+          isContract={isContract}
+        />
+      </AccountWrapper>
+    );
+  },
 };
 
 export const balance = (decimal, price, transferType) => ({

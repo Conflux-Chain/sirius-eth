@@ -6,42 +6,26 @@
 
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Copy, Qrcode } from './HeadLineButtons';
-import {
-  BalanceCard,
-  TokensCard,
-  // StorageStakingCard,
-  NonceCard,
-} from './AddressInfoCards';
-import {
-  Main,
-  Title,
-  Bottom,
-  HeadAddressLine,
-  Top,
-  Head,
-  // Middle,
-} from './layouts';
-import { /*AddressMetadata,*/ Table } from './Loadable';
-import { isZeroAddress, isCurrentNetworkAddress } from '../../../utils';
+import { BalanceCard, TokensCard, NonceCard } from './AddressInfoCards';
+import { Main, Title, Bottom, HeadAddressLine, Top, Head } from './layouts';
+import { Table } from './Loadable';
+import { isZeroAddress } from '../../../utils';
 import { useAccount } from '../../../utils/api';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import { Link as RouterLink } from 'react-router-dom';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
 import { media } from '../../../styles/media';
-import { useEffectOnce } from 'react-use';
-// import { NETWORK_TYPES, NETWORK_TYPE } from '../../../utils/constants';
 
 interface RouteParams {
   address: string;
 }
 
 export const AddressDetailPage = memo(() => {
-  const history = useHistory();
   const { t } = useTranslation();
   const { address } = useParams<RouteParams>();
   const { data: accountInfo } = useAccount(address, [
@@ -51,10 +35,6 @@ export const AddressDetailPage = memo(() => {
     'erc1155TransferCount',
     'stakingBalance',
   ]);
-
-  useEffectOnce(() => {
-    if (!isCurrentNetworkAddress(address)) history.push('/404');
-  });
 
   const menu = (
     <MenuWrapper>
@@ -112,18 +92,15 @@ export const AddressDetailPage = memo(() => {
         <Top>
           <BalanceCard accountInfo={accountInfo} />
           <TokensCard address={address} />
-          {/* <StorageStakingCard accountInfo={accountInfo} /> */}
           <NonceCard accountInfo={accountInfo} />
         </Top>
-        {/* {[NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(
-          NETWORK_TYPE,
-        ) ? (
-          <Middle key="middle">
-            <AddressMetadata address={address} accountInfo={accountInfo} />
-          </Middle>
-        ) : null} */}
         <Bottom>
-          <Table address={address} addressInfo={accountInfo} key={address} />
+          <Table
+            address={address}
+            addressInfo={accountInfo}
+            key={address}
+            type="account"
+          />
         </Bottom>
       </Main>
     </>

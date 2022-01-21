@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+// import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
-import { Card } from 'app/components/Card';
-import { LineChart as Chart } from 'app/components/Chart/Loadable';
+// import { Card } from 'app/components/Card';
+// import { LineChart as Chart } from 'app/components/Chart/Loadable';
 import {
   ContractContent,
   CheckCircleIcon,
@@ -15,7 +15,7 @@ import AlertCircle from '@zeit-ui/react-icons/alertCircle';
 
 import { Transfers as TokenTransfers } from 'app/containers/Tokens/Loadable';
 import { Holders } from './Holders';
-import { NFTs } from './NFTs';
+// import { NFTs } from './NFTs';
 import lodash from 'lodash';
 
 interface TransferProps {
@@ -38,7 +38,7 @@ interface Query {
 
 export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   const {
-    tokenName,
+    // tokenName,
     address: tokenAddress,
     decimals,
     totalSupply,
@@ -112,32 +112,33 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   if (clientWidth > 1350) chartWidth = 1350;
   if (chartWidth < 365) chartWidth = 365;
 
-  const analysisPanel = () => (
-    <StyledTabWrapper>
-      <Card>
-        <Chart
-          width={chartWidth}
-          indicator="tokenAnalysis"
-          tokenInfo={{
-            name: tokenName,
-            address: tokenAddress,
-            type: transferType,
-          }}
-        />
-      </Card>
-    </StyledTabWrapper>
-  );
+  // TODO, eth space, hide temporary
+  // const analysisPanel = () => (
+  //   <StyledTabWrapper>
+  //     <Card>
+  //       <Chart
+  //         width={chartWidth}
+  //         indicator="tokenAnalysis"
+  //         tokenInfo={{
+  //           name: tokenName,
+  //           address: tokenAddress,
+  //           type: transferType,
+  //         }}
+  //       />
+  //     </Card>
+  //   </StyledTabWrapper>
+  // );
 
-  const analysisTab = {
-    value: 'analysis',
-    action: 'tokenAnalysis',
-    label: t(translations.token.analysis),
-    content: analysisPanel(),
-  };
+  // const analysisTab = {
+  //   value: 'analysis',
+  //   action: 'tokenAnalysis',
+  //   label: t(translations.token.analysis),
+  //   content: analysisPanel(),
+  // };
 
-  if (isRegistered) {
-    tabs.push(analysisTab);
-  }
+  // if (isRegistered) {
+  //   tabs.push(analysisTab);
+  // }
 
   // trick by frontend, the better way is api always return 'verify' info
   let checkIcon: React.ReactNode = '';
@@ -152,17 +153,18 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
     }
   }
 
-  if (
-    transferType === CFX_TOKEN_TYPES.erc721 ||
-    transferType === CFX_TOKEN_TYPES.erc1155
-  ) {
-    tabs.push({
-      value: 'NFT',
-      action: 'tokenNFT',
-      label: t(translations.token.NFT),
-      content: <NFTs address={tokenAddress} />,
-    });
-  }
+  // TODO, eth space, hide temporary
+  // if (
+  //   transferType === CFX_TOKEN_TYPES.erc721 ||
+  //   transferType === CFX_TOKEN_TYPES.erc1155
+  // ) {
+  //   tabs.push({
+  //     value: 'NFT',
+  //     action: 'tokenNFT',
+  //     label: t(translations.token.NFT),
+  //     content: <NFTs address={tokenAddress} />,
+  //   });
+  // }
 
   // Contract tab
   tabs.push({
@@ -179,16 +181,16 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   return transferType ? <TabsTablePanel tabs={tabs} /> : null;
 }
 
-const StyledTabWrapper = styled.div`
-  .card {
-    padding: 0.3571rem !important;
+// const StyledTabWrapper = styled.div`
+//   .card {
+//     padding: 0.3571rem !important;
 
-    .content {
-      overflow-x: auto;
+//     .content {
+//       overflow-x: auto;
 
-      & > div {
-        box-shadow: none !important;
-      }
-    }
-  }
-`;
+//       & > div {
+//         box-shadow: none !important;
+//       }
+//     }
+//   }
+// `;

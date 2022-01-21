@@ -20,22 +20,6 @@ window.CFX = CFX;
 
 dayjs.extend(relativeTime);
 
-// export const isPosAddress = (address: string): boolean => {
-//   try {
-//     return address.startsWith('0x') && address.length === 66;
-//   } catch (e) {
-//     return false;
-//   }
-// };
-
-// export const isCfxHexAddress = (address: string): boolean => {
-//   try {
-//     return SDK.address.isValidCfxHexAddress(address);
-//   } catch (e) {
-//     return false;
-//   }
-// };
-
 export const isBase32Address = (address: string): boolean => {
   try {
     return SDK.address.isValidCfxAddress(address);
@@ -88,46 +72,14 @@ export const formatAddress = (
   }
 };
 
-export const getAddressInfo = (
-  address: string,
-): {
-  netId: number;
-  type: string;
-  hexAddress: ArrayBuffer | string;
-} | null => {
-  try {
-    if (isAddress(address)) {
-      const base32Address = formatAddress(address, 'base32');
-      return SDK.address.decodeCfxAddress(base32Address);
-    } else if (isBase32Address(address)) {
-      return SDK.address.decodeCfxAddress(address);
-    } else {
-      return null;
-    }
-  } catch (e) {
-    return null;
-  }
-};
-
-// export const isSimplyBase32Address = (address: string): boolean => {
-//   try {
-//     return (
-//       SDK.address.isValidCfxAddress(address) &&
-//       SDK.address.simplifyCfxAddress(address) === address
-//     );
-//   } catch (e) {
-//     return false;
-//   }
-// };
-
 // support hex and base32
 export const isAddress = (address: string): boolean => {
-  // TODO, eth space, remove base32 address condition
   try {
     if (address.startsWith('0x')) {
       // return isCfxHexAddress(address);
-      return SDK.address.isValidHexAddress(address);
+      return SDK.address.isValidHexAddress(address) || isZeroAddress(address);
     } else {
+      // TODO, eth space, remove base32 address condition
       return isBase32Address(address);
     }
   } catch (e) {
@@ -137,8 +89,7 @@ export const isAddress = (address: string): boolean => {
 
 export function isZeroAddress(address: string): boolean {
   try {
-    // @todo, wait for sdk upgrade to accept both base32 and hex address
-    return SDK.address.isZeroAddress(formatAddress(address, 'hex'));
+    return address === SDK.CONST.ZERO_ADDRESS_HEX || address === '0x0';
   } catch (e) {
     return false;
   }
@@ -180,40 +131,6 @@ export async function isContractAddress(address: string): Promise<boolean> {
   } catch (e) {
     return false;
   }
-
-  // TODO, eth space, check if needed
-  // return getAddressInfo(address)?.type === 'contract';
-
-  // try {
-  //   return getAddressType(address) === 'contract';
-  // } catch (e) {
-  //   return false;
-  // }
-}
-
-export function isInnerContractAddress(address: string): boolean {
-  return false; // TODO, eth space, check if needed
-  // try {
-  //   // @todo, wait for sdk upgrade to accept both base32 and hex address
-  //   return SDK.address.isInternalContractAddress(formatAddress(address, 'hex'));
-  // } catch (e) {
-  //   return false;
-  // }
-}
-
-// address start with 0x0, not valid internal contract, but fullnode support
-export function isSpecialAddress(address: string): boolean {
-  return false; // TODO, eth space, check if needed
-  // return (
-  //   getAddressInfo(address)?.type === 'builtin' &&
-  //   !isInnerContractAddress(address)
-  // );
-}
-
-export function isCurrentNetworkAddress(address: string): boolean {
-  // TODO, eth space, check if needed
-  return true;
-  // return getAddressInfo(address)?.netId === NETWORK_ID;
 }
 
 /**
@@ -924,5 +841,29 @@ export function padLeft(n, totalLength = 1) {
       result = '0' + result;
     }
     return result;
+  }
+}
+
+export function checkIfContractByInfo(address: string, info: any, type?) {
+  try {
+    const fromInfo = info.fromContractInfo || info.fromTokenInfo || {};
+    const toInfo = info.toContractInfo || info.toTokenInfo || {};
+    const commonInfo = info.contractInfo || info.tokenInfo || {};
+
+    if (address === fromInfo.address) {
+      return true;
+    }
+
+    if (address === toInfo.address) {
+      return true;
+    }
+
+    if (address === commonInfo.address) {
+      return true;
+    }
+
+    return false;
+  } catch (e) {
+    return false;
   }
 }

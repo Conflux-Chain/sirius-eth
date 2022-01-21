@@ -21,7 +21,7 @@ import {
   checkUint,
   checkBytes,
   checkCfxType,
-  isCurrentNetworkAddress,
+  isAddress,
 } from '../../../utils';
 import { formatAddress } from '../../../utils';
 import { TXN_ACTION } from '../../../utils/constants';
@@ -216,7 +216,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
       }
 
       if (type === 'address') {
-        if (isCurrentNetworkAddress(val)) {
+        if (isAddress(val)) {
           return Promise.resolve();
         }
         return Promise.reject(t(translations.contract.error.address));

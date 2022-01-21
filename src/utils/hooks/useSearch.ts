@@ -5,12 +5,10 @@ import {
   isEpochNumber,
   tranferToLowerCase,
   formatAddress,
-  getAddressInfo,
   isAddress,
-  isCurrentNetworkAddress,
+  isZeroAddress,
 } from 'utils';
-import { CONTRACTS, DEFAULT_NETWORK_IDS } from '../constants';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import { CONTRACTS } from '../constants';
 import { trackEvent } from '../ga';
 import { ScanEvent } from '../gaConstants';
 
@@ -31,7 +29,7 @@ export const useSearch = (value?: string) => {
     innerValue = tranferToLowerCase(innerValue.trim());
 
     // zero address support
-    if (innerValue === '0x0') {
+    if (isZeroAddress(innerValue)) {
       history.push(`/address/${CONTRACTS.zero}`);
       // update searchbar value from 0x0 to zeroAddress
       setValue && setValue(CONTRACTS.zero);
@@ -44,26 +42,6 @@ export const useSearch = (value?: string) => {
     }
 
     if (isAddress(innerValue)) {
-      if (!isCurrentNetworkAddress(innerValue)) {
-        if (
-          // only search network = 1/1029 in mainnet or testnet environment will go to networkERROR page, others will go to 404
-          [NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(
-            NETWORK_TYPE,
-          ) &&
-          [DEFAULT_NETWORK_IDS.mainnet, DEFAULT_NETWORK_IDS.testnet].includes(
-            getAddressInfo(innerValue)?.netId as number,
-          )
-        ) {
-          history.push('/networkError');
-
-          return;
-        } else {
-          history.push('/404');
-
-          return;
-        }
-      }
-
       history.push(`/address/${formatAddress(innerValue)}`);
       return;
     }

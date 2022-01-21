@@ -21,6 +21,15 @@ import BigNumber from 'bignumber.js';
 //   render: value => <Link href={`/epoch/${value}`}>{value}</Link>,
 // };
 
+export const epochWithNoLink = {
+  title: (
+    <Translation>{t => t(translations.general.table.block.height)}</Translation>
+  ),
+  dataIndex: 'epochNumber',
+  key: 'epochNumber',
+  width: 1,
+};
+
 export const epoch = {
   title: (
     <Translation>{t => t(translations.general.table.block.height)}</Translation>

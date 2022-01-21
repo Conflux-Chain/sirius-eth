@@ -589,7 +589,8 @@
     },
     "errors": {
       "address": "Please enter a valid {{network}} address",
-      "getAccountInfoError": "Get address info error, please reload page to retry."
+      "getAccountInfoError": "Get address info error, please reload page to retry.",
+      "invalidAddress": "Invalid address, or incorrect format"
     },
     "advancedSearch": {
       "label": {

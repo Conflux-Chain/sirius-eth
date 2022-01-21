@@ -11,7 +11,6 @@ import styled from 'styled-components/macro';
 import { media } from 'styles/media';
 import {
   toThousands,
-  isCurrentNetworkAddress,
   // isAccountAddress,
   isAddress,
 } from 'utils';
@@ -71,12 +70,10 @@ export function NFTAsset() {
   const total = selectedNFT.balance;
 
   const validateAddress = (address, cb) => {
-    if (isCurrentNetworkAddress(address)) {
-      if (isAddress(address)) {
-        // TODO, eth space, use isAddress replaced
-        // if (isAccountAddress(address)) {
-        cb && cb();
-      }
+    if (isAddress(address)) {
+      // TODO, eth space, use isAddress replaced
+      // if (isAccountAddress(address)) {
+      cb && cb();
     }
   };
 

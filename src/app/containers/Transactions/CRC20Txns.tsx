@@ -1,5 +1,5 @@
 import React from 'react';
-import { tokenColunms } from 'utils/tableColumns';
+import { tokenColunms, blockColunms } from 'utils/tableColumns';
 import { useAge } from 'utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
 import { Title, Footer } from './components';
@@ -13,9 +13,10 @@ export const CRC20Txns = ({ address }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
   const url = `/transfer?accountAddress=${address}&transferType=${CFX_TOKEN_TYPES.erc20}`;
 
-  const columnsWidth = [3, 6, 5, 2, 3, 6, 4];
+  const columnsWidth = [3, 3, 6, 5, 2, 3, 6, 4];
   const columns = [
     tokenColunms.txnHash,
+    blockColunms.epochWithNoLink,
     {
       ...tokenColunms.from,
       render(text, record, index) {

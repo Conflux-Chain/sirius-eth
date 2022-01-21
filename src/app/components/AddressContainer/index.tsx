@@ -14,7 +14,7 @@ import {
 import { AlertTriangle } from '@zeit-ui/react-icons';
 import ContractIcon from 'images/contract-icon.png';
 import isMeIcon from 'images/me.png';
-// import VerifiedIcon from 'images/verified.png';
+import VerifiedIcon from 'images/verified.png';
 import { media, sizes } from 'styles/media';
 import {
   NETWORK_TYPE,
@@ -205,45 +205,45 @@ export const AddressContainer = withTranslation()(
         alias = t(translations.general.zeroAddress);
       }
 
-      // if (isContractAddress(cfxAddress)) {
-      //   const typeText = t(
-      //     verify
-      //       ? translations.general.verifiedContract
-      //       : translations.general.unverifiedContract,
-      //   );
-      //   return RenderAddress({
-      //     cfxAddress,
-      //     alias,
-      //     isLink,
-      //     isFull,
-      //     maxWidth,
-      //     suffixSize,
-      //     prefix: showIcon ? (
-      //       <IconWrapper
-      //         className={`${isFull ? 'icon' : ''} ${
-      //           prefixFloat ? 'float' : ''
-      //         }`}
-      //       >
-      //         <Text span hoverValue={typeText}>
-      //           <ImgWrapper>
-      //             {
-      //               <>
-      //                 <img src={ContractIcon} alt={typeText} />
-      //                 {verify ? (
-      //                   <img
-      //                     className={'verified'}
-      //                     src={VerifiedIcon}
-      //                     alt={''}
-      //                   />
-      //                 ) : null}
-      //               </>
-      //             }
-      //           </ImgWrapper>
-      //         </Text>
-      //       </IconWrapper>
-      //     ) : null,
-      //   });
-      // }
+      if (isContract) {
+        const typeText = t(
+          verify
+            ? translations.general.verifiedContract
+            : translations.general.unverifiedContract,
+        );
+        return RenderAddress({
+          cfxAddress,
+          alias,
+          isLink,
+          isFull,
+          maxWidth,
+          suffixSize,
+          prefix: showIcon ? (
+            <IconWrapper
+              className={`${isFull ? 'icon' : ''} ${
+                prefixFloat ? 'float' : ''
+              }`}
+            >
+              <Text span hoverValue={typeText}>
+                <ImgWrapper>
+                  {
+                    <>
+                      <img src={ContractIcon} alt={typeText} />
+                      {verify ? (
+                        <img
+                          className={'verified'}
+                          src={VerifiedIcon}
+                          alt={''}
+                        />
+                      ) : null}
+                    </>
+                  }
+                </ImgWrapper>
+              </Text>
+            </IconWrapper>
+          ) : null,
+        });
+      }
 
       if (isMe) {
         return RenderAddress({
@@ -281,26 +281,26 @@ export const AddressContainer = withTranslation()(
   ),
 );
 
-// const ImgWrapper = styled.span`
-//   position: relative;
-//   width: 16px;
-//   height: 16px;
+const ImgWrapper = styled.span`
+  position: relative;
+  width: 16px;
+  height: 16px;
 
-//   img {
-//     width: 16px;
-//     height: 16px;
-//     vertical-align: bottom;
-//     margin-bottom: 5px;
-//   }
+  img {
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
+    margin-bottom: 5px;
+  }
 
-//   .verified {
-//     width: 8px;
-//     height: 8px;
-//     position: absolute;
-//     bottom: -1px;
-//     right: 1px;
-//   }
-// `;
+  .verified {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    bottom: -1px;
+    right: 1px;
+  }
+`;
 
 const IconWrapper = styled.span`
   margin-right: 2px;

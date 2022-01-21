@@ -108,6 +108,9 @@ export const CONTRACTS: ContractsType = (() => {
     );
     if (Object.prototype.toString.call(contracts) === '[object Object]') {
       contracts = cachedContracts;
+      if (!contracts.zero) {
+        contracts.zero = SDK.CONST.ZERO_ADDRESS_HEX;
+      }
     }
   } catch (e) {}
 
