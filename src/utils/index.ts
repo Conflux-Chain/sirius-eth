@@ -848,7 +848,8 @@ export function checkIfContractByInfo(address: string, info: any, type?) {
   try {
     const fromInfo = info.fromContractInfo || info.fromTokenInfo || {};
     const toInfo = info.toContractInfo || info.toTokenInfo || {};
-    const commonInfo = info.contractInfo || info.tokenInfo || {};
+    const commonInfo =
+      info.contractInfo || info.tokenInfo || info.transferTokenInfo || {};
 
     if (address === fromInfo.address) {
       return true;

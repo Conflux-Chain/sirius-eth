@@ -11,7 +11,7 @@ import { useLocation, useHistory } from 'react-router';
 import queryString from 'query-string';
 import { useAccounts } from 'utils/hooks/usePortal';
 import { AddressContainer } from 'app/components/AddressContainer/Loadable';
-import { formatAddress } from 'utils';
+import { formatAddress, checkIfContractByInfo } from 'utils';
 import { monospaceFont } from 'styles/variable';
 import { AccountWrapper } from 'utils/tableColumns/token';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
@@ -80,6 +80,7 @@ export function Accounts() {
                 ? formatAddress(accounts[0]) === formatAddress(value)
                 : false
             }
+            isContract={checkIfContractByInfo(value, row)}
           />
         </AccountWrapper>
       ),

@@ -166,6 +166,8 @@ export const token = {
   ),
   key: 'blockIndex',
   render: row => {
+    const isContract = checkIfContractByInfo(row?.address, row);
+
     return (
       <StyledIconWrapper>
         <img src={row?.iconUrl || ICON_DEFAULT_TOKEN} alt="token icon" />
@@ -194,6 +196,7 @@ export const token = {
                     value={row?.address}
                     alias={row?.contractName || null}
                     showIcon={false}
+                    isContract={isContract}
                   />
                 )}
               </Text>
@@ -207,6 +210,11 @@ export const token = {
 
 const Token2 = ({ row }) => {
   const { t } = useTranslation();
+  const isContract = checkIfContractByInfo(
+    row?.transferTokenInfo?.address,
+    row,
+  );
+
   return (
     <StyledIconWrapper>
       {row?.transferTokenInfo && row?.transferTokenInfo?.address // show -- if transferTokenInfo is empty
@@ -244,6 +252,7 @@ const Token2 = ({ row }) => {
                     t(translations.general.notAvailable)
                   }
                   showIcon={false}
+                  isContract={isContract}
                 />
               )}
             </Link>,

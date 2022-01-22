@@ -159,7 +159,7 @@ export const ContractAbi = ({
       {pattern ? (
         <StyledContractAbiWrapper>
           <Trans i18nKey="contract.pattern">
-            <AddressContainer isLink={true} value={address} />
+            <AddressContainer isLink={true} value={address} isContract={true} />
             {pattern}
           </Trans>
         </StyledContractAbiWrapper>

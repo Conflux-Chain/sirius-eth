@@ -4,7 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { translations } from '../../../locales/i18n';
 import SkelontonContainer from '../SkeletonContainer';
 import { reqTokenList, reqTopStatistics } from '../../../utils/httpRequest';
-import { formatNumber, fromDripToCfx, toThousands } from '../../../utils';
+import {
+  formatNumber,
+  fromDripToCfx,
+  toThousands,
+  checkIfContractByInfo,
+} from '../../../utils';
 import { AddressContainer } from '../AddressContainer';
 import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
@@ -410,6 +415,7 @@ export const StatsCard = ({
           if (d.contractInfo && d.contractInfo.verify) {
             verify = d.contractInfo.verify.result !== 0;
           }
+          const isContract = checkIfContractByInfo(d.base32, d);
           return (
             <tr key={i}>
               <td>{i + 1}</td>
@@ -429,6 +435,7 @@ export const StatsCard = ({
                       : false
                   }
                   verify={verify}
+                  isContract={isContract}
                 />
               </td>
               <td className="text-right">
@@ -441,141 +448,156 @@ export const StatsCard = ({
           );
         });
       case 'token':
-        return data.map((d, i) => (
-          <tr key={i}>
-            <td>{i + 1}</td>
-            <td className="address">
-              {d.token ? (
-                token.render(d.token)
-              ) : (
+        return data.map((d, i) => {
+          const isContract = checkIfContractByInfo(d.base32address, d);
+
+          return (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td className="address">
+                {d.token ? (
+                  token.render(d.token)
+                ) : (
+                  <AddressContainer
+                    value={d.base32address}
+                    isMe={
+                      accounts && accounts.length > 0
+                        ? formatAddress(accounts[0]) ===
+                          formatAddress(d.base32address)
+                        : false
+                    }
+                    isContract={isContract}
+                  />
+                )}
+              </td>
+              <td className="text-right">{intValue(d.valueN)}</td>
+            </tr>
+          );
+        });
+      case 'miner':
+        return data.map((d, i) => {
+          const isContract = checkIfContractByInfo(d.base32, d);
+
+          return (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td className="address">
                 <AddressContainer
-                  value={d.base32address}
+                  value={d.base32}
                   isMe={
                     accounts && accounts.length > 0
-                      ? formatAddress(accounts[0]) ===
-                        formatAddress(d.base32address)
+                      ? formatAddress(accounts[0]) === formatAddress(d.base32)
                       : false
                   }
+                  isContract={isContract}
                 />
-              )}
-            </td>
-            <td className="text-right">{intValue(d.valueN)}</td>
-          </tr>
-        ));
-      case 'miner':
-        return data.map((d, i) => (
-          <tr key={i}>
-            <td>{i + 1}</td>
-            <td className="address">
-              <AddressContainer
-                value={d.base32}
-                isMe={
-                  accounts && accounts.length > 0
-                    ? formatAddress(accounts[0]) === formatAddress(d.base32)
-                    : false
-                }
-              />
-            </td>
-            <td className="text-right">{intValue(d.blockCount)}</td>
-            <td className="text-right">
-              {cfxValue(d.totalReward, { showUnit: true })}
-            </td>
-            <td className="text-right">
-              {cfxValue(d.txFee, {
-                keepDecimal: true,
-                keepZero: true,
-                showUnit: true,
-              })}
-            </td>
-            <td className="text-right">
-              <Text
-                hoverValue={
-                  formatNumber(d.hashRate, {
-                    withUnit: false,
-                  }) + ' H/s'
-                }
-              >
-                {formatNumber(
-                  new BigNumber(d.hashRate)
-                    .dividedBy(new BigNumber(10).pow(9))
-                    .toFixed(3),
-                  {
-                    withUnit: false,
-                    keepZero: true,
-                  },
-                )}
-              </Text>
+              </td>
+              <td className="text-right">{intValue(d.blockCount)}</td>
+              <td className="text-right">
+                {cfxValue(d.totalReward, { showUnit: true })}
+              </td>
+              <td className="text-right">
+                {cfxValue(d.txFee, {
+                  keepDecimal: true,
+                  keepZero: true,
+                  showUnit: true,
+                })}
+              </td>
+              <td className="text-right">
+                <Text
+                  hoverValue={
+                    formatNumber(d.hashRate, {
+                      withUnit: false,
+                    }) + ' H/s'
+                  }
+                >
+                  {formatNumber(
+                    new BigNumber(d.hashRate)
+                      .dividedBy(new BigNumber(10).pow(9))
+                      .toFixed(3),
+                    {
+                      withUnit: false,
+                      keepZero: true,
+                    },
+                  )}
+                </Text>
 
-              <Text
-                hoverValue={
-                  (d.difficultySum && totalDifficulty
+                <Text
+                  hoverValue={
+                    (d.difficultySum && totalDifficulty
+                      ? new BigNumber(d.difficultySum)
+                          .dividedBy(new BigNumber(totalDifficulty))
+                          .multipliedBy(100)
+                          .toFixed(8)
+                      : '-') + '%'
+                  }
+                >
+                  &nbsp;(
+                  {d.difficultySum && totalDifficulty
                     ? new BigNumber(d.difficultySum)
                         .dividedBy(new BigNumber(totalDifficulty))
                         .multipliedBy(100)
-                        .toFixed(8)
-                    : '-') + '%'
-                }
-              >
-                &nbsp;(
-                {d.difficultySum && totalDifficulty
-                  ? new BigNumber(d.difficultySum)
-                      .dividedBy(new BigNumber(totalDifficulty))
-                      .multipliedBy(100)
-                      .toFixed(3)
-                  : '-'}
-                %)
-              </Text>
-            </td>
-          </tr>
-        ));
+                        .toFixed(3)
+                    : '-'}
+                  %)
+                </Text>
+              </td>
+            </tr>
+          );
+        });
       case 'network':
-        return data.map((d, i) => (
-          <tr key={i}>
-            <td>{i + 1}</td>
-            <td className="address">
-              <AddressContainer
-                value={d.base32}
-                isMe={
-                  accounts && accounts.length > 0
-                    ? formatAddress(accounts[0]) === formatAddress(d.base32)
-                    : false
-                }
-              />
-            </td>
-            <td className="text-right">
-              <Text
-                hoverValue={formatNumber(d.gas, {
-                  withUnit: false,
-                })}
-              >
-                {formatNumber(d.gas, {
-                  withUnit: false,
-                  keepDecimal: false,
-                })}
-              </Text>
+        return data.map((d, i) => {
+          const isContract = checkIfContractByInfo(d.base32, d);
 
-              <Text
-                hoverValue={
-                  (d.gas && totalGas
+          return (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td className="address">
+                <AddressContainer
+                  value={d.base32}
+                  isMe={
+                    accounts && accounts.length > 0
+                      ? formatAddress(accounts[0]) === formatAddress(d.base32)
+                      : false
+                  }
+                  isContract={isContract}
+                />
+              </td>
+              <td className="text-right">
+                <Text
+                  hoverValue={formatNumber(d.gas, {
+                    withUnit: false,
+                  })}
+                >
+                  {formatNumber(d.gas, {
+                    withUnit: false,
+                    keepDecimal: false,
+                  })}
+                </Text>
+
+                <Text
+                  hoverValue={
+                    (d.gas && totalGas
+                      ? new BigNumber(d.gas)
+                          .dividedBy(new BigNumber(totalGas))
+                          .multipliedBy(100)
+                          .toFixed(8)
+                      : '-') + '%'
+                  }
+                >
+                  &nbsp;(
+                  {d.gas && totalGas
                     ? new BigNumber(d.gas)
                         .dividedBy(new BigNumber(totalGas))
                         .multipliedBy(100)
-                        .toFixed(8)
-                    : '-') + '%'
-                }
-              >
-                &nbsp;(
-                {d.gas && totalGas
-                  ? new BigNumber(d.gas)
-                      .dividedBy(new BigNumber(totalGas))
-                      .multipliedBy(100)
-                      .toFixed(3)
-                  : '-'}
-                %)
-              </Text>
-            </td>
-          </tr>
-        ));
+                        .toFixed(3)
+                    : '-'}
+                  %)
+                </Text>
+              </td>
+            </tr>
+          );
+        });
       default:
         return null;
     }

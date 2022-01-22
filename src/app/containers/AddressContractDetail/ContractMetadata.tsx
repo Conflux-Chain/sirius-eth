@@ -231,7 +231,10 @@ export function ContractMetadata({ address, contractInfo }) {
                 )}
               >
                 {contractInfo.from ? (
-                  <AddressContainer value={contractInfo.from} />
+                  <AddressContainer
+                    value={contractInfo.from}
+                    isContract={true}
+                  />
                 ) : (
                   notAvailableText
                 )}

@@ -29,13 +29,13 @@ import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { AddressContainer } from 'app/components/AddressContainer';
 import clsx from 'clsx';
-import BigNumber from 'bignumber.js';
+// import BigNumber from 'bignumber.js';
 import { Security } from 'app/components/Security/Loadable';
 import {
   GasFee,
   InputDataNew,
   Status,
-  StorageFee,
+  // StorageFee,
   TokenTypeTag,
 } from 'app/components/TxnComponents';
 import _ from 'lodash';
@@ -46,8 +46,8 @@ import { NFTPreview } from '../../components/NFTPreview/Loadable';
 
 import iconInfo from 'images/info.svg';
 
-const getStorageFee = byteSize =>
-  toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
+// const getStorageFee = byteSize =>
+//   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
 
 // Transaction Detail Page
 export const Detail = () => {
@@ -66,7 +66,7 @@ export const Detail = () => {
     hash: string;
   }>();
   const {
-    epochHeight,
+    // epochHeight,
     from,
     to,
     value,
@@ -74,8 +74,8 @@ export const Detail = () => {
     gas,
     nonce,
     blockHash,
-    storageLimit,
-    chainId,
+    // storageLimit,
+    // chainId,
     transactionIndex,
     epochNumber,
     syncTimestamp,
@@ -87,9 +87,9 @@ export const Detail = () => {
     confirmedEpochCount,
     txExecErrorInfo,
     gasCoveredBySponsor,
-    storageCoveredBySponsor,
-    storageReleased,
-    storageCollateralized,
+    // storageCoveredBySponsor,
+    // storageReleased,
+    // storageCollateralized,
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
 
@@ -277,15 +277,17 @@ export const Detail = () => {
     };
   }, [intervalToClear]);
 
-  const fromContent = (isFull = false) => (
-    <span>
-      <AddressContainer value={from} isFull={isFull} />{' '}
-      <CopyButton copyText={formatAddress(from)} />
-    </span>
-  );
+  const fromContent = (isFull = false) => {
+    return (
+      <span>
+        <AddressContainer value={from} isFull={isFull} />{' '}
+        <CopyButton copyText={formatAddress(from)} />
+      </span>
+    );
+  };
   const toContent = (isFull = false) => (
     <span>
-      <AddressContainer value={to} isFull={isFull} />{' '}
+      <AddressContainer value={to} isFull={isFull} isContract={isContract} />{' '}
       <CopyButton copyText={formatAddress(to)} />
     </span>
   );
@@ -358,6 +360,7 @@ export const Detail = () => {
             <AddressContainer
               value={transactionDetail['contractCreated']}
               isFull={true}
+              isContract={true}
             />{' '}
             <CopyButton
               copyText={formatAddress(transactionDetail['contractCreated'])}
@@ -681,13 +684,13 @@ export const Detail = () => {
 
   const handleFolded = () => setFolded(folded => !folded);
 
-  const storageReleasedTotal = storageReleased
-    ? getStorageFee(
-        storageReleased.reduce((prev, curr) => {
-          return prev + curr.collaterals ? Number(curr.collaterals) : 0;
-        }, 0),
-      )
-    : 0;
+  // const storageReleasedTotal = storageReleased
+  //   ? getStorageFee(
+  //       storageReleased.reduce((prev, curr) => {
+  //         return prev + curr.collaterals ? Number(curr.collaterals) : 0;
+  //       }, 0),
+  //     )
+  //   : 0;
 
   return (
     <StyledCardWrapper>
@@ -706,7 +709,7 @@ export const Detail = () => {
             {routeHash} <CopyButton copyText={routeHash} />
           </SkeletonContainer>
         </Description>
-        <Description
+        {/* <Description
           title={
             <Tooltip
               text={t(translations.toolTip.tx.executedEpoch)}
@@ -728,8 +731,8 @@ export const Detail = () => {
               </>
             )}
           </SkeletonContainer>
-        </Description>
-        <Description
+        </Description> */}
+        {/* <Description
           title={
             <Tooltip
               text={t(translations.toolTip.tx.proposedEpoch)}
@@ -744,6 +747,21 @@ export const Detail = () => {
               {toThousands(epochHeight)}
             </Link>{' '}
             <CopyButton copyText={epochHeight} />
+          </SkeletonContainer>
+        </Description> */}
+        <Description
+          title={
+            <Tooltip
+              text={t(translations.toolTip.block.blockHeight)}
+              placement="top"
+            >
+              {t(translations.general.table.block.height)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            <Link href={`/block/${blockHash}`}>{toThousands(epochNumber)}</Link>{' '}
+            <CopyButton copyText={epochNumber} />
           </SkeletonContainer>
         </Description>
         <Description
@@ -917,7 +935,7 @@ export const Detail = () => {
               {gasUsed && gas ? Math.max(+gasUsed, (+gas * 3) / 4) : '--'}
             </SkeletonContainer>
           </Description>
-          <Description
+          {/* <Description
             title={
               <Tooltip
                 text={t(translations.toolTip.tx.storageCollateralized)}
@@ -964,7 +982,7 @@ export const Detail = () => {
             <SkeletonContainer shown={loading}>
               {storageReleasedTotal} CFX
             </SkeletonContainer>
-          </Description>
+          </Description> */}
           <Description
             title={
               <Tooltip text={t(translations.toolTip.tx.nonce)} placement="top">
@@ -990,7 +1008,7 @@ export const Detail = () => {
               {_.isNil(transactionIndex) ? '--' : !loading && transactionIndex}
             </SkeletonContainer>
           </Description>
-          <Description
+          {/* <Description
             title={
               <Tooltip
                 text={t(translations.toolTip.tx.chainID)}
@@ -1001,7 +1019,7 @@ export const Detail = () => {
             }
           >
             <SkeletonContainer shown={loading}>{chainId}</SkeletonContainer>
-          </Description>
+          </Description> */}
           {/* only send to user type will with empty data */}
           {!data || data === '0x' ? null : (
             <Description
