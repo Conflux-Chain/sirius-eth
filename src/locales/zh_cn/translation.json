@@ -1346,7 +1346,7 @@
     },
     "home": {
       "currentBlockNumber": "当前区块号",
-      "currentEpoch": "当前纪元",
+      "currentEpoch": "当前区块高度",
       "account": "账户总数",
       "transactions": "交易总数",
       "contract": "合约总数"

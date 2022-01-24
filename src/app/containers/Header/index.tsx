@@ -24,7 +24,7 @@ import { useToggle } from 'react-use';
 import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
 import { getNetwork, gotoNetwork } from 'utils';
 import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
-import { Notices } from 'app/containers/Notices/Loadable';
+// import { Notices } from 'app/containers/Notices/Loadable';
 
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
@@ -68,14 +68,14 @@ export const Header = memo(() => {
       ],
       name: ScanEvent.menu.action.techIssue,
       afterClick: menuClick,
-      href: 'https://github.com/Conflux-Chain/sirius/issues',
+      href: 'https://github.com/Conflux-Chain/sirius-eth/issues',
     },
-    {
-      title: [t(translations.header.report), <Check size={18} key="check" />],
-      name: ScanEvent.menu.action.report,
-      afterClick: menuClick,
-      href: '/report',
-    },
+    // {
+    //   title: [t(translations.header.report), <Check size={18} key="check" />],
+    //   name: ScanEvent.menu.action.report,
+    //   afterClick: menuClick,
+    //   href: '/report',
+    // },
     {
       title: [
         t(translations.header.supportCenter),
@@ -256,61 +256,61 @@ export const Header = memo(() => {
       matched: moreMatched,
       className: 'plain',
       children: [
-        {
-          title: [
-            t(translations.header.tools),
-            <Check size={18} key="check" />,
-          ],
-          name: ScanEvent.menu.action.tools,
-          plain: true,
-          children: [
-            // {
-            //   title: [
-            //     t(translations.header.addressConverter),
-            //     <Check size={18} key="check" />,
-            //   ],
-            //   name: ScanEvent.menu.action.addressConverter,
-            //   afterClick: menuClick,
-            //   href: '/address-converter',
-            // },
-            // {
-            //   title: [
-            //     t(translations.header.broadcastTx),
-            //     <Check size={18} key="check" />,
-            //   ],
-            //   name: ScanEvent.menu.action.broadcastTx,
-            //   afterClick: menuClick,
-            //   href: '/push-tx',
-            // },
-            {
-              title: [
-                t(translations.header.blocknumberCalc),
-                <Check size={18} key="check" />,
-              ],
-              name: ScanEvent.menu.action.blocknumberCalc,
-              afterClick: menuClick,
-              href: '/block-countdown',
-            },
-            // {
-            //   title: [
-            //     t(translations.header.nftChecker),
-            //     <Check size={18} key="check" />,
-            //   ],
-            //   name: ScanEvent.menu.action.nftChecker,
-            //   afterClick: menuClick,
-            //   href: '/nft-checker',
-            // },
-            {
-              title: [
-                t(translations.header.balanceChecker),
-                <Check size={18} key="check" />,
-              ],
-              name: ScanEvent.menu.action.balanceChecker,
-              afterClick: menuClick,
-              href: '/balance-checker',
-            },
-          ],
-        },
+        // {
+        //   title: [
+        //     t(translations.header.tools),
+        //     <Check size={18} key="check" />,
+        //   ],
+        //   name: ScanEvent.menu.action.tools,
+        //   plain: true,
+        //   children: [
+        //     // {
+        //     //   title: [
+        //     //     t(translations.header.addressConverter),
+        //     //     <Check size={18} key="check" />,
+        //     //   ],
+        //     //   name: ScanEvent.menu.action.addressConverter,
+        //     //   afterClick: menuClick,
+        //     //   href: '/address-converter',
+        //     // },
+        //     // {
+        //     //   title: [
+        //     //     t(translations.header.broadcastTx),
+        //     //     <Check size={18} key="check" />,
+        //     //   ],
+        //     //   name: ScanEvent.menu.action.broadcastTx,
+        //     //   afterClick: menuClick,
+        //     //   href: '/push-tx',
+        //     // },
+        //     {
+        //       title: [
+        //         t(translations.header.blocknumberCalc),
+        //         <Check size={18} key="check" />,
+        //       ],
+        //       name: ScanEvent.menu.action.blocknumberCalc,
+        //       afterClick: menuClick,
+        //       href: '/block-countdown',
+        //     },
+        //     // {
+        //     //   title: [
+        //     //     t(translations.header.nftChecker),
+        //     //     <Check size={18} key="check" />,
+        //     //   ],
+        //     //   name: ScanEvent.menu.action.nftChecker,
+        //     //   afterClick: menuClick,
+        //     //   href: '/nft-checker',
+        //     // },
+        //     {
+        //       title: [
+        //         t(translations.header.balanceChecker),
+        //         <Check size={18} key="check" />,
+        //       ],
+        //       name: ScanEvent.menu.action.balanceChecker,
+        //       afterClick: menuClick,
+        //       href: '/balance-checker',
+        //     },
+        //   ],
+        // },
         {
           title: [
             t(translations.header.support),
@@ -620,7 +620,7 @@ export const Header = memo(() => {
         brand={brand}
         mainMenu={mainMenu}
         topMenu={topMenu}
-        subMenu={<Notices />}
+        // subMenu={<Notices />}
       />
       {(bp === 's' || bp === 'm') && (
         <SearchWrapper>

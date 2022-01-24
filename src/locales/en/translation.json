@@ -1347,7 +1347,7 @@
     },
     "home": {
       "currentBlockNumber": "Current Block Number",
-      "currentEpoch": "Current Epoch",
+      "currentEpoch": "Current Block Height",
       "account": "Accounts",
       "transactions": "Transactions",
       "contract": "Contracts"

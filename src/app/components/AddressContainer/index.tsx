@@ -38,7 +38,7 @@ interface Props {
   isContract?: boolean;
 }
 
-const defaultPCMaxWidth = 138;
+const defaultPCMaxWidth = 95;
 const defaultMobileMaxWidth =
   NETWORK_TYPE === NETWORK_TYPES.mainnet ? 106 : 140;
 const defaultPCSuffixAddressSize =
