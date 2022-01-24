@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { /*Link as RouterLink,*/ useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Skeleton } from '@cfxjs/react-ui';
 import { Link } from '../../components/Link/Loadable';
@@ -13,9 +13,9 @@ import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { Tooltip } from '../../components/Tooltip/Loadable';
 import { formatAddress } from '../../../utils';
 import { media } from '../../../styles/media';
-import DownIcon from '../../../images/down.png';
-import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
-import { Dropdown, Menu } from '@cfxjs/antd';
+// import DownIcon from '../../../images/down.png';
+// import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
+import { Dropdown /*, Menu*/ } from '@cfxjs/antd';
 import descIcon from 'images/table-desc.svg';
 
 // import { useGlobal } from 'utils/hooks/useGlobal';
@@ -78,25 +78,25 @@ export function TokenDetail() {
     formatAddress(tokenAddress) ===
     'cfx:achc8nxj7r451c223m18w2dwjnmhkd6rxawrvkvsy2';
 
-  const menu = (
-    <MenuWrapper>
-      <Menu.Item>
-        <RouterLink to={`/token-info/${tokenAddress}`}>
-          {t(translations.general.address.more.editToken)}
-        </RouterLink>
-      </Menu.Item>
-      <Menu.Item>
-        <RouterLink to={`/balance-checker?address=${tokenAddress}`}>
-          {t(translations.general.address.more.balanceChecker)}
-        </RouterLink>
-      </Menu.Item>
-      <Menu.Item>
-        <RouterLink to={`/report?address=${tokenAddress}`}>
-          {t(translations.general.address.more.report)}
-        </RouterLink>
-      </Menu.Item>
-    </MenuWrapper>
-  );
+  // const menu = (
+  //   <MenuWrapper>
+  //     <Menu.Item>
+  //       <RouterLink to={`/token-info/${tokenAddress}`}>
+  //         {t(translations.general.address.more.editToken)}
+  //       </RouterLink>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <RouterLink to={`/balance-checker?address=${tokenAddress}`}>
+  //         {t(translations.general.address.more.balanceChecker)}
+  //       </RouterLink>
+  //     </Menu.Item>
+  //     <Menu.Item>
+  //       <RouterLink to={`/report?address=${tokenAddress}`}>
+  //         {t(translations.general.address.more.report)}
+  //       </RouterLink>
+  //     </Menu.Item>
+  //   </MenuWrapper>
+  // );
 
   return (
     <>
@@ -141,7 +141,7 @@ export function TokenDetail() {
                 </Link>
               </div>
             ) : null}
-            <DropdownWrapper overlay={menu} trigger={['click']}>
+            {/* <DropdownWrapper overlay={menu} trigger={['click']}>
               <span onClick={e => e.preventDefault()}>
                 {t(translations.general.address.more.title)}{' '}
                 <img
@@ -149,7 +149,7 @@ export function TokenDetail() {
                   alt={t(translations.general.address.more.title)}
                 />
               </span>
-            </DropdownWrapper>
+            </DropdownWrapper> */}
             {/* {data &&
             typeof data.isRegistered !== 'undefined' &&
             data.isRegistered ? (

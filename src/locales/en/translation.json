@@ -359,8 +359,8 @@
     "suggestionBox": "Suggestion Box",
     "testnet": "Conflux Testnet",
     "oceanus": "Conflux Tethys",
-    "searchPlaceHolder": "Search by Epoch / Block Hash / Txn Hash / Address / Token / Contract Name Tag",
-    "searchPlaceHolderMobile": "Epoch/Block Hash/Txn Hash/Address/Token/Contract Name Tag",
+    "searchPlaceHolder": "Search by Block Height / Block Hash / Txn Hash / Address / Token / Contract Name Tag",
+    "searchPlaceHolderMobile": "Block Height/Block Hash/Txn Hash/Address/Token/Contract Name Tag",
     "addressConverter": "Address Format Conversion",
     "broadcastTx": "Broadcast Transaction",
     "blocknumberCalc": "Blocknumber Calculator",
@@ -605,9 +605,9 @@
         "token": "Token",
         "tokenSubTitle": "(Up to 3 tokens can be selected)",
         "rangePicker": "Date",
-        "epochNumber": "Epoch",
-        "minEpochNumber": "Min Epoch",
-        "maxEpochNumber": "Max Epoch"
+        "epochNumber": "Block Height",
+        "minEpochNumber": "Min Block Height",
+        "maxEpochNumber": "Max Block Height"
       },
       "error": {
         "invalidHash": "Invalid hash format",
@@ -643,7 +643,7 @@
       "holderAddress": "Holder Address",
       "tokenID": "TokenID",
       "blockHash": "Block Hash",
-      "epoch": "Epoch"
+      "epoch": "Block Height"
     },
     "totalRecord": "A total of {{total}} records",
     "totalRecordWithLimit": "Showing the last {{limit}} records (A total of {{total}} records)",
@@ -705,7 +705,7 @@
       "dateTime": "Date Time (Local)",
       "switchAgeTip": "Click to show {{format}} format",
       "block": {
-        "epoch": "Epoch",
+        "epoch": "Block Height",
         "height": "Block Height",
         "position": "Position",
         "txns": "Txn",
@@ -840,7 +840,7 @@
     "status": {
       "skip": {
         "text": "Skip",
-        "explanation": "Possible reasons: Wrong nonce; insufficient balance; the transactions fail to execute at the appropriate epoch height; the transaction executed in earlier blocks."
+        "explanation": "Possible reasons: Wrong nonce; insufficient balance; the transactions fail to execute at the appropriate block height; the transaction executed in earlier blocks."
       },
       "error": {
         "text": "Error",
@@ -1003,7 +1003,7 @@
     "for": "For",
     "tokenId": "TokenID",
     "inputTips": "The binary data that formed the input to the transaction, either the input data if it was a message call or the contract initialisation if it was a contract registration",
-    "epochConfirmations": "{{count}} Epoch Confirmations",
+    "epochConfirmations": "{{count}} Blocks Confirmations",
     "statusError": {
       "0": "Unknown error.",
       "1": "Contract error: ",
@@ -1042,7 +1042,7 @@
     "title": "Block",
     "description": "Block",
     "blockHeight": "Block Height",
-    "epoch": "Epoch",
+    "epoch": "Block Height",
     "difficulty": "Difficulty",
     "miner": "Miner",
     "reward": "Reward",
@@ -1064,8 +1064,8 @@
     }
   },
   "epoch": {
-    "title": "Epoch",
-    "description": "Epoch",
+    "title": "Block Height",
+    "description": "Block Height",
     "tipCountBefore": "A total of",
     "tipCountAfter": "{{type}} found",
     "labelCountBefore": "A total of",
@@ -1152,7 +1152,7 @@
   "toolTip": {
     "block": {
       "blockHeight": "The number of blocks on the path to Genesis block via parent references. The block height of a newly mined block is obtained by increasing the height of its parent block by 1. In particular, the block height of Genesis block is 0.",
-      "epoch": "Epoch refers to the block height of the first pivot block that (directly or indirectly) references this block. The epoch number of a block represents the time when this block is first observed by pivot blocks. A block in an earlier epoch always precedes blocks in later epoches in the total order of all blocks.",
+      "epoch": "Epoch refers to the block height of the first pivot block that (directly or indirectly) references this block. The block number of a block represents the time when this block is first observed by pivot blocks. A block in an earlier block always precedes blocks in later epoches in the total order of all blocks.",
       "difficulty": "The amount of effort required to mine a new block. The difficulty may adjust according to time.",
       "miner": "Miner who successfully generate the block onto the blockchain.",
       "reward": "The miner of this block is rewarded with a finite amount of CFX, consists of base reward, reward from storage collateral interest and transaction fee.",

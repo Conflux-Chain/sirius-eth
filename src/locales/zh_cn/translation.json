@@ -359,8 +359,8 @@
     "suggestionBox": "意见箱",
     "testnet": "Conflux Testnet",
     "oceanus": "Conflux Tethys",
-    "searchPlaceHolder": "请输入纪元 / 区块哈希 / 交易哈希 / 地址 / 代币 / 合约名称标签",
-    "searchPlaceHolderMobile": "纪元/区块哈希/交易哈希/地址/代币/合约名称标签",
+    "searchPlaceHolder": "请输入区块高度 / 区块哈希 / 交易哈希 / 地址 / 代币 / 合约名称标签",
+    "searchPlaceHolderMobile": "区块高度/区块哈希/交易哈希/地址/代币/合约名称标签",
     "addressConverter": "地址格式转换",
     "broadcastTx": "广播交易",
     "blocknumberCalc": "区块计算器",
@@ -605,9 +605,9 @@
         "token": "代币",
         "tokenSubTitle": "（最多支持选择 3 种代币）",
         "rangePicker": "日期",
-        "epochNumber": "纪元",
-        "minEpochNumber": "最小纪元",
-        "maxEpochNumber": "最大纪元"
+        "epochNumber": "区块高度",
+        "minEpochNumber": "最小区块高度",
+        "maxEpochNumber": "最大区块高度"
       },
       "error": {
         "invalidHash": "哈希值格式错误",
@@ -643,7 +643,7 @@
       "holderAddress": "持有人地址",
       "tokenID": "代币 ID",
       "blockHash": "区块哈希",
-      "epoch": "纪元"
+      "epoch": "区块高度"
     },
     "totalRecord": "共计 {{total}} 个记录",
     "totalRecordWithLimit": "仅展示最新的 {{limit}} 条记录（共计 {{total}} 条记录）",
@@ -705,7 +705,7 @@
       "dateTime": "日期时间（本地）",
       "switchAgeTip": "点击切换为{{format}}格式显示",
       "block": {
-        "epoch": "纪元",
+        "epoch": "区块高度",
         "height": "区块高度",
         "position": "位置",
         "txns": "交易数",
@@ -839,7 +839,7 @@
     "status": {
       "skip": {
         "text": "跳过",
-        "explanation": "可能的原因：错误随机数；余额不足；交易未在合适的纪元高度执行；交易在更早的区块被执行。"
+        "explanation": "可能的原因：错误随机数；余额不足；交易未在合适的区块高度执行；交易在更早的区块被执行。"
       },
       "error": {
         "text": "失败",
@@ -1002,7 +1002,7 @@
     "for": "转移",
     "tokenId": "代币ID",
     "inputTips": "构成交易输入数据的二进制数据，如果是消息调用，则为输入数据；如果是合约创建，则为合约初始化",
-    "epochConfirmations": "{{count}} 个纪元已确认",
+    "epochConfirmations": "{{count}} 个区块高度已确认",
     "statusError": {
       "0": "未知错误。",
       "1": "合约错误：",
@@ -1041,7 +1041,7 @@
     "title": "区块",
     "description": "区块",
     "blockHeight": "区块高度",
-    "epoch": "纪元",
+    "epoch": "区块高度",
     "difficulty": "难度",
     "miner": "矿工",
     "reward": "奖励",
@@ -1063,8 +1063,8 @@
     }
   },
   "epoch": {
-    "title": "纪元",
-    "description": "纪元",
+    "title": "区块高度",
+    "description": "区块高度",
     "tipCountBefore": "共计",
     "tipCountAfter": "{{type}}记录",
     "labelCountBefore": "共计",
