@@ -25,13 +25,13 @@ if (process.env.REACT_APP_TestNet === 'true') {
   rpcv2 = 'https://39.100.97.209:12537/rpc';
   confluxDag = pos;
 } else if (process.env.REACT_APP_ETHNet === 'true') {
-  const net12000 = 'https://net12001eth.confluxscan.net/';
-  const rpcBrigde = 'http://39.103.222.8:32537/';
-  stat = `${net12000}/`;
-  v1 = `${net12000}/`;
-  rpc = `${rpcBrigde}/rpc`;
-  rpcv2 = `${rpcBrigde}/rpcv2`;
-  confluxDag = `${net12000}/`;
+  const url = 'https://net8889eth.confluxscan.net/';
+  // const rpcBrigde = 'https://net8889eth.confluxscan.net/rpcv2';
+  stat = `${url}/`;
+  v1 = `${url}/`;
+  rpc = `${url}/rpc`;
+  rpcv2 = `${url}/rpcv2`;
+  confluxDag = `${url}/`;
 }
 
 module.exports = app => {
