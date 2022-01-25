@@ -35,6 +35,7 @@ export const ScanEvent = {
       techIssue: 'tech_issue',
       report: 'report',
       suggestionBox: 'suggestion_box',
+      crossSpaceDApp: 'cross_space_dapp',
       developerDocuments: 'developer_documents',
       confluxStudio: 'conflux_studio',
       confluxTruffle: 'conflux_truffle',
