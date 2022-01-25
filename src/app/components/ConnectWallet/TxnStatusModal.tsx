@@ -151,7 +151,7 @@ export const TxnStatusModal = ({
       <div className="txContainer">
         <span className="label">{t(translations.sponsor.txHash)}: </span>
         <a
-          href={`/transaction/${hash}`}
+          href={`/tx/${hash}`}
           target="_blank"
           className="content"
           rel="noopener noreferrer"

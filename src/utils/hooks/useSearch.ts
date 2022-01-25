@@ -69,7 +69,7 @@ export const useSearch = (value?: string) => {
       }
 
       if (isHash(innerValue as string)) {
-        history.push(`/transaction/${innerValue}`);
+        history.push(`/tx/${innerValue}`);
         trackEvent({
           category: ScanEvent.search.category,
           action: ScanEvent.search.action.transaction,

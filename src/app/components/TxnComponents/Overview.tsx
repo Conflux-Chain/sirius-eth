@@ -109,7 +109,7 @@ export const Overview = ({ data }) => {
       </Description>
       {hash ? (
         <div className="overview-gotoDetail-container">
-          <Link className="overview-gotoDetail" href={`/transaction/${hash}`}>
+          <Link className="overview-gotoDetail" href={`/tx/${hash}`}>
             {t(translations.transaction.gotoDetail)}
           </Link>{' '}
         </div>

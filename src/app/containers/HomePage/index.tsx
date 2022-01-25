@@ -60,7 +60,7 @@ export function HomePage() {
             {currentTabValue === 'blocks' ? (
               <Link
                 className="viewall-link"
-                href={`/blockchain/blocks`}
+                href={`/blocks`}
                 ga={{
                   category: ScanEvent.menu.category,
                   action: ScanEvent.menu.action.blocks,
@@ -73,7 +73,7 @@ export function HomePage() {
             ) : (
               <Link
                 className="viewall-link"
-                href={`/blockchain/transactions`}
+                href={`/txs`}
                 ga={{
                   category: ScanEvent.menu.category,
                   action: ScanEvent.menu.action.transactions,

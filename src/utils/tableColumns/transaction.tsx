@@ -117,7 +117,7 @@ export const TxnHashRenderComponent = ({
         </StyledStatusWrapper>
       ) : null}
 
-      <Link href={`/transaction/${hash}`}>
+      <Link href={`/tx/${hash}`}>
         <Text span hoverValue={hash}>
           <SpanWrap>{hash}</SpanWrap>
         </Text>

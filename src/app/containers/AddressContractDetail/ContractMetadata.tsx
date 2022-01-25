@@ -243,9 +243,7 @@ export function ContractMetadata({ address, contractInfo }) {
                     {` ${t(translations.contractDetail.at)} ${t(
                       translations.contractDetail.txOnlyEn,
                     )} `}
-                    <LinkWrap
-                      to={`/transaction/${contractInfo.transactionHash}`}
-                    >
+                    <LinkWrap to={`/tx/${contractInfo.transactionHash}`}>
                       <Text span hoverValue={contractInfo.transactionHash}>
                         {formatString(contractInfo.transactionHash, 'address')}
                       </Text>

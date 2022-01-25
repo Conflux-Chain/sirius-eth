@@ -288,7 +288,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
       </ConnectButton>
     );
   const openTx = () => {
-    window.open(`${window.location.origin}/transaction/${txHash}`);
+    window.open(`${window.location.origin}/tx/${txHash}`);
   };
   return (
     <Container>

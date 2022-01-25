@@ -343,50 +343,9 @@ exports[`<App /> should render and match the snapshot 1`] = `
                       path="/"
                     />
                     <Route
-                      exact={true}
-                      path={
-                        Array [
-                          "/blocks-and-transactions",
-                          "/blockchain",
-                          "/blockchain/blocks-and-transactions",
-                        ]
-                      }
-                      render={[Function]}
-                    />
-                    <Route
                       component={[Function]}
                       exact={true}
-                      path="/blockchain/blocks"
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path="/blockchain/transactions"
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path="/blockchain/accounts"
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path="/tokens"
-                    />
-                    <Route
-                      exact={true}
-                      path="/tokens/:tokenType"
-                      render={[Function]}
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path="/transaction/:hash"
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path="/tx/:hash"
+                      path="/blocks"
                     />
                     <Route
                       component={[Function]}
@@ -396,7 +355,32 @@ exports[`<App /> should render and match the snapshot 1`] = `
                     <Route
                       component={[Function]}
                       exact={true}
-                      path="/notfound/:contractAddress"
+                      path="/txs"
+                    />
+                    <Route
+                      component={[Function]}
+                      exact={true}
+                      path="/tx/:hash"
+                    />
+                    <Route
+                      component={[Function]}
+                      exact={true}
+                      path="/accounts"
+                    />
+                    <Route
+                      component={[Function]}
+                      exact={true}
+                      path="/tokens"
+                    />
+                    <Route
+                      exact={true}
+                      path="/tokens-nft"
+                      render={[Function]}
+                    />
+                    <Route
+                      exact={true}
+                      path="/tokens-nft1155"
+                      render={[Function]}
                     />
                     <Route
                       path="/address/:address"
@@ -404,47 +388,12 @@ exports[`<App /> should render and match the snapshot 1`] = `
                     />
                     <Route
                       component={[Function]}
+                      exact={true}
+                      path="/notfound/:contractAddress"
+                    />
+                    <Route
+                      component={[Function]}
                       path="/search/:text"
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path={
-                        Array [
-                          "/block-countdown",
-                          "/block-countdown/:block",
-                        ]
-                      }
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path="/report"
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path={
-                        Array [
-                          "/networkError",
-                          "/networkError/:network",
-                        ]
-                      }
-                    />
-                    <Route
-                      component={[Function]}
-                      exact={true}
-                      path="/balance-checker"
-                    />
-                    <Route
-                      exact={true}
-                      path={
-                        Array [
-                          "/contract-info/:contractAddress",
-                          "/token-info/:contractAddress",
-                        ]
-                      }
-                      render={[Function]}
                     />
                     <Route
                       exact={true}

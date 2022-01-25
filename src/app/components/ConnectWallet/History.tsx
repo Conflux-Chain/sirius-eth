@@ -80,7 +80,7 @@ export const History = ({
           <div className="history-bottom">
             {records.map(r => (
               <div className="history-item" key={r.hash}>
-                <ScanLink href={`/transaction/${r.hash}`}>
+                <ScanLink href={`/tx/${r.hash}`}>
                   {(convert && convert(r.info, r)) || r.info || r.hash}
                 </ScanLink>
 

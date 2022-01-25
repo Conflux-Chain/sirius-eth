@@ -48,7 +48,6 @@ export const Header = memo(() => {
     location.pathname.startsWith('/block-countdown') ||
     location.pathname.startsWith('/nft-checker');
   // const blockchainMatched =
-  //   location?.pathname?.startsWith('/blockchain') ||
   //   location.pathname.startsWith('/contract') ||
   //   location.pathname.startsWith('/sponsor');
   // const ecosystemMatched = false;
@@ -216,14 +215,14 @@ export const Header = memo(() => {
       title: [t(translations.header.block)],
       name: ScanEvent.menu.action.blocks,
       afterClick: menuClick,
-      href: '/blockchain/blocks',
+      href: '/blocks',
     },
     {
       // txn
       title: [t(translations.header.txn)],
       name: ScanEvent.menu.action.transactions,
       afterClick: menuClick,
-      href: '/blockchain/transactions',
+      href: '/txs',
     },
     {
       title: t(translations.header.tokens),
@@ -237,7 +236,7 @@ export const Header = memo(() => {
           ],
           name: ScanEvent.menu.action.tokens20,
           afterClick: menuClick,
-          href: '/tokens/crc20',
+          href: '/tokens',
         },
         {
           // erc 721
@@ -247,7 +246,7 @@ export const Header = memo(() => {
           ],
           name: ScanEvent.menu.action.tokens721,
           afterClick: menuClick,
-          href: '/tokens/crc721',
+          href: '/tokens-nft',
         },
         {
           // erc 1155
@@ -257,7 +256,7 @@ export const Header = memo(() => {
           ],
           name: ScanEvent.menu.action.tokens1155,
           afterClick: menuClick,
-          href: '/tokens/crc1155',
+          href: '/tokens-nft1155',
         },
       ],
     },
@@ -354,7 +353,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.blocks,
     //           afterClick: menuClick,
-    //           href: '/blockchain/blocks',
+    //           href: '/blocks',
     //         },
     //         {
     //           // txn
@@ -364,7 +363,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.transactions,
     //           afterClick: menuClick,
-    //           href: '/blockchain/transactions',
+    //           href: '/txs',
     //         },
     //         {
     //           // accounts
@@ -374,7 +373,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.accounts,
     //           afterClick: menuClick,
-    //           href: '/blockchain/accounts',
+    //           href: '/accounts',
     //         },
     //         {
     //           // cfx transfers
@@ -384,7 +383,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.cfxTransfers,
     //           afterClick: menuClick,
-    //           href: '/blockchain/cfx-transfers',
+    //           href: '/cfx-transfers',
     //         },
     //       ],
     //     },
@@ -395,43 +394,6 @@ export const Header = memo(() => {
     //       ],
     //       plain: true,
     //       children: contractItems,
-    //     },
-    //   ],
-    // },
-    // // tokens
-    // {
-    //   title: t(translations.header.tokens),
-    //   matched: location?.pathname?.startsWith('/tokens'),
-    //   children: [
-    //     {
-    //       // erc 20
-    //       title: [
-    //         t(translations.header.tokens20),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tokens20,
-    //       afterClick: menuClick,
-    //       href: '/tokens/crc20',
-    //     },
-    //     {
-    //       // erc 721
-    //       title: [
-    //         t(translations.header.tokens721),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tokens721,
-    //       afterClick: menuClick,
-    //       href: '/tokens/crc721',
-    //     },
-    //     {
-    //       // erc 1155
-    //       title: [
-    //         t(translations.header.tokens1155),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tokens1155,
-    //       afterClick: menuClick,
-    //       href: '/tokens/crc1155',
     //     },
     //   ],
     // },
