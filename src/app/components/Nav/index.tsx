@@ -104,11 +104,11 @@ const Brand = styled.div`
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
-  margin-right: 3rem;
+  margin-right: 0.5rem;
 
-  ${media.xl} {
+  /* ${media.xl} {
     margin-right: 2rem;
-  }
+  } */
 
   ${media.l} {
     margin-right: 1rem;
@@ -234,6 +234,8 @@ const Container = styled.div`
       padding-top: 0;
       padding-bottom: 0;
       margin-top: 0;
+      /* TODO, remove util show notice info */
+      margin-bottom: 0rem;
     }
     ${media.s} {
       display: none;
