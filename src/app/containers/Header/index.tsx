@@ -62,17 +62,6 @@ export const Header = memo(() => {
   const supportAndHelpMenuItems = [
     {
       title: [
-        t(translations.header.crossSpaceDApp),
-        <Check size={18} key="check" />,
-      ],
-      name: ScanEvent.menu.action.crossSpaceDApp,
-      afterClick: menuClick,
-      href: iszh
-        ? 'https://evm.fluentwallet.com/'
-        : 'https://evm.fluentwallet.com/',
-    },
-    {
-      title: [
         t(translations.header.techIssue),
         <Check size={18} key="check" />,
       ],
@@ -321,6 +310,27 @@ export const Header = memo(() => {
         //     },
         //   ],
         // },
+        {
+          title: [
+            t(translations.header.tools),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tools,
+          plain: true,
+          children: [
+            {
+              title: [
+                t(translations.header.crossSpaceDApp),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.crossSpaceDApp,
+              afterClick: menuClick,
+              href: iszh
+                ? 'https://evm.fluentwallet.com/'
+                : 'https://evm.fluentwallet.com/',
+            },
+          ],
+        },
         {
           title: [
             t(translations.header.support),
