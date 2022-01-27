@@ -23,7 +23,7 @@ export const ExcutedTxns = ({ address }: Props) => {
   const columns = [
     transactionColunms.hash,
     transactionColunms.method,
-    blockColunms.epochWithNoLink,
+    blockColunms.epoch,
     {
       ...tokenColunms.from,
       render(text, record, index) {

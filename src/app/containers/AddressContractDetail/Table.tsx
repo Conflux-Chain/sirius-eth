@@ -47,24 +47,24 @@ export function Table({ address, addressInfo, type }) {
 
   tabs.push({
     hidden: !addressInfo.erc20TransferCount,
-    value: `transfers-${CFX_TOKEN_TYPES.crc20}`,
-    action: 'transfersCrc20',
+    value: `transfers-${CFX_TOKEN_TYPES.erc20}`,
+    action: 'transfersErc20',
     label: t(translations.general.tokenTxnsErc20),
     content: <CRC20Txns address={address} />,
   });
 
   tabs.push({
     hidden: !addressInfo.erc721TransferCount,
-    value: `transfers-${CFX_TOKEN_TYPES.crc721}`,
-    action: 'transfersCrc721',
+    value: `transfers-${CFX_TOKEN_TYPES.erc721}`,
+    action: 'transfersErc721',
     label: t(translations.general.tokenTxnsErc721),
     content: <CRC721Txns address={address} />,
   });
 
   tabs.push({
     hidden: !addressInfo.erc1155TransferCount,
-    value: `transfers-${CFX_TOKEN_TYPES.crc1155}`,
-    action: 'transfersCrc1155',
+    value: `transfers-${CFX_TOKEN_TYPES.erc1155}`,
+    action: 'transfersErc1155',
     label: t(translations.general.tokenTxnsErc1155),
     content: <CRC1155Txns address={address} />,
   });

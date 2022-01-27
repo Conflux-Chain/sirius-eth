@@ -494,7 +494,7 @@ export const Detail = () => {
               <span className="type">1</span>
               <span>{i18n.language === 'zh-CN' ? '个' : null}</span>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc721" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc721" />
               <span className="type">
                 {transferItem['tokenId'].length > 10 ? (
                   <>
@@ -540,7 +540,7 @@ export const Detail = () => {
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc1155" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc1155" />
               {transferItem['batch'].map((item, index) => {
                 return (
                   <span
@@ -609,7 +609,7 @@ export const Detail = () => {
               </span>
               <span>{i18n.language === 'zh-CN' ? '个' : null}</span>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc20" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc20" />
             </div>,
           );
           break;

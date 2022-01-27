@@ -13,7 +13,7 @@ export const Txns = ({ url }: Props) => {
   const columnsWidth = [4, 4, 6, 6, 4, 3, 4, 5];
   const columns = [
     transactionColunms.hash,
-    blockColunms.epochWithNoLink,
+    blockColunms.epoch,
     transactionColunms.from,
     transactionColunms.to,
     transactionColunms.value,

@@ -16,7 +16,7 @@ export const CRC20Txns = ({ address }: Props) => {
   const columnsWidth = [3, 3, 6, 5, 2, 3, 6, 4];
   const columns = [
     tokenColunms.txnHash,
-    blockColunms.epochWithNoLink,
+    blockColunms.epoch,
     {
       ...tokenColunms.from,
       render(text, record, index) {

@@ -75,10 +75,7 @@ export function Tokens() {
   // let url = `/stat/tokens/list?transferType=${CFX_TOKEN_TYPES.erc20}&reverse=true&orderBy=totalPrice&fields=transferCount,icon,price,totalPrice,quoteUrl,transactionCount,erc20TransferCount&currency=${globalData.currency}`; // @todo wait for new api handler
   let title = t(translations.header.tokens20);
 
-  if (
-    tokenType === CFX_TOKEN_TYPES.erc721 ||
-    tokenType === CFX_TOKEN_TYPES.crc721
-  ) {
+  if (tokenType === CFX_TOKEN_TYPES.erc721) {
     columnsWidth = [1, 7, 5, 3, 3];
     columns = [
       utils.number,
@@ -108,10 +105,7 @@ export function Tokens() {
     title = t(translations.header.tokens721);
   }
 
-  if (
-    tokenType === CFX_TOKEN_TYPES.erc1155 ||
-    tokenType === CFX_TOKEN_TYPES.crc1155
-  ) {
+  if (tokenType === CFX_TOKEN_TYPES.erc1155) {
     columnsWidth = [1, 5, 4, 2, 2];
     columns = [
       utils.number,
@@ -165,9 +159,9 @@ export function Tokens() {
         {title}
         <Tooltip
           hoverable
-          text={t(translations.tokens.crcTip, {
-            crc: tokenType.replace('CRC', 'CRC-'),
-            erc: tokenType.replace('CRC', 'ERC-'),
+          text={t(translations.tokens.ercTip, {
+            crc: tokenType.replace('ERC', 'ERC-'),
+            erc: tokenType.replace('ERC', 'ERC-'),
           })}
           placement="top"
         >

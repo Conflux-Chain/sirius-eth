@@ -139,7 +139,7 @@ export const TokenTransfer = ({
               <span className="for"> {t(translations.transaction.for)} </span>
               <span className="type">1</span>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc721" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc721" />
               <span className="type">
                 &nbsp;
                 {t(translations.transaction.tokenId)}:
@@ -177,7 +177,7 @@ export const TokenTransfer = ({
                 )}
               />
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc1155" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc1155" />
             </span>
             <span className="transfer-item-group">
               {transferItem['batch'].map((item, index) => (

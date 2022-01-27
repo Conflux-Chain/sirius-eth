@@ -45,7 +45,7 @@ export const reqBlockDetail = (param?: object, extra?: object) => {
 
 export const reqTransactionDetail = (param?: object, extra?: object) => {
   return sendRequest({
-    url: `/tx/${param && param['hash']}`,
+    url: `/transaction/${param && param['hash']}`,
     query: extra,
   });
 };
@@ -103,7 +103,7 @@ export const reqTopStatistics = (param: any, extra?: object) => {
     ['cfxSend', 'cfxReceived', 'txnSend', 'txnReceived'].includes(param.action)
   ) {
     return sendRequest({
-      url: `${statPrefix}/tx/top-by-type`,
+      url: `${statPrefix}/transaction/top-by-type`,
       query: {
         span: param.span.slice(0, -1),
         type: param.span.slice(-1),

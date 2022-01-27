@@ -15,7 +15,7 @@ export function Transactions() {
   const columnsTransactions = [
     transactionColunms.hash,
     transactionColunms.method,
-    blockColunms.epochWithNoLink,
+    blockColunms.epoch,
     transactionColunms.from,
     transactionColunms.to,
     transactionColunms.value,
