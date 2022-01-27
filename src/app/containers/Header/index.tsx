@@ -8,7 +8,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { TextLogo } from 'app/components/TextLogo';
+// import { TextLogo } from 'app/components/TextLogo';
 import { Search } from './Search';
 // import { ConnectWallet } from 'app/components/ConnectWallet';
 import { media, useBreakpoint } from 'styles/media';
@@ -17,7 +17,7 @@ import { genParseLinkFn, HeaderLinks } from './HeaderLink';
 import { Check } from '@zeit-ui/react-icons';
 import { translations } from 'locales/i18n';
 import { useLocation } from 'react-router';
-import imgConfiPlanet from 'images/confi-planet.png';
+import imgConfiPlanet from 'images/confi-planet.svg';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
@@ -489,37 +489,41 @@ export const Header = memo(() => {
       // switch network
       name: 'switch-network',
       title: getNetwork(networks, networkId).name,
-      children: networks.map(n => {
-        const isMatch = n.id === networkId;
+      className: 'not-link',
+      children:
+        networks.length < 2
+          ? []
+          : networks.map(n => {
+              const isMatch = n.id === networkId;
 
-        return {
-          title: [n.name, isMatch && <Check size={18} key="check" />],
-          onClick: () => {
-            trackEvent({
-              category: ScanEvent.preference.category,
-              action: ScanEvent.preference.action.changeNet,
-              label: n.name,
-            });
+              return {
+                title: [n.name, isMatch && <Check size={18} key="check" />],
+                onClick: () => {
+                  trackEvent({
+                    category: ScanEvent.preference.category,
+                    action: ScanEvent.preference.action.changeNet,
+                    label: n.name,
+                  });
 
-            menuClick();
+                  menuClick();
 
-            setGlobalData({
-              ...globalData,
-              networkId: n.id,
-            });
+                  setGlobalData({
+                    ...globalData,
+                    networkId: n.id,
+                  });
 
-            if (n.id === 1) {
-              gotoNetwork(1);
-            } else if (n.id === 1029) {
-              gotoNetwork(1029);
-            } else {
-              // @todo, should jump to custom network hostname
-              // gotoNetwork(1029);
-            }
-          },
-          isMatchedFn: () => isMatch,
-        };
-      }),
+                  if (n.id === 1) {
+                    gotoNetwork(1);
+                  } else if (n.id === 1029) {
+                    gotoNetwork(1029);
+                  } else {
+                    // @todo, should jump to custom network hostname
+                    // gotoNetwork(1029);
+                  }
+                },
+                isMatchedFn: () => isMatch,
+              };
+            }),
     },
   ];
 
@@ -575,7 +579,7 @@ export const Header = memo(() => {
           alt="conflux scan logo"
           src={imgConfiPlanet}
         />
-        <TextLogo />
+        {/* <TextLogo /> */}
       </RouterLink>
     </LogoWrapper>
   );
@@ -616,8 +620,8 @@ export const Header = memo(() => {
 
 const LogoWrapper = styled.div`
   .confi-logo {
-    margin-right: 0.57rem;
-    width: 3.3571rem;
+    /* margin-right: 0.57rem; */
+    width: 12rem;
   }
 
   a.link {
@@ -632,6 +636,12 @@ const LogoWrapper = styled.div`
   }
 `;
 const Wrapper = styled.header`
+  .not-link {
+    &:hover {
+      color: #424a71 !important;
+    }
+  }
+
   .navbar-menu {
     .navbar-end {
       .navbar-item {
@@ -709,7 +719,7 @@ const SearchWrapper = styled.div`
       flex-grow: 0;
       top: 11px;
       right: 4rem;
-      left: 12rem;
+      left: 14rem;
       z-index: 2000;
     }
   }
