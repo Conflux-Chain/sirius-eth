@@ -562,7 +562,7 @@ export const isTxHash = async (str: string) => {
 
 // Is input match epoch number format
 // 0x??? need to convert to decimal int
-export function isEpochNumber(str: string) {
+export function isBlockNumber(str: string) {
   var n = Math.floor(Number(str));
   return n !== Infinity && String(n) === str && n >= 0;
 }

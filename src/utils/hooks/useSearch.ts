@@ -2,7 +2,7 @@ import { useHistory } from 'react-router';
 import {
   isBlockHash,
   isHash,
-  isEpochNumber,
+  isBlockNumber,
   tranferToLowerCase,
   formatAddress,
   isAddress,
@@ -46,8 +46,8 @@ export const useSearch = (value?: string) => {
       return;
     }
 
-    if (isEpochNumber(innerValue)) {
-      history.push(`/epoch/${innerValue}`);
+    if (isBlockNumber(innerValue)) {
+      history.push(`/block/${innerValue}`);
       trackEvent({
         category: ScanEvent.search.category,
         action: ScanEvent.search.action.epoch,
