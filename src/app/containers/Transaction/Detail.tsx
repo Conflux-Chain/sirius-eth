@@ -23,20 +23,19 @@ import {
   getPercent,
   toThousands,
   isContractAddress,
-  isInnerContractAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { AddressContainer } from 'app/components/AddressContainer';
 import clsx from 'clsx';
-import BigNumber from 'bignumber.js';
+// import BigNumber from 'bignumber.js';
 import { Security } from 'app/components/Security/Loadable';
 import {
   GasFee,
   InputDataNew,
   Status,
-  StorageFee,
+  // StorageFee,
   TokenTypeTag,
 } from 'app/components/TxnComponents';
 import _ from 'lodash';
@@ -47,8 +46,8 @@ import { NFTPreview } from '../../components/NFTPreview/Loadable';
 
 import iconInfo from 'images/info.svg';
 
-const getStorageFee = byteSize =>
-  toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
+// const getStorageFee = byteSize =>
+//   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
 
 // Transaction Detail Page
 export const Detail = () => {
@@ -67,7 +66,7 @@ export const Detail = () => {
     hash: string;
   }>();
   const {
-    epochHeight,
+    // epochHeight,
     from,
     to,
     value,
@@ -75,8 +74,8 @@ export const Detail = () => {
     gas,
     nonce,
     blockHash,
-    storageLimit,
-    chainId,
+    // storageLimit,
+    // chainId,
     transactionIndex,
     epochNumber,
     syncTimestamp,
@@ -88,11 +87,69 @@ export const Detail = () => {
     confirmedEpochCount,
     txExecErrorInfo,
     gasCoveredBySponsor,
-    storageCoveredBySponsor,
-    storageReleased,
-    storageCollateralized,
+    // storageCoveredBySponsor,
+    // storageReleased,
+    // storageCollateralized,
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
+
+  const fetchTxTransfer = async (toCheckAddress, txnhash) => {
+    try {
+      const isContract = await isContractAddress(toCheckAddress);
+      if (isContract) {
+        setIsContract(true);
+        const fields = [
+          'address',
+          'type',
+          'name',
+          'website',
+          'tokenName',
+          'tokenSymbol',
+          'token',
+          'tokenDecimal',
+          'abi',
+          'bytecode',
+          'iconUrl',
+          'sourceCode',
+          'typeCode',
+        ];
+        const proArr: Array<any> = [];
+        proArr.push(reqContract({ address: toCheckAddress, fields: fields }));
+        proArr.push(
+          reqTransferList({
+            transactionHash: txnhash,
+            fields: 'token',
+            limit: 100,
+            reverse: true,
+          }),
+        );
+        Promise.all(proArr)
+          .then(proRes => {
+            const contractResponse = proRes[0];
+            // update contract info
+            setContractInfo(contractResponse);
+            const transferListReponse = proRes[1];
+            const resultTransferList = transferListReponse;
+            const list = resultTransferList['list'];
+            setTransferList(list);
+            let addressList = list.map(v => v.address);
+            addressList = Array.from(new Set(addressList));
+            reqTokenList({
+              addressArray: addressList,
+              fields: ['iconUrl'],
+            })
+              .then(res => {
+                setLoading(false);
+                setTokenList(res.list);
+              })
+              .catch(() => {});
+          })
+          .catch(() => {});
+      } else {
+        setLoading(false);
+      }
+    } catch (e) {}
+  };
 
   // get txn detail info
   const fetchTxDetail = useCallback(
@@ -137,63 +194,64 @@ export const Detail = () => {
 
           let toCheckAddress = txDetailDta.to;
 
-          if (
-            isContractAddress(toCheckAddress) ||
-            isInnerContractAddress(toCheckAddress)
-          ) {
-            setIsContract(true);
-            const fields = [
-              'address',
-              'type',
-              'name',
-              'website',
-              'tokenName',
-              'tokenSymbol',
-              'token',
-              'tokenDecimal',
-              'abi',
-              'bytecode',
-              'iconUrl',
-              'sourceCode',
-              'typeCode',
-            ];
-            const proArr: Array<any> = [];
-            proArr.push(
-              reqContract({ address: toCheckAddress, fields: fields }),
-            );
-            proArr.push(
-              reqTransferList({
-                transactionHash: txnhash,
-                fields: 'token',
-                limit: 100,
-                reverse: true,
-              }),
-            );
-            Promise.all(proArr)
-              .then(proRes => {
-                const contractResponse = proRes[0];
-                // update contract info
-                setContractInfo(contractResponse);
-                const transferListReponse = proRes[1];
-                const resultTransferList = transferListReponse;
-                const list = resultTransferList['list'];
-                setTransferList(list);
-                let addressList = list.map(v => v.address);
-                addressList = Array.from(new Set(addressList));
-                reqTokenList({
-                  addressArray: addressList,
-                  fields: ['iconUrl'],
-                })
-                  .then(res => {
-                    setLoading(false);
-                    setTokenList(res.list);
-                  })
-                  .catch(() => {});
-              })
-              .catch(() => {});
-          } else {
-            setLoading(false);
-          }
+          fetchTxTransfer(toCheckAddress, txnhash);
+
+          // if (
+          //   isContractAddress(toCheckAddress)
+          // ) {
+          //   setIsContract(true);
+          //   const fields = [
+          //     'address',
+          //     'type',
+          //     'name',
+          //     'website',
+          //     'tokenName',
+          //     'tokenSymbol',
+          //     'token',
+          //     'tokenDecimal',
+          //     'abi',
+          //     'bytecode',
+          //     'iconUrl',
+          //     'sourceCode',
+          //     'typeCode',
+          //   ];
+          //   const proArr: Array<any> = [];
+          //   proArr.push(
+          //     reqContract({ address: toCheckAddress, fields: fields }),
+          //   );
+          //   proArr.push(
+          //     reqTransferList({
+          //       transactionHash: txnhash,
+          //       fields: 'token',
+          //       limit: 100,
+          //       reverse: true,
+          //     }),
+          //   );
+          //   Promise.all(proArr)
+          //     .then(proRes => {
+          //       const contractResponse = proRes[0];
+          //       // update contract info
+          //       setContractInfo(contractResponse);
+          //       const transferListReponse = proRes[1];
+          //       const resultTransferList = transferListReponse;
+          //       const list = resultTransferList['list'];
+          //       setTransferList(list);
+          //       let addressList = list.map(v => v.address);
+          //       addressList = Array.from(new Set(addressList));
+          //       reqTokenList({
+          //         addressArray: addressList,
+          //         fields: ['iconUrl'],
+          //       })
+          //         .then(res => {
+          //           setLoading(false);
+          //           setTokenList(res.list);
+          //         })
+          //         .catch(() => {});
+          //     })
+          //     .catch(() => {});
+          // } else {
+          //   setLoading(false);
+          // }
         }
       });
     },
@@ -219,15 +277,17 @@ export const Detail = () => {
     };
   }, [intervalToClear]);
 
-  const fromContent = (isFull = false) => (
-    <span>
-      <AddressContainer value={from} isFull={isFull} />{' '}
-      <CopyButton copyText={formatAddress(from)} />
-    </span>
-  );
+  const fromContent = (isFull = false) => {
+    return (
+      <span>
+        <AddressContainer value={from} isFull={isFull} />{' '}
+        <CopyButton copyText={formatAddress(from)} />
+      </span>
+    );
+  };
   const toContent = (isFull = false) => (
     <span>
-      <AddressContainer value={to} isFull={isFull} />{' '}
+      <AddressContainer value={to} isFull={isFull} isContract={isContract} />{' '}
       <CopyButton copyText={formatAddress(to)} />
     </span>
   );
@@ -300,6 +360,7 @@ export const Detail = () => {
             <AddressContainer
               value={transactionDetail['contractCreated']}
               isFull={true}
+              isContract={true}
             />{' '}
             <CopyButton
               copyText={formatAddress(transactionDetail['contractCreated'])}
@@ -433,7 +494,7 @@ export const Detail = () => {
               <span className="type">1</span>
               <span>{i18n.language === 'zh-CN' ? '个' : null}</span>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc721" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc721" />
               <span className="type">
                 {transferItem['tokenId'].length > 10 ? (
                   <>
@@ -479,7 +540,7 @@ export const Detail = () => {
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc1155" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc1155" />
               {transferItem['batch'].map((item, index) => {
                 return (
                   <span
@@ -548,7 +609,7 @@ export const Detail = () => {
               </span>
               <span>{i18n.language === 'zh-CN' ? '个' : null}</span>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc20" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc20" />
             </div>,
           );
           break;
@@ -623,13 +684,13 @@ export const Detail = () => {
 
   const handleFolded = () => setFolded(folded => !folded);
 
-  const storageReleasedTotal = storageReleased
-    ? getStorageFee(
-        storageReleased.reduce((prev, curr) => {
-          return prev + curr.collaterals ? Number(curr.collaterals) : 0;
-        }, 0),
-      )
-    : 0;
+  // const storageReleasedTotal = storageReleased
+  //   ? getStorageFee(
+  //       storageReleased.reduce((prev, curr) => {
+  //         return prev + curr.collaterals ? Number(curr.collaterals) : 0;
+  //       }, 0),
+  //     )
+  //   : 0;
 
   return (
     <StyledCardWrapper>
@@ -648,7 +709,7 @@ export const Detail = () => {
             {routeHash} <CopyButton copyText={routeHash} />
           </SkeletonContainer>
         </Description>
-        <Description
+        {/* <Description
           title={
             <Tooltip
               text={t(translations.toolTip.tx.executedEpoch)}
@@ -670,8 +731,8 @@ export const Detail = () => {
               </>
             )}
           </SkeletonContainer>
-        </Description>
-        <Description
+        </Description> */}
+        {/* <Description
           title={
             <Tooltip
               text={t(translations.toolTip.tx.proposedEpoch)}
@@ -686,6 +747,21 @@ export const Detail = () => {
               {toThousands(epochHeight)}
             </Link>{' '}
             <CopyButton copyText={epochHeight} />
+          </SkeletonContainer>
+        </Description> */}
+        <Description
+          title={
+            <Tooltip
+              text={t(translations.toolTip.block.blockHeight)}
+              placement="top"
+            >
+              {t(translations.general.table.block.height)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            <Link href={`/block/${blockHash}`}>{toThousands(epochNumber)}</Link>{' '}
+            <CopyButton copyText={epochNumber} />
           </SkeletonContainer>
         </Description>
         <Description
@@ -859,7 +935,7 @@ export const Detail = () => {
               {gasUsed && gas ? Math.max(+gasUsed, (+gas * 3) / 4) : '--'}
             </SkeletonContainer>
           </Description>
-          <Description
+          {/* <Description
             title={
               <Tooltip
                 text={t(translations.toolTip.tx.storageCollateralized)}
@@ -906,7 +982,7 @@ export const Detail = () => {
             <SkeletonContainer shown={loading}>
               {storageReleasedTotal} CFX
             </SkeletonContainer>
-          </Description>
+          </Description> */}
           <Description
             title={
               <Tooltip text={t(translations.toolTip.tx.nonce)} placement="top">
@@ -932,7 +1008,7 @@ export const Detail = () => {
               {_.isNil(transactionIndex) ? '--' : !loading && transactionIndex}
             </SkeletonContainer>
           </Description>
-          <Description
+          {/* <Description
             title={
               <Tooltip
                 text={t(translations.toolTip.tx.chainID)}
@@ -943,7 +1019,7 @@ export const Detail = () => {
             }
           >
             <SkeletonContainer shown={loading}>{chainId}</SkeletonContainer>
-          </Description>
+          </Description> */}
           {/* only send to user type will with empty data */}
           {!data || data === '0x' ? null : (
             <Description

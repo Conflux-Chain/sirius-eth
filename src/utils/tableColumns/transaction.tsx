@@ -6,7 +6,12 @@ import clsx from 'clsx';
 import { Link } from 'app/components/Link/Loadable';
 import { Text } from 'app/components/Text/Loadable';
 import { Status } from 'app/components/TxnComponents';
-import { formatNumber, fromDripToCfx, toThousands } from 'utils';
+import {
+  formatNumber,
+  fromDripToCfx,
+  toThousands,
+  checkIfContractByInfo,
+} from 'utils';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { reqTransactionDetail } from 'utils/httpRequest';
@@ -112,7 +117,7 @@ export const TxnHashRenderComponent = ({
         </StyledStatusWrapper>
       ) : null}
 
-      <Link href={`/transaction/${hash}`}>
+      <Link href={`/tx/${hash}`}>
         <Text span hoverValue={hash}>
           <SpanWrap>{hash}</SpanWrap>
         </Text>
@@ -155,13 +160,18 @@ export const from = {
   dataIndex: 'from',
   key: 'from',
   width: 1,
-  render: (value, row) => (
-    <AddressContainer
-      value={value}
-      alias={row.fromContractInfo ? row.fromContractInfo.name : ''}
-      contractCreated={row.contractCreated}
-    />
-  ),
+  render: (value, row) => {
+    const isContract = checkIfContractByInfo(value, row);
+
+    return (
+      <AddressContainer
+        value={value}
+        alias={row.fromContractInfo ? row.fromContractInfo.name : ''}
+        contractCreated={row.contractCreated}
+        isContract={isContract}
+      />
+    );
+  },
 };
 
 export const to = {
@@ -176,6 +186,7 @@ export const to = {
   render: (value, row) => {
     let alias = '';
     let verify = false;
+    const isContract = checkIfContractByInfo(value, row);
 
     if (row.toContractInfo && row.toContractInfo.name)
       alias = row.toContractInfo.name;
@@ -196,6 +207,7 @@ export const to = {
         alias={alias}
         contractCreated={row.contractCreated}
         verify={verify}
+        isContract={isContract}
       />
     );
   },

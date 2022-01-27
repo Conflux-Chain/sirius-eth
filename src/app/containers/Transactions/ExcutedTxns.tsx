@@ -1,9 +1,13 @@
-import React from 'react';
-import { tokenColunms, transactionColunms } from 'utils/tableColumns';
+import React, { useState, useEffect } from 'react';
+import {
+  tokenColunms,
+  transactionColunms,
+  blockColunms,
+} from 'utils/tableColumns';
 import { useAge } from 'utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
-import { Title, Footer, TxnSwitcher } from './components';
-import { isAccountAddress } from 'utils';
+import { Title, Footer /*, TxnSwitcher*/ } from './components';
+import { isAccountAddress, isAddress } from 'utils';
 
 interface Props {
   address: string;
@@ -11,14 +15,15 @@ interface Props {
 
 export const ExcutedTxns = ({ address }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
+  const [isAccount, setIsAccount] = useState(false);
 
   const url = `/transaction?accountAddress=${address}`;
-  const isAccount = isAccountAddress(address);
 
-  const columnsWidth = [4, 3, 7, 6, 2, 3, 3, 3, 5];
+  const columnsWidth = [4, 3, 3, 7, 6, 2, 3, 3, 3, 5];
   const columns = [
     transactionColunms.hash,
     transactionColunms.method,
+    blockColunms.epoch,
     {
       ...tokenColunms.from,
       render(text, record, index) {
@@ -49,6 +54,17 @@ export const ExcutedTxns = ({ address }: Props) => {
       },
     },
   };
+
+  useEffect(() => {
+    async function fn() {
+      try {
+        if (isAddress(address)) {
+          setIsAccount(await isAccountAddress(address));
+        }
+      } catch (e) {}
+    }
+    fn();
+  }, [address]);
 
   if (!isAccount) {
     // @ts-ignore
@@ -94,9 +110,10 @@ export const ExcutedTxns = ({ address }: Props) => {
             ]
           : ['txTypeAll', 'status1', 'txTypeCreate']
       }
-      extraContent={
-        <TxnSwitcher total={total} isAccount={isAccount}></TxnSwitcher>
-      }
+      // TODO, get pending tx rpc error, hide temporary
+      // extraContent={
+      //   <TxnSwitcher total={total} isAccount={isAccount}></TxnSwitcher>
+      // }
     />
   );
 

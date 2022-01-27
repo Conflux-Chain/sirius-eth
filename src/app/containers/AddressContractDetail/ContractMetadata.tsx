@@ -26,7 +26,7 @@ import {
   NETWORK_TYPE,
   ICON_DEFAULT_CONTRACT,
 } from 'utils/constants';
-import Edit3 from '@zeit-ui/react-icons/edit3';
+// import Edit3 from '@zeit-ui/react-icons/edit3';
 import { Image } from '@cfxjs/antd';
 
 const Link = ({ to, children }) => <RouterLink to={to}>{children}</RouterLink>;
@@ -154,43 +154,12 @@ export function ContractMetadata({ address, contractInfo }) {
               alt={contractInfo.name + 'logo'}
             />
             <Content>{contractInfo.name || notAvailableText}</Content>
-            <RouterLink
+            {/* <RouterLink
               className="contract-info-update"
               to={`/contract-info/${address}`}
             >
               <Edit3 size={18} color="#1e3de4" />
-            </RouterLink>
-          </CenterLine>
-        </SkeletonContainer>
-      ),
-    },
-    {
-      title: (
-        <Tooltip
-          text={t(translations.toolTip.contract.contractAdmin)}
-          placement="top"
-        >
-          {t(translations.contract.contractAdmin)}
-        </Tooltip>
-      ),
-      children: (
-        <SkeletonContainer shown={loading} style={skeletonStyle}>
-          <CenterLine>
-            <Content>
-              {contractInfo.admin ? (
-                <AddressContainer
-                  value={contractInfo.admin}
-                  alias={
-                    isZeroAddress(contractInfo.admin)
-                      ? t(translations.general.zeroAddress)
-                      : undefined
-                  }
-                />
-              ) : (
-                notAvailableText
-              )}
-            </Content>
-            <WarnningButton key="warning" address={contractInfo.admin} />
+            </RouterLink> */}
           </CenterLine>
         </SkeletonContainer>
       ),
@@ -239,46 +208,6 @@ export function ContractMetadata({ address, contractInfo }) {
     {
       title: (
         <Tooltip
-          text={t(translations.toolTip.contract.storageSponsor)}
-          placement="top"
-        >
-          {t(translations.contract.storageSponsor)}
-        </Tooltip>
-      ),
-      children: (
-        <SkeletonContainer shown={loading} style={skeletonStyle}>
-          <CenterLine>
-            <Content
-              className={clsx(
-                !contractInfo.sponsor.sponsorForCollateral && 'not-available',
-              )}
-            >
-              {contractInfo.sponsor &&
-              contractInfo.sponsor.sponsorForCollateral ? (
-                [
-                  <AddressContainer
-                    key={contractInfo.sponsor.sponsorForCollateral}
-                    value={contractInfo.sponsor.sponsorForCollateral}
-                    alias={
-                      contractInfo.sponsor.sponsorForCollateralContractInfo &&
-                      contractInfo.sponsor.sponsorForCollateralContractInfo.name
-                        ? contractInfo.sponsor.sponsorForCollateralContractInfo
-                            .name
-                        : null
-                    }
-                  />,
-                ]
-              ) : (
-                <CenterLine>{notAvailableText}</CenterLine>
-              )}
-            </Content>
-          </CenterLine>
-        </SkeletonContainer>
-      ),
-    },
-    {
-      title: (
-        <Tooltip
           text={t(translations.toolTip.contract.contractCreator)}
           placement="top"
         >
@@ -288,7 +217,6 @@ export function ContractMetadata({ address, contractInfo }) {
       children: (
         <SkeletonContainer shown={loading} style={skeletonStyle}>
           <CenterLine>
-            {/* TODO use codeHash */}
             {!contractInfo.codeHash ? (
               <Content className="not-available">
                 <Text type="error">
@@ -303,7 +231,10 @@ export function ContractMetadata({ address, contractInfo }) {
                 )}
               >
                 {contractInfo.from ? (
-                  <AddressContainer value={contractInfo.from} />
+                  <AddressContainer
+                    value={contractInfo.from}
+                    isContract={true}
+                  />
                 ) : (
                   notAvailableText
                 )}
@@ -312,9 +243,7 @@ export function ContractMetadata({ address, contractInfo }) {
                     {` ${t(translations.contractDetail.at)} ${t(
                       translations.contractDetail.txOnlyEn,
                     )} `}
-                    <LinkWrap
-                      to={`/transaction/${contractInfo.transactionHash}`}
-                    >
+                    <LinkWrap to={`/tx/${contractInfo.transactionHash}`}>
                       <Text span hoverValue={contractInfo.transactionHash}>
                         {formatString(contractInfo.transactionHash, 'address')}
                       </Text>
@@ -331,37 +260,108 @@ export function ContractMetadata({ address, contractInfo }) {
     {
       title: (
         <Tooltip
-          text={t(translations.toolTip.contract.gasFeeSponsor)}
+          text={t(translations.toolTip.contract.contractAdmin)}
           placement="top"
         >
-          {t(translations.contract.gasSponsor)}
+          {t(translations.contract.contractAdmin)}
         </Tooltip>
       ),
       children: (
         <SkeletonContainer shown={loading} style={skeletonStyle}>
           <CenterLine>
             <Content>
-              {contractInfo.sponsor && contractInfo.sponsor.sponsorForGas ? (
-                [
-                  <AddressContainer
-                    key={contractInfo.sponsor.sponsorForGas}
-                    value={contractInfo.sponsor.sponsorForGas}
-                    alias={
-                      contractInfo.sponsor.sponsorForGasContractInfo &&
-                      contractInfo.sponsor.sponsorForGasContractInfo.name
-                        ? contractInfo.sponsor.sponsorForGasContractInfo.name
-                        : null
-                    }
-                  />,
-                ]
+              {contractInfo.admin ? (
+                <AddressContainer
+                  value={contractInfo.admin}
+                  alias={
+                    isZeroAddress(contractInfo.admin)
+                      ? t(translations.general.zeroAddress)
+                      : undefined
+                  }
+                />
               ) : (
-                <CenterLine>{notAvailableText}</CenterLine>
+                notAvailableText
               )}
             </Content>
+            <WarnningButton key="warning" address={contractInfo.admin} />
           </CenterLine>
         </SkeletonContainer>
       ),
     },
+    // {
+    //   title: (
+    //     <Tooltip
+    //       text={t(translations.toolTip.contract.storageSponsor)}
+    //       placement="top"
+    //     >
+    //       {t(translations.contract.storageSponsor)}
+    //     </Tooltip>
+    //   ),
+    //   children: (
+    //     <SkeletonContainer shown={loading} style={skeletonStyle}>
+    //       <CenterLine>
+    //         <Content
+    //           className={clsx(
+    //             !contractInfo.sponsor.sponsorForCollateral && 'not-available',
+    //           )}
+    //         >
+    //           {contractInfo.sponsor &&
+    //           contractInfo.sponsor.sponsorForCollateral ? (
+    //             [
+    //               <AddressContainer
+    //                 key={contractInfo.sponsor.sponsorForCollateral}
+    //                 value={contractInfo.sponsor.sponsorForCollateral}
+    //                 alias={
+    //                   contractInfo.sponsor.sponsorForCollateralContractInfo &&
+    //                   contractInfo.sponsor.sponsorForCollateralContractInfo.name
+    //                     ? contractInfo.sponsor.sponsorForCollateralContractInfo
+    //                         .name
+    //                     : null
+    //                 }
+    //               />,
+    //             ]
+    //           ) : (
+    //             <CenterLine>{notAvailableText}</CenterLine>
+    //           )}
+    //         </Content>
+    //       </CenterLine>
+    //     </SkeletonContainer>
+    //   ),
+    // },
+    // {
+    //   title: (
+    //     <Tooltip
+    //       text={t(translations.toolTip.contract.gasFeeSponsor)}
+    //       placement="top"
+    //     >
+    //       {t(translations.contract.gasSponsor)}
+    //     </Tooltip>
+    //   ),
+    //   children: (
+    //     <SkeletonContainer shown={loading} style={skeletonStyle}>
+    //       <CenterLine>
+    //         <Content>
+    //           {contractInfo.sponsor && contractInfo.sponsor.sponsorForGas ? (
+    //             [
+    //               <AddressContainer
+    //                 key={contractInfo.sponsor.sponsorForGas}
+    //                 value={contractInfo.sponsor.sponsorForGas}
+    //                 alias={
+    //                   contractInfo.sponsor.sponsorForGasContractInfo &&
+    //                   contractInfo.sponsor.sponsorForGasContractInfo.name
+    //                     ? contractInfo.sponsor.sponsorForGasContractInfo.name
+    //                     : null
+    //                 }
+    //               />,
+    //             ]
+    //           ) : (
+    //             <CenterLine>{notAvailableText}</CenterLine>
+    //           )}
+    //         </Content>
+    //       </CenterLine>
+    //     </SkeletonContainer>
+    //   ),
+    // },
   ];
 
   if (![NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {

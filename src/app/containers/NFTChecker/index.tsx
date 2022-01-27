@@ -14,9 +14,9 @@ import { PageHeader } from 'app/components/PageHeader';
 import { Input } from '@cfxjs/antd';
 import { useParams, useHistory } from 'react-router-dom';
 import {
-  isCurrentNetworkAddress,
-  isAccountAddress,
+  // isAccountAddress,
   getAddressInputPlaceholder,
+  isAddress,
 } from 'utils';
 import { NFTAsset } from 'app/containers/NFTAsset';
 
@@ -37,16 +37,12 @@ export function NFTChecker() {
   }, []);
 
   const validateAddress = (address, cb) => {
-    if (isCurrentNetworkAddress(address)) {
-      if (isAccountAddress(address)) {
-        cb && cb();
-      } else {
-        setAddressFormatErrorMsg(
-          t(translations.nftChecker.incorrectAddressType),
-        );
-      }
+    if (isAddress(address)) {
+      // TODO, eth space, use isAddress replaced
+      // if (isAccountAddress(address)) {
+      cb && cb();
     } else {
-      setAddressFormatErrorMsg(t(translations.nftChecker.incorrectFormat));
+      setAddressFormatErrorMsg(t(translations.nftChecker.incorrectAddressType));
     }
   };
 

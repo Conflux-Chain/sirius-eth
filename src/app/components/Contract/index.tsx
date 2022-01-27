@@ -18,10 +18,10 @@ import {
 } from 'utils/constants';
 import {
   byteToKb,
-  isContractAddress,
-  isInnerContractAddress,
+  // isContractAddress,
   validURL,
   getAddressInputPlaceholder,
+  isAddress,
 } from 'utils';
 import { reqContract, reqContractNameTag, reqToken } from 'utils/httpRequest';
 import SkelontonContainer from '../SkeletonContainer';
@@ -37,7 +37,7 @@ import { Text } from 'app/components/Text/Loadable';
 
 interface Props {
   contractDetail: any;
-  type: string;
+  type?: string;
   address?: string;
   loading?: boolean;
 }
@@ -49,10 +49,11 @@ const MAXSIZEFORICON = 30; //kb
 const fieldsContract = ['token'];
 export const ContractOrTokenInfo = ({
   contractDetail,
-  type,
+  type: outerType,
   address,
   loading,
 }: Props) => {
+  const type = outerType || contractDetail?.name ? 'edit' : 'create';
   const routeMatch = useRouteMatch();
   const updateInfoType = routeMatch.path.startsWith('/contract-info/')
     ? 'contract'
@@ -342,10 +343,7 @@ export const ContractOrTokenInfo = ({
   }
   function checkAdminThenToken(tokenIcon) {
     if (addressVal) {
-      if (
-        (isContractAddress(addressVal) || isInnerContractAddress(addressVal)) &&
-        !addressVal.startsWith('0x')
-      ) {
+      if (isAddress(addressVal)) {
         setIsAddressError(false);
         setErrorMsgForAddress('');
         if (accounts[0]) {
@@ -379,7 +377,7 @@ export const ContractOrTokenInfo = ({
         }
       } else {
         setIsAddressError(true);
-        setErrorMsgForAddress('contract.invalidContractAddress');
+        setErrorMsgForAddress('contract.invalidAddress');
       }
     } else {
       setIsAddressError(true);

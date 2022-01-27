@@ -52,7 +52,7 @@ export const contract = {
   ),
   dataIndex: 'address',
   key: 'address',
-  render: value => <AddressContainer value={value} />,
+  render: value => <AddressContainer value={value} isContract={true} />,
 };
 
 export const transactionCount = {

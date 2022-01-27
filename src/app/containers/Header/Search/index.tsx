@@ -16,13 +16,7 @@ import ClearIcon from 'images/clear.png';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import _ from 'lodash';
 import fetch from 'utils/request';
-import {
-  isAccountAddress,
-  isEpochNumber,
-  isHash,
-  isInnerContractAddress,
-  isSpecialAddress,
-} from 'utils';
+import { isBlockNumber, isHash } from 'utils';
 import { appendApiPrefix } from 'utils/api';
 
 const { Search: SearchInput } = Input;
@@ -150,15 +144,7 @@ export const Search = () => {
     if (
       value &&
       value.length > 1 &&
-      !(
-        value === '0x0' ||
-        isAccountAddress(value) ||
-        // isContractAddress(value) ||
-        isInnerContractAddress(value) ||
-        isSpecialAddress(value) ||
-        isEpochNumber(value) ||
-        isHash(value)
-      )
+      !(value === '0x0' || isBlockNumber(value) || isHash(value))
     ) {
       // abort pre search
       controller.abort();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
-  isCurrentNetworkAddress,
+  isAddress,
   isHash,
   isSafeNumberOrNumericStringInput,
   getAddressInputPlaceholder,
@@ -215,7 +215,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
         );
       },
       isAddress: (_, value) => {
-        if (!value || isCurrentNetworkAddress(value)) {
+        if (!value || isAddress(value)) {
           return Promise.resolve();
         }
         return Promise.reject(

@@ -26,7 +26,7 @@ export function Tokens() {
   const { tokenType = CFX_TOKEN_TYPES.erc20 } = useParams<RouteParams>();
   const { orderBy } = queryString.parse(location.search);
 
-  let columnsWidth = [1, 7, 4, 3, 3, 3, 2, 4];
+  let columnsWidth = [1, 7, 4, 3, 3, 3, 2];
   let columns = [
     {
       ...utils.number,
@@ -53,10 +53,10 @@ export function Tokens() {
       ...tokenColunms.holders,
       sorter: true,
     },
-    {
-      ...tokenColunms.projectInfo,
-      sorter: true,
-    },
+    // {
+    //   ...tokenColunms.projectInfo,
+    //   sorter: true,
+    // },
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
   let url = `/stat/tokens/list?transferType=${
@@ -75,11 +75,8 @@ export function Tokens() {
   // let url = `/stat/tokens/list?transferType=${CFX_TOKEN_TYPES.erc20}&reverse=true&orderBy=totalPrice&fields=transferCount,icon,price,totalPrice,quoteUrl,transactionCount,erc20TransferCount&currency=${globalData.currency}`; // @todo wait for new api handler
   let title = t(translations.header.tokens20);
 
-  if (
-    tokenType === CFX_TOKEN_TYPES.erc721 ||
-    tokenType === CFX_TOKEN_TYPES.crc721
-  ) {
-    columnsWidth = [1, 7, 5, 3, 3, 4];
+  if (tokenType === CFX_TOKEN_TYPES.erc721) {
+    columnsWidth = [1, 7, 5, 3, 3];
     columns = [
       utils.number,
       tokenColunms.token,
@@ -92,11 +89,11 @@ export function Tokens() {
         ...tokenColunms.holders,
         sorter: true,
       },
-      {
-        ...tokenColunms.projectInfo,
-        sorter: true,
-        defaultSortOrder: 'descend',
-      },
+      // {
+      //   ...tokenColunms.projectInfo,
+      //   sorter: true,
+      //   defaultSortOrder: 'descend',
+      // },
     ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
     url = `/stat/tokens/list?transferType=${
@@ -108,11 +105,8 @@ export function Tokens() {
     title = t(translations.header.tokens721);
   }
 
-  if (
-    tokenType === CFX_TOKEN_TYPES.erc1155 ||
-    tokenType === CFX_TOKEN_TYPES.crc1155
-  ) {
-    columnsWidth = [1, 5, 4, 2, 2, 3];
+  if (tokenType === CFX_TOKEN_TYPES.erc1155) {
+    columnsWidth = [1, 5, 4, 2, 2];
     columns = [
       utils.number,
       tokenColunms.token,
@@ -125,11 +119,11 @@ export function Tokens() {
         ...tokenColunms.holders,
         sorter: true,
       },
-      {
-        ...tokenColunms.projectInfo,
-        sorter: true,
-        defaultSortOrder: 'descend',
-      },
+      // {
+      //   ...tokenColunms.projectInfo,
+      //   sorter: true,
+      //   defaultSortOrder: 'descend',
+      // },
     ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
     url = `/stat/tokens/list?transferType=${
@@ -165,9 +159,9 @@ export function Tokens() {
         {title}
         <Tooltip
           hoverable
-          text={t(translations.tokens.crcTip, {
-            crc: tokenType.replace('CRC', 'CRC-'),
-            erc: tokenType.replace('CRC', 'ERC-'),
+          text={t(translations.tokens.ercTip, {
+            crc: tokenType.replace('ERC', 'ERC-'),
+            erc: tokenType.replace('ERC', 'ERC-'),
           })}
           placement="top"
         >

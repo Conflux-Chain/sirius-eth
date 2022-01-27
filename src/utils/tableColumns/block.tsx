@@ -5,20 +5,30 @@ import styled from 'styled-components/macro';
 import { Text } from 'app/components/Text/Loadable';
 import { Link } from 'app/components/Link/Loadable';
 import { formatNumber, getPercent, fromDripToCfx, toThousands } from 'utils/';
-import imgPivot from 'images/pivot.svg';
+// import imgPivot from 'images/pivot.svg';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
 
-export const epoch = {
+export const epochWithNoLink = {
   title: (
-    <Translation>{t => t(translations.general.table.block.epoch)}</Translation>
+    <Translation>{t => t(translations.general.table.block.height)}</Translation>
   ),
   dataIndex: 'epochNumber',
   key: 'epochNumber',
   width: 1,
-  render: value => <Link href={`/epoch/${value}`}>{value}</Link>,
+  render: (value, row) => <Link href={`/block/${value}`}>{value}</Link>,
+};
+
+export const epoch = {
+  title: (
+    <Translation>{t => t(translations.general.table.block.height)}</Translation>
+  ),
+  dataIndex: 'epochNumber',
+  key: 'epochNumber',
+  width: 1,
+  render: (value, row) => <Link href={`/block/${value}`}>{value}</Link>,
 };
 
 export const position = {
@@ -50,10 +60,6 @@ export const hashWithPivot = {
   key: 'hash',
   width: 1,
   render: (value, row: any) => {
-    let pivotTag: React.ReactNode = null;
-    if (row.pivotHash === row.hash) {
-      pivotTag = <img className="img" src={imgPivot} alt="pivot" />;
-    }
     return (
       <StyledHashWrapper>
         <Link href={`/block/${value}`}>
@@ -61,10 +67,25 @@ export const hashWithPivot = {
             <SpanWrap>{value}</SpanWrap>
           </Text>
         </Link>
-        {pivotTag}
       </StyledHashWrapper>
     );
   },
+  // render: (value, row: any) => {
+  //   let pivotTag: React.ReactNode = null;
+  //   if (row.pivotHash === row.hash) {
+  //     pivotTag = <img className="img" src={imgPivot} alt="pivot" />;
+  //   }
+  //   return (
+  //     <StyledHashWrapper>
+  //       <Link href={`/block/${value}`}>
+  //         <Text span hoverValue={value}>
+  //           <SpanWrap>{value}</SpanWrap>
+  //         </Text>
+  //       </Link>
+  //       {pivotTag}
+  //     </StyledHashWrapper>
+  //   );
+  // },
 };
 
 export const miner = {

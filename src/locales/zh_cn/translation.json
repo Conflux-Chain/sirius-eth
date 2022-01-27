@@ -106,12 +106,13 @@
     "requiredNameTag": "请输入一个合法的合约名称标签",
     "sitePlaceholder": "http(s)://",
     "invalidContractAddress": "合约地址无效，或格式错误",
+    "invalidAddress": "地址无效，或格式错误",
     "invalidNameTag": "字符长度已达到最大限制",
     "duplicatedNameTag": "该名称标签已被注册了 {{times}} 次",
     "invalidUrl": "URL 格式错误",
     "errorNotAdmin": "您不是该合约的管理者或拥有者，请断开连接后再次尝试。",
     "invalidIconSize": "图片过大，请重试",
-    "errorTokenICon": "非 CRC20 合约，代币图标不可上传",
+    "errorTokenICon": "非 ERC20 合约，代币图标不可上传",
     "beforeContractSubmitTip": "提交合约信息前，您需连接钱包以确认您是该合约的管理者或拥有者。",
     "invalidJsonAbi": "无法解析 JSON 文件中的有效 ABI，请重试",
     "abiNotUploaded": "没有上传 ABI",
@@ -277,7 +278,7 @@
     "tipCountBefore": "共展示",
     "tipCountAfter": "个代币（该列表仅展示一部分代币，其他未展示在列表中的代币可以通过搜索合约地址查看）",
     "dataSource": "市场数据来源：<a href='https://coinmarketcap.com/zh/' target='_blank'>CoinMarketCap</a> 支持",
-    "crcTip": "{{crc}} 是发布在 Conflux 网络上，采用 {{erc}} 标准的数字资产。",
+    "ercTip": "{{crc}} 是发布在 Conflux 网络上，采用 {{erc}} 标准的数字资产。",
     "table": {
       "number": "#",
       "token": "代币",
@@ -330,9 +331,9 @@
     "blockchain": "区块链",
     "accounts": "账户",
     "tokens": "代币",
-    "tokens20": "CRC-20 代币",
-    "tokens721": "CRC-721 代币",
-    "tokens1155": "CRC-1155 代币",
+    "tokens20": "ERC-20 代币",
+    "tokens721": "ERC-721 代币",
+    "tokens1155": "ERC-1155 代币",
     "contract": "合约",
     "contractCreation": "合约注册",
     "contractSponsor": "赞助合约",
@@ -355,11 +356,12 @@
     "techIssue": "技术问题",
     "report": "举报",
     "supportCenter": "帮助中心",
+    "crossSpaceDApp": "Cross Space DApp",
     "suggestionBox": "意见箱",
     "testnet": "Conflux Testnet",
     "oceanus": "Conflux Tethys",
-    "searchPlaceHolder": "请输入纪元 / 区块哈希 / 交易哈希 / 地址 / 代币 / 合约名称标签",
-    "searchPlaceHolderMobile": "纪元/区块哈希/交易哈希/地址/代币/合约名称标签",
+    "searchPlaceHolder": "请输入区块高度 / 区块哈希 / 交易哈希 / 地址 / 代币 / 合约名称标签",
+    "searchPlaceHolderMobile": "区块高度/区块哈希/交易哈希/地址/代币/合约名称标签",
     "addressConverter": "地址格式转换",
     "broadcastTx": "广播交易",
     "blocknumberCalc": "区块计算器",
@@ -393,7 +395,7 @@
     "confluxnetwork": "Conflux Network",
     "confluxportal": "ConfluxPortal",
     "confluxbounty": "ConfluxBounty",
-    "copryRight": "© 2021 Conflux. All Rights Reserved.",
+    "copryRight": "© 2022 Conflux. All Rights Reserved.",
     "tool": "工具",
     "addressFormatConversion": "地址格式转换",
     "broadcastTx": "广播交易",
@@ -587,7 +589,9 @@
       "privatenet": "私有链"
     },
     "errors": {
-      "address": "请输入一个合法的{{network}}地址"
+      "address": "请输入一个合法的{{network}}地址",
+      "getAccountInfoError": "获取地址信息错误，请重新加载页面重试。",
+      "invalidAddress": "地址无效，或格式错误"
     },
     "advancedSearch": {
       "label": {
@@ -602,9 +606,9 @@
         "token": "代币",
         "tokenSubTitle": "（最多支持选择 3 种代币）",
         "rangePicker": "日期",
-        "epochNumber": "纪元",
-        "minEpochNumber": "最小纪元",
-        "maxEpochNumber": "最大纪元"
+        "epochNumber": "区块高度",
+        "minEpochNumber": "最小区块高度",
+        "maxEpochNumber": "最大区块高度"
       },
       "error": {
         "invalidHash": "哈希值格式错误",
@@ -640,7 +644,7 @@
       "holderAddress": "持有人地址",
       "tokenID": "代币 ID",
       "blockHash": "区块哈希",
-      "epoch": "纪元"
+      "epoch": "区块高度"
     },
     "totalRecord": "共计 {{total}} 个记录",
     "totalRecordWithLimit": "仅展示最新的 {{limit}} 条记录（共计 {{total}} 条记录）",
@@ -693,16 +697,17 @@
     "transactions": "交易",
     "tokenTxns": "代币交易",
     "cfxTransfer": "CFX 交易",
-    "tokenTxnsErc20": "CRC20 交易",
-    "tokenTxnsErc721": "CRC721 交易",
-    "tokenTxnsErc1155": "CRC1155 交易",
+    "tokenTxnsErc20": "ERC20 交易",
+    "tokenTxnsErc721": "ERC721 交易",
+    "tokenTxnsErc1155": "ERC1155 交易",
     "table": {
       "noData": "暂无相关记录",
       "whoops": "哎呀！",
       "dateTime": "日期时间（本地）",
       "switchAgeTip": "点击切换为{{format}}格式显示",
       "block": {
-        "epoch": "纪元",
+        "epoch": "区块高度",
+        "height": "区块高度",
         "position": "位置",
         "txns": "交易数",
         "hash": "区块哈希",
@@ -747,7 +752,7 @@
         "accountAddress": "地址",
         "tokenId": "代币 ID",
         "quantity": "数量",
-        "erc1155QuantityTip": "一个账户的 CRC-1155 代币数量等于其拥有的代币 ID 的类别总数。",
+        "erc1155QuantityTip": "一个账户的 ERC-1155 代币数量等于其拥有的代币 ID 的类别总数。",
         "percentage": "百分比",
         "traceType": "追溯类型",
         "traceResult": "返回值",
@@ -835,7 +840,7 @@
     "status": {
       "skip": {
         "text": "跳过",
-        "explanation": "可能的原因：错误随机数；余额不足；交易未在合适的纪元高度执行；交易在更早的区块被执行。"
+        "explanation": "可能的原因：错误随机数；余额不足；交易未在合适的区块高度执行；交易在更早的区块被执行。"
       },
       "error": {
         "text": "失败",
@@ -998,7 +1003,7 @@
     "for": "转移",
     "tokenId": "代币ID",
     "inputTips": "构成交易输入数据的二进制数据，如果是消息调用，则为输入数据；如果是合约创建，则为合约初始化",
-    "epochConfirmations": "{{count}} 个纪元已确认",
+    "epochConfirmations": "{{count}} 个区块高度已确认",
     "statusError": {
       "0": "未知错误。",
       "1": "合约错误：",
@@ -1037,7 +1042,7 @@
     "title": "区块",
     "description": "区块",
     "blockHeight": "区块高度",
-    "epoch": "纪元",
+    "epoch": "区块高度",
     "difficulty": "难度",
     "miner": "矿工",
     "reward": "奖励",
@@ -1059,8 +1064,8 @@
     }
   },
   "epoch": {
-    "title": "纪元",
-    "description": "纪元",
+    "title": "区块高度",
+    "description": "区块高度",
     "tipCountBefore": "共计",
     "tipCountAfter": "{{type}}记录",
     "labelCountBefore": "共计",
@@ -1342,7 +1347,7 @@
     },
     "home": {
       "currentBlockNumber": "当前区块号",
-      "currentEpoch": "当前纪元",
+      "currentEpoch": "当前区块高度",
       "account": "账户总数",
       "transactions": "交易总数",
       "contract": "合约总数"
@@ -1400,17 +1405,17 @@
   "balanceChecker": {
     "tokenBalanceChecker": "代币余额检索器",
     "balanceChecker": "余额检索器",
-    "subtitle": "您可以在特定的纪元号或日期查找 Conflux 网络上的账户历史余额",
+    "subtitle": "您可以在特定的区块高度或日期查找 Conflux 网络上的账户历史余额",
     "tokenQuantity": "代币数量",
     "tokenSupply": "代币供应",
     "cfxBalance": "CFX 余额",
     "address": "地址",
     "contractAddress": "合约地址",
-    "epochNoOrDate": "纪元号或者日期",
+    "epochNoOrDate": "区块高度或者日期",
     "or": "或",
     "chooseDate": "请选择日期",
-    "enterEpochNo": "输入纪元号",
-    "invalidEpochNo": "不合法的纪元号",
+    "enterEpochNo": "输入区块高度",
+    "invalidEpochNo": "不合法的区块高度",
     "error": "不能为空",
     "lookUp": "搜索",
     "reset": "重置",
@@ -1418,8 +1423,8 @@
     "totalSupplyForContractAddress": "合约地址代币总供应量",
     "cfxBalanceForAddress": "地址 CFX 总余额",
     "snapshotDate": "截止日期",
-    "epoch": "纪元",
-    "epochNo": "纪元号"
+    "epoch": "区块",
+    "epochNo": "区块高度"
   },
   "nftChecker": {
     "title": "NFT 查看器",

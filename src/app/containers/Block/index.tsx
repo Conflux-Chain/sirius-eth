@@ -15,7 +15,7 @@ import { reqBlockDetail } from 'utils/httpRequest';
 import { useBreakpoint } from 'styles/media';
 
 import { Txns } from './Txns';
-import { ReferenceBlocks } from './ReferenceBlocks';
+// import { ReferenceBlocks } from './ReferenceBlocks';
 
 export function Block() {
   const bp = useBreakpoint();
@@ -23,7 +23,9 @@ export function Block() {
   const { hash } = useParams<{
     hash: string;
   }>();
-  const [{ transactionCount, refereeHashes }, setBlockDetail] = useState<any>({
+  const [{ transactionCount /*, refereeHashes*/ }, setBlockDetail] = useState<
+    any
+  >({
     transactionCount: 0,
     refereeHashes: [],
   });
@@ -68,31 +70,31 @@ export function Block() {
       content: <Txns url={`/transaction?blockHash=${hash}`} />,
       hidden: !transactionCount,
     },
-    {
-      value: 'reference-blocks',
-      action: 'blockTransactions',
-      label: () => {
-        return (
-          <TabLabel
-            // total={refereeHashes?.length}
-            showTooltip={bp !== 's'}
-          >
-            {bp === 's' ? (
-              t(translations.block.tabs.referenceBlocks)
-            ) : (
-              <Tooltip
-                text={t(translations.toolTip.block.referenceBlocks)}
-                placement="top"
-              >
-                {t(translations.block.tabs.referenceBlocks)}
-              </Tooltip>
-            )}
-          </TabLabel>
-        );
-      },
-      content: <ReferenceBlocks url={`/block?referredBy=${hash}`} />,
-      hidden: !refereeHashes?.length,
-    },
+    // {
+    //   value: 'reference-blocks',
+    //   action: 'blockTransactions',
+    //   label: () => {
+    //     return (
+    //       <TabLabel
+    //         // total={refereeHashes?.length}
+    //         showTooltip={bp !== 's'}
+    //       >
+    //         {bp === 's' ? (
+    //           t(translations.block.tabs.referenceBlocks)
+    //         ) : (
+    //           <Tooltip
+    //             text={t(translations.toolTip.block.referenceBlocks)}
+    //             placement="top"
+    //           >
+    //             {t(translations.block.tabs.referenceBlocks)}
+    //           </Tooltip>
+    //         )}
+    //       </TabLabel>
+    //     );
+    //   },
+    //   content: <ReferenceBlocks url={`/block?referredBy=${hash}`} />,
+    //   hidden: !refereeHashes?.length,
+    // },
   ];
 
   return (

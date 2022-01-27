@@ -9,26 +9,16 @@ import {
   NETWORK_ID,
   NETWORK_TYPE,
   NETWORK_TYPES,
+  CFX,
 } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
+// @ts-ignore
+window.SDK = SDK;
+// @ts-ignore
+window.CFX = CFX;
+
 dayjs.extend(relativeTime);
-
-export const isPosAddress = (address: string): boolean => {
-  try {
-    return address.startsWith('0x') && address.length === 66;
-  } catch (e) {
-    return false;
-  }
-};
-
-export const isCfxHexAddress = (address: string): boolean => {
-  try {
-    return SDK.address.isValidCfxHexAddress(address);
-  } catch (e) {
-    return false;
-  }
-};
 
 export const isBase32Address = (address: string): boolean => {
   try {
@@ -40,15 +30,20 @@ export const isBase32Address = (address: string): boolean => {
 
 export const formatAddress = (
   address: string,
-  outputType = 'base32', // base32 or hex
+  outputType = 'hex', // base32 or hex
 ): string => {
+  // TODO, eth space, remove base32 address condition
   // return input address as default value if it can not convert to conflux chain base32/hex format
   // if necessary, check for errors at the call site
   const invalidAddressReturnValue = address;
   try {
-    if (isCfxHexAddress(address)) {
+    if (isAddress(address)) {
       if (outputType === 'hex') {
-        return address;
+        if (isBase32Address(address)) {
+          return SDK.format.hexAddress(address);
+        } else {
+          return address;
+        }
       } else if (outputType === 'base32') {
         return SDK.format.address(address, NETWORK_ID);
       } else {
@@ -77,44 +72,14 @@ export const formatAddress = (
   }
 };
 
-export const getAddressInfo = (
-  address: string,
-): {
-  netId: number;
-  type: string;
-  hexAddress: ArrayBuffer | string;
-} | null => {
-  try {
-    if (isCfxHexAddress(address)) {
-      const base32Address = formatAddress(address, 'base32');
-      return SDK.address.decodeCfxAddress(base32Address);
-    } else if (isBase32Address(address)) {
-      return SDK.address.decodeCfxAddress(address);
-    } else {
-      return null;
-    }
-  } catch (e) {
-    return null;
-  }
-};
-
-export const isSimplyBase32Address = (address: string): boolean => {
-  try {
-    return (
-      SDK.address.isValidCfxAddress(address) &&
-      SDK.address.simplifyCfxAddress(address) === address
-    );
-  } catch (e) {
-    return false;
-  }
-};
-
 // support hex and base32
 export const isAddress = (address: string): boolean => {
   try {
     if (address.startsWith('0x')) {
-      return isCfxHexAddress(address);
+      // return isCfxHexAddress(address);
+      return SDK.address.isValidHexAddress(address) || isZeroAddress(address);
     } else {
+      // TODO, eth space, remove base32 address condition
       return isBase32Address(address);
     }
   } catch (e) {
@@ -124,40 +89,48 @@ export const isAddress = (address: string): boolean => {
 
 export function isZeroAddress(address: string): boolean {
   try {
-    // @todo, wait for sdk upgrade to accept both base32 and hex address
-    return SDK.address.isZeroAddress(formatAddress(address, 'hex'));
+    return address === SDK.CONST.ZERO_ADDRESS_HEX || address === '0x0';
   } catch (e) {
     return false;
   }
 }
 
-export function isAccountAddress(address: string): boolean {
-  return getAddressInfo(address)?.type === 'user' || isZeroAddress(address);
-}
-
-export function isContractAddress(address: string): boolean {
-  return getAddressInfo(address)?.type === 'contract';
-}
-
-export function isInnerContractAddress(address: string): boolean {
-  try {
-    // @todo, wait for sdk upgrade to accept both base32 and hex address
-    return SDK.address.isInternalContractAddress(formatAddress(address, 'hex'));
-  } catch (e) {
-    return false;
-  }
-}
-
-// address start with 0x0, not valid internal contract, but fullnode support
-export function isSpecialAddress(address: string): boolean {
+export function isContractCodeHashEmpty(codeHash) {
   return (
-    getAddressInfo(address)?.type === 'builtin' &&
-    !isInnerContractAddress(address)
+    codeHash ===
+      '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470' ||
+    codeHash === '0x' ||
+    codeHash === ''
   );
 }
 
-export function isCurrentNetworkAddress(address: string): boolean {
-  return getAddressInfo(address)?.netId === NETWORK_ID;
+export async function getAddressType(address: string): Promise<string> {
+  // TODO, use SDK util fn replace after new version released
+  try {
+    const account = await CFX.getAccount(address);
+    if (isContractCodeHashEmpty(account.codeHash)) {
+      return 'account';
+    }
+    return 'contract';
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function isAccountAddress(address: string): Promise<boolean> {
+  try {
+    return (await getAddressType(address)) === 'account';
+  } catch (e) {
+    return false;
+  }
+}
+
+export async function isContractAddress(address: string): Promise<boolean> {
+  try {
+    return (await getAddressType(address)) === 'contract';
+  } catch (e) {
+    return false;
+  }
 }
 
 /**
@@ -589,7 +562,7 @@ export const isTxHash = async (str: string) => {
 
 // Is input match epoch number format
 // 0x??? need to convert to decimal int
-export function isEpochNumber(str: string) {
+export function isBlockNumber(str: string) {
   var n = Math.floor(Number(str));
   return n !== Infinity && String(n) === str && n >= 0;
 }
@@ -868,5 +841,30 @@ export function padLeft(n, totalLength = 1) {
       result = '0' + result;
     }
     return result;
+  }
+}
+
+export function checkIfContractByInfo(address: string, info: any, type?) {
+  try {
+    const fromInfo = info.fromContractInfo || info.fromTokenInfo || {};
+    const toInfo = info.toContractInfo || info.toTokenInfo || {};
+    const commonInfo =
+      info.contractInfo || info.tokenInfo || info.transferTokenInfo || {};
+
+    if (address === fromInfo.address) {
+      return true;
+    }
+
+    if (address === toInfo.address) {
+      return true;
+    }
+
+    if (address === commonInfo.address) {
+      return true;
+    }
+
+    return false;
+  } catch (e) {
+    return false;
   }
 }

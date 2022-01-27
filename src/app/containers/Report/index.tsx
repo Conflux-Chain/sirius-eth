@@ -6,7 +6,7 @@ import { translations } from 'locales/i18n';
 import { Form, Input, Checkbox, Button, Row, Col } from '@cfxjs/antd';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-import { isHash, isCurrentNetworkAddress } from 'utils';
+import { isHash, isAddress } from 'utils';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { reqReport } from 'utils/httpRequest';
 import { useMessages } from '@cfxjs/react-ui';
@@ -27,7 +27,7 @@ export function Report() {
     address: '',
     ...queryString.parse(location.search),
   };
-  const addressInitalValue = isCurrentNetworkAddress(search['address'])
+  const addressInitalValue = isAddress(search['address'])
     ? search['address']
     : '';
 
@@ -101,7 +101,7 @@ export function Report() {
                   translations.report.error.addressInvalid,
                 );
 
-                if (isCurrentNetworkAddress(address)) {
+                if (isAddress(address)) {
                   return Promise.resolve();
                 } else {
                   return Promise.reject(textInvalidAddress);
@@ -117,7 +117,7 @@ export function Report() {
                 // );
 
                 // if (address.startsWith('0x')) {
-                //   if (isCurrentNetworkAddress(address)) {
+                //   if (isAddress(address)) {
                 //     return Promise.resolve();
                 //   } else {
                 //     return Promise.reject(textInvalidAddress);

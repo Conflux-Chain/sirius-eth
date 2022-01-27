@@ -21,7 +21,7 @@ import FlatIcon from 'images/token/flat.svg';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import { Tag } from '@cfxjs/antd';
-import { ProjectInfo } from '../../components/ProjectInfo';
+// import { ProjectInfo } from '../../components/ProjectInfo';
 
 interface SecurityAudit {
   audit: {
@@ -175,7 +175,7 @@ export const Basic = ({
     children:
       tokenAddress !== undefined ? (
         <>
-          <AddressContainer value={tokenAddress} />{' '}
+          <AddressContainer value={tokenAddress} isContract={true} />{' '}
           <CopyButton copyText={formatAddress(tokenAddress)} />
         </>
       ) : (
@@ -276,22 +276,22 @@ export const Basic = ({
         ? t(translations.general.notAvailable)
         : undefined,
   };
-  const fieldProjectInfo = {
-    title: (
-      <Tooltip text={t(translations.toolTip.token.transfers)} placement="top">
-        {t(translations.general.table.token.projectInfo.projectInfo)}
-      </Tooltip>
-    ),
-    children: securityAudit ? (
-      name ? (
-        <ProjectInfo
-          securityAudit={securityAudit}
-          tokenName={name}
-          isDetailPage={true}
-        />
-      ) : undefined
-    ) : undefined,
-  };
+  // const fieldProjectInfo = {
+  //   title: (
+  //     <Tooltip text={t(translations.toolTip.token.transfers)} placement="top">
+  //       {t(translations.general.table.token.projectInfo.projectInfo)}
+  //     </Tooltip>
+  //   ),
+  //   children: securityAudit ? (
+  //     name ? (
+  //       <ProjectInfo
+  //         securityAudit={securityAudit}
+  //         tokenName={name}
+  //         isDetailPage={true}
+  //       />
+  //     ) : undefined
+  //   ) : undefined,
+  // };
   const fieldTokenWebsite = {
     title: t(translations.token.website),
     children: website || '--',
@@ -307,7 +307,7 @@ export const Basic = ({
       fieldDecimal,
       fieldTotalSupply,
       fieldHolders,
-      fieldProjectInfo,
+      // fieldProjectInfo,
       fieldTokenWebsite,
       fieldTransfers,
     ];
@@ -317,7 +317,7 @@ export const Basic = ({
       fieldContractAddress,
       fieldHolders,
       fieldTransfers,
-      fieldProjectInfo,
+      // fieldProjectInfo,
       fieldTokenWebsite,
     ];
   } else {
@@ -325,7 +325,7 @@ export const Basic = ({
       fieldTransfers,
       fieldContractAddress,
       fieldHolders,
-      fieldProjectInfo,
+      // fieldProjectInfo,
       fieldTokenWebsite,
     ];
   }

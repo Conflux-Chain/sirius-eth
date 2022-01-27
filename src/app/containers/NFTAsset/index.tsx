@@ -9,7 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import { media } from 'styles/media';
-import { toThousands, isCurrentNetworkAddress, isAccountAddress } from 'utils';
+import {
+  toThousands,
+  // isAccountAddress,
+  isAddress,
+} from 'utils';
 import { Card } from 'app/components/Card';
 import { Col, Pagination, Row, Spin, Tag } from '@cfxjs/antd';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
@@ -66,10 +70,10 @@ export function NFTAsset() {
   const total = selectedNFT.balance;
 
   const validateAddress = (address, cb) => {
-    if (isCurrentNetworkAddress(address)) {
-      if (isAccountAddress(address)) {
-        cb && cb();
-      }
+    if (isAddress(address)) {
+      // TODO, eth space, use isAddress replaced
+      // if (isAccountAddress(address)) {
+      cb && cb();
     }
   };
 

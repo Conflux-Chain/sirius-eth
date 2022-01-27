@@ -65,7 +65,7 @@ export function GlobalNotify() {
             content = (
               <LinkWrapper>
                 <a
-                  href={`/transaction/${info.hash}`}
+                  href={`/tx/${info.hash}`}
                   target="_blank"
                   className="link-anchor"
                   rel="noopener noreferrer"

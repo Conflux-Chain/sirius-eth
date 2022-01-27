@@ -10,13 +10,13 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { TextLogo } from 'app/components/TextLogo';
 import { Search } from './Search';
-import { ConnectWallet } from 'app/components/ConnectWallet';
+// import { ConnectWallet } from 'app/components/ConnectWallet';
 import { media, useBreakpoint } from 'styles/media';
 import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
 import { Check } from '@zeit-ui/react-icons';
 import { translations } from 'locales/i18n';
-// import { useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import imgConfiPlanet from 'images/confi-planet.png';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
@@ -24,7 +24,7 @@ import { useToggle } from 'react-use';
 import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
 import { getNetwork, gotoNetwork } from 'utils';
 import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
-import { Notices } from 'app/containers/Notices/Loadable';
+// import { Notices } from 'app/containers/Notices/Loadable';
 
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
@@ -35,20 +35,19 @@ export const Header = memo(() => {
   const en = 'EN';
   const iszh = i18n.language.includes('zh');
 
-  // const location = useLocation();
+  const location = useLocation();
   // const contractMatched =
   //   location.pathname.startsWith('/sponsor') ||
   //   location.pathname.startsWith('/contract');
   // const statisticsMatched =
   //   location.pathname.startsWith('/chart') ||
   //   location.pathname.startsWith('/statistics');
-  // const moreMatched =
-  //   location.pathname.startsWith('/address-converter') ||
-  //   location.pathname.startsWith('/push-tx') ||
-  //   location.pathname.startsWith('/block-countdown') ||
-  //   location.pathname.startsWith('/nft-checker');
+  const moreMatched =
+    location.pathname.startsWith('/address-converter') ||
+    location.pathname.startsWith('/push-tx') ||
+    location.pathname.startsWith('/block-countdown') ||
+    location.pathname.startsWith('/nft-checker');
   // const blockchainMatched =
-  //   location?.pathname?.startsWith('/blockchain') ||
   //   location.pathname.startsWith('/contract') ||
   //   location.pathname.startsWith('/sponsor');
   // const ecosystemMatched = false;
@@ -68,25 +67,25 @@ export const Header = memo(() => {
       ],
       name: ScanEvent.menu.action.techIssue,
       afterClick: menuClick,
-      href: 'https://github.com/Conflux-Chain/sirius/issues',
+      href: 'https://github.com/Conflux-Chain/sirius-eth/issues',
     },
-    {
-      title: [t(translations.header.report), <Check size={18} key="check" />],
-      name: ScanEvent.menu.action.report,
-      afterClick: menuClick,
-      href: '/report',
-    },
-    {
-      title: [
-        t(translations.header.supportCenter),
-        <Check size={18} key="check" />,
-      ],
-      name: ScanEvent.menu.action.supportCenter,
-      afterClick: menuClick,
-      href: iszh
-        ? 'https://confluxscansupportcenter.zendesk.com/hc/zh-cn'
-        : 'https://confluxscansupportcenter.zendesk.com/hc/en-us',
-    },
+    // {
+    //   title: [t(translations.header.report), <Check size={18} key="check" />],
+    //   name: ScanEvent.menu.action.report,
+    //   afterClick: menuClick,
+    //   href: '/report',
+    // },
+    // {
+    //   title: [
+    //     t(translations.header.supportCenter),
+    //     <Check size={18} key="check" />,
+    //   ],
+    //   name: ScanEvent.menu.action.supportCenter,
+    //   afterClick: menuClick,
+    //   href: iszh
+    //     ? 'https://confluxscansupportcenter.zendesk.com/hc/zh-cn'
+    //     : 'https://confluxscansupportcenter.zendesk.com/hc/en-us',
+    // },
     {
       title: [
         t(translations.header.suggestionBox),
@@ -199,23 +198,149 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.home,
       afterClick: menuClick,
       href: '/',
-      className: 'home',
     },
     {
       // block
       title: [t(translations.header.block)],
       name: ScanEvent.menu.action.blocks,
       afterClick: menuClick,
-      href: '/blockchain/blocks',
-      className: 'home',
+      href: '/blocks',
     },
     {
       // txn
       title: [t(translations.header.txn)],
       name: ScanEvent.menu.action.transactions,
       afterClick: menuClick,
-      href: '/blockchain/transactions',
-      className: 'home',
+      href: '/txs',
+    },
+    {
+      title: t(translations.header.tokens),
+      matched: location?.pathname?.startsWith('/tokens'),
+      children: [
+        {
+          // erc 20
+          title: [
+            t(translations.header.tokens20),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tokens20,
+          afterClick: menuClick,
+          href: '/tokens',
+        },
+        {
+          // erc 721
+          title: [
+            t(translations.header.tokens721),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tokens721,
+          afterClick: menuClick,
+          href: '/tokens-nft',
+        },
+        {
+          // erc 1155
+          title: [
+            t(translations.header.tokens1155),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tokens1155,
+          afterClick: menuClick,
+          href: '/tokens-nft1155',
+        },
+      ],
+    },
+    // more
+    {
+      title: t(translations.header.more),
+      matched: moreMatched,
+      className: 'plain',
+      children: [
+        // {
+        //   title: [
+        //     t(translations.header.tools),
+        //     <Check size={18} key="check" />,
+        //   ],
+        //   name: ScanEvent.menu.action.tools,
+        //   plain: true,
+        //   children: [
+        //     // {
+        //     //   title: [
+        //     //     t(translations.header.addressConverter),
+        //     //     <Check size={18} key="check" />,
+        //     //   ],
+        //     //   name: ScanEvent.menu.action.addressConverter,
+        //     //   afterClick: menuClick,
+        //     //   href: '/address-converter',
+        //     // },
+        //     // {
+        //     //   title: [
+        //     //     t(translations.header.broadcastTx),
+        //     //     <Check size={18} key="check" />,
+        //     //   ],
+        //     //   name: ScanEvent.menu.action.broadcastTx,
+        //     //   afterClick: menuClick,
+        //     //   href: '/push-tx',
+        //     // },
+        //     {
+        //       title: [
+        //         t(translations.header.blocknumberCalc),
+        //         <Check size={18} key="check" />,
+        //       ],
+        //       name: ScanEvent.menu.action.blocknumberCalc,
+        //       afterClick: menuClick,
+        //       href: '/block-countdown',
+        //     },
+        //     // {
+        //     //   title: [
+        //     //     t(translations.header.nftChecker),
+        //     //     <Check size={18} key="check" />,
+        //     //   ],
+        //     //   name: ScanEvent.menu.action.nftChecker,
+        //     //   afterClick: menuClick,
+        //     //   href: '/nft-checker',
+        //     // },
+        //     {
+        //       title: [
+        //         t(translations.header.balanceChecker),
+        //         <Check size={18} key="check" />,
+        //       ],
+        //       name: ScanEvent.menu.action.balanceChecker,
+        //       afterClick: menuClick,
+        //       href: '/balance-checker',
+        //     },
+        //   ],
+        // },
+        {
+          title: [
+            t(translations.header.tools),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.tools,
+          plain: true,
+          children: [
+            {
+              title: [
+                t(translations.header.crossSpaceDApp),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.crossSpaceDApp,
+              afterClick: menuClick,
+              href: iszh
+                ? 'https://evm.fluentwallet.com/'
+                : 'https://evm.fluentwallet.com/',
+            },
+          ],
+        },
+        {
+          title: [
+            t(translations.header.support),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.support,
+          plain: true,
+          children: supportAndHelpMenuItems,
+        },
+      ],
     },
     // blockchain
     // {
@@ -238,7 +363,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.blocks,
     //           afterClick: menuClick,
-    //           href: '/blockchain/blocks',
+    //           href: '/blocks',
     //         },
     //         {
     //           // txn
@@ -248,7 +373,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.transactions,
     //           afterClick: menuClick,
-    //           href: '/blockchain/transactions',
+    //           href: '/txs',
     //         },
     //         {
     //           // accounts
@@ -258,7 +383,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.accounts,
     //           afterClick: menuClick,
-    //           href: '/blockchain/accounts',
+    //           href: '/accounts',
     //         },
     //         {
     //           // cfx transfers
@@ -268,7 +393,7 @@ export const Header = memo(() => {
     //           ],
     //           name: ScanEvent.menu.action.cfxTransfers,
     //           afterClick: menuClick,
-    //           href: '/blockchain/cfx-transfers',
+    //           href: '/cfx-transfers',
     //         },
     //       ],
     //     },
@@ -279,43 +404,6 @@ export const Header = memo(() => {
     //       ],
     //       plain: true,
     //       children: contractItems,
-    //     },
-    //   ],
-    // },
-    // // tokens
-    // {
-    //   title: t(translations.header.tokens),
-    //   matched: location?.pathname?.startsWith('/tokens'),
-    //   children: [
-    //     {
-    //       // erc 20
-    //       title: [
-    //         t(translations.header.tokens20),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tokens20,
-    //       afterClick: menuClick,
-    //       href: '/tokens/crc20',
-    //     },
-    //     {
-    //       // erc 721
-    //       title: [
-    //         t(translations.header.tokens721),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tokens721,
-    //       afterClick: menuClick,
-    //       href: '/tokens/crc721',
-    //     },
-    //     {
-    //       // erc 1155
-    //       title: [
-    //         t(translations.header.tokens1155),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tokens1155,
-    //       afterClick: menuClick,
-    //       href: '/tokens/crc1155',
     //     },
     //   ],
     // },
@@ -393,78 +481,6 @@ export const Header = memo(() => {
     //   title: t(translations.header.ecosystem),
     //   matched: ecosystemMatched,
     //   children: ecosystemItems,
-    // },
-    // // more
-    // {
-    //   title: t(translations.header.more),
-    //   matched: moreMatched,
-    //   className: 'plain',
-    //   children: [
-    //     {
-    //       title: [
-    //         t(translations.header.tools),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.tools,
-    //       plain: true,
-    //       children: [
-    //         {
-    //           title: [
-    //             t(translations.header.addressConverter),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.addressConverter,
-    //           afterClick: menuClick,
-    //           href: '/address-converter',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.broadcastTx),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.broadcastTx,
-    //           afterClick: menuClick,
-    //           href: '/push-tx',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.blocknumberCalc),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.blocknumberCalc,
-    //           afterClick: menuClick,
-    //           href: '/block-countdown',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.nftChecker),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.nftChecker,
-    //           afterClick: menuClick,
-    //           href: '/nft-checker',
-    //         },
-    //         {
-    //           title: [
-    //             t(translations.header.balanceChecker),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.balanceChecker,
-    //           afterClick: menuClick,
-    //           href: '/balance-checker',
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       title: [
-    //         t(translations.header.support),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.support,
-    //       plain: true,
-    //       children: supportAndHelpMenuItems,
-    //     },
-    //   ],
     // },
   ];
 
@@ -570,9 +586,10 @@ export const Header = memo(() => {
         <SearchWrapper>
           <Search />
         </SearchWrapper>
-        <WalletWrapper>
+        {/* TODO, eth space, hide temporary */}
+        {/* <WalletWrapper>
           <ConnectWallet />
-        </WalletWrapper>
+        </WalletWrapper> */}
       </>
     ),
     endLinksJSX,
@@ -586,7 +603,7 @@ export const Header = memo(() => {
         brand={brand}
         mainMenu={mainMenu}
         topMenu={topMenu}
-        subMenu={<Notices />}
+        // subMenu={<Notices />}
       />
       {(bp === 's' || bp === 'm') && (
         <SearchWrapper>
@@ -708,18 +725,18 @@ const SearchWrapper = styled.div`
   }
 `;
 
-const WalletWrapper = styled.div`
-  min-width: 180px;
+// const WalletWrapper = styled.div`
+//   min-width: 180px;
 
-  .connect-wallet-button.notConnected {
-    .connect-wallet-button-left {
-      //color: #fff;
-      width: 100%;
-      justify-content: center;
-      //background: #424a71;
-      &:hover {
-        //background: #68719c;
-      }
-    }
-  }
-`;
+//   .connect-wallet-button.notConnected {
+//     .connect-wallet-button-left {
+//       //color: #fff;
+//       width: 100%;
+//       justify-content: center;
+//       //background: #424a71;
+//       &:hover {
+//         //background: #68719c;
+//       }
+//     }
+//   }
+// `;

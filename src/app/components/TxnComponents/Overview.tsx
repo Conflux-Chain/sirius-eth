@@ -6,7 +6,7 @@ import { Link } from 'app/components/Link';
 import { Description } from 'app/components/Description/Loadable';
 
 import { GasFee } from './GasFee';
-import { StorageFee } from './StorageFee';
+// import { StorageFee } from './StorageFee';
 import { Nonce } from './Nonce';
 import { TokenTransfer } from './TokenTransfer';
 import { Status } from './Status';
@@ -16,11 +16,11 @@ export const Overview = ({ data }) => {
   const {
     hash,
     status,
-    confirmedEpochCount,
+    // confirmedEpochCount,
     gasFee,
     gasCoveredBySponsor,
-    storageCollateralized,
-    storageCoveredBySponsor,
+    // storageCollateralized,
+    // storageCoveredBySponsor,
     nonce,
     transactionIndex,
     tokenTransferTokenInfo,
@@ -71,7 +71,7 @@ export const Overview = ({ data }) => {
           </StyledTokenTransferWrapper>
         </Description>
       ) : null}
-      <Description
+      {/* <Description
         verticle
         size="tiny"
         title={t(translations.transaction.epochConfirmations)}
@@ -81,8 +81,8 @@ export const Overview = ({ data }) => {
             count: confirmedEpochCount || '--',
           })}
         </span>
-      </Description>
-      <Description
+      </Description> */}
+      {/* <Description
         verticle
         size="tiny"
         title={t(translations.transaction.storageCollateralized)}
@@ -91,7 +91,7 @@ export const Overview = ({ data }) => {
           fee={storageCollateralized}
           sponsored={storageCoveredBySponsor}
         />
-      </Description>
+      </Description> */}
       <Description
         verticle
         size="tiny"
@@ -109,7 +109,7 @@ export const Overview = ({ data }) => {
       </Description>
       {hash ? (
         <div className="overview-gotoDetail-container">
-          <Link className="overview-gotoDetail" href={`/transaction/${hash}`}>
+          <Link className="overview-gotoDetail" href={`/tx/${hash}`}>
             {t(translations.transaction.gotoDetail)}
           </Link>{' '}
         </div>

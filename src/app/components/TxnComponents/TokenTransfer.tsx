@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
-import { formatBalance } from 'utils';
+import { formatBalance, checkIfContractByInfo } from 'utils';
 import { Link } from 'app/components/Link';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
@@ -117,17 +117,29 @@ export const TokenTransfer = ({
             <span className="transfer-item-group">
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)} </span>
-              <AddressContainer value={transferItem['from']} />
+              <AddressContainer
+                value={transferItem['from']}
+                isContract={checkIfContractByInfo(
+                  transferItem['from'],
+                  transferItem,
+                )}
+              />
             </span>
             <span className="transfer-item-group">
               <span className="to"> {t(translations.transaction.to)} </span>
-              <AddressContainer value={transferItem['to']} />
+              <AddressContainer
+                value={transferItem['to']}
+                isContract={checkIfContractByInfo(
+                  transferItem['to'],
+                  transferItem,
+                )}
+              />
             </span>
             <span className="transfer-item-group">
               <span className="for"> {t(translations.transaction.for)} </span>
               <span className="type">1</span>
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc721" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc721" />
               <span className="type">
                 &nbsp;
                 {t(translations.transaction.tokenId)}:
@@ -147,13 +159,25 @@ export const TokenTransfer = ({
             <span className="transfer-item-group">
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)} </span>
-              <AddressContainer value={transferItem['from']} />
+              <AddressContainer
+                value={transferItem['from']}
+                isContract={checkIfContractByInfo(
+                  transferItem['from'],
+                  transferItem,
+                )}
+              />
             </span>
             <span className="transfer-item-group">
               <span className="to"> {t(translations.transaction.to)} </span>
-              <AddressContainer value={transferItem['to']} />
+              <AddressContainer
+                value={transferItem['to']}
+                isContract={checkIfContractByInfo(
+                  transferItem['to'],
+                  transferItem,
+                )}
+              />
               <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="crc1155" />
+              <span>{nameContainer}</span> <TokenTypeTag type="erc1155" />
             </span>
             <span className="transfer-item-group">
               {transferItem['batch'].map((item, index) => (

@@ -10,7 +10,7 @@ import { useTabTableData } from 'app/components/TabsTablePanel';
 import { ScanEvent } from 'utils/gaConstants';
 import { BlockchainInfo } from './BlockchainInfo';
 import { useInterval } from 'react-use';
-import { Notices } from 'app/containers/Notices/Loadable';
+// import { Notices } from 'app/containers/Notices/Loadable';
 
 import { Blocks } from './Blocks';
 import { Txns } from './Txns';
@@ -52,7 +52,7 @@ export function HomePage() {
         />
       </Helmet>
       <Main>
-        {bp && bp === 's' ? <Notices /> : null}
+        {/* {bp && bp === 's' ? <Notices /> : null} */}
         <BlockchainInfo timestamp={timestamp} />
         <Bottom>
           <TabsTablePanel tabs={tabs} />
@@ -60,7 +60,7 @@ export function HomePage() {
             {currentTabValue === 'blocks' ? (
               <Link
                 className="viewall-link"
-                href={`/blockchain/blocks`}
+                href={`/blocks`}
                 ga={{
                   category: ScanEvent.menu.category,
                   action: ScanEvent.menu.action.blocks,
@@ -73,7 +73,7 @@ export function HomePage() {
             ) : (
               <Link
                 className="viewall-link"
-                href={`/blockchain/transactions`}
+                href={`/txs`}
                 ga={{
                   category: ScanEvent.menu.category,
                   action: ScanEvent.menu.action.transactions,

@@ -6,17 +6,14 @@ import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import {
   formatAddress,
-  isContractAddress,
-  isInnerContractAddress,
+  // isContractAddress,
   isZeroAddress,
   isAddress,
   formatString,
-  isPosAddress,
 } from 'utils';
 import { AlertTriangle } from '@zeit-ui/react-icons';
 import ContractIcon from 'images/contract-icon.png';
 import isMeIcon from 'images/me.png';
-import InternalContractIcon from 'images/internal-contract-icon.png';
 import VerifiedIcon from 'images/verified.png';
 import { media, sizes } from 'styles/media';
 import {
@@ -38,14 +35,15 @@ interface Props {
   prefixFloat?: boolean; // prefix icon float or take up space, default false
   showIcon?: boolean; // whether show contract icon, default true
   verify?: boolean; // show verified contract icon or unverified contract icon
+  isContract?: boolean;
 }
 
-const defaultPCMaxWidth = 138;
+const defaultPCMaxWidth = 95;
 const defaultMobileMaxWidth =
   NETWORK_TYPE === NETWORK_TYPES.mainnet ? 106 : 140;
 const defaultPCSuffixAddressSize =
   NETWORK_TYPE === NETWORK_TYPES.mainnet ? 8 : 4;
-const defaultPCSuffixPosAddressSize = 10;
+// const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
 
 // ≈ 2.5 ms
@@ -121,6 +119,7 @@ export const AddressContainer = withTranslation()(
       showIcon = true,
       t,
       verify = false,
+      isContract = false,
     }: Props & WithTranslation) => {
       const suffixSize =
         suffixAddressSize ||
@@ -206,11 +205,9 @@ export const AddressContainer = withTranslation()(
         alias = t(translations.general.zeroAddress);
       }
 
-      if (isContractAddress(cfxAddress) || isInnerContractAddress(cfxAddress)) {
+      if (isContract) {
         const typeText = t(
-          isInnerContractAddress(cfxAddress)
-            ? translations.general.internalContract
-            : verify
+          verify
             ? translations.general.verifiedContract
             : translations.general.unverifiedContract,
         );
@@ -229,9 +226,7 @@ export const AddressContainer = withTranslation()(
             >
               <Text span hoverValue={typeText}>
                 <ImgWrapper>
-                  {isInnerContractAddress(cfxAddress) ? (
-                    <img src={InternalContractIcon} alt={typeText} />
-                  ) : (
+                  {
                     <>
                       <img src={ContractIcon} alt={typeText} />
                       {verify ? (
@@ -242,7 +237,7 @@ export const AddressContainer = withTranslation()(
                         />
                       ) : null}
                     </>
-                  )}
+                  }
                 </ImgWrapper>
               </Text>
             </IconWrapper>
@@ -286,101 +281,6 @@ export const AddressContainer = withTranslation()(
   ),
 );
 
-export const PoSAddressContainer = withTranslation()(
-  React.memo(
-    ({
-      value,
-      alias,
-      maxWidth,
-      isFull = false,
-      isLink = true,
-      isMe = false,
-      suffixAddressSize,
-      prefixFloat = false,
-      t,
-    }: Props & WithTranslation) => {
-      const suffixSize =
-        suffixAddressSize ||
-        (window.innerWidth <= sizes.m
-          ? defaultMobileSuffixAddressSize
-          : defaultPCSuffixPosAddressSize);
-
-      if (!value) {
-        return <>--</>;
-      }
-
-      // first check if the address is a valid conflux address
-      if (!isPosAddress(value)) {
-        const tip = t(translations.general.invalidPosAddress);
-        return RenderAddress({
-          cfxAddress: value,
-          alias,
-          hoverValue: `${tip}: ${value}`,
-          content: alias
-            ? formatString(alias, 'tag')
-            : formatString(value, 'posAddress'),
-          isLink: false,
-          isFull,
-          maxWidth,
-          suffixSize,
-          style: { color: '#e00909' },
-          prefix: (
-            <IconWrapper className={prefixFloat ? 'float' : ''}>
-              <Text span hoverValue={tip}>
-                <AlertTriangle size={16} color="#e00909" />
-              </Text>
-            </IconWrapper>
-          ),
-          type: 'pos',
-        });
-      }
-
-      const content = formatString(value, 'posAddress');
-
-      // if (!alias) {
-      //   alias = CONTRACTS_NAME_LABEL[cfxAddress]; // may use later
-      // }
-
-      if (isMe) {
-        return RenderAddress({
-          cfxAddress: value,
-          alias,
-          isLink,
-          isFull,
-          maxWidth,
-          suffixSize,
-          suffix: (
-            <IconWrapper className={prefixFloat ? 'float' : ''}>
-              <img
-                src={isMeIcon}
-                alt="is me"
-                style={{
-                  width: 38.5,
-                  marginLeft: 3,
-                  marginBottom: isFull ? 6 : 4,
-                }}
-              />
-            </IconWrapper>
-          ),
-          content: content,
-          type: 'pos',
-        });
-      }
-
-      return RenderAddress({
-        cfxAddress: value,
-        alias,
-        isLink,
-        isFull,
-        maxWidth,
-        suffixSize,
-        type: 'pos',
-        content: content,
-      });
-    },
-  ),
-);
-
 const ImgWrapper = styled.span`
   position: relative;
   width: 16px;
@@ -401,6 +301,7 @@ const ImgWrapper = styled.span`
     right: 1px;
   }
 `;
+
 const IconWrapper = styled.span`
   margin-right: 2px;
   flex-shrink: 0;

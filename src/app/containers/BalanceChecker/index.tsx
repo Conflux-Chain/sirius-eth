@@ -8,10 +8,9 @@ import { PageHeader } from '../../components/PageHeader/Loadable';
 import { DatePicker } from '@cfxjs/react-ui';
 import { translations } from '../../../locales/i18n';
 import {
-  isCurrentNetworkAddress,
-  isContractAddress,
   isZeroOrPositiveInteger,
   getAddressInputPlaceholder,
+  isAddress,
 } from '../../../utils';
 import { Result } from './Result';
 import dayjs from 'dayjs';
@@ -86,7 +85,7 @@ export function BalanceChecker() {
     form.resetFields();
   };
   const validateAddress = (rule, address) => {
-    if (address && !isCurrentNetworkAddress(address)) {
+    if (address && !isAddress(address)) {
       return Promise.reject(
         new Error(t(translations.addressConverter.incorrectFormat)),
       );
@@ -94,7 +93,8 @@ export function BalanceChecker() {
     return Promise.resolve();
   };
   const validateContractAddress = (rule, contractAddress) => {
-    if (contractAddress && !isContractAddress(contractAddress)) {
+    if (contractAddress && !isAddress(contractAddress)) {
+      // if (contractAddress && !isContractAddress(contractAddress)) {
       return Promise.reject(
         new Error(t(translations.contract.invalidContractAddress)),
       );

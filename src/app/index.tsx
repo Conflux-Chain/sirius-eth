@@ -28,8 +28,13 @@ import { GlobalStyle } from 'styles/global-styles';
 import { TxnHistoryProvider } from 'utils/hooks/useTxnHistory';
 import { GlobalProvider, useGlobalData } from 'utils/hooks/useGlobal';
 import { reqProjectConfig } from 'utils/httpRequest';
-import { LOCALSTORAGE_KEYS_MAP, NETWORK_ID, CFX } from 'utils/constants';
-import { formatAddress, isSimplyBase32Address, isAddress } from 'utils';
+import {
+  LOCALSTORAGE_KEYS_MAP,
+  NETWORK_ID,
+  CFX,
+  CFX_TOKEN_TYPES,
+} from 'utils/constants';
+import { isAddress } from 'utils';
 import MD5 from 'md5.js';
 // import lodash from 'lodash';
 
@@ -47,31 +52,31 @@ import { Block } from './containers/Block/Loadable';
 import { AddressContractDetailPage } from './containers/AddressContractDetail/Loadable';
 import { GlobalNotify } from './containers/GlobalNotify';
 import { Search } from './containers/Search';
+// import { BalanceChecker } from './containers/BalanceChecker/Loadable';
+// import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
+// import { AddressConverter } from './containers/AddressConverter';
+// import { NetworkError } from './containers/NetworkError/Loadable';
+// import { Report } from './containers/Report';
+// import { Contract } from './containers/Contract/Loadable';
+import { TokenDetail } from './containers/TokenDetail/Loadable';
 
 import Loading from 'app/components/Loading';
 import { CookieTip } from './components/CookieTip';
 import { GlobalTip } from './components/GlobalTip';
 
-// import { Report } from './containers/Report';
 // import { Swap } from './containers/Swap';
-// import { Contract } from './containers/Contract/Loadable';
 // import { ContractDeployment } from './containers/ContractDeployment/Loadable';
 // import { ContractVerification } from './containers/ContractVerification/Loadable';
 // import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
 // import { RegisteredContracts } from './containers/Contracts/Loadable';
-// import { TokenDetail } from './containers/TokenDetail/Loadable';
 // import { Chart } from './containers/Charts/Loadable';
 // import { Statistics } from './containers/Statistics/Loadable';
 // import { Epoch } from './containers/Epoch/Loadable';
-// import { AddressConverter } from './containers/AddressConverter';
 
-// import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
 // import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 // import { ChartDetail } from './containers/ChartDetail/Loadable';
-// import { NetworkError } from './containers/NetworkError/Loadable';
-// import { BalanceChecker } from './containers/BalanceChecker/Loadable';
 // import { NFTChecker } from './containers/NFTChecker/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
@@ -123,6 +128,13 @@ export function App() {
     setLoading(true);
     reqProjectConfig()
       .then(resp => {
+        if (resp?.networks.every(n => n.id !== resp?.networkId)) {
+          resp?.networks.push({
+            name: resp?.networkId,
+            id: resp?.networkId,
+          });
+        }
+
         // @ts-ignore
         const networkId = resp?.networkId;
         // @ts-ignore
@@ -283,119 +295,73 @@ export function App() {
                       <ScrollToTop>
                         <Switch>
                           <Route exact path="/" component={HomePage} />
-                          {/* compatible for previous user bookmark */}
-                          <Route
-                            exact
-                            path={[
-                              '/blocks-and-transactions',
-                              '/blockchain',
-                              '/blockchain/blocks-and-transactions',
-                            ]}
-                            render={() => <Redirect to="/blockchain/blocks" />}
-                          />
-                          <Route
-                            exact
-                            path="/blockchain/blocks"
-                            component={Blocks}
-                          />
-                          <Route
-                            exact
-                            path="/blockchain/transactions"
-                            component={Transactions}
-                          />
-                          <Route
-                            exact
-                            path="/blockchain/accounts"
-                            component={Accounts}
-                          />
-                          <Route exact path="/tokens" component={Tokens} />
-                          <Route
-                            exact
-                            path="/tokens/:tokenType"
-                            render={(routeProps: any) => {
-                              if (routeProps.match.params.tokenType)
-                                routeProps.match.params.tokenType = routeProps.match.params.tokenType.toUpperCase();
-                              return <Tokens {...routeProps} />;
-                            }}
-                          />
-                          <Route
-                            exact
-                            path="/transaction/:hash"
-                            component={Transaction}
-                          />
-                          {/* Compatible with Etherscan */}
+                          <Route exact path="/blocks" component={Blocks} />
+                          <Route exact path="/block/:hash" component={Block} />
+                          <Route exact path="/txs" component={Transactions} />
                           <Route
                             exact
                             path="/tx/:hash"
                             component={Transaction}
                           />
-                          <Route exact path="/block/:hash" component={Block} />
+                          <Route exact path="/accounts" component={Accounts} />
+                          <Route exact path="/tokens" component={Tokens} />
                           <Route
                             exact
-                            path="/notfound/:contractAddress"
-                            component={NotFoundAddressPage}
+                            path="/tokens-nft"
+                            render={(routeProps: any) => {
+                              routeProps.match.params.tokenType =
+                                CFX_TOKEN_TYPES.erc721;
+                              return <Tokens {...routeProps} />;
+                            }}
+                          />
+                          <Route
+                            exact
+                            path="/tokens-nft1155"
+                            render={(routeProps: any) => {
+                              routeProps.match.params.tokenType =
+                                CFX_TOKEN_TYPES.erc1155;
+                              return <Tokens {...routeProps} />;
+                            }}
                           />
                           <Route
                             path="/address/:address"
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (isSimplyBase32Address(address)) {
+                              if (isAddress(address)) {
                                 return (
                                   <AddressContractDetailPage {...routeProps} />
                                 );
                               } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`/address/${formatAddress(address)}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
+                                return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
                           />
+                          <Route
+                            exact
+                            path="/notfound/:contractAddress"
+                            component={NotFoundAddressPage}
+                          />
                           <Route path="/search/:text" component={Search} />
+                          <Route
+                            exact
+                            path="/token/:tokenAddress"
+                            render={(routeProps: any) => {
+                              const address =
+                                routeProps.match.params.tokenAddress;
+
+                              if (isAddress(address)) {
+                                return <TokenDetail {...routeProps} />;
+                              } else {
+                                return <Redirect to={`/notfound/${address}`} />;
+                              }
+                            }}
+                          />
 
                           {/* <Route
                             exact
                             path="/packing/:txHash"
                             component={PackingPage}
-                          />
-                          <Route
-                            exact
-                            path={[
-                              '/contract-info/:contractAddress',
-                              '/token-info/:contractAddress',
-                            ]}
-                            render={(routeProps: any) => {
-                              const path = routeProps.match.path.match(
-                                /(\/.*\/)/,
-                              )[1];
-
-                              const address =
-                                routeProps.match.params.contractAddress;
-
-                              if (isSimplyBase32Address(address)) {
-                                return <Contract {...routeProps} />;
-                              } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`${path}${formatAddress(address)}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
-                              }
-                            }}
                           />
                           <Route
                             exact
@@ -409,31 +375,7 @@ export function App() {
                           />
                           <Route
                             exact
-                            path="/token/:tokenAddress"
-                            render={(routeProps: any) => {
-                              const address =
-                                routeProps.match.params.tokenAddress;
-
-                              if (isSimplyBase32Address(address)) {
-                                return <TokenDetail {...routeProps} />;
-                              } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`/token/${formatAddress(address)}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
-                              }
-                            }}
-                          />
-                          <Route
-                            exact
-                            path="/blockchain/cfx-transfers"
+                            path="/cfx-transfers"
                             component={CFXTransfers}
                           />
                           <Route
@@ -471,16 +413,30 @@ export function App() {
                           />
                           <Route
                             exact
-                            path={[
-                              '/address-converter',
-                              '/address-converter/:address',
-                            ]}
-                            component={AddressConverter}
+                            path={['/nft-checker', '/nft-checker/:address']}
+                            render={(routeProps: any) => {
+                              const address = routeProps.match.params.address;
+
+                              if (isAddress(address) || lodash.isNil(address)) {
+                                return <NFTChecker {...routeProps} />;
+                              } else {
+                                return <Redirect to={`/notfound/${address}`} />;
+                              }
+                            }}
                           />
                           <Route
                             exact
                             path="/push-tx"
                             component={BroadcastTx}
+                          />
+                          <Route exact path="/swap" component={Swap} />
+                          <Route
+                            exact
+                            path={[
+                              '/address-converter',
+                              '/address-converter/:address',
+                            ]}
+                            component={AddressConverter}
                           />
                           <Route
                             exact
@@ -490,13 +446,7 @@ export function App() {
                             ]}
                             component={BlocknumberCalc}
                           />
-                          <Route exact path="/swap" component={Swap} />
                           <Route exact path="/report" component={Report} />
-                          <Route
-                            exact
-                            path={['/networkError', '/networkError/:network']}
-                            component={NetworkError}
-                          />
                           <Route
                             exact
                             path="/balance-checker"
@@ -504,32 +454,27 @@ export function App() {
                           />
                           <Route
                             exact
-                            path={['/nft-checker', '/nft-checker/:address']}
+                            path={[
+                              '/contract-info/:contractAddress',
+                              '/token-info/:contractAddress',
+                            ]}
                             render={(routeProps: any) => {
-                              const address = routeProps.match.params.address;
+                              const address =
+                                routeProps.match.params.contractAddress;
 
-                              if (
-                                isSimplyBase32Address(address) ||
-                                lodash.isNil(address)
-                              ) {
-                                return <NFTChecker {...routeProps} />;
+                              if (isAddress(address)) {
+                                return <Contract {...routeProps} />;
                               } else {
-                                if (isAddress(address)) {
-                                  return (
-                                    <Redirect
-                                      to={`/nft-checker/${formatAddress(
-                                        address,
-                                      )}`}
-                                    />
-                                  );
-                                } else {
-                                  return (
-                                    <Redirect to={`/notfound/${address}`} />
-                                  );
-                                }
+                                return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
-                          /> */}
+                          />
+                          <Route
+                            exact
+                            path={['/networkError', '/networkError/:network']}
+                            component={NetworkError}
+                          />
+                          */}
                           <Route component={NotFoundPage} />
                         </Switch>
                       </ScrollToTop>

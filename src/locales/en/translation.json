@@ -106,12 +106,13 @@
     "requiredNameTag": "Please enter a contract name tag",
     "sitePlaceholder": "http(s)://",
     "invalidContractAddress": "Invalid contract address, or incorrect format",
+    "invalidAddress": "Invalid address, or incorrect format",
     "invalidNameTag": "The character length has reached the maximum limit",
     "duplicatedNameTag": "The name tag has been registered {{times}} time",
     "invalidUrl": "Incorrect URL",
     "errorNotAdmin": "You are not the creator or admin of the contract, please disconnect and try again. ",
     "invalidIconSize": "Invalid icon size, please try again.",
-    "errorTokenICon": "For the non-CRC20 contract, the token icon cannot be uploaded",
+    "errorTokenICon": "For the non-ERC20 contract, the token icon cannot be uploaded",
     "beforeContractSubmitTip": "Before submitting, you need to connect to ConfluxPortal to prove that you are the admin or creator of the contract.",
     "invalidJsonAbi": "Unable to parse the valid ABI in the JSON file, please try again.",
     "abiNotUploaded": "ABI not uploaded",
@@ -277,7 +278,7 @@
     "tipCountBefore": "Showing",
     "tipCountAfter": "tokens (The following list only displays certain tokens, undisplayed tokens can be found by searching contract address)",
     "dataSource": "Market Data Source: <a href='https://coinmarketcap.com/' target='_blank'>CoinMarketCap</a>",
-    "crcTip": "The {{crc}} is a digital asset published on the Conflux network using the {{erc}} standard.",
+    "ercTip": "The {{crc}} is a digital asset published on the Conflux network using the {{erc}} standard.",
     "table": {
       "number": "#",
       "token": "Token",
@@ -330,9 +331,9 @@
     "blockchain": "Blockchain",
     "accounts": "Accounts",
     "tokens": "Tokens",
-    "tokens20": "CRC-20 Tokens",
-    "tokens721": "CRC-721 Tokens",
-    "tokens1155": "CRC-1155 Tokens",
+    "tokens20": "ERC-20 Tokens",
+    "tokens721": "ERC-721 Tokens",
+    "tokens1155": "ERC-1155 Tokens",
     "contract": "Contract",
     "contractCreation": "Contract Registration",
     "contractSponsor": "Contract Sponsor",
@@ -355,11 +356,12 @@
     "techIssue": "Tech Issue",
     "report": "Report",
     "supportCenter": "Support Center",
+    "crossSpaceDApp": "Cross Space DApp",
     "suggestionBox": "Suggestion Box",
     "testnet": "Conflux Testnet",
     "oceanus": "Conflux Tethys",
-    "searchPlaceHolder": "Search by Epoch / Block Hash / Txn Hash / Address / Token / Contract Name Tag",
-    "searchPlaceHolderMobile": "Epoch/Block Hash/Txn Hash/Address/Token/Contract Name Tag",
+    "searchPlaceHolder": "Search by Block Height / Block Hash / Txn Hash / Address / Token / Contract Name Tag",
+    "searchPlaceHolderMobile": "Block Height/Block Hash/Txn Hash/Address/Token/Contract Name Tag",
     "addressConverter": "Address Format Conversion",
     "broadcastTx": "Broadcast Transaction",
     "blocknumberCalc": "Blocknumber Calculator",
@@ -393,7 +395,7 @@
     "confluxnetwork": "Conflux Network",
     "confluxportal": "ConfluxPortal",
     "confluxbounty": "ConfluxBounty",
-    "copryRight": "© 2021 Conflux. All Rights Reserved.",
+    "copryRight": "© 2022 Conflux. All Rights Reserved.",
     "tool": "Tool",
     "addressFormatConversion": "Address Format Conversion",
     "broadcastTx": "Broadcast Transaction",
@@ -587,7 +589,9 @@
       "privatenet": "privatenet"
     },
     "errors": {
-      "address": "Please enter a valid {{network}} address"
+      "address": "Please enter a valid {{network}} address",
+      "getAccountInfoError": "Get address info error, please reload page to retry.",
+      "invalidAddress": "Invalid address, or incorrect format"
     },
     "advancedSearch": {
       "label": {
@@ -602,9 +606,9 @@
         "token": "Token",
         "tokenSubTitle": "(Up to 3 tokens can be selected)",
         "rangePicker": "Date",
-        "epochNumber": "Epoch",
-        "minEpochNumber": "Min Epoch",
-        "maxEpochNumber": "Max Epoch"
+        "epochNumber": "Block Height",
+        "minEpochNumber": "Min Block Height",
+        "maxEpochNumber": "Max Block Height"
       },
       "error": {
         "invalidHash": "Invalid hash format",
@@ -640,7 +644,7 @@
       "holderAddress": "Holder Address",
       "tokenID": "TokenID",
       "blockHash": "Block Hash",
-      "epoch": "Epoch"
+      "epoch": "Block Height"
     },
     "totalRecord": "A total of {{total}} records",
     "totalRecordWithLimit": "Showing the last {{limit}} records (A total of {{total}} records)",
@@ -693,16 +697,17 @@
     "transactions": "transactions",
     "tokenTxns": "Token Txns",
     "cfxTransfer": "CFX Txns",
-    "tokenTxnsErc20": "CRC20 Txns",
-    "tokenTxnsErc721": "CRC721 Txns",
-    "tokenTxnsErc1155": "CRC1155 Txns",
+    "tokenTxnsErc20": "ERC20 Txns",
+    "tokenTxnsErc721": "ERC721 Txns",
+    "tokenTxnsErc1155": "ERC1155 Txns",
     "table": {
       "noData": "There are no matching entries.",
       "whoops": "Whoops!",
       "dateTime": "Date Time (Local)",
       "switchAgeTip": "Click to show {{format}} format",
       "block": {
-        "epoch": "Epoch",
+        "epoch": "Block Height",
+        "height": "Block Height",
         "position": "Position",
         "txns": "Txn",
         "hash": "Block Hash",
@@ -747,7 +752,7 @@
         "accountAddress": "Address",
         "tokenId": "TokenID",
         "quantity": "Quantity",
-        "erc1155QuantityTip": "The quantity of CRC-1155 tokens in an address is equal to the total number of categories with TokenIDs it owns.",
+        "erc1155QuantityTip": "The quantity of ERC-1155 tokens in an address is equal to the total number of categories with TokenIDs it owns.",
         "percentage": "Percentage",
         "traceType": "Trace Type",
         "traceResult": "Result",
@@ -836,7 +841,7 @@
     "status": {
       "skip": {
         "text": "Skip",
-        "explanation": "Possible reasons: Wrong nonce; insufficient balance; the transactions fail to execute at the appropriate epoch height; the transaction executed in earlier blocks."
+        "explanation": "Possible reasons: Wrong nonce; insufficient balance; the transactions fail to execute at the appropriate block height; the transaction executed in earlier blocks."
       },
       "error": {
         "text": "Error",
@@ -999,7 +1004,7 @@
     "for": "For",
     "tokenId": "TokenID",
     "inputTips": "The binary data that formed the input to the transaction, either the input data if it was a message call or the contract initialisation if it was a contract registration",
-    "epochConfirmations": "{{count}} Epoch Confirmations",
+    "epochConfirmations": "{{count}} Blocks Confirmations",
     "statusError": {
       "0": "Unknown error.",
       "1": "Contract error: ",
@@ -1038,7 +1043,7 @@
     "title": "Block",
     "description": "Block",
     "blockHeight": "Block Height",
-    "epoch": "Epoch",
+    "epoch": "Block Height",
     "difficulty": "Difficulty",
     "miner": "Miner",
     "reward": "Reward",
@@ -1060,8 +1065,8 @@
     }
   },
   "epoch": {
-    "title": "Epoch",
-    "description": "Epoch",
+    "title": "Block Height",
+    "description": "Block Height",
     "tipCountBefore": "A total of",
     "tipCountAfter": "{{type}} found",
     "labelCountBefore": "A total of",
@@ -1148,7 +1153,7 @@
   "toolTip": {
     "block": {
       "blockHeight": "The number of blocks on the path to Genesis block via parent references. The block height of a newly mined block is obtained by increasing the height of its parent block by 1. In particular, the block height of Genesis block is 0.",
-      "epoch": "Epoch refers to the block height of the first pivot block that (directly or indirectly) references this block. The epoch number of a block represents the time when this block is first observed by pivot blocks. A block in an earlier epoch always precedes blocks in later epoches in the total order of all blocks.",
+      "epoch": "Epoch refers to the block height of the first pivot block that (directly or indirectly) references this block. The block number of a block represents the time when this block is first observed by pivot blocks. A block in an earlier block always precedes blocks in later epoches in the total order of all blocks.",
       "difficulty": "The amount of effort required to mine a new block. The difficulty may adjust according to time.",
       "miner": "Miner who successfully generate the block onto the blockchain.",
       "reward": "The miner of this block is rewarded with a finite amount of CFX, consists of base reward, reward from storage collateral interest and transaction fee.",
@@ -1343,7 +1348,7 @@
     },
     "home": {
       "currentBlockNumber": "Current Block Number",
-      "currentEpoch": "Current Epoch",
+      "currentEpoch": "Current Block Height",
       "account": "Accounts",
       "transactions": "Transactions",
       "contract": "Contracts"
@@ -1401,17 +1406,17 @@
   "balanceChecker": {
     "tokenBalanceChecker": "Token Balance Checker",
     "balanceChecker": "Balance Checker",
-    "subtitle": "You can lookup the address historical balance on the Conflux network at a specific Epoch No or Date",
+    "subtitle": "You can lookup the address historical balance on the Conflux network at a specific Block Height or Date",
     "tokenQuantity": "Token Quantity",
     "tokenSupply": "Token Supply",
     "cfxBalance": "CFX Balance",
     "address": "Address",
     "contractAddress": "Contract Address",
-    "epochNoOrDate": "Epoch No or Date",
+    "epochNoOrDate": "Block Height or Date",
     "or": "OR",
     "chooseDate": "Please select date",
-    "enterEpochNo": "Enter a Epoch No",
-    "invalidEpochNo": "Invalid Epoch No",
+    "enterEpochNo": "Enter a Block Height",
+    "invalidEpochNo": "Invalid Block Height",
     "error": "Can not be empty",
     "lookUp": "Search",
     "reset": "Reset",
@@ -1419,8 +1424,8 @@
     "totalSupplyForContractAddress": "Total Supply for Contract Address",
     "cfxBalanceForAddress": "CFX Balance for Address",
     "snapshotDate": "Snapshot Date",
-    "epoch": "Epoch",
-    "epochNo": "Epoch No"
+    "epoch": "Block",
+    "epochNo": "Block Height"
   },
   "nftChecker": {
     "title": "NFT Checker",

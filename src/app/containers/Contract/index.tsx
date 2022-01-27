@@ -4,13 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { ContractOrTokenInfo } from 'app/components/Contract/Loadable';
 import { useCMContractQuery } from 'utils/api';
-import { isContractAddress } from 'utils';
+// import { isContractAddress } from 'utils';
 
 export function Contract(props) {
   const { t } = useTranslation();
-  const [contractDetail, setContractDetail] = useState({});
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState('create');
   const matchParams = props.match.params;
   const contractAddress = matchParams.contractAddress;
   const fields = [
@@ -26,20 +24,19 @@ export function Contract(props) {
     contractAddress,
     fields,
   ]);
-  const { data } = useCMContractQuery(
+  const { data, error } = useCMContractQuery(
     params,
-    isContractAddress(contractAddress),
+    // isContractAddress(contractAddress),
   );
+
   useEffect(() => {
-    if (isContractAddress(contractAddress)) {
+    if (!data && !error) {
       setLoading(true);
-      if (data && data.name) {
-        setContractDetail(data);
-        setType('edit');
-      }
+    } else {
       setLoading(false);
     }
-  }, [data, contractAddress]);
+  }, [data, error]);
+
   return (
     <>
       <Helmet>
@@ -49,12 +46,13 @@ export function Contract(props) {
           content={t(translations.metadata.description)}
         />
       </Helmet>
-      <ContractOrTokenInfo
-        contractDetail={contractDetail}
-        type={type}
-        address={contractAddress}
-        loading={loading}
-      ></ContractOrTokenInfo>
+      {data && (
+        <ContractOrTokenInfo
+          contractDetail={data}
+          address={contractAddress}
+          loading={loading}
+        ></ContractOrTokenInfo>
+      )}
     </>
   );
 }
