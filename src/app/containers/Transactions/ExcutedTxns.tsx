@@ -6,7 +6,7 @@ import {
 } from 'utils/tableColumns';
 import { useAge } from 'utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
-import { Title, Footer, TxnSwitcher } from './components';
+import { Title, Footer /*, TxnSwitcher*/ } from './components';
 import { isAccountAddress, isAddress } from 'utils';
 
 interface Props {
@@ -110,9 +110,10 @@ export const ExcutedTxns = ({ address }: Props) => {
             ]
           : ['txTypeAll', 'status1', 'txTypeCreate']
       }
-      extraContent={
-        <TxnSwitcher total={total} isAccount={isAccount}></TxnSwitcher>
-      }
+      // TODO, get pending tx rpc error, hide temporary
+      // extraContent={
+      //   <TxnSwitcher total={total} isAccount={isAccount}></TxnSwitcher>
+      // }
     />
   );
 
