@@ -26,7 +26,7 @@ import {
   NETWORK_TYPE,
   ICON_DEFAULT_CONTRACT,
 } from 'utils/constants';
-import Edit3 from '@zeit-ui/react-icons/edit3';
+// import Edit3 from '@zeit-ui/react-icons/edit3';
 import { Image } from '@cfxjs/antd';
 
 const Link = ({ to, children }) => <RouterLink to={to}>{children}</RouterLink>;
@@ -154,12 +154,12 @@ export function ContractMetadata({ address, contractInfo }) {
               alt={contractInfo.name + 'logo'}
             />
             <Content>{contractInfo.name || notAvailableText}</Content>
-            <RouterLink
+            {/* <RouterLink
               className="contract-info-update"
               to={`/contract-info/${address}`}
             >
               <Edit3 size={18} color="#1e3de4" />
-            </RouterLink>
+            </RouterLink> */}
           </CenterLine>
         </SkeletonContainer>
       ),
