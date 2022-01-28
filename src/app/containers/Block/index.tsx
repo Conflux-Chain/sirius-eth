@@ -23,9 +23,10 @@ export function Block() {
   const { hash } = useParams<{
     hash: string;
   }>();
-  const [{ transactionCount /*, refereeHashes*/ }, setBlockDetail] = useState<
-    any
-  >({
+  const [
+    { transactionCount, hash: blockHash /*, refereeHashes*/ },
+    setBlockDetail,
+  ] = useState<any>({
     transactionCount: 0,
     refereeHashes: [],
   });
@@ -67,7 +68,9 @@ export function Block() {
           </TabLabel>
         );
       },
-      content: <Txns url={`/transaction?blockHash=${hash}`} />,
+      content: blockHash && (
+        <Txns url={`/transaction?blockHash=${blockHash}`} />
+      ),
       hidden: !transactionCount,
     },
     // {
