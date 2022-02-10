@@ -12,6 +12,7 @@ import {
   CFX,
 } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
+import pubsub from './pubsub';
 
 // @ts-ignore
 window.SDK = SDK;
@@ -868,3 +869,24 @@ export function checkIfContractByInfo(address: string, info: any, type?) {
     return false;
   }
 }
+
+interface ErrorInfoType {
+  code?: number;
+  message?: string;
+}
+
+export const publishRequestError = (
+  info: (Error & ErrorInfoType) | ErrorInfoType,
+  type?: 'rpc' | 'http' | 'wallet',
+) => {
+  const code = info.code;
+  const desc = info.message;
+  pubsub.publish('notify', {
+    type: 'request',
+    option: {
+      code: type === 'rpc' ? 30001 : code,
+      message: info.message,
+      detail: `${code ? code + ', ' : ''}${desc}`,
+    },
+  });
+};
