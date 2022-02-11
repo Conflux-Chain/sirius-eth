@@ -77,13 +77,15 @@ export enum NETWORK_TYPES {
 }
 
 export const NETWORK_TYPE = (() => {
-  if (NETWORK_ID === 8889) {
-    return NETWORK_TYPES.testnet;
-  } else if (NETWORK_ID === 1029) {
-    return NETWORK_TYPES.mainnet;
-  } else {
-    return NETWORK_TYPES.privatenet;
-  }
+  // TODO, use condition after mainnet hardfork
+  return NETWORK_TYPES.testnet;
+  // if (NETWORK_ID === 8889) {
+  //   return NETWORK_TYPES.testnet;
+  // } else if (NETWORK_ID === 1029) {
+  //   return NETWORK_TYPES.mainnet;
+  // } else {
+  //   return NETWORK_TYPES.privatenet;
+  // }
 })();
 
 export const CONTRACTS: ContractsType = (() => {
