@@ -1,8 +1,35 @@
 import { createGlobalStyle } from 'styled-components';
 import { media } from './media';
-import { sansSerifFont, monospaceFont } from './variable';
+import {
+  sansSerifFont,
+  monospaceFont,
+  blue0,
+  blue1,
+  blue2,
+  gray0,
+  gray1,
+  gray2,
+  green0,
+  green1,
+  green2,
+  green3,
+} from './variable';
 
 export const GlobalStyle = createGlobalStyle`
+
+  body {
+    --theme-color-blue0: ${blue0};
+    --theme-color-blue1: ${blue1};
+    --theme-color-blue2: ${blue2};
+    --theme-color-gray0: ${gray0};
+    --theme-color-gray1: ${gray1};
+    --theme-color-gray2: ${gray2};
+    --theme-color-green0: ${green0};
+    --theme-color-green1: ${green1};
+    --theme-color-green2: ${green2};
+    --theme-color-green3: ${green3};
+  }
+
   html,
   body {
     font-size: 14px;
@@ -45,7 +72,7 @@ export const GlobalStyle = createGlobalStyle`
   #root {
     min-height: 100%;
     min-width: 100%;
-    background-color: #f5f6fa;
+    background-color: var(--theme-color-green3);
   }
 
   .qrcode-modal.wrapper {
@@ -280,7 +307,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-btn.ant-btn-primary {
-    background: #1E3DE4;
+    background-color: var(--theme-color-green0);
     color: #ffffff;
 
     &:hover {
@@ -326,7 +353,7 @@ export const GlobalStyle = createGlobalStyle`
 
     .option.selected {
       color: #fff;
-      background-color: #65709a;
+      background-color: var(--theme-color-green0);
       border: none;
     }
 
@@ -441,5 +468,18 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
+  }
+
+  #cfx-ui-notification {
+    .ant-collapse-header, .ant-collapse-content-box {
+      padding: 2px 2px 0 0px !important;
+      color: #999;
+      display: flex;
+      align-items: center;
+    }
+
+    .ant-collapse-header {
+      margin-left: -2px;
+    }
   }
 `;

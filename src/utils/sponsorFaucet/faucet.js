@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js';
 import faucetContract from './SponsorFaucet.js';
 import { CFX, NETWORK_ID } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
+import { publishRequestError } from './../index';
 
 //suggested factor to make sure gas is enough
 const gas_estimation_ratio_withdraw = 1.8;
@@ -133,6 +134,7 @@ class Faucet {
         };
       }
     } catch (e) {
+      publishRequestError(e, 'rpc');
       return {
         flag: false,
         message: 'RPC ERROR:' + e.toString(),
@@ -369,6 +371,7 @@ class Faucet {
       return r;
     } catch (e) {
       r.isAppliable = { flag: false, message: 'RPC ERROR:' + e.toString() };
+      publishRequestError(e, 'rpc');
       return r;
     }
   }

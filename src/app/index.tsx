@@ -31,12 +31,12 @@ import { reqProjectConfig } from 'utils/httpRequest';
 import {
   LOCALSTORAGE_KEYS_MAP,
   NETWORK_ID,
-  CFX,
   CFX_TOKEN_TYPES,
 } from 'utils/constants';
 import { isAddress } from 'utils';
 import MD5 from 'md5.js';
 // import lodash from 'lodash';
+import { getClientVersion } from 'utils/rpcRequest';
 
 import { Header } from './containers/Header';
 import { Footer } from './containers/Footer/Loadable';
@@ -195,7 +195,7 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    CFX.getClientVersion().then(v => {
+    getClientVersion().then(v => {
       console.log('conflux-network-version:', v);
     });
   }, []);

@@ -6,7 +6,6 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const scantest = 'https://scantest.confluxnetwork.org';
 let stat = `${scantest}`;
 let v1 = `${scantest}`;
-let rpc = `${scantest}/rpc`;
 let rpcv2 = `${scantest}/rpcv2`;
 let confluxDag = `${scantest}`;
 
@@ -14,22 +13,13 @@ if (process.env.REACT_APP_TestNet === 'true') {
   const testnet = 'https://testnet-scantest.confluxnetwork.org';
   stat = `${testnet}`;
   v1 = `${testnet}`;
-  rpc = `${testnet}/rpc`;
   rpcv2 = `${testnet}/rpcv2`;
   confluxDag = `${testnet}`;
-} else if (process.env.REACT_APP_PrivateNet === 'true') {
-  const pos = 'https://posrc.confluxscan.net/';
-  stat = pos;
-  v1 = pos;
-  rpc = 'https://39.100.97.209:12537/rpc';
-  rpcv2 = 'https://39.100.97.209:12537/rpc';
-  confluxDag = pos;
 } else if (process.env.REACT_APP_ETHNet === 'true') {
   const url = 'https://net8889eth.confluxscan.net/';
   // const rpcBrigde = 'https://net8889eth.confluxscan.net/rpcv2';
   stat = `${url}/`;
   v1 = `${url}/`;
-  rpc = `${url}/rpc`;
   rpcv2 = `${url}/rpcv2`;
   confluxDag = `${url}/`;
 }
@@ -56,14 +46,6 @@ module.exports = app => {
     '/v1',
     createProxyMiddleware({
       target: v1,
-      changeOrigin: true,
-      secure: false,
-    }),
-  );
-  app.use(
-    '/rpc',
-    createProxyMiddleware({
-      target: rpc,
       changeOrigin: true,
       secure: false,
     }),
