@@ -163,7 +163,7 @@ const Option = styled.div`
   }
 
   &.selected {
-    background-color: #65709a;
+    background-color: var(--theme-color-green0);
     color: white;
     svg {
       visibility: visible;

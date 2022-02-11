@@ -116,7 +116,7 @@ const StyledWrapper = styled.span`
     .value .option {
       font-weight: normal;
       &:not(:hover) {
-        color: #000000;
+        background-color: var(--theme-color-green0);
       }
     }
   }

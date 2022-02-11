@@ -104,15 +104,6 @@ const Brand = styled.div`
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
-  margin-right: 0.5rem;
-
-  /* ${media.xl} {
-    margin-right: 2rem;
-  } */
-
-  ${media.l} {
-    margin-right: 1rem;
-  }
 
   .navbar-burger {
     color: #4c4d52;
@@ -254,7 +245,7 @@ const Container = styled.div`
   }
 `;
 const Outer = styled.nav`
-  background-color: white;
+  background-color: var(--theme-color-gray1);
   position: fixed;
   top: 0;
   left: 0;
@@ -265,7 +256,7 @@ const Outer = styled.nav`
   width: 100vw;
   z-index: 1000;
   min-height: 5rem;
-  box-shadow: 0.8571rem 0.5714rem 1.7143rem -0.8571rem rgba(20, 27, 50, 0.12);
+  box-shadow: 0px 4px 4px rgba(43, 45, 55, 0.0105441);
 
   // mobile
   ${media.m} {
