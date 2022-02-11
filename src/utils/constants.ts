@@ -77,7 +77,7 @@ export enum NETWORK_TYPES {
 }
 
 export const NETWORK_TYPE = (() => {
-  if (NETWORK_ID === 1) {
+  if (NETWORK_ID === 8889) {
     return NETWORK_TYPES.testnet;
   } else if (NETWORK_ID === 1029) {
     return NETWORK_TYPES.mainnet;
