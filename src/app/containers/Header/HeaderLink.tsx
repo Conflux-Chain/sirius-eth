@@ -304,13 +304,12 @@ const WrappLink = styled.span`
     cursor: pointer;
     font-weight: 500;
     &:hover {
-      color: #1e3de4 !important;
-      //background-color: rgba(100%, 87%, 11%, 70%);
+      color: var(--theme-color-green2) !important;
     }
     &.matched {
-      color: #1e3de4 !important;
+      color: var(--theme-color-green2) !important;
       &:hover {
-        color: #1e3de4 !important;
+        color: var(--theme-color-green2) !important;
       }
     }
     * {
@@ -321,16 +320,16 @@ const WrappLink = styled.span`
   ${media.m} {
     .navbar-link {
       &:hover {
-        color: var(--theme-color-green0) !important;
+        color: #65709a !important;
       }
       &.level-0:hover:not(.matched) {
         background-color: #f1f4f6 !important;
       }
       &.matched {
-        color: var(--theme-color-green0) !important;
+        color: #65709a !important;
         background-color: #fede1b;
         &:hover {
-          color: var(--theme-color-green0) !important;
+          color: #65709a !important;
           background-color: #fede1b;
         }
       }
@@ -364,6 +363,10 @@ const WrappLink = styled.span`
     &.level-1,
     &.level-2 {
       color: #65709a;
+
+      ${media.m} {
+        color: #aab9eb;
+      }
     }
 
     &.home {

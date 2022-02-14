@@ -12,5 +12,5 @@ export const gray1 = '#FDFDFE';
 export const gray2 = '#8A8C95';
 export const green0 = '#AFE9D2';
 export const green1 = '#05343F';
-export const green2 = '#85E7C0';
+export const green2 = '#17B38A';
 export const green3 = '#F0F4F3';
