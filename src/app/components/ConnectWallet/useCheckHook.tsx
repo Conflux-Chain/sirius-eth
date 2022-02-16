@@ -13,24 +13,26 @@ interface Props {
 
 export const useCheckHook = function <Props>(showNotification = false) {
   const { t } = useTranslation();
-  const { installed, connected, accounts, chainId } = usePortal();
+  const { connected, accounts, chainId } = usePortal();
   const [, setNotifications] = useNotifications();
 
   const checkNetworkValid = () => {
-    if (installed && chainId !== '0xNaN') {
-      if (Number(chainId) === NETWORK_ID) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
-    }
+    // TODO, open annotation before hardfork
+    return true;
+    // if (chainId !== undefined) {
+    //   if (Number(chainId) === NETWORK_ID) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // } else {
+    //   return true;
+    // }
   };
 
-  const checkVersionValid = () => {
-    if (installed && connected === 1) {
-      return SDK.address.isValidCfxAddress(accounts[0]);
+  const checkAddressValid = () => {
+    if (connected === 1) {
+      return SDK.address.isValidHexAddress(accounts[0]);
     }
     return true;
   };
@@ -56,45 +58,45 @@ export const useCheckHook = function <Props>(showNotification = false) {
     });
   };
 
-  const notifyVersionError = () => {
+  const notifyAddressError = () => {
     setNotifications({
       icon: <XCircleFill color="#e15c56" />,
-      title: t(translations.connectWallet.modal.versionNotice),
-      content: t(translations.connectWallet.modal.upgradeTipVersion),
+      title: t(translations.connectWallet.modal.addressNotice),
+      content: t(translations.connectWallet.modal.upgradeTipAddress),
       delay: 5000,
     });
   };
 
   const [isNetworkValid, setIsNetworkValid] = useState(checkNetworkValid);
-  const [isVersionValid, setIsVersionValid] = useState(checkVersionValid);
+  const [isAddressValid, setIsAddressValid] = useState(checkAddressValid);
 
   useEffect(() => {
     const isNetworkValid = checkNetworkValid();
-    const isVersionValid = checkVersionValid();
+    const isAddressValid = checkAddressValid();
 
     if (showNotification) {
-      if (installed && connected === 1 && !isVersionValid) {
-        notifyVersionError();
+      if (connected === 1 && !isAddressValid) {
+        notifyAddressError();
       }
 
-      if (installed && connected === 1 && !isNetworkValid) {
+      if (connected === 1 && !isNetworkValid) {
         notifyNetworkError();
       }
     }
 
     // prevent unknonw status update
     if (chainId !== '0xNaN') {
-      setIsVersionValid(isVersionValid);
+      setIsAddressValid(isAddressValid);
       setIsNetworkValid(isNetworkValid);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [installed, connected, chainId]);
+  }, [connected, chainId]);
 
   return {
     isNetworkValid,
-    isVersionValid,
-    isValid: isNetworkValid && isVersionValid,
-    notifyVersionError,
+    isAddressValid,
+    isValid: isNetworkValid && isAddressValid,
+    notifyAddressError,
     notifyNetworkError,
   };
 };

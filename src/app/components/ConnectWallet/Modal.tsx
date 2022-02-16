@@ -52,7 +52,7 @@ export const Modal = ({
       );
     }
   } else {
-    inValidModalTip = t(translations.connectWallet.modal.upgradeTipVersion);
+    inValidModalTip = t(translations.connectWallet.modal.upgradeTipAddress);
   }
 
   useEffect(() => {

@@ -24,7 +24,7 @@ import {
   isAddress,
 } from '../../../utils';
 import { formatAddress } from '../../../utils';
-import { TXN_ACTION } from '../../../utils/constants';
+import { TXN_ACTION, CFX } from '../../../utils/constants';
 import { ConnectButton } from '../../components/ConnectWallet';
 import { formatType } from 'js-conflux-sdk/src/contract/abi';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
@@ -44,7 +44,7 @@ export declare type Props = FuncProps & NativeAttrs;
 const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
   const { addRecord } = useTxnHistory();
   const { t } = useTranslation();
-  const { accounts, confluxJS } = usePortal();
+  const { accounts, provider } = usePortal();
   const [modalShow, setModalShow] = useState(false);
   const [modalType, setModalType] = useState('');
   const [txHash, setTxHash] = useState('');
@@ -55,6 +55,9 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
   const inputs = (data && data['inputs']) || [];
   const outputs = (data && data['outputs']) || [];
   const inputsLength = inputs.length;
+
+  CFX.provider = provider;
+
   useEffect(() => {
     if (data['value']) {
       setOutputValue(data['value']);
@@ -119,7 +122,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
         } catch (error) {
           setQueryLoading(false);
           setOutputShown(false);
-          setOutputError(error.message);
+          setOutputError((error as any).message);
         }
         break;
       case 'write':
@@ -148,7 +151,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
           //loading
           setModalShow(true);
           try {
-            const txHash = await confluxJS.sendTransaction(txParams);
+            const txHash = await CFX.sendTransaction(txParams);
             const code = TXN_ACTION.writeContract;
 
             // mark txn action to history

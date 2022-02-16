@@ -10,12 +10,12 @@ import styled from 'styled-components/macro';
 import clsx from 'clsx';
 import { usePortal } from 'utils/hooks/usePortal';
 import { TxnHistoryContext } from 'utils/hooks/useTxnHistory';
-import { formatNumber } from 'utils';
+import { formatNumber, formatString } from 'utils';
 import { RotateImg } from './RotateImg';
 import { useCheckHook } from './useCheckHook';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+// import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { getBalance } from 'utils/rpcRequest';
 
@@ -53,10 +53,10 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
           count: pendingRecords.length,
         });
       } else {
-        buttonText =
-          NETWORK_TYPE === NETWORK_TYPES.mainnet
-            ? accounts[0].replace(/(.*:.{3}).*(.{8})/, '$1...$2')
-            : accounts[0].replace(/(.*:.{3}).*(.{4})/, '$1...$2');
+        buttonText = formatString(accounts[0]);
+        // NETWORK_TYPE === NETWORK_TYPES.mainnet
+        //   ? accounts[0].replace(/(.*:.{3}).*(.{8})/, '$1...$2')
+        //   : accounts[0].replace(/(.*:.{3}).*(.{4})/, '$1...$2');
         buttonStatus = <span className="button-status-online"></span>;
       }
     }

@@ -14,6 +14,8 @@ import * as serviceWorker from 'serviceWorker';
 import { RecoilRoot } from 'recoil';
 import 'sanitize.css/sanitize.css';
 import '@cfxjs/antd/dist/@cfxjs/antd.css';
+import { completeDetect } from '@cfxjs/use-wallet';
+import { completeDetect as completeDetectEthereum } from '@cfxjs/use-wallet/dist/ethereum';
 
 // Import root app
 import { App } from 'app';
@@ -38,6 +40,7 @@ const ConnectedApp = ({ Component }: Props) => (
     </RecoilRoot>
   </HelmetProvider>
 );
+
 const render = (Component: typeof App) => {
   ReactDOM.render(<ConnectedApp Component={Component} />, MOUNT_NODE);
 };
@@ -53,7 +56,9 @@ if (module.hot) {
   });
 }
 
-render(App);
+Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
+  render(App);
+});
 
 const currentVersion = '1.0.0';
 

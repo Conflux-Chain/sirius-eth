@@ -7,7 +7,7 @@ import { translations } from 'locales/i18n';
 import imgSuccess from 'images/success.png';
 import { ButtonProps } from '@cfxjs/react-ui/dist/button/button';
 import { formatAddress } from 'utils';
-import { TXN_ACTION } from 'utils/constants';
+import { TXN_ACTION, CFX } from 'utils/constants';
 import { AddressContainer } from '../AddressContainer';
 import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import { ConnectButton, useCheckHook } from '../../components/ConnectWallet';
@@ -49,11 +49,13 @@ const DappButton = ({
   const { addRecord } = useTxnHistory();
   const { t } = useTranslation();
   // cip-37 compatible
-  const { accounts, confluxJS } = usePortal();
+  const { accounts, provider } = usePortal();
   const [modalShow, setModalShow] = useState(false);
   const [modalType, setModalType] = useState('');
   const [txHash, setTxHash] = useState('');
   const { isValid } = useCheckHook();
+
+  CFX.provider = provider;
 
   let text = connectText
     ? connectText
@@ -74,8 +76,7 @@ const DappButton = ({
       //loading
       setModalShow(true);
 
-      confluxJS
-        .sendTransaction(txParams)
+      CFX.sendTransaction(txParams)
         .then(txHash => {
           addRecord({
             hash: txHash,
