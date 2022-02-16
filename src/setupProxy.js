@@ -16,7 +16,8 @@ if (process.env.REACT_APP_TestNet === 'true') {
   rpcv2 = `${testnet}/rpcv2`;
   confluxDag = `${testnet}`;
 } else if (process.env.REACT_APP_ETHNet === 'true') {
-  const url = 'https://net8889eth.confluxscan.net/';
+  const url = 'https://evmtestnet.confluxscan.net/';
+  // const url = 'https://net8889eth.confluxscan.net/';
   // const rpcBrigde = 'https://net8889eth.confluxscan.net/rpcv2';
   stat = `${url}/`;
   v1 = `${url}/`;

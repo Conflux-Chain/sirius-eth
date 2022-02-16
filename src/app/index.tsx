@@ -65,7 +65,7 @@ import { CookieTip } from './components/CookieTip';
 import { GlobalTip } from './components/GlobalTip';
 
 // import { Swap } from './containers/Swap';
-// import { ContractDeployment } from './containers/ContractDeployment/Loadable';
+import { ContractDeployment } from './containers/ContractDeployment/Loadable';
 // import { ContractVerification } from './containers/ContractVerification/Loadable';
 // import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
@@ -357,6 +357,11 @@ export function App() {
                               }
                             }}
                           />
+                          <Route
+                            exact
+                            path="/contract-deployment"
+                            component={ContractDeployment}
+                          />
 
                           {/* <Route
                             exact
@@ -377,11 +382,6 @@ export function App() {
                             exact
                             path="/cfx-transfers"
                             component={CFXTransfers}
-                          />
-                          <Route
-                            exact
-                            path="/contract-deployment"
-                            component={ContractDeployment}
                           />
                           <Route
                             exact

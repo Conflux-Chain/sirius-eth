@@ -3,21 +3,19 @@
  * Button
  *
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import clsx from 'clsx';
 import { usePortal } from 'utils/hooks/usePortal';
 import { TxnHistoryContext } from 'utils/hooks/useTxnHistory';
-import { formatNumber, formatString } from 'utils';
+import { formatString } from 'utils';
 import { RotateImg } from './RotateImg';
 import { useCheckHook } from './useCheckHook';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 // import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
-import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
-import { getBalance } from 'utils/rpcRequest';
 
 import iconLoadingWhite from './assets/loading-white.svg';
 
@@ -29,8 +27,7 @@ interface Button {
 
 export const Button = ({ className, onClick, showBalance }: Button) => {
   const { t } = useTranslation();
-  const [balance, setBalance] = useState('0');
-  const { installed, connected, accounts } = usePortal();
+  const { installed, connected, accounts, balance } = usePortal();
 
   const { pendingRecords } = useContext(TxnHistoryContext);
   const { isValid } = useCheckHook(true);
@@ -61,18 +58,6 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
       }
     }
   }
-
-  useEffect(() => {
-    if (accounts.length && isValid) {
-      getBalance(accounts[0]).then(balance => {
-        setBalance(
-          formatNumber(SDK.Drip(balance).toCFX(), {
-            precision: 6,
-          }),
-        );
-      });
-    }
-  }, [connected, accounts, isValid, installed]);
 
   useEffect(() => {
     if (connected === 0) {

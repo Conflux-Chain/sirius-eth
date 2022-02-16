@@ -48,9 +48,9 @@ export const Header = memo(() => {
     location.pathname.startsWith('/push-tx') ||
     location.pathname.startsWith('/block-countdown') ||
     location.pathname.startsWith('/nft-checker');
-  // const blockchainMatched =
-  //   location.pathname.startsWith('/contract') ||
-  //   location.pathname.startsWith('/sponsor');
+  const blockchainMatched =
+    location.pathname.startsWith('/contract') ||
+    location.pathname.startsWith('/sponsor');
   // const ecosystemMatched = false;
 
   const bp = useBreakpoint();
@@ -123,12 +123,12 @@ export const Header = memo(() => {
       afterClick: menuClick,
       href: '/contract-verification',
     },
-    {
-      title: t(translations.header.contracts),
-      name: ScanEvent.menu.action.contractsList,
-      afterClick: menuClick,
-      href: '/contracts',
-    },
+    // {
+    //   title: t(translations.header.contracts),
+    //   name: ScanEvent.menu.action.contractsList,
+    //   afterClick: menuClick,
+    //   href: '/contracts',
+    // },
   ];
 
   // @todo, shoule remove after pos release
@@ -180,16 +180,16 @@ export const Header = memo(() => {
         : 'https://governance.confluxnetwork.org/en/',
     });
 
-    contractItems.splice(2, 0, {
-      // sponsor
-      title: [
-        t(translations.header.contractSponsor),
-        <Check size={18} key="check" />,
-      ],
-      name: ScanEvent.menu.action.sponsor,
-      afterClick: menuClick,
-      href: '/sponsor',
-    });
+    // contractItems.splice(2, 0, {
+    //   // sponsor
+    //   title: [
+    //     t(translations.header.contractSponsor),
+    //     <Check size={18} key="check" />,
+    //   ],
+    //   name: ScanEvent.menu.action.sponsor,
+    //   afterClick: menuClick,
+    //   href: '/sponsor',
+    // });
   }
 
   const startLinks: HeaderLinks = [
@@ -201,18 +201,42 @@ export const Header = memo(() => {
       href: '/',
     },
     {
-      // block
-      title: [t(translations.header.block)],
-      name: ScanEvent.menu.action.blocks,
-      afterClick: menuClick,
-      href: '/blocks',
-    },
-    {
-      // txn
-      title: [t(translations.header.txn)],
-      name: ScanEvent.menu.action.transactions,
-      afterClick: menuClick,
-      href: '/txs',
+      title: t(translations.header.blockchain),
+      className: 'plain',
+      matched: blockchainMatched,
+      children: [
+        {
+          title: [
+            t(translations.header.blockchain),
+            <Check size={18} key="check" />,
+          ],
+          plain: true,
+          children: [
+            {
+              // block
+              title: [t(translations.header.block)],
+              name: ScanEvent.menu.action.blocks,
+              afterClick: menuClick,
+              href: '/blocks',
+            },
+            {
+              // txn
+              title: [t(translations.header.txn)],
+              name: ScanEvent.menu.action.transactions,
+              afterClick: menuClick,
+              href: '/txs',
+            },
+          ],
+        },
+        {
+          title: [
+            t(translations.header.contract),
+            <Check size={18} key="check" />,
+          ],
+          plain: true,
+          children: contractItems,
+        },
+      ],
     },
     {
       title: t(translations.header.tokens),

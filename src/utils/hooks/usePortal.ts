@@ -5,6 +5,7 @@ import {
   useBalance,
   connect,
   provider,
+  sendTransaction,
 } from '@cfxjs/use-wallet/dist/ethereum';
 
 // @todo 是否应该和 @cfxjs/react-hooks 合并到一起？
@@ -30,6 +31,7 @@ export const usePortal = () => {
     // 用户调用这个函数尤其需要小心，因为如果未登录，只要调用函数，就会在钱包上请求一次连接，因尽量在 useEffectOnce 中使用
     login: connect,
     provider,
-    balance, // not use now
+    balance: balance ? balance.toDecimalStandardUnit() : 0, // not use now,
+    sendTransaction,
   };
 };
