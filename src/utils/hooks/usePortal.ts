@@ -15,10 +15,6 @@ export const usePortal = () => {
   const balance = useBalance();
   const chainId = useChainId();
 
-  // prevent portal auto refresh when user changes the network
-  // if (globalThis?.conflux?.autoRefreshOnNetworkChange)
-  //   globalThis.conflux.autoRefreshOnNetworkChange = false;
-
   return {
     installed: status === 'not-installed' ? 0 : 1, // 0 - not install, 1 - installed
     connected: status === 'not-active' ? 0 : status === 'in-activating' ? 2 : 1, // 0 - not connect, 1 - connected, 2 - connecting

@@ -17,17 +17,15 @@ export const useCheckHook = function <Props>(showNotification = false) {
   const [, setNotifications] = useNotifications();
 
   const checkNetworkValid = () => {
-    // TODO, open annotation before hardfork
-    return true;
-    // if (chainId !== undefined) {
-    //   if (Number(chainId) === NETWORK_ID) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // } else {
-    //   return true;
-    // }
+    if (chainId !== undefined) {
+      if (Number(chainId) === NETWORK_ID) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
   };
 
   const checkAddressValid = () => {

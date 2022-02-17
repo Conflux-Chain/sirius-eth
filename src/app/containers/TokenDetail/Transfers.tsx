@@ -6,17 +6,17 @@ import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 // import { Card } from 'app/components/Card';
 // import { LineChart as Chart } from 'app/components/Chart/Loadable';
-// import {
-//   ContractContent,
-//   CheckCircleIcon,
-// } from '../AddressContractDetail/ContractContent';
-// import { useContract } from 'utils/api';
-// import AlertCircle from '@zeit-ui/react-icons/alertCircle';
+import {
+  ContractContent,
+  CheckCircleIcon,
+} from '../AddressContractDetail/ContractContent';
+import { useContract } from 'utils/api';
+import AlertCircle from '@zeit-ui/react-icons/alertCircle';
 
 import { Transfers as TokenTransfers } from 'app/containers/Tokens/Loadable';
 import { Holders } from './Holders';
 // import { NFTs } from './NFTs';
-// import lodash from 'lodash';
+import lodash from 'lodash';
 
 interface TransferProps {
   tokenName: string;
@@ -50,24 +50,24 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   } = tokenData;
   const { t } = useTranslation();
 
-  // const { data: contractInfo } = useContract(tokenAddress, [
-  //   'name',
-  //   'iconUrl',
-  //   'sponsor',
-  //   'admin',
-  //   'from',
-  //   'website',
-  //   'transactionHash',
-  //   'cfxTransferCount',
-  //   'erc20TransferCount',
-  //   'erc721TransferCount',
-  //   'erc1155TransferCount',
-  //   'stakingBalance',
-  //   'sourceCode',
-  //   'abi',
-  //   'isRegistered',
-  //   'verifyInfo',
-  // ]);
+  const { data: contractInfo } = useContract(tokenAddress, [
+    'name',
+    'iconUrl',
+    'sponsor',
+    'admin',
+    'from',
+    'website',
+    'transactionHash',
+    'cfxTransferCount',
+    'erc20TransferCount',
+    'erc721TransferCount',
+    'erc1155TransferCount',
+    'stakingBalance',
+    'sourceCode',
+    'abi',
+    'isRegistered',
+    'verifyInfo',
+  ]);
 
   const tabs: any = [
     {
@@ -141,17 +141,17 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   // }
 
   // trick by frontend, the better way is api always return 'verify' info
-  // let checkIcon: React.ReactNode = '';
-  // if (
-  //   !lodash.isNil(contractInfo.isRegistered) ||
-  //   !lodash.isNil(contractInfo.cfxTransferCount)
-  // ) {
-  //   if (contractInfo.verify?.exactMatch === true) {
-  //     checkIcon = <CheckCircleIcon />;
-  //   } else {
-  //     checkIcon = <AlertCircle size={16} color="#e36057" />;
-  //   }
-  // }
+  let checkIcon: React.ReactNode = '';
+  if (
+    !lodash.isNil(contractInfo.isRegistered) ||
+    !lodash.isNil(contractInfo.cfxTransferCount)
+  ) {
+    if (contractInfo.verify?.exactMatch === true) {
+      checkIcon = <CheckCircleIcon />;
+    } else {
+      checkIcon = <AlertCircle size={16} color="#e36057" />;
+    }
+  }
 
   // TODO, eth space, hide temporary
   // if (
@@ -167,16 +167,16 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   // }
 
   // Contract tab
-  // tabs.push({
-  //   value: 'contract-viewer',
-  //   action: 'contractViewer',
-  //   label: (
-  //     <div>
-  //       {t(translations.token.contract)} {checkIcon}
-  //     </div>
-  //   ),
-  //   content: <ContractContent contractInfo={contractInfo} />,
-  // });
+  tabs.push({
+    value: 'contract-viewer',
+    action: 'contractViewer',
+    label: (
+      <div>
+        {t(translations.token.contract)} {checkIcon}
+      </div>
+    ),
+    content: <ContractContent contractInfo={contractInfo} />,
+  });
 
   return transferType ? <TabsTablePanel tabs={tabs} /> : null;
 }
