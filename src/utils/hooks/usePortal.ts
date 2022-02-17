@@ -4,8 +4,8 @@ import {
   useChainId,
   useBalance,
   connect,
-  provider,
   sendTransaction,
+  provider,
 } from '@cfxjs/use-wallet/dist/ethereum';
 
 // @todo 是否应该和 @cfxjs/react-hooks 合并到一起？
@@ -14,10 +14,6 @@ export const usePortal = () => {
   const account = useAccount();
   const balance = useBalance();
   const chainId = useChainId();
-
-  // console.log('chainId: ', chainId);
-  // console.log('account: ', account ? [account] : []);
-  // console.log('w, ', 'status: ', status);
 
   // prevent portal auto refresh when user changes the network
   // if (globalThis?.conflux?.autoRefreshOnNetworkChange)

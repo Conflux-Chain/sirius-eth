@@ -41,6 +41,7 @@ class Faucet {
       true,
     );
     this.cfx = CFX;
+    // TODO, should use wallet provider to send tx
     this.provider = this.cfx.provider;
     this.address = uppercaseAddress;
     this.lastAddress = uppercaseLastAddress;

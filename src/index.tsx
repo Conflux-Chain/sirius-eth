@@ -52,7 +52,10 @@ if (module.hot) {
   module.hot.accept(['./app', './locales/i18n'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
     const App = require('./app').App;
-    render(App);
+
+    Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
+      render(App);
+    });
   });
 }
 
