@@ -307,11 +307,11 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-btn.ant-btn-primary {
-    /* background-color: var(--theme-color-green0); */
+    background: #1E3DE4;
     color: #ffffff;
 
     &:hover {
-      /* background: var(--theme-color-green2); */
+      background: #4665f0;
       color: #ffffff;
     }
   }
