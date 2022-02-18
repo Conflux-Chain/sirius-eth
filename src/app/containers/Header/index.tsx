@@ -345,6 +345,15 @@ export const Header = memo(() => {
           children: [
             {
               title: [
+                t(translations.header.broadcastTx),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.broadcastTx,
+              afterClick: menuClick,
+              href: '/push-tx',
+            },
+            {
+              title: [
                 t(translations.header.crossSpaceDApp),
                 <Check size={18} key="check" />,
               ],

@@ -13,9 +13,6 @@ window.CFX = CFX;
 const request = async (method, ...args) => {
   try {
     const [namespace, m] = method.split('_');
-    // console.log(1, namespace, m);
-    // console.log(2, CFX[namespace]);
-    // console.log(3, CFX[namespace][m]);
     return await CFX[namespace][m](...args);
   } catch (e) {
     publishRequestError(e as Error, 'rpc');

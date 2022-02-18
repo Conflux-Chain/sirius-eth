@@ -75,7 +75,7 @@ import { ContractVerification } from './containers/ContractVerification/Loadable
 // import { Statistics } from './containers/Statistics/Loadable';
 // import { Epoch } from './containers/Epoch/Loadable';
 
-// import { BroadcastTx } from './containers/BroadcastTx/Loadable';
+import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 // import { ChartDetail } from './containers/ChartDetail/Loadable';
 // import { NFTChecker } from './containers/NFTChecker/Loadable';
 
@@ -367,6 +367,11 @@ export function App() {
                             path="/contract-verification"
                             component={ContractVerification}
                           />
+                          <Route
+                            exact
+                            path="/push-tx"
+                            component={BroadcastTx}
+                          />
 
                           {/* <Route
                             exact
@@ -423,11 +428,6 @@ export function App() {
                                 return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
-                          />
-                          <Route
-                            exact
-                            path="/push-tx"
-                            component={BroadcastTx}
                           />
                           <Route exact path="/swap" component={Swap} />
                           <Route
