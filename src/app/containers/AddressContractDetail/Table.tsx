@@ -9,10 +9,10 @@ import // isContractAddress,
 // isAccountAddress,
 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
-// import { ContractContent, CheckCircleIcon } from './ContractContent';
-// import AlertCircle from '@zeit-ui/react-icons/alertCircle';
+import { ContractContent, CheckCircleIcon } from './ContractContent';
+import AlertCircle from '@zeit-ui/react-icons/alertCircle';
 import { ExcutedAndPendingTxns } from 'app/containers/Transactions/Loadable';
-// import lodash from 'lodash';
+import lodash from 'lodash';
 
 import {
   // ExcutedTxns,
@@ -34,7 +34,7 @@ export function Table({ address, addressInfo, type }) {
   // const history = useHistory();
   // const queries = queryString.parse(location.search);
 
-  // const isContract = type === 'contract';
+  const isContract = type === 'contract';
 
   const tabs: any = [
     {
@@ -93,31 +93,31 @@ export function Table({ address, addressInfo, type }) {
   //   });
   // }
 
-  // if (isContract) {
-  //   // trick by frontend, the better way is api always return 'verify' info
-  //   let checkIcon: React.ReactNode = '';
-  //   if (
-  //     !lodash.isNil(addressInfo.isRegistered) ||
-  //     !lodash.isNil(addressInfo.cfxTransferCount)
-  //   ) {
-  //     if (addressInfo.verify?.exactMatch === true) {
-  //       checkIcon = <CheckCircleIcon />;
-  //     } else {
-  //       checkIcon = <AlertCircle size={16} color="#e36057" />;
-  //     }
-  //   }
+  if (isContract) {
+    //   // trick by frontend, the better way is api always return 'verify' info
+    let checkIcon: React.ReactNode = '';
+    if (
+      !lodash.isNil(addressInfo.isRegistered) ||
+      !lodash.isNil(addressInfo.cfxTransferCount)
+    ) {
+      if (addressInfo.verify?.exactMatch === true) {
+        checkIcon = <CheckCircleIcon />;
+      } else {
+        checkIcon = <AlertCircle size={16} color="#e36057" />;
+      }
+    }
 
-  //   tabs.push({
-  //     value: 'contract-viewer',
-  //     action: 'contractViewer',
-  //     label: (
-  //       <div>
-  //         {t(translations.token.contract)} {checkIcon}
-  //       </div>
-  //     ),
-  //     content: <ContractContent contractInfo={addressInfo} />,
-  //   });
-  // }
+    tabs.push({
+      value: 'contract-viewer',
+      action: 'contractViewer',
+      label: (
+        <div>
+          {t(translations.token.contract)} {checkIcon}
+        </div>
+      ),
+      content: <ContractContent contractInfo={addressInfo} />,
+    });
+  }
 
   // if (!(isContract || isZeroAddress(address))) {
   //   tabs.push(

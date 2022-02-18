@@ -112,7 +112,9 @@ export const disassembleEvent = (decodedLog, log) => {
           try {
             r.hexAddress = SDK.format.hexAddress(r.formattedValue); // try to format cfx address to hex address
             r.cfxAddress = getAddress(r.formattedValue);
-          } catch (e) {}
+          } catch (e) {
+            console.log('disassembleEvent error: ', e);
+          }
 
           return r;
         });

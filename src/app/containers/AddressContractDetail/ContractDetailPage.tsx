@@ -68,7 +68,7 @@ export const ContractDetailPage = memo(() => {
   //   <MenuWrapper>
   //     {!contractInfo?.verify?.exactMatch ? (
   //       <Menu.Item>
-  //         <RouterLink to={`/contract-verification?address=${address}`}>
+  //         <RouterLink to={`/contract-verification?address=${SDK.format.hexAddress(address)}`}>
   //           {t(translations.general.address.more.verifyContract)}
   //         </RouterLink>
   //       </Menu.Item>

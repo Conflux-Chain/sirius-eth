@@ -52,7 +52,7 @@ export const Modal = ({
       );
     }
   } else {
-    inValidModalTip = t(translations.connectWallet.modal.upgradeTipVersion);
+    inValidModalTip = t(translations.connectWallet.modal.upgradeTipAddress);
   }
 
   useEffect(() => {
@@ -78,7 +78,9 @@ export const Modal = ({
   };
 
   const handleLogin = () => {
-    login().finally(() => onClose());
+    login()
+      .then(() => onClose())
+      .catch(e => console.log('connect wallet error: ', e));
   };
 
   let title: string = t(translations.connectWallet.modal.title);
@@ -92,7 +94,7 @@ export const Modal = ({
     <div className="modal-tip">
       <span>{t(translations.connectWallet.modal.newToConflux)}</span>
       <a
-        href="https://portal.confluxnetwork.org/"
+        href="https://fluentwallet.com/"
         target="_blank"
         className="modal-tip-link"
         rel="noopener noreferrer"
@@ -174,7 +176,7 @@ export const Modal = ({
   } else {
     portal = (
       <a
-        href="https://portal.confluxnetwork.org/"
+        href="https://fluentwallet.com/"
         target="_blank"
         className="modal-portal-link"
         rel="noopener noreferrer"

@@ -65,8 +65,8 @@ import { CookieTip } from './components/CookieTip';
 import { GlobalTip } from './components/GlobalTip';
 
 // import { Swap } from './containers/Swap';
-// import { ContractDeployment } from './containers/ContractDeployment/Loadable';
-// import { ContractVerification } from './containers/ContractVerification/Loadable';
+import { ContractDeployment } from './containers/ContractDeployment/Loadable';
+import { ContractVerification } from './containers/ContractVerification/Loadable';
 // import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
@@ -75,7 +75,7 @@ import { GlobalTip } from './components/GlobalTip';
 // import { Statistics } from './containers/Statistics/Loadable';
 // import { Epoch } from './containers/Epoch/Loadable';
 
-// import { BroadcastTx } from './containers/BroadcastTx/Loadable';
+import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 // import { ChartDetail } from './containers/ChartDetail/Loadable';
 // import { NFTChecker } from './containers/NFTChecker/Loadable';
 
@@ -357,6 +357,21 @@ export function App() {
                               }
                             }}
                           />
+                          <Route
+                            exact
+                            path="/contract-deployment"
+                            component={ContractDeployment}
+                          />
+                          <Route
+                            exact
+                            path="/contract-verification"
+                            component={ContractVerification}
+                          />
+                          <Route
+                            exact
+                            path="/push-tx"
+                            component={BroadcastTx}
+                          />
 
                           {/* <Route
                             exact
@@ -377,16 +392,6 @@ export function App() {
                             exact
                             path="/cfx-transfers"
                             component={CFXTransfers}
-                          />
-                          <Route
-                            exact
-                            path="/contract-deployment"
-                            component={ContractDeployment}
-                          />
-                          <Route
-                            exact
-                            path="/contract-verification"
-                            component={ContractVerification}
                           />
                           <Route path="/charts" component={Chart} />
                           <Route
@@ -423,11 +428,6 @@ export function App() {
                                 return <Redirect to={`/notfound/${address}`} />;
                               }
                             }}
-                          />
-                          <Route
-                            exact
-                            path="/push-tx"
-                            component={BroadcastTx}
                           />
                           <Route exact path="/swap" component={Swap} />
                           <Route

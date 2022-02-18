@@ -24,25 +24,19 @@ export const ConnectButton = ({ children, profile = false }: Props) => {
   const { installed, connected } = usePortal();
   const {
     isValid,
-    notifyVersionError,
+    notifyAddressError,
     notifyNetworkError,
     isNetworkValid,
-    isVersionValid,
+    isAddressValid,
   } = useCheckHook();
-
-  // useEffect(() => {
-  //   if (connected === 1) {
-  //     setShowModal(false);
-  //   }
-  // }, [connected]);
 
   const handleClick = e => {
     if (!isValid) {
       // network error or version error
       e.stopPropagation();
       e.preventDefault();
-      if (!isVersionValid) {
-        notifyVersionError();
+      if (!isAddressValid) {
+        notifyAddressError();
       }
       if (!isNetworkValid) {
         notifyNetworkError();

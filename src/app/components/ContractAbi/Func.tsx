@@ -44,7 +44,7 @@ export declare type Props = FuncProps & NativeAttrs;
 const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
   const { addRecord } = useTxnHistory();
   const { t } = useTranslation();
-  const { accounts, confluxJS } = usePortal();
+  const { accounts, sendTransaction } = usePortal();
   const [modalShow, setModalShow] = useState(false);
   const [modalType, setModalType] = useState('');
   const [txHash, setTxHash] = useState('');
@@ -55,6 +55,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
   const inputs = (data && data['inputs']) || [];
   const outputs = (data && data['outputs']) || [];
   const inputsLength = inputs.length;
+
   useEffect(() => {
     if (data['value']) {
       setOutputValue(data['value']);
@@ -119,7 +120,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
         } catch (error) {
           setQueryLoading(false);
           setOutputShown(false);
-          setOutputError(error.message);
+          setOutputError((error as any).message);
         }
         break;
       case 'write':
@@ -148,7 +149,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
           //loading
           setModalShow(true);
           try {
-            const txHash = await confluxJS.sendTransaction(txParams);
+            const txHash = await sendTransaction(txParams);
             const code = TXN_ACTION.writeContract;
 
             // mark txn action to history
@@ -385,6 +386,14 @@ const Container = styled.div`
     line-height: 30px;
     min-width: initial;
     margin-left: 0;
+
+    /* background-color: var(--theme-color-green0);
+    border-color: var(--theme-color-green0); */
+
+    /* &:hover {
+      background: var(--theme-color-green2);
+      border-color: var(--theme-color-green2);
+    } */
   }
 `;
 const BtnGroup = styled.div`

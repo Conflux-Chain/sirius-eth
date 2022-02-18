@@ -9,7 +9,7 @@ import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Search } from './Search';
-// import { ConnectWallet } from 'app/components/ConnectWallet';
+import { ConnectWallet } from 'app/components/ConnectWallet';
 import { media, useBreakpoint } from 'styles/media';
 import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
@@ -48,9 +48,9 @@ export const Header = memo(() => {
     location.pathname.startsWith('/push-tx') ||
     location.pathname.startsWith('/block-countdown') ||
     location.pathname.startsWith('/nft-checker');
-  // const blockchainMatched =
-  //   location.pathname.startsWith('/contract') ||
-  //   location.pathname.startsWith('/sponsor');
+  const blockchainMatched =
+    location.pathname.startsWith('/contract') ||
+    location.pathname.startsWith('/sponsor');
   // const ecosystemMatched = false;
 
   const bp = useBreakpoint();
@@ -123,12 +123,12 @@ export const Header = memo(() => {
       afterClick: menuClick,
       href: '/contract-verification',
     },
-    {
-      title: t(translations.header.contracts),
-      name: ScanEvent.menu.action.contractsList,
-      afterClick: menuClick,
-      href: '/contracts',
-    },
+    // {
+    //   title: t(translations.header.contracts),
+    //   name: ScanEvent.menu.action.contractsList,
+    //   afterClick: menuClick,
+    //   href: '/contracts',
+    // },
   ];
 
   // @todo, shoule remove after pos release
@@ -180,16 +180,16 @@ export const Header = memo(() => {
         : 'https://governance.confluxnetwork.org/en/',
     });
 
-    contractItems.splice(2, 0, {
-      // sponsor
-      title: [
-        t(translations.header.contractSponsor),
-        <Check size={18} key="check" />,
-      ],
-      name: ScanEvent.menu.action.sponsor,
-      afterClick: menuClick,
-      href: '/sponsor',
-    });
+    // contractItems.splice(2, 0, {
+    //   // sponsor
+    //   title: [
+    //     t(translations.header.contractSponsor),
+    //     <Check size={18} key="check" />,
+    //   ],
+    //   name: ScanEvent.menu.action.sponsor,
+    //   afterClick: menuClick,
+    //   href: '/sponsor',
+    // });
   }
 
   const startLinks: HeaderLinks = [
@@ -201,18 +201,42 @@ export const Header = memo(() => {
       href: '/',
     },
     {
-      // block
-      title: [t(translations.header.block)],
-      name: ScanEvent.menu.action.blocks,
-      afterClick: menuClick,
-      href: '/blocks',
-    },
-    {
-      // txn
-      title: [t(translations.header.txn)],
-      name: ScanEvent.menu.action.transactions,
-      afterClick: menuClick,
-      href: '/txs',
+      title: t(translations.header.blockchain),
+      className: 'plain',
+      matched: blockchainMatched,
+      children: [
+        {
+          title: [
+            t(translations.header.blockchain),
+            <Check size={18} key="check" />,
+          ],
+          plain: true,
+          children: [
+            {
+              // block
+              title: [t(translations.header.block)],
+              name: ScanEvent.menu.action.blocks,
+              afterClick: menuClick,
+              href: '/blocks',
+            },
+            {
+              // txn
+              title: [t(translations.header.txn)],
+              name: ScanEvent.menu.action.transactions,
+              afterClick: menuClick,
+              href: '/txs',
+            },
+          ],
+        },
+        {
+          title: [
+            t(translations.header.contract),
+            <Check size={18} key="check" />,
+          ],
+          plain: true,
+          children: contractItems,
+        },
+      ],
     },
     {
       title: t(translations.header.tokens),
@@ -319,6 +343,15 @@ export const Header = memo(() => {
           name: ScanEvent.menu.action.tools,
           plain: true,
           children: [
+            {
+              title: [
+                t(translations.header.broadcastTx),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.broadcastTx,
+              afterClick: menuClick,
+              href: '/push-tx',
+            },
             {
               title: [
                 t(translations.header.crossSpaceDApp),
@@ -591,9 +624,9 @@ export const Header = memo(() => {
           <Search />
         </SearchWrapper>
         {/* TODO, eth space, hide temporary */}
-        {/* <WalletWrapper>
+        <WalletWrapper>
           <ConnectWallet />
-        </WalletWrapper> */}
+        </WalletWrapper>
       </>
     ),
     endLinksJSX,
@@ -734,18 +767,18 @@ const SearchWrapper = styled.div`
   }
 `;
 
-// const WalletWrapper = styled.div`
-//   min-width: 180px;
+const WalletWrapper = styled.div`
+  min-width: 180px;
 
-//   .connect-wallet-button.notConnected {
-//     .connect-wallet-button-left {
-//       //color: #fff;
-//       width: 100%;
-//       justify-content: center;
-//       //background: #424a71;
-//       &:hover {
-//         //background: #68719c;
-//       }
-//     }
-//   }
-// `;
+  .connect-wallet-button.notConnected {
+    .connect-wallet-button-left {
+      //color: #fff;
+      width: 100%;
+      justify-content: center;
+      //background: #424a71;
+      &:hover {
+        //background: #68719c;
+      }
+    }
+  }
+`;
