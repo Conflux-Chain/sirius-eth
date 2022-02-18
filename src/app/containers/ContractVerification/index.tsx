@@ -454,7 +454,7 @@ const StyledRemarkWrapper = styled.div`
 `;
 
 const StyledContractVerificationWrapper = styled.div`
-  .card.contract-verification-form-container {
+  div.card.contract-verification-form-container {
     padding: 0.8571rem 1.4286rem 1.2857rem 1.4286rem;
   }
 
