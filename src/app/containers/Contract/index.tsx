@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { ContractOrTokenInfo } from 'app/components/Contract/Loadable';
 import { useCMContractQuery } from 'utils/api';
-// import { isContractAddress } from 'utils';
 
 export function Contract(props) {
   const { t } = useTranslation();
@@ -24,10 +23,7 @@ export function Contract(props) {
     contractAddress,
     fields,
   ]);
-  const { data, error } = useCMContractQuery(
-    params,
-    // isContractAddress(contractAddress),
-  );
+  const { data, error } = useCMContractQuery(params);
 
   useEffect(() => {
     if (!data && !error) {

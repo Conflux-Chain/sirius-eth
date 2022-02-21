@@ -331,4 +331,12 @@ export const getAccountPendingTransactions = async (...args) => {
   }
 };
 
+export const getAccount = async (...args) => {
+  try {
+    return request('cfx_getAccount', ...args);
+  } catch (e) {
+    throw e;
+  }
+};
+
 export default request;

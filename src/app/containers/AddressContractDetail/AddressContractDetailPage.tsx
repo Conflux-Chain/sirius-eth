@@ -41,6 +41,7 @@ export const AddressContractDetailPage = () => {
           setIsAccount(await isAccountAddress(address));
         }
       } catch (e) {
+        console.log('check address type error: ', e);
         setError(true);
       }
     }

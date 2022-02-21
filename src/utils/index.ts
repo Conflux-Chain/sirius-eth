@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import fetch from './request';
+import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
 import { NetworksType } from './hooks/useGlobal';
 import {
@@ -107,14 +108,14 @@ export function isContractCodeHashEmpty(codeHash) {
 }
 
 export async function getAddressType(address: string): Promise<string> {
-  // TODO, use SDK util fn replace after new version released
   try {
-    const account = await CFX.getAccount(address);
+    const account = await getAccount(address);
     if (isContractCodeHashEmpty(account.codeHash)) {
       return 'account';
     }
     return 'contract';
   } catch (e) {
+    console.log('getAddressType error: ', e);
     throw e;
   }
 }
@@ -123,7 +124,7 @@ export async function isAccountAddress(address: string): Promise<boolean> {
   try {
     return (await getAddressType(address)) === 'account';
   } catch (e) {
-    return false;
+    throw e;
   }
 }
 
@@ -131,7 +132,7 @@ export async function isContractAddress(address: string): Promise<boolean> {
   try {
     return (await getAddressType(address)) === 'contract';
   } catch (e) {
-    return false;
+    throw e;
   }
 }
 
