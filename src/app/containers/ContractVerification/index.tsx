@@ -7,7 +7,7 @@ import { Remark } from 'app/components/Remark';
 import styled from 'styled-components/macro';
 import { Card } from 'app/components/Card/Loadable';
 import { Form, Input, Button, Row, Col, Select } from '@cfxjs/antd';
-import { /*isContractAddress,*/ isAddress } from 'utils';
+import { isAddress } from 'utils';
 import {
   reqContractCompiler,
   reqContractLicense,
@@ -214,11 +214,7 @@ export const ContractVerification = () => {
                       );
                       const address = value.trim();
 
-                      if (
-                        isAddress(address)
-                        // isContractAddress(address) &&
-                        // SDK.address.isValidCfxAddress(address)
-                      ) {
+                      if (isAddress(address)) {
                         return Promise.resolve();
                       } else {
                         return Promise.reject(new Error(textInvalidAddress));

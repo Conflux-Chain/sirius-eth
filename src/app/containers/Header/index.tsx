@@ -546,14 +546,7 @@ export const Header = memo(() => {
                     networkId: n.id,
                   });
 
-                  if (n.id === 1) {
-                    gotoNetwork(1);
-                  } else if (n.id === 1029) {
-                    gotoNetwork(1029);
-                  } else {
-                    // @todo, should jump to custom network hostname
-                    // gotoNetwork(1029);
-                  }
+                  gotoNetwork(n.id);
                 },
                 isMatchedFn: () => isMatch,
               };

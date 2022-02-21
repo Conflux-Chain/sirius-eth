@@ -148,7 +148,10 @@ export const Detail = () => {
       } else {
         setLoading(false);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log('fetchTxTransfer error: ', e);
+      setLoading(false);
+    }
   };
 
   // get txn detail info
@@ -195,63 +198,6 @@ export const Detail = () => {
           let toCheckAddress = txDetailDta.to;
 
           fetchTxTransfer(toCheckAddress, txnhash);
-
-          // if (
-          //   isContractAddress(toCheckAddress)
-          // ) {
-          //   setIsContract(true);
-          //   const fields = [
-          //     'address',
-          //     'type',
-          //     'name',
-          //     'website',
-          //     'tokenName',
-          //     'tokenSymbol',
-          //     'token',
-          //     'tokenDecimal',
-          //     'abi',
-          //     'bytecode',
-          //     'iconUrl',
-          //     'sourceCode',
-          //     'typeCode',
-          //   ];
-          //   const proArr: Array<any> = [];
-          //   proArr.push(
-          //     reqContract({ address: toCheckAddress, fields: fields }),
-          //   );
-          //   proArr.push(
-          //     reqTransferList({
-          //       transactionHash: txnhash,
-          //       fields: 'token',
-          //       limit: 100,
-          //       reverse: true,
-          //     }),
-          //   );
-          //   Promise.all(proArr)
-          //     .then(proRes => {
-          //       const contractResponse = proRes[0];
-          //       // update contract info
-          //       setContractInfo(contractResponse);
-          //       const transferListReponse = proRes[1];
-          //       const resultTransferList = transferListReponse;
-          //       const list = resultTransferList['list'];
-          //       setTransferList(list);
-          //       let addressList = list.map(v => v.address);
-          //       addressList = Array.from(new Set(addressList));
-          //       reqTokenList({
-          //         addressArray: addressList,
-          //         fields: ['iconUrl'],
-          //       })
-          //         .then(res => {
-          //           setLoading(false);
-          //           setTokenList(res.list);
-          //         })
-          //         .catch(() => {});
-          //     })
-          //     .catch(() => {});
-          // } else {
-          //   setLoading(false);
-          // }
         }
       });
     },
