@@ -22,6 +22,7 @@ import { getBalance } from 'utils/rpcRequest';
 
 import imgSwapArrowDown from 'images/swap-arrow-down.png';
 import imgInfo from 'images/info.svg';
+import { sendTransaction } from '@cfxjs/use-wallet/dist/ethereum';
 
 // token decimal
 const MAX_DECIMALS = 18;
@@ -188,28 +189,24 @@ const StyledSwapItemWrapper = styled.div`
 export function Swap() {
   const { t } = useTranslation();
   const { addRecord } = useTxnHistory();
+  const [cfx, setCfx] = useState('0');
+  const [wcfx, setWcfx] = useState('0');
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const { accounts, connected } = usePortal();
+  const [showModal, setShowModal] = useState({
+    show: false,
+    hash: '',
+    status: '',
+  });
 
   const CFX = new SDK.Conflux({
     url: RPC_SERVER,
     networkId: NETWORK_ID,
   });
 
-  // @ts-ignore
-  CFX.provider = window.conflux;
-
   const contract = CFX.Contract({
     address: CONTRACTS.wcfx,
     abi,
-  });
-
-  const [cfx, setCfx] = useState('0');
-  const [wcfx, setWcfx] = useState('0');
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const { installed, accounts, connected } = usePortal();
-  const [showModal, setShowModal] = useState({
-    show: false,
-    hash: '',
-    status: '',
   });
 
   const [fromToken, setFromToken] = useState({
@@ -226,7 +223,7 @@ export function Swap() {
   };
 
   useEffect(() => {
-    if (installed && accounts.length) {
+    if (accounts.length) {
       // @todo, the interval maybe not good, need to change
       const interval = setInterval(() => {
         contract.balanceOf(accounts[0]).then(data => {
@@ -242,7 +239,7 @@ export function Swap() {
         clearInterval(interval);
       };
     }
-  }, [installed, accounts, connected, contract, CFX]);
+  }, [accounts, connected, contract]);
 
   const handleInputChange = value => {
     setFromToken({
@@ -287,12 +284,16 @@ export function Swap() {
     if (fromToken.type === 'cfx') {
       const code = TXN_ACTION.swapCFXToWCFX;
       // deposit
-      contract
-        .deposit()
-        .sendTransaction({
-          from: accounts[0],
-          value,
-        })
+      // contract
+      //   .deposit()
+      //   .sendTransaction({
+      //     from: accounts[0],
+      //     value,
+      //   })
+      sendTransaction({
+        ...contract.deposit(),
+        value,
+      })
         .then(hash => {
           setShowModal({
             ...showModal,
@@ -338,11 +339,12 @@ export function Swap() {
     } else if (fromToken.type === 'wcfx') {
       const code = TXN_ACTION.swapWCFXToCFX;
       // withdraw
-      contract
-        .withdraw(value)
-        .sendTransaction({
-          from: accounts[0],
-        })
+      // contract
+      //   .withdraw(value)
+      //   .sendTransaction({
+      //     from: accounts[0],
+      //   })
+      sendTransaction(contract.withdraw(value))
         .then(hash => {
           setShowModal({
             ...showModal,

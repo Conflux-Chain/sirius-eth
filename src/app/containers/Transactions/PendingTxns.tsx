@@ -84,7 +84,9 @@ export const PendingTxns = ({ address }: Props) => {
         if (isAddress(address)) {
           setIsAccount(await isAccountAddress(address));
         }
-      } catch (e) {}
+      } catch (e) {
+        console.log('pending txns list, get address type error: ', e);
+      }
     }
     fn();
   }, [address]);

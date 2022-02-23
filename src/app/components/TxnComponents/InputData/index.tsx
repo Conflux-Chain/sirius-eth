@@ -122,6 +122,9 @@ export const InputData = ({
           }
         }
       } catch (e) {
+        setDataTypeList(['original']);
+        setDataType('original');
+        setTip('');
         console.log('txn input data error: ', e);
       }
     };

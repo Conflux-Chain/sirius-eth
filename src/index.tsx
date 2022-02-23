@@ -14,6 +14,8 @@ import * as serviceWorker from 'serviceWorker';
 import { RecoilRoot } from 'recoil';
 import 'sanitize.css/sanitize.css';
 import '@cfxjs/antd/dist/@cfxjs/antd.css';
+import { completeDetect } from '@cfxjs/use-wallet';
+import { completeDetect as completeDetectEthereum } from '@cfxjs/use-wallet/dist/ethereum';
 
 // Import root app
 import { App } from 'app';
@@ -38,6 +40,7 @@ const ConnectedApp = ({ Component }: Props) => (
     </RecoilRoot>
   </HelmetProvider>
 );
+
 const render = (Component: typeof App) => {
   ReactDOM.render(<ConnectedApp Component={Component} />, MOUNT_NODE);
 };
@@ -49,18 +52,23 @@ if (module.hot) {
   module.hot.accept(['./app', './locales/i18n'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
     const App = require('./app').App;
-    render(App);
+
+    Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
+      render(App);
+    });
   });
 }
 
-render(App);
+Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
+  render(App);
+});
 
 const currentVersion = '1.0.0';
 
 const brand = `
-┌─┐┌─┐┌┐┌┌─┐┬  ┬ ┬─┐ ┬  ┌─┐┌─┐┌─┐┌┐┌ V${currentVersion}
-│  │ ││││├┤ │  │ │┌┴┬┘  └─┐│  ├─┤│││
-└─┘└─┘┘└┘└  ┴─┘└─┘┴ └─  └─┘└─┘┴ ┴┘└┘
+╔═╗┌─┐┌┐┌┌─┐┬  ┬ ┬─┐ ┬  ┌─┐╔═╗┌─┐┌─┐┌─┐┌─┐ V${currentVersion}
+║  │ ││││├┤ │  │ │┌┴┬┘  ├┤ ╚═╗├─┘├─┤│  ├┤ 
+╚═╝└─┘┘└┘└  ┴─┘└─┘┴ └─  └─┘╚═╝┴  ┴ ┴└─┘└─┘
  `;
 
 if (NETWORK_TYPE === NETWORK_TYPES.testnet) {

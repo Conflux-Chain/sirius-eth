@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import fetch from './request';
+import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
 import { NetworksType } from './hooks/useGlobal';
 import {
@@ -13,6 +14,7 @@ import {
 } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
+import lodash from 'lodash';
 
 // @ts-ignore
 window.SDK = SDK;
@@ -106,14 +108,14 @@ export function isContractCodeHashEmpty(codeHash) {
 }
 
 export async function getAddressType(address: string): Promise<string> {
-  // TODO, use SDK util fn replace after new version released
   try {
-    const account = await CFX.getAccount(address);
+    const account = await getAccount(address);
     if (isContractCodeHashEmpty(account.codeHash)) {
       return 'account';
     }
     return 'contract';
   } catch (e) {
+    console.log('getAddressType error: ', e);
     throw e;
   }
 }
@@ -122,7 +124,7 @@ export async function isAccountAddress(address: string): Promise<boolean> {
   try {
     return (await getAddressType(address)) === 'account';
   } catch (e) {
-    return false;
+    throw e;
   }
 }
 
@@ -130,7 +132,7 @@ export async function isContractAddress(address: string): Promise<boolean> {
   try {
     return (await getAddressType(address)) === 'contract';
   } catch (e) {
-    return false;
+    throw e;
   }
 }
 
@@ -790,33 +792,30 @@ export const getNetwork = (networks: Array<NetworksType>, id: number) => {
   return network;
 };
 
-// @todo, add private chain domain
-export const gotoNetwork = (networkId: number): void => {
+const urls = {
+  stage: {
+    1: '//testnet-scantest.confluxnetwork.org',
+    1029: '//scantest.confluxnetwork.org',
+    71: '//evmtestnet-stage.confluxscan.net',
+    1030: '//evm-stage.confluxscan.net',
+  },
+  online: {
+    1: '//testnet.confluxscan',
+    1029: '//confluxscan',
+    71: '//evmtestnet.confluxscan',
+    1030: '//evm.confluxscan',
+  },
+};
+
+export const gotoNetwork = (networkId: string | number): void => {
   if (IS_PRE_RELEASE) {
-    // only for confluxscan pre release env
-    if (networkId === 1) {
-      window.location.assign('//testnet-scantest.confluxnetwork.org');
-    } else if (networkId === 1029) {
-      window.location.assign('//scantest.confluxnetwork.org');
-    }
+    window.location.assign(urls.stage[networkId]);
   } else {
-    const hostname = window.location.hostname;
-    let newHostname = '';
-    if (networkId === 1) {
-      if (hostname.includes('.io')) {
-        newHostname = '//testnet.confluxscan.io';
-      } else {
-        newHostname = '//testnet.confluxscan.net';
-      }
-      window.location.assign(newHostname);
-    } else if (networkId === 1029) {
-      if (hostname.includes('.io')) {
-        newHostname = '//confluxscan.io';
-      } else {
-        newHostname = '//confluxscan.net';
-      }
-      window.location.assign(newHostname);
-    }
+    window.location.assign(
+      `${urls.online[networkId]}${
+        window.location.hostname.includes('.io') ? '.io' : '.net'
+      }`,
+    );
   }
 };
 
@@ -873,20 +872,29 @@ export function checkIfContractByInfo(address: string, info: any, type?) {
 interface ErrorInfoType {
   code?: number;
   message?: string;
+  data?: string;
 }
 
 export const publishRequestError = (
-  info: (Error & ErrorInfoType) | ErrorInfoType,
-  type?: 'rpc' | 'http' | 'wallet',
+  e: (Error & ErrorInfoType) | ErrorInfoType,
+  type: 'rpc' | 'http' | 'wallet',
 ) => {
-  const code = info.code;
-  const desc = info.message;
+  let detail = '';
+
+  if (e.code && e.message) {
+    detail = `${e.code}, ${e.message}`;
+
+    if (type === 'rpc' && !lodash.isNil(e.data)) {
+      detail += `, ${e.data}`;
+    }
+  }
+
   pubsub.publish('notify', {
     type: 'request',
     option: {
-      code: type === 'rpc' ? 30001 : code,
-      message: info.message,
-      detail: `${code ? code + ', ' : ''}${desc}`,
+      code: type === 'rpc' ? 30001 : e.code || 20000, // code is used for title, 20000 means unknown issue
+      message: e.message,
+      detail: detail,
     },
   });
 };

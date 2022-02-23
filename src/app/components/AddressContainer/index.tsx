@@ -4,13 +4,7 @@ import { Link } from '../Link/Loadable';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
-import {
-  formatAddress,
-  // isContractAddress,
-  isZeroAddress,
-  isAddress,
-  formatString,
-} from 'utils';
+import { formatAddress, isZeroAddress, isAddress, formatString } from 'utils';
 import { AlertTriangle } from '@zeit-ui/react-icons';
 import ContractIcon from 'images/contract-icon.png';
 import isMeIcon from 'images/me.png';

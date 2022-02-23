@@ -18,7 +18,6 @@ import {
 } from 'utils/constants';
 import {
   byteToKb,
-  // isContractAddress,
   validURL,
   getAddressInputPlaceholder,
   isAddress,

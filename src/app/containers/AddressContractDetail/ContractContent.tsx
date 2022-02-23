@@ -80,7 +80,7 @@ const Code = ({ contractInfo }) => {
         >
           {t(translations.contract.verify.tipLeft)}
           <Link
-            href={`/contract-verification?address=${SDK.address.simplifyCfxAddress(
+            href={`/contract-verification?address=${SDK.format.hexAddress(
               address,
             )}`}
           >
@@ -308,7 +308,9 @@ export const ContractContent = ({ contractInfo }) => {
           implementation?.address && !implementation?.verify?.exactMatch ? (
             <Trans i18nKey="contract.notVerifyImplementContract">
               <Link
-                href={`/contract-verification?address=${implementation.address}`}
+                href={`/contract-verification?address=${SDK.format.hexAddress(
+                  implementation.address,
+                )}`}
                 style={{ margin: '0 5px' }}
               >
                 contract verification
