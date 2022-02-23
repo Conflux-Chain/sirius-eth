@@ -31,8 +31,8 @@ export const IS_TESTNET =
   window.location.hostname.includes('testnet');
 
 export enum DEFAULT_NETWORK_IDS {
-  mainnet = 1029,
-  testnet = 1,
+  mainnet = 1030,
+  testnet = 71,
 }
 
 /**
@@ -77,15 +77,13 @@ export enum NETWORK_TYPES {
 }
 
 export const NETWORK_TYPE = (() => {
-  // TODO, use condition after mainnet hardfork
-  return NETWORK_TYPES.testnet;
-  // if (NETWORK_ID === 8889) {
-  //   return NETWORK_TYPES.testnet;
-  // } else if (NETWORK_ID === 1029) {
-  //   return NETWORK_TYPES.mainnet;
-  // } else {
-  //   return NETWORK_TYPES.privatenet;
-  // }
+  if (NETWORK_ID === 71) {
+    return NETWORK_TYPES.testnet;
+  } else if (NETWORK_ID === 1030) {
+    return NETWORK_TYPES.mainnet;
+  } else {
+    return NETWORK_TYPES.privatenet;
+  }
 })();
 
 export const CONTRACTS: ContractsType = (() => {

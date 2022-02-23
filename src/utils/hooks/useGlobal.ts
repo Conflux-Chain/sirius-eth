@@ -67,12 +67,12 @@ export interface GlobalDataType {
 export const useGlobalData = createGlobalState<object>({
   networks: [
     {
-      name: 'Conflux Hydra',
-      id: 1029,
+      name: 'Conflux eSpace (Hydra)',
+      id: 1030,
     },
     {
       name: 'Conflux eSpace (Testnet)',
-      id: 1,
+      id: 71,
     },
   ],
   networkId: DEFAULT_NETWORK_IDS.mainnet,
