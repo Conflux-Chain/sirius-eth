@@ -95,8 +95,7 @@ export const Detail = () => {
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
     try {
-      const isContract = await isContractAddress(toCheckAddress);
-      if (isContract) {
+      if (toCheckAddress && (await isContractAddress(toCheckAddress))) {
         setIsContract(true);
         const fields = [
           'address',

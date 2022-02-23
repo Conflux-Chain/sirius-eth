@@ -18,7 +18,7 @@ import { CopyButton } from './../CopyButton';
 import { useCheckHook } from './useCheckHook';
 import { NETWORK_ID, NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
-import iconLogo from './assets/logo.png';
+import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
 import iconLoading from './assets/loading.svg';
 
@@ -94,7 +94,7 @@ export const Modal = ({
     <div className="modal-tip">
       <span>{t(translations.connectWallet.modal.newToConflux)}</span>
       <a
-        href="https://fluentwallet.com/"
+        href="https://metamask.io/"
         target="_blank"
         className="modal-tip-link"
         rel="noopener noreferrer"
@@ -176,7 +176,7 @@ export const Modal = ({
   } else {
     portal = (
       <a
-        href="https://fluentwallet.com/"
+        href="https://metamask.io/"
         target="_blank"
         className="modal-portal-link"
         rel="noopener noreferrer"

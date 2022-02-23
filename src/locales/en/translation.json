@@ -1236,11 +1236,11 @@
     "modal": {
       "title": "Connect to a wallet",
       "installFluentWallet": "Install Wallet",
-      "fluentWallet": "Wallet",
+      "fluentWallet": "MetaMask",
       "initializing": "Initializing...",
       "errorConnecting": "Error connecting...",
       "tryAgain": "Try again",
-      "newToConflux": "New to Conflux?",
+      "newToConflux": "",
       "learnMore": "Learn more about wallets.",
       "account": "Account",
       "connectedWithFluentWallet": "Connected with Wallet",
