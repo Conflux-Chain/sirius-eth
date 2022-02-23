@@ -35,8 +35,7 @@ interface Props {
 const defaultPCMaxWidth = 95;
 const defaultMobileMaxWidth =
   NETWORK_TYPE === NETWORK_TYPES.mainnet ? 106 : 140;
-const defaultPCSuffixAddressSize =
-  NETWORK_TYPE === NETWORK_TYPES.mainnet ? 8 : 4;
+const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
 
