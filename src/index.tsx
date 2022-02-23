@@ -66,9 +66,9 @@ Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
 const currentVersion = '1.0.0';
 
 const brand = `
-┌─┐┌─┐┌┐┌┌─┐┬  ┬ ┬─┐ ┬  ┌─┐┌─┐┌─┐┌┐┌ V${currentVersion}
-│  │ ││││├┤ │  │ │┌┴┬┘  └─┐│  ├─┤│││
-└─┘└─┘┘└┘└  ┴─┘└─┘┴ └─  └─┘└─┘┴ ┴┘└┘
+╔═╗┌─┐┌┐┌┌─┐┬  ┬ ┬─┐ ┬  ┌─┐╔═╗┌─┐┌─┐┌─┐┌─┐ V${currentVersion}
+║  │ ││││├┤ │  │ │┌┴┬┘  ├┤ ╚═╗├─┘├─┤│  ├┤ 
+╚═╝└─┘┘└┘└  ┴─┘└─┘┴ └─  └─┘╚═╝┴  ┴ ┴└─┘└─┘
  `;
 
 if (NETWORK_TYPE === NETWORK_TYPES.testnet) {
