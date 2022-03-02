@@ -226,6 +226,26 @@ export const Header = memo(() => {
               afterClick: menuClick,
               href: '/txs',
             },
+            {
+              // accounts
+              title: [
+                t(translations.header.accounts),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.accounts,
+              afterClick: menuClick,
+              href: '/accounts',
+            },
+            {
+              // cfx transfers
+              title: [
+                t(translations.header.cfxTransfers),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.cfxTransfers,
+              afterClick: menuClick,
+              href: '/cfx-transfers',
+            },
           ],
         },
         {
@@ -408,26 +428,6 @@ export const Header = memo(() => {
     //           name: ScanEvent.menu.action.transactions,
     //           afterClick: menuClick,
     //           href: '/txs',
-    //         },
-    //         {
-    //           // accounts
-    //           title: [
-    //             t(translations.header.accounts),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.accounts,
-    //           afterClick: menuClick,
-    //           href: '/accounts',
-    //         },
-    //         {
-    //           // cfx transfers
-    //           title: [
-    //             t(translations.header.cfxTransfers),
-    //             <Check size={18} key="check" />,
-    //           ],
-    //           name: ScanEvent.menu.action.cfxTransfers,
-    //           afterClick: menuClick,
-    //           href: '/cfx-transfers',
     //         },
     //       ],
     //     },

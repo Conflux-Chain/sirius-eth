@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -7,8 +7,6 @@ import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { accountColunms, utils as tableColumnsUtils } from 'utils/tableColumns';
 import styled from 'styled-components/macro';
 import { Select } from 'app/components/Select';
-import { useLocation, useHistory } from 'react-router';
-import queryString from 'query-string';
 import { usePortal } from 'utils/hooks/usePortal';
 import { AddressContainer } from 'app/components/AddressContainer/Loadable';
 import { formatAddress, checkIfContractByInfo } from 'utils';
@@ -23,43 +21,6 @@ export function Accounts() {
   const isEn = i18n.language.startsWith('en');
   // get portal selected address
   const { accounts } = usePortal();
-
-  const options = [
-    {
-      key: 'rank_address_by_total_cfx',
-      name: t(translations.accounts.totalBalance),
-      rowKey: 'value4',
-    },
-    {
-      key: 'rank_address_by_cfx',
-      name: t(translations.accounts.balance),
-      rowKey: 'value2',
-    },
-    {
-      key: 'rank_address_by_staking',
-      name: t(translations.accounts.stakingBalance),
-      rowKey: 'value3',
-    },
-  ];
-  const location = useLocation();
-  const history = useHistory();
-  const { type: queryType } = queryString.parse(location.search);
-
-  let queryNumber = '0';
-  if (queryType) {
-    const index = options.findIndex(o => o.key === queryType);
-    if (index > -1) {
-      queryNumber = String(index);
-    }
-  }
-
-  const [number, setNumber] = useState(queryNumber);
-
-  useEffect(() => {
-    if (queryNumber !== number) {
-      setNumber(queryNumber);
-    }
-  }, [queryNumber, number]);
 
   let columnsWidth = [2, 9, 4, 3, 3];
   let columns = [
@@ -87,59 +48,73 @@ export function Accounts() {
     },
     {
       ...accountColunms.balance,
-      title: <ContentWrapper right>{options[number].name}</ContentWrapper>,
-      dataIndex: options[number].rowKey,
-      key: options[number].rowKey,
+      title: (
+        <ContentWrapper right>
+          {t(translations.accounts.balance)}
+        </ContentWrapper>
+      ),
+      dataIndex: 'value2',
+      key: 'value2',
     },
     accountColunms.percentage,
     accountColunms.count,
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
   const title = t(translations.header.accounts);
-  const url = `/stat/top-cfx-holder?type=${options[number].key}&limit=100`;
+  const url = `/stat/top-cfx-holder?type=rank_address_by_cfx&limit=100`;
 
-  const handleTypeChange = number => {
-    history.push(
-      queryString.stringifyUrl({
-        url: location.pathname,
-        query: {
-          type: options[number].key,
-        },
-      }),
-    );
+  const handleDownloadItemClick = (e, index, count) => {
+    if (index !== 0) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      window.open(
+        `/stat/top-cfx-holder-csv?limit=${count}&skip=0&type=rank_address_by_cfx`,
+        '_blank',
+      );
+    }
   };
 
   const tableTitle = useMemo(
     () => {
       return (
         <StyledSelectWrapper isEn={isEn}>
-          <span className="selectLabel">
-            {t(translations.accounts.sortButtonBefore)}
-          </span>
-          <Select
-            value={number}
-            onChange={handleTypeChange}
-            disableMatchWidth
-            size="small"
-            className="btnSelectContainer"
-            variant="text"
-          >
-            {options.map((o, index) => {
-              return (
-                <Select.Option key={o.key} value={String(index)}>
-                  {o.name}
-                </Select.Option>
-              );
-            })}
-          </Select>
-          <span className="selectLabel">
-            {t(translations.accounts.sortButtonAfter)}
-          </span>
+          {/* not good, should be replace with real dropdown or refactor Select Component to support */}
+          <StyledSelectWrapper isEn={false} className="download">
+            <Select
+              value={'0'}
+              onChange={() => {}}
+              disableMatchWidth
+              size="small"
+              className="btnSelectContainer"
+              variant="text"
+              dropdownClassName="dropdown"
+            >
+              {[
+                t(translations.accounts.downloadButtonText),
+                '100',
+                '500',
+                '1000',
+                '3000',
+                '5000',
+              ].map((o, index) => {
+                return (
+                  <Select.Option
+                    key={o}
+                    value={String(index)}
+                    onClick={e => handleDownloadItemClick(e, index, o)}
+                  >
+                    {o}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </StyledSelectWrapper>
         </StyledSelectWrapper>
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isEn, number],
+    [isEn],
   );
 
   return (
@@ -152,10 +127,10 @@ export function Accounts() {
       <TipLabel
         total={100}
         left={t(translations.accounts.tipLeft, {
-          type: options[number].name,
+          type: t(translations.accounts.balance),
         })}
         right={t(translations.accounts.tipRight, {
-          type: options[number].name,
+          type: t(translations.accounts.balance),
         })}
       />
       <StyledTableWrapper>
@@ -217,5 +192,10 @@ const StyledSelectWrapper = styled.div<{
     &:hover {
       background: rgba(30, 61, 228, 0.08);
     }
+  }
+
+  /* download button */
+  &.download {
+    margin-left: 0.7143rem;
   }
 `;

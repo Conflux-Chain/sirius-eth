@@ -67,7 +67,7 @@ import { GlobalTip } from './components/GlobalTip';
 // import { Swap } from './containers/Swap';
 import { ContractDeployment } from './containers/ContractDeployment/Loadable';
 import { ContractVerification } from './containers/ContractVerification/Loadable';
-// import { CFXTransfers } from './containers/CFXTransfers/Loadable';
+import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
 // import { RegisteredContracts } from './containers/Contracts/Loadable';
@@ -372,6 +372,11 @@ export function App() {
                             path="/push-tx"
                             component={BroadcastTx}
                           />
+                          <Route
+                            exact
+                            path="/cfx-transfers"
+                            component={CFXTransfers}
+                          />
 
                           {/* <Route
                             exact
@@ -387,11 +392,6 @@ export function App() {
                             exact
                             path="/registered-contracts"
                             component={RegisteredContracts}
-                          />
-                          <Route
-                            exact
-                            path="/cfx-transfers"
-                            component={CFXTransfers}
                           />
                           <Route path="/charts" component={Chart} />
                           <Route
