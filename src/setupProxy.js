@@ -15,15 +15,6 @@ if (process.env.REACT_APP_TestNet === 'true') {
   v1 = `${testnet}`;
   rpcv2 = `${testnet}/rpcv2`;
   confluxDag = `${testnet}`;
-} else if (process.env.REACT_APP_ETHNet === 'true') {
-  const url = 'https://evmtestnet-stage.confluxscan.net/';
-  // const url = 'https://evmtestnet.confluxscan.net/';
-  // const url = 'https://net8889eth.confluxscan.net/';
-  // const rpcBrigde = 'https://net8889eth.confluxscan.net/rpcv2';
-  stat = `${url}/`;
-  v1 = `${url}/`;
-  rpcv2 = `${url}/rpcv2`;
-  confluxDag = `${url}/`;
 }
 
 module.exports = app => {
@@ -35,15 +26,6 @@ module.exports = app => {
       secure: false,
     }),
   );
-  // test api with backend dev service
-  // app.use(
-  //   '/v1',
-  //   createProxyMiddleware({
-  //     target: 'http://scan-dev-service.conflux-chain.org:8895/',
-  //     changeOrigin: true,
-  //     secure: false,
-  //   }),
-  // );
   app.use(
     '/v1',
     createProxyMiddleware({
