@@ -19,6 +19,7 @@ import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import CheckCircle from '@zeit-ui/react-icons/checkCircle';
 
 import { SubTabs } from 'app/components/Tabs/Loadable';
+import { formatAddress, isZeroAddress } from 'utils';
 
 const AceEditorStyle = {
   width: '100%',
@@ -230,7 +231,12 @@ export const ContractContent = ({ contractInfo }) => {
         label: t(translations.contract.readContract),
         abi,
         content: (
-          <ContractAbi type="read" address={address} abi={abi}></ContractAbi>
+          <ContractAbi
+            type="read"
+            address={address}
+            abi={abi}
+            key={`contract-read-${address}`}
+          ></ContractAbi>
         ),
       },
       {
@@ -238,14 +244,23 @@ export const ContractContent = ({ contractInfo }) => {
         label: t(translations.contract.writeContract),
         abi,
         content: (
-          <ContractAbi type="write" address={address} abi={abi}></ContractAbi>
+          <ContractAbi
+            type="write"
+            address={address}
+            abi={abi}
+            key={`contract-write-${address}`}
+          ></ContractAbi>
         ),
       },
     ]);
   }
 
   // check if is a proxy contract
-  if (proxy?.proxy && implementation?.address) {
+  if (
+    proxy?.proxy &&
+    implementation?.address &&
+    !isZeroAddress(formatAddress(implementation?.address))
+  ) {
     // proxy contract
     if (implementation?.verify?.exactMatch) {
       tabs = tabs.concat([
@@ -257,6 +272,8 @@ export const ContractContent = ({ contractInfo }) => {
               type="read"
               address={implementation.address}
               pattern={proxy.proxyPattern}
+              proxyAddress={address}
+              key={`contract-implementation-read-${address}`}
             ></ContractAbi>
           ),
         },
@@ -268,6 +285,8 @@ export const ContractContent = ({ contractInfo }) => {
               type="write"
               address={implementation.address}
               pattern={proxy.proxyPattern}
+              proxyAddress={address}
+              key={`contract-implementation-write-${address}`}
             ></ContractAbi>
           ),
         },
@@ -305,7 +324,9 @@ export const ContractContent = ({ contractInfo }) => {
         onChange={clickHandler}
         className="contract-body-subtabs"
         extra={
-          implementation?.address && !implementation?.verify?.exactMatch ? (
+          implementation?.address &&
+          !isZeroAddress(formatAddress(implementation?.address)) &&
+          !implementation?.verify?.exactMatch ? (
             <Trans i18nKey="contract.notVerifyImplementContract">
               <Link
                 href={`/contract-verification?address=${SDK.format.hexAddress(
