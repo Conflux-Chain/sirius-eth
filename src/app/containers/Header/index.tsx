@@ -51,7 +51,7 @@ export const Header = memo(() => {
   const blockchainMatched =
     location.pathname.startsWith('/contract') ||
     location.pathname.startsWith('/sponsor');
-  // const ecosystemMatched = false;
+  const ecosystemMatched = false;
 
   const bp = useBreakpoint();
   const [visible, toggleMenu] = useToggle(false);
@@ -131,25 +131,6 @@ export const Header = memo(() => {
     // },
   ];
 
-  // @todo, shoule remove after pos release
-  if (localStorage.getItem('fccfx')) {
-    if (bp !== 's' && bp !== 'm') {
-      ecosystemItems.push({
-        title: [t(translations.header.fcCfx), <Check size={18} key="check" />],
-        name: ScanEvent.menu.action.fcCfx,
-        afterClick: menuClick,
-        href: '/fccfx',
-      });
-    }
-  } else {
-    ecosystemItems.push({
-      title: [t(translations.header.fcCfx), <Check size={18} key="check" />],
-      name: ScanEvent.menu.action.fcCfx,
-      afterClick: menuClick,
-      href: 'https://fccfx.confluxscan.io/',
-    });
-  }
-
   if ([NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {
     supportAndHelpMenuItems.unshift({
       title: [
@@ -164,20 +145,30 @@ export const Header = memo(() => {
           : 'https://api.confluxscan.net/doc',
     });
 
-    ecosystemItems.unshift({
+    // ecosystemItems.unshift({
+    //   title: [
+    //     t(translations.header.stakingAndGovernance),
+    //     <Check size={18} key="check" />,
+    //   ],
+    //   name: ScanEvent.menu.action.stakingAndGovernance,
+    //   afterClick: menuClick,
+    //   href: iszh
+    //     ? NETWORK_TYPE === NETWORK_TYPES.testnet
+    //       ? 'https://votetest.confluxnetwork.org/zh/'
+    //       : 'https://governance.confluxnetwork.org/zh/'
+    //     : NETWORK_TYPE === NETWORK_TYPES.testnet
+    //     ? 'https://votetest.confluxnetwork.org/en/'
+    //     : 'https://governance.confluxnetwork.org/en/',
+    // });
+
+    ecosystemItems.push({
       title: [
-        t(translations.header.stakingAndGovernance),
+        t(translations.header.crossSpace),
         <Check size={18} key="check" />,
       ],
-      name: ScanEvent.menu.action.stakingAndGovernance,
+      name: ScanEvent.menu.action.crossSpace,
       afterClick: menuClick,
-      href: iszh
-        ? NETWORK_TYPE === NETWORK_TYPES.testnet
-          ? 'https://votetest.confluxnetwork.org/zh/'
-          : 'https://governance.confluxnetwork.org/zh/'
-        : NETWORK_TYPE === NETWORK_TYPES.testnet
-        ? 'https://votetest.confluxnetwork.org/en/'
-        : 'https://governance.confluxnetwork.org/en/',
+      href: 'https://evm.fluentwallet.com/',
     });
 
     // contractItems.splice(2, 0, {
@@ -293,6 +284,12 @@ export const Header = memo(() => {
           href: '/tokens-nft1155',
         },
       ],
+    },
+    // ecosystem
+    {
+      title: t(translations.header.ecosystem),
+      matched: ecosystemMatched,
+      children: ecosystemItems,
     },
     // more
     {
@@ -509,12 +506,6 @@ export const Header = memo(() => {
     //       isMatchedFn: () => !!location?.pathname?.startsWith('/statistics'),
     //     },
     //   ],
-    // },
-    // // ecosystem
-    // {
-    //   title: t(translations.header.ecosystem),
-    //   matched: ecosystemMatched,
-    //   children: ecosystemItems,
     // },
   ];
 
