@@ -78,38 +78,36 @@ export function Accounts() {
   const tableTitle = useMemo(
     () => {
       return (
-        <StyledSelectWrapper isEn={isEn}>
+        <StyledSelectWrapper isEn={isEn} className="download">
           {/* not good, should be replace with real dropdown or refactor Select Component to support */}
-          <StyledSelectWrapper isEn={false} className="download">
-            <Select
-              value={'0'}
-              onChange={() => {}}
-              disableMatchWidth
-              size="small"
-              className="btnSelectContainer"
-              variant="text"
-              dropdownClassName="dropdown"
-            >
-              {[
-                t(translations.accounts.downloadButtonText),
-                '100',
-                '500',
-                '1000',
-                '3000',
-                '5000',
-              ].map((o, index) => {
-                return (
-                  <Select.Option
-                    key={o}
-                    value={String(index)}
-                    onClick={e => handleDownloadItemClick(e, index, o)}
-                  >
-                    {o}
-                  </Select.Option>
-                );
-              })}
-            </Select>
-          </StyledSelectWrapper>
+          <Select
+            value={'0'}
+            onChange={() => {}}
+            disableMatchWidth
+            size="small"
+            className="btnSelectContainer"
+            variant="text"
+            dropdownClassName="dropdown"
+          >
+            {[
+              t(translations.accounts.downloadButtonText),
+              '100',
+              '500',
+              '1000',
+              '3000',
+              '5000',
+            ].map((o, index) => {
+              return (
+                <Select.Option
+                  key={o}
+                  value={String(index)}
+                  onClick={e => handleDownloadItemClick(e, index, o)}
+                >
+                  {o}
+                </Select.Option>
+              );
+            })}
+          </Select>
         </StyledSelectWrapper>
       );
     },
