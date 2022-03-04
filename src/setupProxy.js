@@ -15,6 +15,12 @@ if (process.env.REACT_APP_TestNet === 'true') {
   v1 = `${testnet}`;
   rpcv2 = `${testnet}/rpcv2`;
   confluxDag = `${testnet}`;
+} else if (process.env.REACT_APP_8889 === 'true') {
+  const testnet = 'https://net8889eth.confluxscan.net/';
+  stat = `${testnet}`;
+  v1 = `${testnet}`;
+  rpcv2 = `${testnet}/rpcv2`;
+  confluxDag = `${testnet}`;
 }
 
 module.exports = app => {

@@ -110,7 +110,7 @@
     "invalidNameTag": "The character length has reached the maximum limit",
     "duplicatedNameTag": "The name tag has been registered {{times}} time",
     "invalidUrl": "Incorrect URL",
-    "errorNotAdmin": "You are not the creator or admin of the contract, please disconnect and try again. ",
+    "errorNotAdmin": "You are not the creator of the contract, please disconnect and try again. ",
     "invalidIconSize": "Invalid icon size, please try again.",
     "errorTokenICon": "For the non-ERC20 contract, the token icon cannot be uploaded",
     "beforeContractSubmitTip": "Before submitting, you need to connect to Fluent Wallet to prove that you are the admin or creator of the contract.",

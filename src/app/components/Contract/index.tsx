@@ -21,6 +21,7 @@ import {
   validURL,
   getAddressInputPlaceholder,
   isAddress,
+  formatAddress,
 } from 'utils';
 import { reqContract, reqContractNameTag, reqToken } from 'utils/httpRequest';
 import SkelontonContainer from '../SkeletonContainer';
@@ -348,10 +349,7 @@ export const ContractOrTokenInfo = ({
         if (accounts[0]) {
           reqContract({ address: addressVal, fields: fieldsContract })
             .then(dataContractInfo => {
-              if (
-                dataContractInfo.from === accounts[0] ||
-                dataContractInfo.admin === accounts[0]
-              ) {
+              if (formatAddress(dataContractInfo.from) === accounts[0]) {
                 setIsAdminError(false);
                 if (tokenIcon) {
                   reqToken({ address: addressVal }).then(tokenInfo => {

@@ -57,7 +57,7 @@ import { Search } from './containers/Search';
 // import { AddressConverter } from './containers/AddressConverter';
 // import { NetworkError } from './containers/NetworkError/Loadable';
 // import { Report } from './containers/Report';
-// import { Contract } from './containers/Contract/Loadable';
+import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
 import Loading from 'app/components/Loading';
@@ -328,15 +328,15 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (/[A-Z]/.test(address)) {
-                                return (
-                                  <Redirect
-                                    to={`/address/${address.toLowerCase()}`}
-                                  />
-                                );
-                              }
-
                               if (isAddress(address)) {
+                                if (/[A-Z]/.test(address)) {
+                                  return (
+                                    <Redirect
+                                      to={`/address/${address.toLowerCase()}`}
+                                    />
+                                  );
+                                }
+
                                 return (
                                   <AddressContractDetailPage {...routeProps} />
                                 );
@@ -358,15 +358,15 @@ export function App() {
                               const address =
                                 routeProps.match.params.tokenAddress;
 
-                              if (/[A-Z]/.test(address)) {
-                                return (
-                                  <Redirect
-                                    to={`/token/${address.toLowerCase()}`}
-                                  />
-                                );
-                              }
-
                               if (isAddress(address)) {
+                                if (/[A-Z]/.test(address)) {
+                                  return (
+                                    <Redirect
+                                      to={`/token/${address.toLowerCase()}`}
+                                    />
+                                  );
+                                }
+
                                 return <TokenDetail {...routeProps} />;
                               } else {
                                 return <Redirect to={`/notfound/${address}`} />;
@@ -392,6 +392,35 @@ export function App() {
                             exact
                             path="/cfx-transfers"
                             component={CFXTransfers}
+                          />
+                          <Route
+                            exact
+                            path={[
+                              '/contract-info/:contractAddress',
+                              '/token-info/:contractAddress',
+                            ]}
+                            render={(routeProps: any) => {
+                              const address =
+                                routeProps.match.params.contractAddress;
+
+                              const path = routeProps.match.path.match(
+                                /(\/.*\/)/,
+                              )[1];
+
+                              if (isAddress(address)) {
+                                if (/[A-Z]/.test(address)) {
+                                  return (
+                                    <Redirect
+                                      to={`${path}${address.toLowerCase()}`}
+                                    />
+                                  );
+                                }
+
+                                return <Contract {...routeProps} />;
+                              } else {
+                                return <Redirect to={`/notfound/${address}`} />;
+                              }
+                            }}
                           />
 
                           {/* <Route
@@ -438,6 +467,8 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
+                              TODO check address if lowercase
+
                               if (isAddress(address) || lodash.isNil(address)) {
                                 return <NFTChecker {...routeProps} />;
                               } else {
@@ -467,23 +498,6 @@ export function App() {
                             exact
                             path="/balance-checker"
                             component={BalanceChecker}
-                          />
-                          <Route
-                            exact
-                            path={[
-                              '/contract-info/:contractAddress',
-                              '/token-info/:contractAddress',
-                            ]}
-                            render={(routeProps: any) => {
-                              const address =
-                                routeProps.match.params.contractAddress;
-
-                              if (isAddress(address)) {
-                                return <Contract {...routeProps} />;
-                              } else {
-                                return <Redirect to={`/notfound/${address}`} />;
-                              }
-                            }}
                           />
                           <Route
                             exact
