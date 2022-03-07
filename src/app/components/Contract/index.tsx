@@ -125,10 +125,10 @@ export const ContractOrTokenInfo = ({
     setTokenSite(contractDetail?.token?.website || '');
     switch (type) {
       case 'create':
-        setAddressVal(address || '');
+        setAddressVal(formatAddress(address || ''));
         break;
       case 'edit':
-        setAddressVal(contractDetail.address);
+        setAddressVal(formatAddress(contractDetail.address));
         checkAdminThenToken(
           contractDetail.token && contractDetail.token.iconUrl,
         );
