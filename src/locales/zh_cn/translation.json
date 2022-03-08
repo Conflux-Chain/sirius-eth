@@ -110,7 +110,7 @@
     "invalidNameTag": "字符长度已达到最大限制",
     "duplicatedNameTag": "该名称标签已被注册了 {{times}} 次",
     "invalidUrl": "URL 格式错误",
-    "errorNotAdmin": "您不是该合约的管理者或拥有者，请断开连接后再次尝试。",
+    "errorNotAdmin": "您不是该合约的拥有者，请断开连接后再次尝试。",
     "invalidIconSize": "图片过大，请重试",
     "errorTokenICon": "非 ERC20 合约，代币图标不可上传",
     "beforeContractSubmitTip": "提交合约信息前，您需连接钱包以确认您是该合约的管理者或拥有者。",
@@ -308,7 +308,8 @@
       "balance": "余额",
       "percentage": "百分比",
       "count": "交易数"
-    }
+    },
+    "downloadButtonText": "下载 CSV 文件"
   },
   "contracts": {
     "title": "内置合约",
@@ -345,6 +346,7 @@
     "stakingAndGovernance": "质押 & 治理",
     "developerAPI": "API 文档",
     "fcCfx": "FC-CFX 不可逆兑换",
+    "crossSpace": "跨空间",
     "more": "更多",
     "tools": "工具",
     "balanceChecker": "余额检索器",

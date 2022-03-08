@@ -57,7 +57,7 @@ import { Search } from './containers/Search';
 // import { AddressConverter } from './containers/AddressConverter';
 // import { NetworkError } from './containers/NetworkError/Loadable';
 // import { Report } from './containers/Report';
-// import { Contract } from './containers/Contract/Loadable';
+import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
 import Loading from 'app/components/Loading';
@@ -67,7 +67,7 @@ import { GlobalTip } from './components/GlobalTip';
 // import { Swap } from './containers/Swap';
 import { ContractDeployment } from './containers/ContractDeployment/Loadable';
 import { ContractVerification } from './containers/ContractVerification/Loadable';
-// import { CFXTransfers } from './containers/CFXTransfers/Loadable';
+import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
 // import { RegisteredContracts } from './containers/Contracts/Loadable';
@@ -337,6 +337,14 @@ export function App() {
                               }
 
                               if (isAddress(address)) {
+                                if (/[A-Z]/.test(address)) {
+                                  return (
+                                    <Redirect
+                                      to={`/address/${address.toLowerCase()}`}
+                                    />
+                                  );
+                                }
+
                                 return (
                                   <AddressContractDetailPage {...routeProps} />
                                 );
@@ -367,6 +375,14 @@ export function App() {
                               }
 
                               if (isAddress(address)) {
+                                if (/[A-Z]/.test(address)) {
+                                  return (
+                                    <Redirect
+                                      to={`/token/${address.toLowerCase()}`}
+                                    />
+                                  );
+                                }
+
                                 return <TokenDetail {...routeProps} />;
                               } else {
                                 return <Redirect to={`/notfound/${address}`} />;
@@ -388,6 +404,40 @@ export function App() {
                             path="/push-tx"
                             component={BroadcastTx}
                           />
+                          <Route
+                            exact
+                            path="/cfx-transfers"
+                            component={CFXTransfers}
+                          />
+                          <Route
+                            exact
+                            path={[
+                              '/contract-info/:contractAddress',
+                              '/token-info/:contractAddress',
+                            ]}
+                            render={(routeProps: any) => {
+                              const address =
+                                routeProps.match.params.contractAddress;
+
+                              const path = routeProps.match.path.match(
+                                /(\/.*\/)/,
+                              )[1];
+
+                              if (isAddress(address)) {
+                                if (/[A-Z]/.test(address)) {
+                                  return (
+                                    <Redirect
+                                      to={`${path}${address.toLowerCase()}`}
+                                    />
+                                  );
+                                }
+
+                                return <Contract {...routeProps} />;
+                              } else {
+                                return <Redirect to={`/notfound/${address}`} />;
+                              }
+                            }}
+                          />
 
                           {/* <Route
                             exact
@@ -403,11 +453,6 @@ export function App() {
                             exact
                             path="/registered-contracts"
                             component={RegisteredContracts}
-                          />
-                          <Route
-                            exact
-                            path="/cfx-transfers"
-                            component={CFXTransfers}
                           />
                           <Route path="/charts" component={Chart} />
                           <Route
@@ -438,6 +483,8 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
+                              TODO check address if lowercase
+
                               if (isAddress(address) || lodash.isNil(address)) {
                                 return <NFTChecker {...routeProps} />;
                               } else {
@@ -467,23 +514,6 @@ export function App() {
                             exact
                             path="/balance-checker"
                             component={BalanceChecker}
-                          />
-                          <Route
-                            exact
-                            path={[
-                              '/contract-info/:contractAddress',
-                              '/token-info/:contractAddress',
-                            ]}
-                            render={(routeProps: any) => {
-                              const address =
-                                routeProps.match.params.contractAddress;
-
-                              if (isAddress(address)) {
-                                return <Contract {...routeProps} />;
-                              } else {
-                                return <Redirect to={`/notfound/${address}`} />;
-                              }
-                            }}
                           />
                           <Route
                             exact

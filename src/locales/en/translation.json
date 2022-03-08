@@ -110,7 +110,7 @@
     "invalidNameTag": "The character length has reached the maximum limit",
     "duplicatedNameTag": "The name tag has been registered {{times}} time",
     "invalidUrl": "Incorrect URL",
-    "errorNotAdmin": "You are not the creator or admin of the contract, please disconnect and try again. ",
+    "errorNotAdmin": "You are not the creator of the contract, please disconnect and try again. ",
     "invalidIconSize": "Invalid icon size, please try again.",
     "errorTokenICon": "For the non-ERC20 contract, the token icon cannot be uploaded",
     "beforeContractSubmitTip": "Before submitting, you need to connect to Fluent Wallet to prove that you are the admin or creator of the contract.",
@@ -308,7 +308,8 @@
       "balance": "Balance",
       "percentage": "Percentage",
       "count": "Txn Count"
-    }
+    },
+    "downloadButtonText": "Download CSV file"
   },
   "contracts": {
     "title": "Internal Contracts",
@@ -345,6 +346,7 @@
     "stakingAndGovernance": "Staking & Governance",
     "developerAPI": "API Documentation",
     "fcCfx": "FC-CFX Non-reversible Exchange",
+    "crossSpace": "Cross Space",
     "more": "More",
     "tools": "Tools",
     "balanceChecker": "Balance Checker",
@@ -646,7 +648,8 @@
       "blockHash": "Block Hash",
       "epoch": "Block Height"
     },
-    "totalRecord": "A total of {{total}} records",
+    "totalRecord": "A total of {{total}} record",
+    "totalRecord_plural": "A total of {{total}} records",
     "totalRecordWithLimit": "Showing the last {{limit}} records (A total of {{total}} records)",
     "totalRecordWithType": "A total of {{total}} {{type}}",
     "totalRecordWithLimitWithType": "Showing the last {{limit}} {{type}} (A total of {{total}} {{type}})",

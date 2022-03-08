@@ -16,7 +16,7 @@ import lodash from 'lodash';
 
 import {
   // ExcutedTxns,
-  // CFXTxns,
+  CFXTxns,
   CRC20Txns,
   CRC721Txns,
   CRC1155Txns,
@@ -44,6 +44,13 @@ export function Table({ address, addressInfo, type }) {
       content: <ExcutedAndPendingTxns address={address} />,
     },
   ];
+
+  tabs.push({
+    value: `transfers-${CFX_TOKEN_TYPES.cfx}`,
+    action: 'cfxTransfers',
+    label: t(translations.general.cfxTransfer),
+    content: <CFXTxns address={address} />,
+  });
 
   tabs.push({
     hidden: !addressInfo.erc20TransferCount,

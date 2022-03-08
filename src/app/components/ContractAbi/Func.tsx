@@ -134,7 +134,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
             objParams = objValues.slice(1);
             txParams['value'] = new BigNumber(objValues[0])
               .multipliedBy(10 ** 18)
-              .toFixed();
+              .toString(16);
           } else {
             objParams = objValues;
           }

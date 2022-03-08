@@ -360,6 +360,12 @@ export const GlobalStyle = createGlobalStyle`
     &.currency-select {
       max-height: 7.1429rem;
     }
+
+    &.dropdown {
+      .option.selected {
+        display: none;
+      }
+    }
   }
 
   .transactionModalContainer {
