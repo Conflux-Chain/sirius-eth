@@ -292,7 +292,7 @@ export function Swap() {
       //   })
       sendTransaction({
         ...contract.deposit(),
-        value,
+        value: new BigNumber(value).toString(16),
       })
         .then(hash => {
           setShowModal({
@@ -344,7 +344,7 @@ export function Swap() {
       //   .sendTransaction({
       //     from: accounts[0],
       //   })
-      sendTransaction(contract.withdraw(value))
+      sendTransaction(contract.withdraw(new BigNumber(value).toString(16)))
         .then(hash => {
           setShowModal({
             ...showModal,
