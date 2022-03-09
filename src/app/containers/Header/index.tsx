@@ -332,15 +332,6 @@ export const Header = memo(() => {
         //       afterClick: menuClick,
         //       href: '/block-countdown',
         //     },
-        //     // {
-        //     //   title: [
-        //     //     t(translations.header.nftChecker),
-        //     //     <Check size={18} key="check" />,
-        //     //   ],
-        //     //   name: ScanEvent.menu.action.nftChecker,
-        //     //   afterClick: menuClick,
-        //     //   href: '/nft-checker',
-        //     // },
         //     {
         //       title: [
         //         t(translations.header.balanceChecker),
@@ -379,6 +370,15 @@ export const Header = memo(() => {
               href: iszh
                 ? 'https://evm.fluentwallet.com/'
                 : 'https://evm.fluentwallet.com/',
+            },
+            {
+              title: [
+                t(translations.header.nftChecker),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.nftChecker,
+              afterClick: menuClick,
+              href: '/nft-checker',
             },
           ],
         },
