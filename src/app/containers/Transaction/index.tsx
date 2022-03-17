@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { Detail } from './Detail';
 
-// import { InternalTxns } from 'app/containers/Transactions/Loadable';
+import { InternalTxns } from 'app/containers/Transactions/Loadable';
 
 export function Transaction() {
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ export function Transaction() {
     });
   }, [hash]);
 
-  const { /*from, to,*/ eventLogCount } = txnDetail;
+  const { from, to, eventLogCount } = txnDetail;
 
   let tabs: any[] = [
     {
@@ -36,13 +36,13 @@ export function Transaction() {
       label: t(translations.transaction.overview),
       content: <Detail />,
     },
-    // {
-    //   value: 'internal-txns',
-    //   action: 'transactionCfxTransfers',
-    //   label: t(translations.transaction.internalTxns.title),
-    //   content: <InternalTxns address={hash} from={from} to={to} />,
-    //   // hidden: cfxTransferAllCount < 2,
-    // },
+    {
+      value: 'internal-txns',
+      action: 'transactionCfxTransfers',
+      label: t(translations.transaction.internalTxns.title),
+      content: <InternalTxns address={hash} from={from} to={to} />,
+      // hidden: cfxTransferAllCount < 2,
+    },
     {
       value: 'logs',
       label: () => {
