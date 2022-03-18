@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { fetchWithPrefix } from 'utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
@@ -136,7 +136,10 @@ export const InternalTxns = ({ address, from, to }: Props) => {
           {t(translations.transaction.internalTxnsTip.to)} {toContent()}{' '}
           {t(translations.transaction.internalTxnsTip.produced)}{' '}
           <StyledCountWrapper>{total}</StyledCountWrapper>{' '}
-          {t(translations.transaction.internalTxnsTip.txns)}
+          <Trans
+            i18nKey="transaction.internalTxnsTip.txns"
+            count={total}
+          ></Trans>
         </div>
       </StyledTipWrapper>
     );

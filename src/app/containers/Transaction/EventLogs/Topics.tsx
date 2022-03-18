@@ -6,7 +6,6 @@ import { translations } from 'locales/i18n';
 import { Link } from 'app/components/Link';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { media } from 'styles/media';
-import { formatAddress } from 'utils';
 
 export const Topics = ({ data, signature, contractAndTokenInfo }) => {
   const { t } = useTranslation();
@@ -67,8 +66,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
           value = valueMap[name];
 
           if (name === 'address') {
-            const contractInfo =
-              contractAndTokenInfo[formatAddress(valueMap.decode)];
+            const contractInfo = contractAndTokenInfo[valueMap.decode];
 
             value = (
               <>

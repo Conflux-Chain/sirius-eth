@@ -165,8 +165,8 @@ const EventLog = ({ log }) => {
               noBorder
             >
               <Address
-                address={address}
-                contract={contractAndTokenInfo[formatAddress(address)]}
+                address={formatAddress(address)}
+                contract={contractAndTokenInfo[address]}
               ></Address>
             </Description>
             {fnName ? (

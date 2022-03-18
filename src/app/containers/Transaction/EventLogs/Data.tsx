@@ -1,31 +1,29 @@
 import React, { useState } from 'react';
-import { Select } from '../../../components/Select';
+import { Select } from 'app/components/Select';
 import styled from 'styled-components/macro';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
-import { NETWORK_ID } from 'utils/constants';
-import { Link } from '../../../components/Link/Loadable';
+import { Link } from 'app/components/Link/Loadable';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { media } from '../../../../styles/media';
+import { media } from 'styles/media';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
-import { formatAddress } from 'utils';
 import { DecodedParams } from 'app/components/TxnComponents/util';
-
-const isPossibleAddress = data => {
-  try {
-    let top20 = data.substr(0, 20);
-    if (Number(top20) === 0) {
-      return true;
-    }
-  } catch (e) {}
-  return false;
-};
 
 type SelectedLineSelect = {
   value?: string;
   options: Array<any>;
   onChange?: (value: string | string[]) => void;
 } | null;
+
+const isPossibleAddress = data => {
+  try {
+    let top24 = data.substr(0, 24);
+    if (Number(top24) === 0) {
+      return true;
+    }
+  } catch (e) {}
+  return false;
+};
 
 const SelectedLine = ({
   select,
@@ -41,6 +39,7 @@ const SelectedLine = ({
     setSelected(value);
     select && select.onChange && select.onChange(value);
   };
+
   const options =
     (isPossibleAddress(data.hexValue)
       ? select?.options
@@ -77,7 +76,7 @@ const decodeData = (value, type) => {
   try {
     switch (type) {
       case 'address':
-        const address = SDK.format.address(`0x${value.substr(24)}`, NETWORK_ID);
+        const address = `0x${value.substr(24)}`;
         result = <Link href={`/address/${address}`}>{address}</Link>;
         break;
       case 'number':
@@ -162,7 +161,7 @@ export const Data = ({
           let value: React.ReactNode = <pre>{d.value}</pre>;
 
           if (d.type === 'address') {
-            const contractInfo = contractAndTokenInfo[formatAddress(d.value)];
+            const contractInfo = contractAndTokenInfo[d.value];
 
             value = (
               <>
