@@ -4,10 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 // import { useHistory, useLocation } from 'react-router';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
-import // isContractAddress,
-// isZeroAddress,
-// isAccountAddress,
-'utils';
+// import isContractAddress, isAccountAddress,
+import { isZeroAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ContractContent, CheckCircleIcon } from './ContractContent';
 import AlertCircle from '@zeit-ui/react-icons/alertCircle';
@@ -22,8 +20,7 @@ import {
   CRC1155Txns,
   // PendingTxns,
 } from 'app/containers/Transactions/Loadable';
-// import { MinedBlocks } from 'app/containers/Blocks/Loadable';
-// import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
+import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
 // import { Card } from '../../components/Card';
 // import { LineChart as Chart } from '../../components/Chart/Loadable';
 // import styled from 'styled-components/macro';
@@ -126,24 +123,18 @@ export function Table({ address, addressInfo, type }) {
     });
   }
 
-  // if (!(isContract || isZeroAddress(address))) {
-  //   tabs.push(
-  //     ...[
-  //       {
-  //         value: 'nft-asset',
-  //         action: 'NFTAsset',
-  //         label: t(translations.addressDetail.NFTAsset),
-  //         content: <NFTAsset />,
-  //       },
-  //       {
-  //         value: 'mined-blocks',
-  //         action: 'minedBlocks',
-  //         label: t(translations.addressDetail.minedBlocks),
-  //         content: <MinedBlocks address={address} />,
-  //       },
-  //     ],
-  //   );
-  // }
+  if (!(isContract || isZeroAddress(address))) {
+    tabs.push(
+      ...[
+        {
+          value: 'nft-asset',
+          action: 'NFTAsset',
+          label: t(translations.addressDetail.NFTAsset),
+          content: <NFTAsset />,
+        },
+      ],
+    );
+  }
 
   return <TabsTablePanel key="table" tabs={tabs} />;
 }

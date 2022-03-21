@@ -35,7 +35,7 @@ import {
 } from 'utils/constants';
 import { isAddress } from 'utils';
 import MD5 from 'md5.js';
-// import lodash from 'lodash';
+import lodash from 'lodash';
 import { getClientVersion } from 'utils/rpcRequest';
 
 import { Header } from './containers/Header';
@@ -77,7 +77,7 @@ import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 
 import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 // import { ChartDetail } from './containers/ChartDetail/Loadable';
-// import { NFTChecker } from './containers/NFTChecker/Loadable';
+import { NFTChecker } from './containers/NFTChecker/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
 import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
@@ -438,6 +438,30 @@ export function App() {
                               }
                             }}
                           />
+                          <Route
+                            exact
+                            path={['/nft-checker', '/nft-checker/:address']}
+                            render={(routeProps: any) => {
+                              const address = routeProps.match.params.address;
+
+                              if (isAddress(address) || lodash.isNil(address)) {
+                                if (
+                                  !lodash.isNil(address) &&
+                                  /[A-Z]/.test(address)
+                                ) {
+                                  return (
+                                    <Redirect
+                                      to={`/nft-checker/${address.toLowerCase()}`}
+                                    />
+                                  );
+                                }
+
+                                return <NFTChecker {...routeProps} />;
+                              } else {
+                                return <Redirect to={`/notfound/${address}`} />;
+                              }
+                            }}
+                          />
 
                           {/* <Route
                             exact
@@ -476,21 +500,6 @@ export function App() {
                             exact
                             path="/epoch/:number"
                             component={Epoch}
-                          />
-                          <Route
-                            exact
-                            path={['/nft-checker', '/nft-checker/:address']}
-                            render={(routeProps: any) => {
-                              const address = routeProps.match.params.address;
-
-                              TODO check address if lowercase
-
-                              if (isAddress(address) || lodash.isNil(address)) {
-                                return <NFTChecker {...routeProps} />;
-                              } else {
-                                return <Redirect to={`/notfound/${address}`} />;
-                              }
-                            }}
                           />
                           <Route exact path="/swap" component={Swap} />
                           <Route

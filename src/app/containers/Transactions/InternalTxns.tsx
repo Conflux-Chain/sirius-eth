@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { fetchWithPrefix } from 'utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import styled from 'styled-components/macro';
+import { publishRequestError } from 'utils';
 
 const treeToFlat = tree => {
   let list: Array<any> = [];
@@ -26,12 +27,14 @@ const treeToFlat = tree => {
           value: t.action.value,
           result: t.result,
         });
-        fn(t.calls, level + 1, `${parentLevel}_${level}`);
+        t.calls && fn(t.calls, level + 1, `${parentLevel}_${level}`);
       }
     };
 
     fn(tree, 0, '');
-  } catch (e) {}
+  } catch (e) {
+    throw new Error(e);
+  }
 
   return list;
 };
@@ -66,7 +69,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
         .then(resp => {
           if (resp) {
             try {
-              const list = treeToFlat(resp.calls).map(l => {
+              const list = treeToFlat(resp.traceTree).map(l => {
                 const contractInfo = resp.contractMap || {};
                 return {
                   ...l,
@@ -80,7 +83,10 @@ export const InternalTxns = ({ address, from, to }: Props) => {
                 total: list.length,
                 loading: false,
               });
-            } catch (e) {}
+            } catch (e) {
+              console.log('trace parse error: ', e);
+              publishRequestError({ code: 60002, message: e.message }, 'code');
+            }
           }
         })
         .catch(e => {
@@ -93,12 +99,17 @@ export const InternalTxns = ({ address, from, to }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
-  const columnsWidth = [3, 4, 4, 2, 4];
+  const columnsWidth = [3, 4, 4, 3, 3, 5];
   const columns = [
     tokenColunms.traceType,
-    tokenColunms.from,
+    {
+      ...tokenColunms.from,
+      render: (value, row, index) =>
+        tokenColunms.from.render(value, row, undefined, false),
+    },
     tokenColunms.to,
     transactionColunms.value,
+    tokenColunms.traceOutcome,
     tokenColunms.traceResult,
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
@@ -125,7 +136,10 @@ export const InternalTxns = ({ address, from, to }: Props) => {
           {t(translations.transaction.internalTxnsTip.to)} {toContent()}{' '}
           {t(translations.transaction.internalTxnsTip.produced)}{' '}
           <StyledCountWrapper>{total}</StyledCountWrapper>{' '}
-          {t(translations.transaction.internalTxnsTip.txns)}
+          <Trans
+            i18nKey="transaction.internalTxnsTip.txns"
+            count={total}
+          ></Trans>
         </div>
       </StyledTipWrapper>
     );

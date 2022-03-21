@@ -15,7 +15,7 @@ import AlertCircle from '@zeit-ui/react-icons/alertCircle';
 
 import { Transfers as TokenTransfers } from 'app/containers/Tokens/Loadable';
 import { Holders } from './Holders';
-// import { NFTs } from './NFTs';
+import { NFTs } from './NFTs';
 import lodash from 'lodash';
 
 interface TransferProps {
@@ -153,18 +153,17 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
     }
   }
 
-  // TODO, eth space, hide temporary
-  // if (
-  //   transferType === CFX_TOKEN_TYPES.erc721 ||
-  //   transferType === CFX_TOKEN_TYPES.erc1155
-  // ) {
-  //   tabs.push({
-  //     value: 'NFT',
-  //     action: 'tokenNFT',
-  //     label: t(translations.token.NFT),
-  //     content: <NFTs address={tokenAddress} />,
-  //   });
-  // }
+  if (
+    transferType === CFX_TOKEN_TYPES.erc721 ||
+    transferType === CFX_TOKEN_TYPES.erc1155
+  ) {
+    tabs.push({
+      value: 'NFT',
+      action: 'tokenNFT',
+      label: t(translations.token.NFT),
+      content: <NFTs address={tokenAddress} />,
+    });
+  }
 
   // Contract tab
   tabs.push({

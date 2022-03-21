@@ -15,6 +15,7 @@ import _ from 'lodash';
 import SkeletonContainer from 'app/components/SkeletonContainer';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
+import BigNumber from 'bignumber.js';
 
 import { Address } from './Address';
 import { Topics } from './Topics';
@@ -150,7 +151,9 @@ const EventLog = ({ log }) => {
       >
         <div className="eventlog-content">
           {log?.transactionLogIndex !== undefined ? (
-            <div className="eventlog-index">{log.transactionLogIndex + 1}</div>
+            <div className="eventlog-index">
+              {new BigNumber(log.transactionLogIndex).plus(1).toString()}
+            </div>
           ) : null}
           <div className="eventlog-item">
             <Description
@@ -162,8 +165,8 @@ const EventLog = ({ log }) => {
               noBorder
             >
               <Address
-                address={address}
-                contract={contractAndTokenInfo[formatAddress(address)]}
+                address={formatAddress(address)}
+                contract={contractAndTokenInfo[address]}
               ></Address>
             </Description>
             {fnName ? (

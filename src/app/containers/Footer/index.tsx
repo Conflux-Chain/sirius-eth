@@ -392,12 +392,12 @@ export function Footer() {
         </FooterContentTitle>
         <FooterContent>
           <FooterContentRow>
-            {NETWORK_TYPE === NETWORK_TYPES.mainnet ||
+            {/* {NETWORK_TYPE === NETWORK_TYPES.mainnet ||
             NETWORK_TYPE === NETWORK_TYPES.testnet ? (
               <FooterContentLink>
                 {developResourceLinks.developerAPI}
               </FooterContentLink>
-            ) : null}
+            ) : null} */}
             <FooterContentLink>
               {developResourceLinks.developerDocuments}
             </FooterContentLink>

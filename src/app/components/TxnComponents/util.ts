@@ -1,7 +1,4 @@
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
-import { NETWORK_ID } from 'utils/constants';
-
-export const getAddress = data => SDK.format.address(data, NETWORK_ID);
 
 /**
  *
@@ -109,11 +106,12 @@ export const disassembleEvent = (decodedLog, log) => {
           r.formattedValue = value;
 
           // try to get hex address and base32 address
-          try {
-            r.hexAddress = SDK.format.hexAddress(r.formattedValue); // try to format cfx address to hex address
-            r.cfxAddress = getAddress(r.formattedValue);
-          } catch (e) {
-            console.log('disassembleEvent error: ', e);
+          if (r.type === 'address') {
+            try {
+              r.hexAddress = SDK.format.hexAddress(r.formattedValue); // try to format cfx address to hex address
+            } catch (e) {
+              console.log('disassembleEvent error: ', e);
+            }
           }
 
           return r;

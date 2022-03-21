@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import { useEffectOnce } from 'react-use';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -13,16 +14,13 @@ import { media } from 'styles/media';
 import { PageHeader } from 'app/components/PageHeader';
 import { Input } from '@cfxjs/antd';
 import { useParams, useHistory } from 'react-router-dom';
-import {
-  // isAccountAddress,
-  getAddressInputPlaceholder,
-  isAddress,
-} from 'utils';
+import { isAccountAddress, getAddressInputPlaceholder, isAddress } from 'utils';
 import { NFTAsset } from 'app/containers/NFTAsset';
 
 const { Search } = Input;
 
 export function NFTChecker() {
+  const [loading, setLoading] = useState(false);
   const { address: routerAddress = '' } = useParams<{
     address?: string;
   }>();
@@ -36,15 +34,38 @@ export function NFTChecker() {
     return getAddressInputPlaceholder();
   }, []);
 
-  const validateAddress = (address, cb) => {
+  const validateAddress = (address, cb?) => {
     if (isAddress(address)) {
-      // TODO, eth space, use isAddress replaced
-      // if (isAccountAddress(address)) {
-      cb && cb();
+      setLoading(true);
+      isAccountAddress(address)
+        .then(data => {
+          if (data) {
+            cb && cb();
+          } else {
+            setAddressFormatErrorMsg(
+              t(translations.nftChecker.incorrectAddressType),
+            );
+          }
+        })
+        .catch(e => {
+          setAddressFormatErrorMsg(
+            t(translations.nftChecker.incorrectAddressType),
+          );
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       setAddressFormatErrorMsg(t(translations.nftChecker.incorrectAddressType));
     }
   };
+
+  useEffectOnce(() => {
+    if (address) {
+      validateAddress(address);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  });
 
   const handleAddressChange = e => {
     setAddress(e.target.value.trim());
@@ -74,6 +95,7 @@ export function NFTChecker() {
               history.push(`/nft-checker/${value}`);
             });
           }}
+          loading={loading}
         />
         {addressFormatErrorMsg.length ? (
           <div className="convert-address-error">{addressFormatErrorMsg}</div>
@@ -132,6 +154,14 @@ const SearchWrapper = styled.div`
 
     ${media.s} {
       width: 100%;
+    }
+  }
+
+  span.ant-input-group-addon {
+    background-color: transparent !important;
+
+    button.ant-btn::before {
+      background-color: transparent !important;
     }
   }
 `;

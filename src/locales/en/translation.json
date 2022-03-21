@@ -758,6 +758,7 @@
         "erc1155QuantityTip": "The quantity of ERC-1155 tokens in an address is equal to the total number of categories with TokenIDs it owns.",
         "percentage": "Percentage",
         "traceType": "Trace Type",
+        "traceOutcome": "Outcome",
         "traceResult": "Result",
         "traceStatusTitle": "Status",
         "traceStatus": {
@@ -906,6 +907,7 @@
         "20003": "Request abort.",
         "20004": "Network error.",
         "30001": "RPC call error.",
+        "60002": "Trace parsing error.",
         "400": "Bad request.",
         "401": "Unauthorized.",
         "403": "Forbidden.",
@@ -1027,7 +1029,8 @@
       "from": "The contract call from",
       "to": "to",
       "produced": "produced",
-      "txns": "internal transactions.",
+      "txns": "internal transaction.",
+      "txns_plural": "internal transactions",
       "tip": "The 'Advanced' view also shows zero value CFX transfers, while the 'Simple' view only shows CFX transfers with value."
     },
     "logs": {

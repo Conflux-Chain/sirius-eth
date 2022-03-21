@@ -6,13 +6,12 @@ import { translations } from 'locales/i18n';
 import { Link } from 'app/components/Link';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { media } from 'styles/media';
-import { formatAddress } from 'utils';
 
 export const Topics = ({ data, signature, contractAndTokenInfo }) => {
   const { t } = useTranslation();
   const [selectMap, setSelectMap] = useState(() => {
     return data.reduce((prev, curr) => {
-      prev[curr.argName] = curr.cfxAddress ? 'address' : 'decode';
+      prev[curr.argName] = 'decode';
       return prev;
     }, {});
   });
@@ -32,11 +31,6 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
       key: 'decode',
       value: 'decode',
       content: t(translations.transaction.logs.decode),
-    },
-    {
-      key: 'address',
-      value: 'address',
-      content: t(translations.transaction.logs.address),
     },
   ];
   const baseIndex = signature ? 1 : 0;
@@ -60,22 +54,19 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
           const valueMap: {
             hex: string;
             decode: string;
-            address?: string;
           } = {
             hex: d.hexValue,
             decode:
               d.type === 'address' // only address type show hexAddress prior
                 ? d.hexAddress || d.formattedValue
                 : d.formattedValue,
-            address: d.cfxAddress,
           };
           const availableOptions = options.filter(o => !!valueMap[o.value]);
 
           value = valueMap[name];
 
           if (name === 'address') {
-            const contractInfo =
-              contractAndTokenInfo[formatAddress(valueMap.decode)];
+            const contractInfo = contractAndTokenInfo[valueMap.decode];
 
             value = (
               <>
