@@ -81,7 +81,6 @@ export const InternalTxns = ({ address, from, to }: Props) => {
                 ...state,
                 data: list,
                 total: list.length,
-                loading: false,
               });
             } catch (e) {
               console.log('trace parse error: ', e);
@@ -99,6 +98,12 @@ export const InternalTxns = ({ address, from, to }: Props) => {
             ...state,
             error: e,
           });
+        })
+        .finally(() => {
+          setState(state => ({
+            ...state,
+            loading: false,
+          }));
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
