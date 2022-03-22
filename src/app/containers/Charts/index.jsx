@@ -37,7 +37,7 @@ export function Charts() {
                 />
               </Link>
             </Col>
-            <Col span={24} sm={12} lg={8}>
+            {/* <Col span={24} sm={12} lg={8}>
               <Link to="/chart/issued">
                 <PieChart
                   width={chartWidth}
@@ -45,7 +45,7 @@ export function Charts() {
                   isThumb={true}
                 />
               </Link>
-            </Col>
+            </Col> */}
           </Row>
         </ChartsWrap>
         <HeaderWrap>

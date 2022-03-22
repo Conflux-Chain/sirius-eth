@@ -147,14 +147,6 @@ export function Statistics() {
               <Col span={24} lg={12}>
                 <StatsCard
                   span={span as string}
-                  type={StatsType.overviewMiners}
-                  tabsChange={tabsChange}
-                  statsData={statsData}
-                />
-              </Col>
-              <Col span={24} lg={12}>
-                <StatsCard
-                  span={span as string}
                   type={StatsType.overviewNetwork}
                   tabsChange={tabsChange}
                   statsData={statsData}
@@ -220,19 +212,6 @@ export function Statistics() {
                 <StatsCard
                   span={span as string}
                   type={StatsType.topTokensByTxnAccountsCount}
-                />
-              </Col>
-            </Row>
-          </CardWrapper>
-        </Tabs.Item>
-        <Tabs.Item label={t(translations.statistics.miners)} value="miners">
-          <CardWrapper>
-            {spanButtons(span)}
-            <Row gutter={[24, 24]}>
-              <Col span={24}>
-                <StatsCard
-                  span={span as string}
-                  type={StatsType.topMinersByBlocksMined}
                 />
               </Col>
             </Row>

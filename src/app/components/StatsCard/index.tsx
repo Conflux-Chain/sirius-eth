@@ -421,7 +421,7 @@ export const StatsCard = ({
               <td>{i + 1}</td>
               <td className="address">
                 <AddressContainer
-                  value={d.base32}
+                  value={formatAddress(d.base32)}
                   alias={
                     d.contractInfo && d.contractInfo.name
                       ? d.contractInfo.name
@@ -459,7 +459,7 @@ export const StatsCard = ({
                   token.render(d.token)
                 ) : (
                   <AddressContainer
-                    value={d.base32address}
+                    value={formatAddress(d.base32address)}
                     isMe={
                       accounts && accounts.length > 0
                         ? formatAddress(accounts[0]) ===
@@ -483,7 +483,7 @@ export const StatsCard = ({
               <td>{i + 1}</td>
               <td className="address">
                 <AddressContainer
-                  value={d.base32}
+                  value={formatAddress(d.base32)}
                   isMe={
                     accounts && accounts.length > 0
                       ? formatAddress(accounts[0]) === formatAddress(d.base32)
@@ -554,7 +554,7 @@ export const StatsCard = ({
               <td>{i + 1}</td>
               <td className="address">
                 <AddressContainer
-                  value={d.base32}
+                  value={formatAddress(d.base32)}
                   isMe={
                     accounts && accounts.length > 0
                       ? formatAddress(accounts[0]) === formatAddress(d.base32)
