@@ -20,11 +20,10 @@ export const OptimizationDecode = ({
 }) => {
   const { signature, name } = decodedData;
   const [contractAndTokenInfo, setContractAndTokenInfo] = useState({});
-
   const args = disassembleEvent(decodedData, {});
 
   useEffect(() => {
-    let addressList = args.map(t => t.cfxAddress).filter(t => t);
+    let addressList = args.map(t => t.hexAddress).filter(t => t);
     addressList = _.uniq(addressList);
 
     if (addressList.length) {
@@ -32,9 +31,19 @@ export const OptimizationDecode = ({
         address: addressList,
       })
         .then(data => {
-          data.total && setContractAndTokenInfo(data.map);
+          if (data.total) {
+            const map = Object.entries(data.map)
+              .map(a => ({
+                [formatAddress(a[0])]: a[1],
+                [a[0]]: a[1],
+              }))
+              .reduce((prev, curr) => Object.assign(prev, curr), {});
+            setContractAndTokenInfo(map);
+          }
         })
-        .catch(() => {});
+        .catch(e => {
+          console.log('reqContractAndToken or process error: ', e);
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [decodedData]);
@@ -64,15 +73,14 @@ export const OptimizationDecode = ({
           </div>
           <div className="optimization-decode-item-body optimization-decode-data-body">
             {args.map((a, index) => {
-              let value = a.formattedValue;
+              let value = a.value;
               if (a.type === 'address') {
-                const contractInfo =
-                  contractAndTokenInfo[formatAddress(a.formattedValue)];
+                const contractInfo = contractAndTokenInfo[a.hexAddress];
 
                 value = (
                   <>
-                    <Link href={`/address/${a.formattedValue}`}>
-                      {a.formattedValue}{' '}
+                    <Link href={`/address/${a.hexAddress}`}>
+                      {a.hexAddress}{' '}
                     </Link>
                     <ContractDetail info={contractInfo} />
                   </>

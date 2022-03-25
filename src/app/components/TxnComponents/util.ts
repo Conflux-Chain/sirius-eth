@@ -51,9 +51,8 @@ export interface DecodedParams {
   indexed: number;
   originalValue?: any; // original value
   value?: any;
-  formattedValue?: any; // decoded value with formatData method, equal to value
   hexValue?: string; // @todo, hex formatted value
-  hexAddress?: string; // hex formatted address
+  hexAddress?: any; // hex formatted address
   cfxAddress?: string; // base32 formatted address
 }
 
@@ -80,7 +79,6 @@ export const disassembleEvent = (decodedLog, log) => {
             indexed: 0, // 0 is mean not indexed
             value: null,
             originalValue: '',
-            formattedValue: '',
             hexValue: '',
             hexAddress: '',
             cfxAddress: '',
@@ -103,12 +101,11 @@ export const disassembleEvent = (decodedLog, log) => {
           r.argName = argName;
           r.originalValue = decodedLog.object[argName];
           r.value = value;
-          r.formattedValue = value;
 
           // try to get hex address and base32 address
           if (r.type === 'address') {
             try {
-              r.hexAddress = SDK.format.hexAddress(r.formattedValue); // try to format cfx address to hex address
+              r.hexAddress = SDK.format.hexAddress(value); // try to format cfx address to hex address
             } catch (e) {
               console.log('disassembleEvent error: ', e);
             }

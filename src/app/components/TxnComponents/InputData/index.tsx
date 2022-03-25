@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isContractAddress } from 'utils';
+import { isContractAddress, isZeroAddress, formatAddress } from 'utils';
 import { reqContract } from 'utils/httpRequest';
 import { CFX } from 'utils/constants';
 import { Select } from 'app/components/Select';
@@ -78,7 +78,21 @@ export const InputData = ({
             ];
 
             const resp = await reqContract({ address: toHash, fields });
-            abi = resp['abi'];
+            const { proxy, implementation } = resp;
+
+            if (
+              proxy?.proxy &&
+              implementation?.address &&
+              !isZeroAddress(formatAddress(implementation?.address))
+            ) {
+              const implementationResp = await reqContract({
+                address: implementation.address,
+                fields,
+              });
+              abi = implementationResp['abi'];
+            } else {
+              abi = resp.abi;
+            }
 
             try {
               const contract = CFX.Contract({

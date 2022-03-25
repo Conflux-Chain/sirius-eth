@@ -11,7 +11,9 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
   const { t } = useTranslation();
   const [selectMap, setSelectMap] = useState(() => {
     return data.reduce((prev, curr) => {
-      prev[curr.argName] = 'decode';
+      if (curr.argName) {
+        prev[curr.argName] = 'decode';
+      }
       return prev;
     }, {});
   });
@@ -50,7 +52,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
         if (typeof d === 'string') {
           value = d;
         } else {
-          const name = selectMap[d.argName];
+          const name = selectMap[d.argName] || 'hex';
           const valueMap: {
             hex: string;
             decode: string;
@@ -58,14 +60,13 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
             hex: d.hexValue,
             decode:
               d.type === 'address' // only address type show hexAddress prior
-                ? d.hexAddress || d.formattedValue
-                : d.formattedValue,
+                ? d.hexAddress
+                : d.value,
           };
           const availableOptions = options.filter(o => !!valueMap[o.value]);
-
           value = valueMap[name];
 
-          if (name === 'address') {
+          if (name === 'decode' && d.type === 'address') {
             const contractInfo = contractAndTokenInfo[valueMap.decode];
 
             value = (
