@@ -95,12 +95,21 @@ export const InputData = ({
             }
 
             try {
-              const contract = CFX.Contract({
+              let contract = CFX.Contract({
                 abi: JSON.parse(abi),
                 address: toHash,
                 decodeByteToHex: true,
               });
-              const decodedBytecode = contract.abi.decodeData(originalData);
+              let decodedBytecode = contract.abi.decodeData(originalData);
+
+              if (!decodedBytecode) {
+                contract = CFX.Contract({
+                  abi: JSON.parse(resp.abi),
+                  address: toHash,
+                  decodeByteToHex: true,
+                });
+                decodedBytecode = contract.abi.decodeData(originalData);
+              }
 
               setData({
                 ...data,

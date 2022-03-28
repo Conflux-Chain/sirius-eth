@@ -15,7 +15,11 @@ import SkeletonContainer from 'app/components/SkeletonContainer';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import BigNumber from 'bignumber.js';
-import { isZeroAddress, formatAddress } from 'utils';
+import {
+  isZeroAddress,
+  formatAddress,
+  formatContractAndTokenInfoMap,
+} from 'utils';
 
 import { Address } from './Address';
 import { Topics } from './Topics';
@@ -78,76 +82,73 @@ const EventLog = ({ log }) => {
           hexAddress?: string;
         }> = [];
         let abi = '';
-
         const body = await reqContract({
           address: log.address,
           fields: fields,
         });
+        const { proxy, implementation } = body;
 
-        try {
-          const { proxy, implementation } = body;
-          if (
-            proxy?.proxy &&
-            implementation?.address &&
-            !isZeroAddress(formatAddress(implementation?.address))
-          ) {
-            const implementationResp = await reqContract({
-              address: implementation.address,
-              fields,
-            });
-            abi = implementationResp['abi'];
-          } else {
-            abi = body.abi;
-          }
+        // check if has a proxy contract, if has, use implementation abi
+        if (
+          proxy?.proxy &&
+          implementation?.address &&
+          !isZeroAddress(formatAddress(implementation?.address))
+        ) {
+          const implementationResp = await reqContract({
+            address: implementation.address,
+            fields,
+          });
+          abi = implementationResp['abi'];
+        } else {
+          abi = body.abi;
+        }
 
-          if (!abi) {
-            throw new Error(`no abi of this contract: ${log.address}`);
-          } else {
-            // in case of invalid abi
-            let contract = CFX.Contract({
-              abi: JSON.parse(abi),
+        if (!abi) {
+          throw new Error(`no abi of this contract: ${log.address}`);
+        } else {
+          // in case of invalid abi
+          let contract = CFX.Contract({
+            abi: JSON.parse(abi),
+            address: log.address,
+          });
+          let decodedLog = contract.abi.decodeLog(log);
+
+          // if no decodedLog info, this contract reaction maybe a upgrade, use original contract abi to decode
+          if (!decodedLog) {
+            contract = CFX.Contract({
+              abi: JSON.parse(body.abi),
               address: log.address,
             });
-            let decodedLog = contract.abi.decodeLog(log);
-
-            if (!decodedLog) {
-              contract = CFX.Contract({
-                abi: JSON.parse(body.abi),
-                address: log.address,
-              });
-              decodedLog = contract.abi.decodeLog(log);
-            }
-
-            const args = disassembleEvent(decodedLog, log);
-
-            const { topics, data } = args.reduce(
-              (prev, curr) => {
-                if (curr.indexed) {
-                  prev.topics.push(curr);
-                } else {
-                  prev.data.push(curr);
-                }
-                return prev;
-              },
-              {
-                topics: [] as any,
-                data: [] as any,
-              },
-            );
-
-            outerTopics = args;
-
-            setEventInfo({
-              address: log.address,
-              fnName: decodedLog.name,
-              args,
-              topics,
-              data,
-              signature: decodedLog.signature,
-            });
+            decodedLog = contract.abi.decodeLog(log);
           }
-        } catch (e) {
-          console.log('decode log error: ', e);
+
+          const args = disassembleEvent(decodedLog, log);
+
+          const { topics, data } = args.reduce(
+            (prev, curr) => {
+              if (curr.indexed) {
+                prev.topics.push(curr);
+              } else {
+                prev.data.push(curr);
+              }
+              return prev;
+            },
+            {
+              topics: [] as any,
+              data: [] as any,
+            },
+          );
+
+          outerTopics = args;
+
+          setEventInfo({
+            address: log.address,
+            fnName: decodedLog.name,
+            args,
+            topics,
+            data,
+            signature: decodedLog.signature,
+          });
         }
 
         let addressList = outerTopics
@@ -162,23 +163,18 @@ const EventLog = ({ log }) => {
           })
             .then(data => {
               if (data.total) {
-                const map = Object.entries(data.map)
-                  .map(a => ({
-                    [formatAddress(a[0])]: a[1],
-                    [a[0]]: a[1],
-                  }))
-                  .reduce((prev, curr) => Object.assign(prev, curr), {});
-                setContractAndTokenInfo(map);
+                setContractAndTokenInfo(
+                  formatContractAndTokenInfoMap(data.map),
+                );
               }
             })
             .catch(() => {});
         }
-
-        setLoading(false);
       } catch (e) {
-        setLoading(false);
         console.log('eventlog process error: ', e);
       }
+
+      setLoading(false);
     }
 
     fn();

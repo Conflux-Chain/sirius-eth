@@ -902,3 +902,16 @@ export const publishRequestError = (
     },
   });
 };
+
+export const formatContractAndTokenInfoMap = m => {
+  try {
+    return Object.entries(m)
+      .map(a => ({
+        [formatAddress(a[0])]: a[1],
+        [a[0]]: a[1],
+      }))
+      .reduce((prev, curr) => Object.assign(prev, curr), {});
+  } catch (error) {
+    return {};
+  }
+};
