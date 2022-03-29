@@ -70,13 +70,13 @@ import { ContractVerification } from './containers/ContractVerification/Loadable
 import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
-// import { RegisteredContracts } from './containers/Contracts/Loadable';
-// import { Chart } from './containers/Charts/Loadable';
-// import { Statistics } from './containers/Statistics/Loadable';
+
 // import { Epoch } from './containers/Epoch/Loadable';
 
+import { Chart } from './containers/Charts/Loadable';
+import { Statistics } from './containers/Statistics/Loadable';
 import { BroadcastTx } from './containers/BroadcastTx/Loadable';
-// import { ChartDetail } from './containers/ChartDetail/Loadable';
+import { ChartDetail } from './containers/ChartDetail/Loadable';
 import { NFTChecker } from './containers/NFTChecker/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
@@ -462,22 +462,6 @@ export function App() {
                               }
                             }}
                           />
-
-                          {/* <Route
-                            exact
-                            path="/packing/:txHash"
-                            component={PackingPage}
-                          />
-                          <Route
-                            exact
-                            path="/contracts"
-                            component={Contracts}
-                          />
-                          <Route
-                            exact
-                            path="/registered-contracts"
-                            component={RegisteredContracts}
-                          />
                           <Route path="/charts" component={Chart} />
                           <Route
                             exact
@@ -495,6 +479,22 @@ export function App() {
                             exact
                             path="/statistics/:statsType"
                             component={Statistics}
+                          />
+
+                          {/* <Route
+                            exact
+                            path="/packing/:txHash"
+                            component={PackingPage}
+                          />
+                          <Route
+                            exact
+                            path="/contracts"
+                            component={Contracts}
+                          />
+                          <Route
+                            exact
+                            path="/registered-contracts"
+                            component={RegisteredContracts}
                           />
                           <Route
                             exact

@@ -40,9 +40,9 @@ export const Header = memo(() => {
   // const contractMatched =
   //   location.pathname.startsWith('/sponsor') ||
   //   location.pathname.startsWith('/contract');
-  // const statisticsMatched =
-  //   location.pathname.startsWith('/chart') ||
-  //   location.pathname.startsWith('/statistics');
+  const statisticsMatched =
+    location.pathname.startsWith('/chart') ||
+    location.pathname.startsWith('/statistics');
   const moreMatched =
     location.pathname.startsWith('/address-converter') ||
     location.pathname.startsWith('/push-tx') ||
@@ -291,6 +291,32 @@ export const Header = memo(() => {
       matched: ecosystemMatched,
       children: ecosystemItems,
     },
+    // charts
+    {
+      title: t(translations.header.chartsAndStatistics),
+      matched: statisticsMatched,
+      children: [
+        {
+          title: [
+            t(translations.header.charts),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.charts,
+          afterClick: menuClick,
+          href: '/charts',
+        },
+        {
+          title: [
+            t(translations.header.statistics),
+            <Check size={18} key="check" />,
+          ],
+          name: ScanEvent.menu.action.statistics,
+          afterClick: menuClick,
+          href: '/statistics',
+          isMatchedFn: () => !!location?.pathname?.startsWith('/statistics'),
+        },
+      ],
+    },
     // more
     {
       title: t(translations.header.more),
@@ -359,17 +385,6 @@ export const Header = memo(() => {
               name: ScanEvent.menu.action.broadcastTx,
               afterClick: menuClick,
               href: '/push-tx',
-            },
-            {
-              title: [
-                t(translations.header.crossSpaceDApp),
-                <Check size={18} key="check" />,
-              ],
-              name: ScanEvent.menu.action.crossSpaceDApp,
-              afterClick: menuClick,
-              href: iszh
-                ? 'https://evm.fluentwallet.com/'
-                : 'https://evm.fluentwallet.com/',
             },
             {
               title: [
@@ -481,32 +496,6 @@ export const Header = memo(() => {
     // //     },
     // //   ],
     // // },
-    // // charts
-    // {
-    //   title: t(translations.header.chartsAndStatistics),
-    //   matched: statisticsMatched,
-    //   children: [
-    //     {
-    //       title: [
-    //         t(translations.header.charts),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.charts,
-    //       afterClick: menuClick,
-    //       href: '/charts',
-    //     },
-    //     {
-    //       title: [
-    //         t(translations.header.statistics),
-    //         <Check size={18} key="check" />,
-    //       ],
-    //       name: ScanEvent.menu.action.statistics,
-    //       afterClick: menuClick,
-    //       href: '/statistics',
-    //       isMatchedFn: () => !!location?.pathname?.startsWith('/statistics'),
-    //     },
-    //   ],
-    // },
   ];
 
   const endLinks: HeaderLinks = [

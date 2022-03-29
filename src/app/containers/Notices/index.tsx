@@ -12,8 +12,8 @@ export const noticeInfo = {
   hot: false,
   type: 'Announcement',
   brief: {
-    en: 'ConfluxScan V1.1.1 Released!',
-    zh: 'ConfluxScan V1.1.1 发布喽！',
+    en: 'ConfluxScan V1.2.0 Released!',
+    zh: 'ConfluxScan V1.2.0 发布喽！',
   },
   link: {
     en:

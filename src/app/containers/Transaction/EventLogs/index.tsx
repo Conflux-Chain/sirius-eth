@@ -7,7 +7,6 @@ import {
 import { toThousands } from 'utils';
 import { Card } from 'app/components/Card/Loadable';
 import { Empty } from 'app/components/Empty/Loadable';
-import { formatAddress } from 'utils';
 import { CFX } from 'utils/constants';
 import { Description } from 'app/components/Description/Loadable';
 import styled from 'styled-components/macro';
@@ -16,6 +15,11 @@ import SkeletonContainer from 'app/components/SkeletonContainer';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import BigNumber from 'bignumber.js';
+import {
+  isZeroAddress,
+  formatAddress,
+  formatContractAndTokenInfoMap,
+} from 'utils';
 
 import { Address } from './Address';
 import { Topics } from './Topics';
@@ -72,54 +76,83 @@ const EventLog = ({ log }) => {
     setLoading(true);
 
     // get contract info
-    reqContract({ address: log.address, fields: fields })
-      .then(body => {
+    async function fn() {
+      try {
         let outerTopics: Array<{
-          cfxAddress?: string;
+          hexAddress?: string;
         }> = [];
-        try {
-          if (!body.abi) {
-            throw new Error(`no abi of this contract: ${log.address}`);
-          } else {
-            // in case of invalid abi
-            const contract = CFX.Contract({
+        let abi = '';
+        const body = await reqContract({
+          address: log.address,
+          fields: fields,
+        });
+        const { proxy, implementation } = body;
+
+        // check if has a proxy contract, if has, use implementation abi
+        if (
+          proxy?.proxy &&
+          implementation?.address &&
+          !isZeroAddress(formatAddress(implementation?.address))
+        ) {
+          const implementationResp = await reqContract({
+            address: implementation.address,
+            fields,
+          });
+          abi = implementationResp['abi'];
+        } else {
+          abi = body.abi;
+        }
+
+        if (!abi) {
+          throw new Error(`no abi of this contract: ${log.address}`);
+        } else {
+          // in case of invalid abi
+          let contract = CFX.Contract({
+            abi: JSON.parse(abi),
+            address: log.address,
+          });
+          let decodedLog = contract.abi.decodeLog(log);
+
+          // if no decodedLog info, this contract reaction maybe a upgrade, use original contract abi to decode
+          if (!decodedLog) {
+            contract = CFX.Contract({
               abi: JSON.parse(body.abi),
               address: log.address,
             });
-            const decodedLog = contract.abi.decodeLog(log);
-
-            const args = disassembleEvent(decodedLog, log);
-
-            const { topics, data } = args.reduce(
-              (prev, curr) => {
-                if (curr.indexed) {
-                  prev.topics.push(curr);
-                } else {
-                  prev.data.push(curr);
-                }
-                return prev;
-              },
-              {
-                topics: [] as any,
-                data: [] as any,
-              },
-            );
-
-            outerTopics = args;
-
-            setEventInfo({
-              address: log.address,
-              fnName: decodedLog.name,
-              args,
-              topics,
-              data,
-              signature: decodedLog.signature,
-            });
+            decodedLog = contract.abi.decodeLog(log);
           }
-        } catch (e) {}
+
+          const args = disassembleEvent(decodedLog, log);
+
+          const { topics, data } = args.reduce(
+            (prev, curr) => {
+              if (curr.indexed) {
+                prev.topics.push(curr);
+              } else {
+                prev.data.push(curr);
+              }
+              return prev;
+            },
+            {
+              topics: [] as any,
+              data: [] as any,
+            },
+          );
+
+          outerTopics = args;
+
+          setEventInfo({
+            address: log.address,
+            fnName: decodedLog.name,
+            args,
+            topics,
+            data,
+            signature: decodedLog.signature,
+          });
+        }
 
         let addressList = outerTopics
-          .map(t => t.cfxAddress)
+          .map(t => t.hexAddress)
           .filter(t => t)
           .concat(formatAddress(log.address));
         addressList = _.uniq(addressList);
@@ -129,14 +162,22 @@ const EventLog = ({ log }) => {
             address: addressList,
           })
             .then(data => {
-              data.total && setContractAndTokenInfo(data.map);
+              if (data.total) {
+                setContractAndTokenInfo(
+                  formatContractAndTokenInfoMap(data.map),
+                );
+              }
             })
             .catch(() => {});
         }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      } catch (e) {
+        console.log('eventlog process error: ', e);
+      }
+
+      setLoading(false);
+    }
+
+    fn();
   }, [log]);
 
   const { fnName, args, topics, data, address, signature } = eventInfo;

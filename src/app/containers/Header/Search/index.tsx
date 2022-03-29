@@ -16,7 +16,7 @@ import ClearIcon from 'images/clear.png';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import _ from 'lodash';
 import fetch from 'utils/request';
-import { isBlockNumber, isHash } from 'utils';
+import { formatAddress, isBlockNumber, isHash } from 'utils';
 import { appendApiPrefix } from 'utils/api';
 
 const { Search: SearchInput } = Input;
@@ -72,6 +72,7 @@ const searchResult = (list: any[], notAvailable = '-', type = 'token') =>
       ...l,
       icon: l.iconUrl || ICON_DEFAULT_TOKEN,
       name: l.name || notAvailable,
+      address: formatAddress(l.address),
     };
 
     return {
