@@ -104,9 +104,7 @@ const searchResult = (list: any[], notAvailable = '-', type = 'token') =>
                     {token?.name}
                     {token?.symbol ? ` (${token.symbol}) ` : ' '}
                     {token?.transferType && (
-                      <span className="tag">
-                        {token?.transferType.replace('ERC', 'CRC')}
-                      </span>
+                      <span className="tag">{token?.transferType}</span>
                     )}
                   </div>
                   {token?.address ? (
