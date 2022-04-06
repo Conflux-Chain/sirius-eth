@@ -1600,10 +1600,10 @@
   dependencies:
     jsbi "^3.1.4"
 
-"@conflux-dev/conflux-address-js@^1.3.7":
-  version "1.3.10"
-  resolved "https://registry.yarnpkg.com/@conflux-dev/conflux-address-js/-/conflux-address-js-1.3.10.tgz#a2b7ce89c03ea10483d18da4a569b0827cbb26cb"
-  integrity sha512-B5lM24cJeaZJVCGJ825eZ2FuKOLXMJkkK6ZrC7tciLOGwefOua9egUtqCPD3uojTT/QPS45LOlQHIpfgG+M1yA==
+"@conflux-dev/conflux-address-js@^1.3.10":
+  version "1.3.13"
+  resolved "https://registry.yarnpkg.com/@conflux-dev/conflux-address-js/-/conflux-address-js-1.3.13.tgz#055909fe15e0eaa9ab890061a4845f323923a6ae"
+  integrity sha512-gFmo1goyt3wTauyRSfIooymaJSj+e7Lv4gRXpUQA+DZnJWsdPTuoPTKWLrQ6e661RTSFpcusmDrq6j6FWP9njw==
   dependencies:
     jsbi "^3.1.4"
 
@@ -9746,12 +9746,12 @@ jest@24.9.0:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
 
-js-conflux-sdk@2.0.0-beta.15:
-  version "2.0.0-beta.15"
-  resolved "https://registry.yarnpkg.com/js-conflux-sdk/-/js-conflux-sdk-2.0.0-beta.15.tgz#73cf84b5888e225637738566b301427804226355"
-  integrity sha512-Te0IIw7m8NprKSOmtdyJ/5SrRFe2mCIn/byQDbPegqKzvc4AUY6ce+9sdq9oiQfv11QvlrO/YZwSVXkS/lRQQw==
+js-conflux-sdk@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/js-conflux-sdk/-/js-conflux-sdk-2.0.6.tgz#bfaff45a7bd8c2cf2f7916489b06a562d307d87d"
+  integrity sha512-bCjJelUbr6BuVAF+SzbbXyShI+ckRUSYEsECw/0tcpIybVhpxocAQiN9WgWQYv8JmU4QzwJZ9fp0H2Ok+qk4Ng==
   dependencies:
-    "@conflux-dev/conflux-address-js" "^1.3.7"
+    "@conflux-dev/conflux-address-js" "^1.3.10"
     abi-util-lite "^0.1.0"
     big.js "^5.2.2"
     commander "^8.0.0"
