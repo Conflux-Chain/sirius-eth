@@ -10,7 +10,7 @@ import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { Link } from 'react-router-dom';
 import { Text } from '../../components/Text';
-import { formatBalance, formatNumber } from 'utils/index';
+import { formatAddress, formatBalance, formatNumber } from 'utils/index';
 import { CFX_TOKEN_TYPES } from '../../../utils/constants';
 import BigNumber from 'bignumber.js';
 import { useTranslation } from 'react-i18next';
@@ -105,7 +105,7 @@ function SelectItem({
         alt={`${name} icon`}
       />
       <SelectItemTextTitle>
-        <Link to={`/token/${address}`}>{name}</Link>
+        <Link to={`/token/${formatAddress(address)}`}>{name}</Link>
       </SelectItemTextTitle>
     </SelectItemTitle>
   );
