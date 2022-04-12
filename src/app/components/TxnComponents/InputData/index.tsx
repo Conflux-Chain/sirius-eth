@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { isContractAddress, isZeroAddress, formatAddress } from 'utils';
 import { reqContract } from 'utils/httpRequest';
-import { CFX } from 'utils/constants';
+import { CFXToDecode } from 'utils/constants';
 import { Select } from 'app/components/Select';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -95,7 +95,7 @@ export const InputData = ({
             }
 
             try {
-              let contract = CFX.Contract({
+              let contract = CFXToDecode.Contract({
                 abi: JSON.parse(abi),
                 address: toHash,
                 decodeByteToHex: true,
@@ -103,7 +103,7 @@ export const InputData = ({
               let decodedBytecode = contract.abi.decodeData(originalData);
 
               if (!decodedBytecode) {
-                contract = CFX.Contract({
+                contract = CFXToDecode.Contract({
                   abi: JSON.parse(resp.abi),
                   address: toHash,
                   decodeByteToHex: true,

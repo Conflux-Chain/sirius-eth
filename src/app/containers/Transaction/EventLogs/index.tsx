@@ -7,7 +7,7 @@ import {
 import { toThousands } from 'utils';
 import { Card } from 'app/components/Card/Loadable';
 import { Empty } from 'app/components/Empty/Loadable';
-import { CFX } from 'utils/constants';
+import { CFXToDecode } from 'utils/constants';
 import { Description } from 'app/components/Description/Loadable';
 import styled from 'styled-components/macro';
 import _ from 'lodash';
@@ -107,7 +107,7 @@ const EventLog = ({ log }) => {
           throw new Error(`no abi of this contract: ${log.address}`);
         } else {
           // in case of invalid abi
-          let contract = CFX.Contract({
+          let contract = CFXToDecode.Contract({
             abi: JSON.parse(abi),
             address: log.address,
           });
@@ -115,7 +115,7 @@ const EventLog = ({ log }) => {
 
           // if no decodedLog info, this contract reaction maybe a upgrade, use original contract abi to decode
           if (!decodedLog) {
-            contract = CFX.Contract({
+            contract = CFXToDecode.Contract({
               abi: JSON.parse(body.abi),
               address: log.address,
             });
