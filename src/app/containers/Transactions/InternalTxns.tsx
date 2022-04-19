@@ -71,10 +71,13 @@ export const InternalTxns = ({ address, from, to }: Props) => {
             try {
               const list = treeToFlat(resp.traceTree).map(l => {
                 const contractInfo = resp.contractMap || {};
+                const tokenInfo = resp.tokenMap || {};
                 return {
                   ...l,
                   fromContractInfo: contractInfo[l.from] || {},
                   toContractInfo: contractInfo[l.to] || {},
+                  fromTokenInfo: tokenInfo[l.from] || {},
+                  toTokenInfo: tokenInfo[l.to] || {},
                 };
               });
               setState({
