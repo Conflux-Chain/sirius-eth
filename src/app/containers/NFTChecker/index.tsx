@@ -14,13 +14,16 @@ import { media } from 'styles/media';
 import { PageHeader } from 'app/components/PageHeader';
 import { Input } from '@cfxjs/antd';
 import { useParams, useHistory } from 'react-router-dom';
-import { isAccountAddress, getAddressInputPlaceholder, isAddress } from 'utils';
+import {
+  /*isAccountAddress,*/ getAddressInputPlaceholder,
+  isAddress,
+} from 'utils';
 import { NFTAsset } from 'app/containers/NFTAsset';
 
 const { Search } = Input;
 
 export function NFTChecker() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const { address: routerAddress = '' } = useParams<{
     address?: string;
   }>();
@@ -36,25 +39,26 @@ export function NFTChecker() {
 
   const validateAddress = (address, cb?) => {
     if (isAddress(address)) {
-      setLoading(true);
-      isAccountAddress(address)
-        .then(data => {
-          if (data) {
-            cb && cb();
-          } else {
-            setAddressFormatErrorMsg(
-              t(translations.nftChecker.incorrectAddressType),
-            );
-          }
-        })
-        .catch(e => {
-          setAddressFormatErrorMsg(
-            t(translations.nftChecker.incorrectAddressType),
-          );
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      cb && cb();
+      // setLoading(true);
+      // isAccountAddress(address)
+      //   .then(data => {
+      //     if (data) {
+      //       cb && cb();
+      //     } else {
+      //       setAddressFormatErrorMsg(
+      //         t(translations.nftChecker.incorrectAddressType),
+      //       );
+      //     }
+      //   })
+      //   .catch(e => {
+      //     setAddressFormatErrorMsg(
+      //       t(translations.nftChecker.incorrectAddressType),
+      //     );
+      //   })
+      //   .finally(() => {
+      //     setLoading(false);
+      //   });
     } else {
       setAddressFormatErrorMsg(t(translations.nftChecker.incorrectAddressType));
     }
@@ -95,7 +99,7 @@ export function NFTChecker() {
               history.push(`/nft-checker/${value}`);
             });
           }}
-          loading={loading}
+          // loading={loading}
         />
         {addressFormatErrorMsg.length ? (
           <div className="convert-address-error">{addressFormatErrorMsg}</div>

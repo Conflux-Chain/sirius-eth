@@ -78,6 +78,7 @@ import { Statistics } from './containers/Statistics/Loadable';
 import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 import { ChartDetail } from './containers/ChartDetail/Loadable';
 import { NFTChecker } from './containers/NFTChecker/Loadable';
+import { NFTDetail } from './containers/NFTDetail/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
 import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
@@ -479,6 +480,11 @@ export function App() {
                             exact
                             path="/statistics/:statsType"
                             component={Statistics}
+                          />
+                          <Route
+                            exact
+                            path="/nft/:address/:id"
+                            component={NFTDetail}
                           />
 
                           {/* <Route
