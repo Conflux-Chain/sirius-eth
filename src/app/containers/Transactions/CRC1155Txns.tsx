@@ -12,8 +12,8 @@ interface Props {
 export const CRC1155Txns = ({ address }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
   const url = `/transfer?accountAddress=${address}&transferType=${CFX_TOKEN_TYPES.erc1155}`;
+  const columnsWidth = [3, 3, 6, 6, 2, 2, 3, 6, 5, 3];
 
-  const columnsWidth = [3, 3, 6, 6, 2, 2, 3, 6, 5];
   const columns = [
     tokenColunms.txnHash,
     blockColunms.epoch,
@@ -29,6 +29,7 @@ export const CRC1155Txns = ({ address }: Props) => {
     tokenColunms.tokenId(),
     tokenColunms.token2,
     tokenColunms.age(ageFormat, toggleAgeFormat),
+    tokenColunms.details,
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
   const title = ({ total, listLimit }) => (
