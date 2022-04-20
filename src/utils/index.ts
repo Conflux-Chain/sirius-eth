@@ -915,3 +915,6 @@ export const formatContractAndTokenInfoMap = m => {
     return {};
   }
 };
+
+export const getDomainTLD = () =>
+  (window.location.host.match(/scan\.(.*)$/) || [])[1] || 'net';

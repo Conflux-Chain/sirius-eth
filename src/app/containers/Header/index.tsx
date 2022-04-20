@@ -20,7 +20,7 @@ import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
 import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
-import { getNetwork, gotoNetwork } from 'utils';
+import { getNetwork, gotoNetwork, getDomainTLD } from 'utils';
 import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 // import { Notices } from 'app/containers/Notices/Loadable';
 
@@ -132,6 +132,7 @@ export const Header = memo(() => {
   ];
 
   if ([NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {
+    const TLD = getDomainTLD();
     supportAndHelpMenuItems.unshift({
       title: [
         t(translations.header.developerAPI),
@@ -141,8 +142,8 @@ export const Header = memo(() => {
       afterClick: menuClick,
       href:
         NETWORK_TYPE === NETWORK_TYPES.testnet
-          ? 'https://api-testnet.confluxscan.net/doc'
-          : 'https://api.confluxscan.net/doc',
+          ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
+          : `https://evmapi.confluxscan.${TLD}/doc`,
     });
 
     // ecosystemItems.unshift({

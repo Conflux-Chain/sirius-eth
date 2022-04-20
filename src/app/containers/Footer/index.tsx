@@ -16,6 +16,7 @@ import { Language } from './Language';
 // import { Currency } from './Currency';
 import { ScanEvent } from 'utils/gaConstants';
 import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import { getDomainTLD } from 'utils';
 
 import iconWechatQrcode from 'images/footer/wechat-qrcode.png';
 
@@ -308,14 +309,15 @@ export function Footer() {
     </FooterContentIconWrapper>
   );
 
+  const TLD = getDomainTLD();
   const developResourceLinks = {
     developerAPI: (
       <Link
         className="footer-link"
         href={
           NETWORK_TYPE === NETWORK_TYPES.testnet
-            ? 'https://api-testnet.confluxscan.net/doc'
-            : 'https://api.confluxscan.net/doc'
+            ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
+            : `https://evmapi.confluxscan.${TLD}/doc`
         }
         ga={{
           category: ScanEvent.menu.category,
