@@ -155,6 +155,7 @@ export enum TXN_ACTION {
   fccfxSignToEarnAPY = 111,
   fccfxSignToSyncInterest = 112,
   fccfxWithdrawCFX = 113,
+  tranferNFT = 114,
 }
 
 export const CURRENCY_SYMBOLS = {

@@ -13,6 +13,7 @@ import { Description } from 'app/components/Description/Loadable';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { reqNFTDetail } from 'utils/httpRequest';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { useBreakpoint } from 'styles/media';
 
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
@@ -22,7 +23,7 @@ import 'ace-builds/src-noconflict/theme-tomorrow';
 import { formatTimeStamp, formatAddress } from 'utils';
 
 import { TransferList } from './TransferList';
-// import { TransferModal } from './TransferModal';
+import { TransferModal } from './TransferModal';
 
 import lodash from 'lodash';
 // @ts-ignore
@@ -48,6 +49,7 @@ interface Query {
 }
 
 export function NFTDetail(props) {
+  const bp = useBreakpoint();
   const { t, i18n } = useTranslation();
   const { id, address } = useParams<{
     id: string;
@@ -63,11 +65,10 @@ export function NFTDetail(props) {
       query: { contractAddress: address, tokenId: id },
     })
       .then(({ data }) => {
-        console.log('data: ', data);
         setData(data);
       })
       .catch(e => {
-        console.log(e);
+        setData(e.response?.data);
       })
       .finally(() => {
         setLoading(false);
@@ -77,6 +78,8 @@ export function NFTDetail(props) {
   const owner = formatAddress(data.owner);
   const contractAddress = formatAddress(address);
   const creator = formatAddress(data.creator);
+  const name =
+    i18n.language === 'zh-CN' ? data.imageName?.zh : data.imageName?.en;
 
   return (
     <StyledWrapper>
@@ -99,7 +102,14 @@ export function NFTDetail(props) {
             />
           </Card>
 
-          {/* <TransferModal owner={data.owner} id={id}></TransferModal> */}
+          {bp !== 's' && (
+            <TransferModal
+              owner={data.owner}
+              id={id}
+              contractAddress={address}
+              contractType={data.type}
+            ></TransferModal>
+          )}
         </Col>
         <Col sm={24} md={16} style={{ width: '100%' }}>
           <Card style={{ padding: 0 }}>
@@ -109,50 +119,72 @@ export function NFTDetail(props) {
                 key="details"
               >
                 <Description title={t(translations.nftDetail.id)}>
-                  <SkeletonContainer shown={loading}>{id}</SkeletonContainer>
+                  <SkeletonContainer shown={loading}>
+                    {id ? id : '--'}
+                  </SkeletonContainer>
                 </Description>
                 <Description title={t(translations.nftDetail.name)}>
                   <SkeletonContainer shown={loading}>
-                    {i18n.language === 'zh-CN'
-                      ? data.imageName?.zh
-                      : data.imageName?.en}
+                    {name ? name : '--'}
                   </SkeletonContainer>
                 </Description>
                 <Description title={t(translations.nftDetail.url)}>
                   <SkeletonContainer shown={loading}>
-                    <div className="image-uri-container">
-                      <Tooltip title={data.imageUri}>
-                        <Link href={data.imageUri} className="image-uri">
-                          {data.imageUri}
-                        </Link>
-                      </Tooltip>
-                      <CopyButton copyText={data.imageUri} />
-                    </div>
+                    {data.imageUri ? (
+                      <div className="image-uri-container">
+                        <Tooltip title={data.imageUri}>
+                          <Link href={data.imageUri} className="image-uri">
+                            {data.imageUri}
+                          </Link>
+                        </Tooltip>
+                        <CopyButton copyText={data.imageUri} />
+                      </div>
+                    ) : (
+                      '--'
+                    )}
                   </SkeletonContainer>
                 </Description>
                 <Description title={t(translations.nftDetail.owner)}>
                   <SkeletonContainer shown={loading}>
-                    <Link href={`/address/${owner}`}>{owner}</Link>{' '}
-                    <CopyButton copyText={owner} />
+                    {owner ? (
+                      <>
+                        <Link href={`/address/${owner}`}>{owner}</Link>{' '}
+                        <CopyButton copyText={owner} />
+                      </>
+                    ) : (
+                      '--'
+                    )}
                   </SkeletonContainer>
                 </Description>
                 <Description title={t(translations.nftDetail.type)}>
                   <SkeletonContainer shown={loading}>
-                    {data.type}
+                    {data.type ? data.type : '--'}
                   </SkeletonContainer>
                 </Description>
                 <Description title={t(translations.nftDetail.address)}>
                   <SkeletonContainer shown={loading}>
-                    <Link href={`/address/${contractAddress}`}>
-                      {contractAddress}
-                    </Link>{' '}
-                    <CopyButton copyText={contractAddress} />
+                    {contractAddress ? (
+                      <>
+                        <Link href={`/address/${contractAddress}`}>
+                          {contractAddress}
+                        </Link>{' '}
+                        <CopyButton copyText={contractAddress} />
+                      </>
+                    ) : (
+                      '--'
+                    )}
                   </SkeletonContainer>
                 </Description>
                 <Description title={t(translations.nftDetail.creator)}>
                   <SkeletonContainer shown={loading}>
-                    <Link href={`/address/${creator}`}>{creator}</Link>{' '}
-                    <CopyButton copyText={creator} />
+                    {creator ? (
+                      <>
+                        <Link href={`/address/${creator}`}>{creator}</Link>{' '}
+                        <CopyButton copyText={creator} />
+                      </>
+                    ) : (
+                      '--'
+                    )}
                   </SkeletonContainer>
                 </Description>
                 <Description
@@ -160,7 +192,9 @@ export function NFTDetail(props) {
                   noBorder
                 >
                   <SkeletonContainer shown={loading}>
-                    {formatTimeStamp(data.mintTime, 'timezone')}
+                    {data.mintTime
+                      ? formatTimeStamp(data.mintTime, 'timezone')
+                      : '--'}
                   </SkeletonContainer>
                 </Description>
               </Collapse.Panel>
@@ -201,7 +235,12 @@ export function NFTDetail(props) {
       </Row>
 
       <StyledBottomWrapper>
-        <TransferList type={data.type} address={address} id={id}></TransferList>
+        <TransferList
+          type={data.type}
+          address={address}
+          id={id}
+          loading={loading}
+        ></TransferList>
       </StyledBottomWrapper>
     </StyledWrapper>
   );
