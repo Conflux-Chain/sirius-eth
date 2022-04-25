@@ -80,7 +80,6 @@ export function NFTDetail(props) {
   const creator = formatAddress(data.creator);
   const name =
     i18n.language === 'zh-CN' ? data.imageName?.zh : data.imageName?.en;
-
   return (
     <StyledWrapper>
       <Helmet>
@@ -104,7 +103,7 @@ export function NFTDetail(props) {
 
           {bp !== 's' && (
             <TransferModal
-              owner={data.owner}
+              owner={owner}
               id={id}
               contractAddress={address}
               contractType={data.type}
