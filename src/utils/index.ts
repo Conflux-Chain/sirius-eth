@@ -5,13 +5,7 @@ import fetch from './request';
 import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
 import { NetworksType } from './hooks/useGlobal';
-import {
-  IS_PRE_RELEASE,
-  NETWORK_ID,
-  NETWORK_TYPE,
-  NETWORK_TYPES,
-  CFX,
-} from 'utils/constants';
+import { IS_PRE_RELEASE, NETWORK_ID, CFX } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
@@ -816,16 +810,6 @@ export const gotoNetwork = (networkId: string | number): void => {
         window.location.hostname.includes('.io') ? '.io' : '.net'
       }`,
     );
-  }
-};
-
-export const getAddressInputPlaceholder = () => {
-  if (NETWORK_TYPE === NETWORK_TYPES.mainnet) {
-    return 'cfx:...';
-  } else if (NETWORK_TYPE === NETWORK_TYPES.testnet) {
-    return 'cfxtest:...';
-  } else {
-    return '';
   }
 };
 
