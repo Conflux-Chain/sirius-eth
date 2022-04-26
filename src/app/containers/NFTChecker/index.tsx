@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useEffectOnce } from 'react-use';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ import { PageHeader } from 'app/components/PageHeader';
 import { Input } from '@cfxjs/antd';
 import { useParams, useHistory } from 'react-router-dom';
 import {
-  /*isAccountAddress,*/
+  /*isAccountAddress,*/ getAddressInputPlaceholder,
   isAddress,
 } from 'utils';
 import { NFTAsset } from 'app/containers/NFTAsset';
@@ -33,6 +33,10 @@ export function NFTChecker() {
   const [addressFormatErrorMsg, setAddressFormatErrorMsg] = useState<string>(
     '',
   );
+  const addressInputPlaceholder = useMemo(() => {
+    return getAddressInputPlaceholder();
+  }, []);
+
   const validateAddress = (address, cb?) => {
     if (isAddress(address)) {
       cb && cb();
@@ -89,7 +93,7 @@ export function NFTChecker() {
         <Search
           value={address}
           onChange={handleAddressChange}
-          placeholder=""
+          placeholder={addressInputPlaceholder}
           onSearch={value => {
             validateAddress(value, () => {
               history.push(`/nft-checker/${value}`);

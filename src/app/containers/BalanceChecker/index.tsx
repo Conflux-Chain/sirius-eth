@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card } from '../../components/Card';
 import styled from 'styled-components/macro';
 import { Button, Divider, Form, Input, Radio } from '@cfxjs/antd';
@@ -7,7 +7,11 @@ import { Helmet } from 'react-helmet-async';
 import { PageHeader } from '../../components/PageHeader/Loadable';
 import { DatePicker } from '@cfxjs/react-ui';
 import { translations } from '../../../locales/i18n';
-import { isZeroOrPositiveInteger, isAddress } from '../../../utils';
+import {
+  isZeroOrPositiveInteger,
+  getAddressInputPlaceholder,
+  isAddress,
+} from '../../../utils';
 import { Result } from './Result';
 import dayjs from 'dayjs';
 import { useLocation } from 'react-router-dom';
@@ -21,6 +25,10 @@ export function BalanceChecker() {
   const [toggle, setToggle] = useState(true);
   const [resultVisible, setResultVisible] = useState('none');
   const [formData, setFormData] = useState({});
+
+  const addressInputPlaceholder = useMemo(() => {
+    return getAddressInputPlaceholder();
+  }, []);
 
   useEffect(() => {
     form
@@ -117,7 +125,11 @@ export function BalanceChecker() {
       rules={[{ required: true }, { validator: validateAddress }]}
       initialValue={querystring.parse(search).address}
     >
-      <Input allowClear onChange={onChangeAccountAddress} placeholder="" />
+      <Input
+        allowClear
+        onChange={onChangeAccountAddress}
+        placeholder={addressInputPlaceholder}
+      />
     </Form.Item>
   );
   const ContractAddressFormItem = (

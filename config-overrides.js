@@ -1,15 +1,7 @@
 const path = require('path');
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
-
-const smp = new SpeedMeasurePlugin({
-  disable: !process.env.MEASURE,
-  outputFormat: 'humanVerbose',
-  loaderTopFiles: 10,
-});
-
 module.exports = function (config, mode) {
   if (mode === 'production') {
-    return smp.wrap({
+    return {
       ...config,
       optimization: {
         ...config.optimization,
@@ -57,7 +49,7 @@ module.exports = function (config, mode) {
           ),
         },
       },
-    });
+    };
   }
   return config;
 };

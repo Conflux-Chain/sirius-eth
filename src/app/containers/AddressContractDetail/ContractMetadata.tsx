@@ -36,8 +36,6 @@ export function ContractMetadata({ address, contractInfo }) {
   const loading = contractInfo.name === t(translations.general.loading);
   const skeletonStyle = { height: '1.5714rem' };
 
-  const isNotDeployed = !contractInfo.codeHash && contractInfo.nonce === '0';
-
   let list = [
     {
       title: (
@@ -125,7 +123,7 @@ export function ContractMetadata({ address, contractInfo }) {
       children: (
         <SkeletonContainer shown={loading} style={skeletonStyle}>
           <CenterLine>
-            {isNotDeployed ? (
+            {!contractInfo.codeHash ? (
               <Content className="not-available">
                 <Text type="error">
                   {t(translations.contractDetail.notDeployed)}

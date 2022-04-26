@@ -5,7 +5,7 @@ import { tokenColunms, blockColunms } from 'utils/tableColumns';
 import { useAge } from 'utils/hooks/useAge';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 
-export const TransferList = ({ type, address, id, loading }) => {
+export const TransferList = ({ type, address, id }) => {
   let url = `/transfer?address=${address}&transferType=${type}&tokenId=${id}`;
   const [ageFormat, toggleAgeFormat] = useAge();
 
@@ -36,7 +36,7 @@ export const TransferList = ({ type, address, id, loading }) => {
     <TablePanelNew
       url={!!type ? url : ''}
       columns={columns}
-      loading={loading}
+      loading={!type}
     ></TablePanelNew>
   );
 };

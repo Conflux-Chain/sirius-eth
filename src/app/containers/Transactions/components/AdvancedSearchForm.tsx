@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { isAddress, isHash, isSafeNumberOrNumericStringInput } from 'utils';
+import {
+  isAddress,
+  isHash,
+  isSafeNumberOrNumericStringInput,
+  getAddressInputPlaceholder,
+} from 'utils';
 import styled from 'styled-components/macro';
 import qs from 'query-string';
 import lodash from 'lodash';
@@ -222,6 +227,10 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language]);
+
+  const addressInputPlaceholder = useMemo(() => {
+    return getAddressInputPlaceholder();
+  }, []);
 
   useEffect(() => {
     let fromOrToValue = 'from';
@@ -512,7 +521,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
                   })}
                 </Select>
               }
-              placeholder=""
+              placeholder={addressInputPlaceholder}
               allowClear
             />
           </Form.Item>

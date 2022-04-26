@@ -10,7 +10,6 @@ export const blue2 = '#4665f0';
 export const gray0 = '#F1F3F9';
 export const gray1 = '#FDFDFE';
 export const gray2 = '#8A8C95';
-export const gray3 = '#EBECED';
 export const green0 = '#AFE9D2';
 export const green1 = '#05343F';
 export const green2 = '#17B38A';

@@ -4,7 +4,7 @@
  * @todo need to be refactor
  *
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -16,7 +16,13 @@ import {
   ICON_DEFAULT_TOKEN,
   CONTRACTS,
 } from 'utils/constants';
-import { byteToKb, validURL, isAddress, formatAddress } from 'utils';
+import {
+  byteToKb,
+  validURL,
+  getAddressInputPlaceholder,
+  isAddress,
+  formatAddress,
+} from 'utils';
 import { reqContract, reqContractNameTag, reqToken } from 'utils/httpRequest';
 import SkelontonContainer from '../SkeletonContainer';
 import imgUpload from 'images/contract/upload.svg';
@@ -398,6 +404,10 @@ export const ContractOrTokenInfo = ({
     isDisabled = !btnShouldClick || isTokenSiteError;
   }
 
+  const addressInputPlaceholder = useMemo(() => {
+    return getAddressInputPlaceholder();
+  }, []);
+
   return (
     <Wrapper>
       <PageHeader>{title}</PageHeader>
@@ -416,7 +426,7 @@ export const ContractOrTokenInfo = ({
                   defaultValue={addressVal}
                   onChange={addressInputChanger}
                   readOnly={true}
-                  placeholder=""
+                  placeholder={addressInputPlaceholder}
                   onBlur={addressOnBlur}
                 />
                 {isVerified ? (
