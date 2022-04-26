@@ -11,6 +11,7 @@ import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
+import { formatAddress } from 'utils';
 
 export const TransferModal = ({
   owner = '',
@@ -53,7 +54,7 @@ export const TransferModal = ({
         if (isNFT721) {
           let isOwner = false;
 
-          if ((await contract.ownerOf(id)) === account) {
+          if (formatAddress(await contract.ownerOf(id)) === account) {
             isOwner = true;
           } else if ((await contract.getApproved(id)) === account) {
             isOwner = true;
