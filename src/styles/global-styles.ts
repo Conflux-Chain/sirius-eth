@@ -9,6 +9,7 @@ import {
   gray0,
   gray1,
   gray2,
+  gray3,
   green0,
   green1,
   green2,
@@ -24,6 +25,7 @@ export const GlobalStyle = createGlobalStyle`
     --theme-color-gray0: ${gray0};
     --theme-color-gray1: ${gray1};
     --theme-color-gray2: ${gray2};
+    --theme-color-gray3: ${gray3};
     --theme-color-green0: ${green0};
     --theme-color-green1: ${green1};
     --theme-color-green2: ${green2};
@@ -312,12 +314,22 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-btn.ant-btn-primary {
-    background: #1E3DE4;
+    background-color: var(--theme-color-blue0);
     color: #ffffff;
 
     &:hover {
       background: #4665f0;
       color: #ffffff;
+    }
+
+    &[disabled] {
+      background-color: var(--theme-color-gray3);
+      color: var(--theme-color-gray2);
+
+      &:hover {
+        background-color: var(--theme-color-gray0);
+        color: var(--theme-color-gray2);
+      }
     }
   }
 
