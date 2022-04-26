@@ -202,13 +202,7 @@ export function AddressConverter() {
         <div>
           <Input
             value={address}
-            placeholder={
-              [NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(
-                NETWORK_TYPE,
-              )
-                ? 'cfx:... / cfxtest:... / hex'
-                : ''
-            }
+            placeholder=""
             size="small"
             variant="solid"
             className="convert-address-input input-address"
