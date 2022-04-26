@@ -169,7 +169,10 @@ export const Header = memo(() => {
       ],
       name: ScanEvent.menu.action.crossSpace,
       afterClick: menuClick,
-      href: 'https://evm.fluentwallet.com/',
+      href:
+        NETWORK_TYPE === NETWORK_TYPES.testnet
+          ? 'https://test.confluxhub.io/'
+          : 'https://confluxhub.io/',
     });
 
     // contractItems.splice(2, 0, {
