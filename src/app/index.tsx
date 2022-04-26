@@ -212,10 +212,26 @@ export function App() {
               convert: info => {
                 try {
                   let data = JSON.parse(info);
-                  return t(
-                    translations.connectWallet.notify.action[data.code],
-                    data,
-                  );
+                  if ([107, 108].includes(data.code)) {
+                    return t(
+                      translations.connectWallet.notify.action[data.code],
+                      {
+                        cfxValue: data.cfxValue,
+                        wcfxValue: data.wcfxValue,
+                      },
+                    );
+                  } else if ([109, 110, 111, 113].includes(data.code)) {
+                    return t(
+                      translations.connectWallet.notify.action[data.code],
+                      {
+                        value: data.value,
+                      },
+                    );
+                  } else {
+                    return t(
+                      translations.connectWallet.notify.action[data.code],
+                    );
+                  }
                 } catch (e) {}
               },
             },

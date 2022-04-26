@@ -33,14 +33,6 @@ const Code = ({ contractInfo }) => {
   const { sourceCode, abi, address, verify = {} } = contractInfo;
   const { exactMatch, license, name, optimization, runs, version } = verify;
 
-  if (!contractInfo.codeHash) {
-    return (
-      <StyledContractContentCodeWrapper>
-        <StyledNullWrapper>0x</StyledNullWrapper>
-      </StyledContractContentCodeWrapper>
-    );
-  }
-
   return (
     <StyledContractContentCodeWrapper>
       {exactMatch ? (
@@ -367,10 +359,4 @@ const ContractBody = styled.div`
 
 const ContractCard = styled(Card)`
   padding-bottom: 1.2857rem !important;
-`;
-
-const StyledNullWrapper = styled.div`
-  background-color: var(--theme-color-gray0);
-  margin-top: 1.4286rem;
-  padding: 0.4286rem;
 `;

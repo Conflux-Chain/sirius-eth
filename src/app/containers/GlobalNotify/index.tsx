@@ -86,7 +86,6 @@ export function GlobalNotify() {
             }
             title = t(
               translations.connectWallet.notify.action[info.code || '100'],
-              info,
             );
             content = (
               <LinkWrapper>
