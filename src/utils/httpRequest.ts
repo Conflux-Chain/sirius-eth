@@ -5,11 +5,12 @@ export const v1Prefix = '/v1';
 export const statPrefix = '/stat';
 
 export const sendRequest = config => {
-  const url = config.url.startsWith('/stat')
-    ? config.url
-    : `${v1Prefix}${
-        config.url.startsWith('/') ? config.url : '/' + config.url
-      }`;
+  const url =
+    config.url.startsWith('/stat') || config.url.startsWith('http')
+      ? config.url
+      : `${v1Prefix}${
+          config.url.startsWith('/') ? config.url : '/' + config.url
+        }`;
   return fetch(qs.stringifyUrl({ url: url, query: config.query }), {
     method: config.type || 'GET',
     body: config.body,
@@ -274,3 +275,21 @@ export const reqTransferTPS = (extra?: object) => {
     ...extra,
   });
 };
+
+export const reqTransferPlot = (extra?: object) => {
+  return sendRequest({
+    url: `/plot?interval=133&limit=7`,
+    ...extra,
+  });
+};
+
+/** charts, start */
+
+export const reqChartData = ({ url, query }) => {
+  return sendRequest({
+    url,
+    query,
+  });
+};
+
+/** charts, end */
