@@ -1,17 +1,16 @@
 import React from 'react';
-// import styled from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
-// import { Card } from 'app/components/Card';
-// import { LineChart as Chart } from 'app/components/Chart/Loadable';
 import {
   ContractContent,
   CheckCircleIcon,
 } from '../AddressContractDetail/ContractContent';
 import { useContract } from 'utils/api';
 import AlertCircle from '@zeit-ui/react-icons/alertCircle';
+import { Token } from '../Charts/Loadable';
 
 import { Transfers as TokenTransfers } from 'app/containers/Tokens/Loadable';
 import { Holders } from './Holders';
@@ -38,7 +37,6 @@ interface Query {
 
 export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   const {
-    // tokenName,
     address: tokenAddress,
     decimals,
     totalSupply,
@@ -113,32 +111,22 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   if (chartWidth < 365) chartWidth = 365;
 
   // TODO, eth space, hide temporary
-  // const analysisPanel = () => (
-  //   <StyledTabWrapper>
-  //     <Card>
-  //       <Chart
-  //         width={chartWidth}
-  //         indicator="tokenAnalysis"
-  //         tokenInfo={{
-  //           name: tokenName,
-  //           address: tokenAddress,
-  //           type: transferType,
-  //         }}
-  //       />
-  //     </Card>
-  //   </StyledTabWrapper>
-  // );
+  const analysisPanel = () => (
+    <StyledTabWrapper>
+      <Token address={tokenAddress} type={transferType} />
+    </StyledTabWrapper>
+  );
 
-  // const analysisTab = {
-  //   value: 'analysis',
-  //   action: 'tokenAnalysis',
-  //   label: t(translations.token.analysis),
-  //   content: analysisPanel(),
-  // };
+  const analysisTab = {
+    value: 'analysis',
+    action: 'tokenAnalysis',
+    label: t(translations.token.analysis),
+    content: analysisPanel(),
+  };
 
-  // if (isRegistered) {
-  //   tabs.push(analysisTab);
-  // }
+  if (isRegistered) {
+    tabs.push(analysisTab);
+  }
 
   // trick by frontend, the better way is api always return 'verify' info
   let checkIcon: React.ReactNode = '';
@@ -180,16 +168,16 @@ export function Transfers({ tokenData }: { tokenData: TransferProps }) {
   return transferType ? <TabsTablePanel tabs={tabs} /> : null;
 }
 
-// const StyledTabWrapper = styled.div`
-//   .card {
-//     padding: 0.3571rem !important;
+const StyledTabWrapper = styled.div`
+  .card {
+    padding: 0.3571rem !important;
 
-//     .content {
-//       overflow-x: auto;
+    .content {
+      overflow-x: auto;
 
-//       & > div {
-//         box-shadow: none !important;
-//       }
-//     }
-//   }
-// `;
+      & > div {
+        box-shadow: none !important;
+      }
+    }
+  }
+`;
