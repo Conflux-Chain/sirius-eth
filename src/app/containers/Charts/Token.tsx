@@ -27,7 +27,7 @@ export function Token({
       url: OPEN_API_URLS.token,
       query: {
         base32: address,
-        limit: 100,
+        limit: 10000,
       },
       formatter: data => {
         const data1: any = [];
@@ -36,7 +36,7 @@ export function Token({
         const data4: any = [];
 
         data?.list?.map((d, i) => {
-          const t = dayjs.utc(d.createdAt).valueOf();
+          const t = dayjs.utc(d.day).valueOf();
           data1.push([t, new BigNumber(d.transferAmount).div(1e18).toNumber()]);
           data2.push([t, Number(d.transferCount)]);
           data3.push([t, Number(d.uniqueReceiver)]);

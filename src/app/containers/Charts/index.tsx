@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import { BlockTime } from './BlockTime';
 import { TPS } from './TPS';
 import { HashRate } from './HashRate';
-import { TotalSupply } from './TotalSupply';
+// import { TotalSupply } from './TotalSupply';
 import { CirculatingSupply } from './CirculatingSupply';
 import { Difficulty } from './Difficulty';
 import { Tx } from './Tx';
@@ -47,9 +47,9 @@ export function NewChart() {
         <Divider orientation="left">
           {t(translations.highcharts.preview.marketData)}
         </Divider>
-        <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+        {/* <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
           <TotalSupply preview={true} />
-        </Col>
+        </Col> */}
         <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
           <CirculatingSupply preview={true} />
         </Col>
