@@ -86,6 +86,10 @@ export function Token({
   if (type.indexOf('20') > -1) {
     props.options.series.unshift({
       name: `<span>${t(translations.highcharts.token.seriesName)}</span>`,
+      // @ts-ignore
+      tooltip: {
+        valueDecimals: 2,
+      },
     });
   }
 
