@@ -31,3 +31,5 @@ staking.md
 antd.custom2.css
 
 buildInfo.json
+
+*.code-workspace

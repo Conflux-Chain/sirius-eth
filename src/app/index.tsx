@@ -37,6 +37,8 @@ import { isAddress } from 'utils';
 import MD5 from 'md5.js';
 import lodash from 'lodash';
 import { getClientVersion } from 'utils/rpcRequest';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 import { Header } from './containers/Header';
 import { Footer } from './containers/Footer/Loadable';
@@ -73,12 +75,27 @@ import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 
 // import { Epoch } from './containers/Epoch/Loadable';
 
-import { Chart } from './containers/Charts/Loadable';
 import { Statistics } from './containers/Statistics/Loadable';
 import { BroadcastTx } from './containers/BroadcastTx/Loadable';
-import { ChartDetail } from './containers/ChartDetail/Loadable';
 import { NFTChecker } from './containers/NFTChecker/Loadable';
 import { NFTDetail } from './containers/NFTDetail/Loadable';
+
+import {
+  NewChart,
+  BlockTime,
+  TPS,
+  HashRate,
+  Difficulty,
+  TotalSupply,
+  CirculatingSupply,
+  Tx,
+  CFXTransfer,
+  TokenTransfer,
+  CFXHolderAccounts,
+  AccountGrowth,
+  ActiveAccounts,
+  Contracts as ContractsCharts,
+} from './containers/Charts/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
 import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
@@ -92,6 +109,8 @@ import 'moment/locale/zh-cn';
 //     urls: ['/font.css'],
 //   },
 // });
+
+dayjs.extend(utc);
 
 WebFontLoader.load({
   custom: {
@@ -114,11 +133,14 @@ export function App() {
   const [loading, setLoading] = useState(false);
 
   moment.locale(lang);
+  dayjs.locale(lang);
 
   function _ScrollToTop(props) {
     const { pathname } = useLocation();
     useEffect(() => {
-      window.scrollTo(0, 0);
+      if (pathname !== '/charts') {
+        window.scrollTo(0, 0);
+      }
     }, [pathname]);
     return props.children;
   }
@@ -447,12 +469,6 @@ export function App() {
                               }
                             }}
                           />
-                          <Route path="/charts" component={Chart} />
-                          <Route
-                            exact
-                            path="/chart/:indicator"
-                            component={ChartDetail}
-                          />
                           <Route
                             exact
                             path="/statistics"
@@ -469,6 +485,78 @@ export function App() {
                             exact
                             path="/nft/:address/:id"
                             component={NFTDetail}
+                          />
+
+                          <Route exact path="/charts" component={NewChart} />
+
+                          <Route
+                            exact
+                            path="/charts/blocktime"
+                            component={BlockTime}
+                          />
+
+                          <Route exact path="/charts/tps" component={TPS} />
+
+                          <Route
+                            exact
+                            path="/charts/hashrate"
+                            component={HashRate}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/difficulty"
+                            component={Difficulty}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/supply"
+                            component={TotalSupply}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/circulating"
+                            component={CirculatingSupply}
+                          />
+
+                          <Route exact path="/charts/tx" component={Tx} />
+
+                          <Route
+                            exact
+                            path="/charts/token-transfer"
+                            component={TokenTransfer}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/cfx-transfer"
+                            component={CFXTransfer}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/cfx-holder-accounts"
+                            component={CFXHolderAccounts}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/account-growth"
+                            component={AccountGrowth}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/active-accounts"
+                            component={ActiveAccounts}
+                          />
+
+                          <Route
+                            exact
+                            path="/charts/contracts"
+                            component={ContractsCharts}
                           />
 
                           {/* <Route

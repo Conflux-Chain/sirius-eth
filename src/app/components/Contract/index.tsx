@@ -28,6 +28,7 @@ import { TXN_ACTION } from 'utils/constants';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
 import { Text } from 'app/components/Text/Loadable';
+import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 
 interface Props {
   contractDetail: any;
@@ -62,6 +63,7 @@ export const ContractOrTokenInfo = ({
   });
   const [site, setSite] = useState('');
   const [tokenSite, setTokenSite] = useState('');
+  const [gateway, setGateway] = useState('');
   const [contractImgSrc, setContractImgSrc] = useState('');
   const [tokenImgSrc, setTokenImgSrc] = useState('');
   const [btnShouldClick, setBtnShouldClick] = useState(true);
@@ -71,6 +73,7 @@ export const ContractOrTokenInfo = ({
   const [warningMsgTimesForName, setWarningMsgTimesForName] = useState(0);
   const [errorMsgForSite, setErrorMsgForSite] = useState('');
   const [errorMsgForTokenSite, setErrorMsgForTokenSite] = useState('');
+  const [errorMsgForGateway, setErrorMsgForGateway] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
   const [isAddressError, setIsAddressError] = useState(false);
   const [isAdminError, setIsAdminError] = useState(false);
@@ -78,6 +81,7 @@ export const ContractOrTokenInfo = ({
   const [isNameError, setIsNameError] = useState(false);
   const [isSiteError, setIsSiteError] = useState(false);
   const [isTokenSiteError, setIsTokenSiteError] = useState(false);
+  const [isGatewayError, setIsGatewayError] = useState(false);
   const [txData, setTxData] = useState('');
   const fileContractInputRef = React.createRef<any>();
   const fileTokenInputRef = React.createRef<any>();
@@ -108,6 +112,10 @@ export const ContractOrTokenInfo = ({
     setTokenSite(e.target.value);
   };
 
+  const gatewayInputChanger = e => {
+    setGateway(e.target.value);
+  };
+
   const contractDetailStr = JSON.stringify(contractDetail);
 
   useEffect(() => {
@@ -117,6 +125,8 @@ export const ContractOrTokenInfo = ({
     }
     setSite(contractDetail.website || '');
     setTokenSite(contractDetail?.token?.website || '');
+    setGateway(contractDetail?.token?.ipfsGateway || '');
+
     switch (type) {
       case 'create':
         setAddressVal(formatAddress(address || ''));
@@ -140,7 +150,7 @@ export const ContractOrTokenInfo = ({
           !isErc20Error &&
           (updateInfoType === 'contract'
             ? !isNameError && !isSiteError
-            : !isTokenSiteError)
+            : !isTokenSiteError && !isGatewayError)
         ) {
           isSubmitable = true;
           setTxData(getTxData());
@@ -160,6 +170,7 @@ export const ContractOrTokenInfo = ({
       contractName,
       site,
       tokenSite,
+      gateway,
       tokenImgSrc,
       // eslint-disable-next-line react-hooks/exhaustive-deps
       accounts[0],
@@ -169,6 +180,7 @@ export const ContractOrTokenInfo = ({
       isNameError,
       isSiteError,
       isTokenSiteError,
+      isGatewayError,
     ],
   );
 
@@ -233,6 +245,9 @@ export const ContractOrTokenInfo = ({
       } else if (type === 'token') {
         setIsTokenSiteError(true);
         setErrorMsgForTokenSite('contract.invalidUrl');
+      } else if (type === 'gateway') {
+        setIsGatewayError(true);
+        setErrorMsgForGateway('contract.invalidUrl');
       }
     } else {
       if (type === 'contract') {
@@ -241,6 +256,9 @@ export const ContractOrTokenInfo = ({
       } else if (type === 'token') {
         setIsTokenSiteError(false);
         setErrorMsgForTokenSite('');
+      } else if (type === 'gateway') {
+        setIsGatewayError(false);
+        setErrorMsgForGateway('');
       }
     }
   }
@@ -257,6 +275,12 @@ export const ContractOrTokenInfo = ({
     checkSite(value, 'token');
   };
 
+  const gatewayOnBlur = e => {
+    const value = e.target.value;
+    setGateway(value);
+    checkSite(value, 'gateway');
+  };
+
   useEffect(() => {
     checkSite(site, 'contract');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -266,6 +290,11 @@ export const ContractOrTokenInfo = ({
     checkSite(tokenSite, 'token');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tokenSite]);
+
+  useEffect(() => {
+    checkSite(gateway, 'gateway');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gateway]);
 
   useEffect(() => {
     if (accounts[0]) {
@@ -340,6 +369,11 @@ export const ContractOrTokenInfo = ({
       } else {
         bodyParams.tokenIcon = '';
       }
+      if (gateway) {
+        bodyParams.ipfsGateway = gateway;
+      } else {
+        bodyParams.ipfsGateway = '';
+      }
 
       const data = packContractAndToken(bodyParams);
       return data[0];
@@ -395,7 +429,7 @@ export const ContractOrTokenInfo = ({
     isDisabled =
       !btnShouldClick || isAddressError || isNameError || isSiteError;
   } else {
-    isDisabled = !btnShouldClick || isTokenSiteError;
+    isDisabled = !btnShouldClick || isTokenSiteError || isGatewayError;
   }
 
   return (
@@ -488,27 +522,63 @@ export const ContractOrTokenInfo = ({
               </div>
             </>
           ) : (
-            <div className="lineContainer">
-              <div className="firstLine">
-                <LabelWithIcon>
-                  {t(translations.contract.tokenSite)}
-                </LabelWithIcon>
-                <SkelontonContainer shown={loading}>
-                  <Input
-                    className="inputComp"
-                    defaultValue={tokenSite}
-                    style={inputStyle}
-                    onChange={tokenSiteInputChanger}
-                    placeholder={t(translations.contract.sitePlaceholder)}
-                    onBlur={tokenSiteOnBlur}
-                  />
-                </SkelontonContainer>
+            <>
+              {' '}
+              <div className="lineContainer">
+                <div className="firstLine">
+                  <LabelWithIcon>
+                    {t(translations.contract.tokenSite)}
+                  </LabelWithIcon>
+                  <SkelontonContainer shown={loading}>
+                    <Input
+                      className="inputComp"
+                      defaultValue={tokenSite}
+                      style={inputStyle}
+                      onChange={tokenSiteInputChanger}
+                      placeholder={t(translations.contract.sitePlaceholder)}
+                      onBlur={tokenSiteOnBlur}
+                    />
+                  </SkelontonContainer>
+                </div>
+                <div>
+                  <span className="blankSpan"></span>
+                  <span className="errorSpan">{t(errorMsgForTokenSite)}</span>
+                </div>
               </div>
-              <div>
-                <span className="blankSpan"></span>
-                <span className="errorSpan">{t(errorMsgForTokenSite)}</span>
-              </div>
-            </div>
+              {/(1155)|(721)/.test(contractDetail?.token?.transferType) && (
+                <div className="lineContainer">
+                  <div className="firstLine">
+                    <LabelWithIcon>
+                      <InfoIconWithTooltip
+                        info={
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: t(translations.contract.gatewayListTip),
+                            }}
+                          />
+                        }
+                      >
+                        {t(translations.contract.gateway)}
+                      </InfoIconWithTooltip>
+                    </LabelWithIcon>
+                    <SkelontonContainer shown={loading}>
+                      <Input
+                        className="inputComp"
+                        defaultValue={gateway}
+                        style={inputStyle}
+                        onChange={gatewayInputChanger}
+                        placeholder={t(translations.contract.sitePlaceholder)}
+                        onBlur={gatewayOnBlur}
+                      />
+                    </SkelontonContainer>
+                  </div>
+                  <div>
+                    <span className="blankSpan"></span>
+                    <span className="errorSpan">{t(errorMsgForGateway)}</span>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
         {updateInfoType === 'token' ? (
@@ -626,8 +696,6 @@ export const ContractOrTokenInfo = ({
   );
 };
 const Wrapper = styled.div`
-  background: #f5f6fa;
-
   .is-verified-tip {
     background-color: #fafbfc;
     height: 2.1429rem;

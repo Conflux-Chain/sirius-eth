@@ -11,6 +11,7 @@ import { ContractContent, CheckCircleIcon } from './ContractContent';
 import AlertCircle from '@zeit-ui/react-icons/alertCircle';
 import { ExcutedAndPendingTxns } from 'app/containers/Transactions/Loadable';
 import lodash from 'lodash';
+import { Contract } from '../Charts/Loadable';
 
 import {
   // ExcutedTxns,
@@ -21,9 +22,7 @@ import {
   // PendingTxns,
 } from 'app/containers/Transactions/Loadable';
 import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
-// import { Card } from '../../components/Card';
-// import { LineChart as Chart } from '../../components/Chart/Loadable';
-// import styled from 'styled-components/macro';
+import styled from 'styled-components/macro';
 
 export function Table({ address, addressInfo, type }) {
   const { t } = useTranslation();
@@ -77,25 +76,19 @@ export function Table({ address, addressInfo, type }) {
   let chartWidth = clientWidth - 36;
   if (clientWidth > 1350) chartWidth = 1350;
   if (chartWidth < 365) chartWidth = 365;
-  // const analysisPanel = () => (
-  //   <StyledTabWrapper>
-  //     <Card>
-  //       <Chart
-  //         width={chartWidth}
-  //         indicator="contractAnalysis"
-  //         contractAddress={address}
-  //       />
-  //     </Card>
-  //   </StyledTabWrapper>
-  // );
-  // if (isContract) {
-  //   tabs.push({
-  //     value: 'analysis',
-  //     action: 'contractAnalysis',
-  //     label: t(translations.token.analysis),
-  //     content: analysisPanel(),
-  //   });
-  // }
+  const analysisPanel = () => (
+    <StyledTabWrapper>
+      <Contract address={address} />
+    </StyledTabWrapper>
+  );
+  if (isContract) {
+    tabs.push({
+      value: 'analysis',
+      action: 'contractAnalysis',
+      label: t(translations.token.analysis),
+      content: analysisPanel(),
+    });
+  }
 
   if (isContract) {
     //   // trick by frontend, the better way is api always return 'verify' info
@@ -139,15 +132,15 @@ export function Table({ address, addressInfo, type }) {
 
   return <TabsTablePanel key="table" tabs={tabs} />;
 }
-// const StyledTabWrapper = styled.div`
-//   .card {
-//     padding: 0.3571rem !important;
+const StyledTabWrapper = styled.div`
+  .card {
+    padding: 0.3571rem !important;
 
-//     .content {
-//       overflow-x: auto;
-//       & > div {
-//         box-shadow: none !important;
-//       }
-//     }
-//   }
-// `;
+    .content {
+      overflow-x: auto;
+      & > div {
+        box-shadow: none !important;
+      }
+    }
+  }
+`;
