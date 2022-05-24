@@ -192,8 +192,8 @@ export const ICON_DEFAULT_TOKEN =
 // export const POS_NULL_ADDRESS = '0000000000000000000000000000000000000000000000000000000000000000';
 
 export const OPEN_API_HOST = IS_TESTNET
-  ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : '-stage'}.confluxscan.net`
-  : `evmapi${IS_PRE_RELEASE ? '-stage' : '-stage'}.confluxscan.net`;
+  ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
+  : `evmapi${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
 
 export const OPEN_API_URLS = Object.entries({
   mining: '/statistics/mining',
