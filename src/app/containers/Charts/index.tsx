@@ -9,7 +9,6 @@ import dayjs from 'dayjs';
 import { BlockTime } from './BlockTime';
 import { TPS } from './TPS';
 import { HashRate } from './HashRate';
-// import { TotalSupply } from './TotalSupply';
 import { CirculatingSupply } from './CirculatingSupply';
 import { Difficulty } from './Difficulty';
 import { Tx } from './Tx';
@@ -25,8 +24,14 @@ export function NewChart() {
   const iszh = i18n.language.includes('zh');
 
   const format = iszh ? 'YYYY MMMDD' : 'DD MMM YYYY';
+  dayjs.locale(iszh ? 'zh-cn' : 'en');
   const current = dayjs().subtract(1, 'day');
   const oneMonthBefore = current.subtract(30, 'day');
+
+  if (localStorage.getItem('test')) {
+    console.log(iszh, format);
+    console.log(oneMonthBefore.format(format), current.format(format));
+  }
 
   return (
     <StyledChartPreviewWrapper>

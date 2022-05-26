@@ -289,7 +289,9 @@ export const NFTPreview = React.memo(
                       <br></br>
                       <Tooltip title={owner}>
                         {t(translations.nftChecker.owner)}:{' '}
-                        {formatString(owner, 'address')}
+                        <ALink href={`/address/${owner}`}>
+                          {formatString(owner, 'address')}
+                        </ALink>{' '}
                       </Tooltip>
                     </>
                   )}

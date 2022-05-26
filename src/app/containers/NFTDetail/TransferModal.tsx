@@ -287,6 +287,7 @@ export const TransferModal = ({
                   min={1}
                   max={NFT1155Quantity}
                   style={{ width: '100%' }}
+                  precision={0}
                 />
               </Form.Item>
             )}

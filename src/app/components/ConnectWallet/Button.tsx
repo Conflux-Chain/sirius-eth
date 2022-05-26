@@ -50,10 +50,7 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
           count: pendingRecords.length,
         });
       } else {
-        buttonText = formatString(accounts[0]);
-        // NETWORK_TYPE === NETWORK_TYPES.mainnet
-        //   ? accounts[0].replace(/(.*:.{3}).*(.{8})/, '$1...$2')
-        //   : accounts[0].replace(/(.*:.{3}).*(.{4})/, '$1...$2');
+        buttonText = formatString(accounts[0], 'address');
         buttonStatus = <span className="button-status-online"></span>;
       }
     }
