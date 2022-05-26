@@ -22,7 +22,7 @@ import 'ace-builds/src-noconflict/theme-tomorrow';
 
 import { formatTimeStamp, formatAddress } from 'utils';
 
-import { TransferList } from './TransferList';
+import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
 
 import lodash from 'lodash';
@@ -75,7 +75,6 @@ export function NFTDetail(props) {
       });
   }, [address, id]);
 
-  const owner = formatAddress(data.owner);
   const contractAddress = formatAddress(address);
   const creator = formatAddress(data.creator);
   const name =
@@ -103,7 +102,6 @@ export function NFTDetail(props) {
 
           {bp !== 's' && (
             <TransferModal
-              owner={owner}
               id={id}
               contractAddress={address}
               contractType={data.type}
@@ -138,18 +136,6 @@ export function NFTDetail(props) {
                         </Tooltip>
                         <CopyButton copyText={data.imageUri} />
                       </div>
-                    ) : (
-                      '--'
-                    )}
-                  </SkeletonContainer>
-                </Description>
-                <Description title={t(translations.nftDetail.owner)}>
-                  <SkeletonContainer shown={loading}>
-                    {owner ? (
-                      <>
-                        <Link href={`/address/${owner}`}>{owner}</Link>{' '}
-                        <CopyButton copyText={owner} />
-                      </>
                     ) : (
                       '--'
                     )}
@@ -234,12 +220,13 @@ export function NFTDetail(props) {
       </Row>
 
       <StyledBottomWrapper>
-        <TransferList
+        <TransferAndHolders
           type={data.type}
           address={address}
           id={id}
           loading={loading}
-        ></TransferList>
+          key={data.type}
+        ></TransferAndHolders>
       </StyledBottomWrapper>
     </StyledWrapper>
   );

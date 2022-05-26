@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Form, Input, Button, Modal } from '@cfxjs/antd';
+import { Form, Input, Button, Modal, InputNumber } from '@cfxjs/antd';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
@@ -14,7 +14,6 @@ import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { formatAddress } from 'utils';
 
 export const TransferModal = ({
-  owner = '',
   id = '',
   contractAddress = '',
   contractType = '',
@@ -34,6 +33,7 @@ export const TransferModal = ({
     status: '',
     errorMessage: '',
   });
+  const [NFT1155Quantity, setNFT1155Quantity] = useState(0);
   const isNFT721 = contractType?.includes('721');
 
   const contract = useMemo(() => {
@@ -50,13 +50,11 @@ export const TransferModal = ({
 
   useEffect(() => {
     async function fn() {
-      if (owner && id) {
+      if (id) {
         if (isNFT721) {
           let isOwner = false;
 
           if (formatAddress(await contract.ownerOf(id)) === account) {
-            isOwner = true;
-          } else if ((await contract.getApproved(id)) === account) {
             isOwner = true;
           }
 
@@ -64,9 +62,10 @@ export const TransferModal = ({
         } else {
           let isOwner = false;
 
-          if (owner === account) {
-            isOwner = true;
-          } else if (await contract.isApprovedForAll(owner, account)) {
+          const quantity = Number(await contract.balanceOf(account, id));
+          setNFT1155Quantity(quantity);
+
+          if (quantity) {
             isOwner = true;
           }
 
@@ -78,7 +77,7 @@ export const TransferModal = ({
     fn().catch(e => {
       console.log('error: ', e);
     });
-  }, [contract, contractAddress, contractType, account, id, isNFT721, owner]);
+  }, [contract, contractAddress, contractType, account, id, isNFT721]);
 
   const validator = useCallback(() => {
     return {
@@ -93,6 +92,24 @@ export const TransferModal = ({
     };
   }, [t]);
 
+  const amountValidator = useCallback(() => {
+    return {
+      validator(_, value) {
+        if (value > 0 && value <= NFT1155Quantity) {
+          return Promise.resolve();
+        } else {
+          return Promise.reject(
+            new Error(
+              t(translations.nftDetail.error.invalidAmount, {
+                amount: NFT1155Quantity,
+              }),
+            ),
+          );
+        }
+      },
+    };
+  }, [t, NFT1155Quantity]);
+
   const showTransferModal = () => {
     setIsModalVisible(true);
   };
@@ -100,12 +117,14 @@ export const TransferModal = ({
   const handleOk = () => {
     form
       .validateFields()
-      .then(({ fromAddress, toAddress, tokenId }) => {
+      .then(async function ({ fromAddress, toAddress, tokenId, amount }) {
         setSubmitLoading(true);
         setTxnStatusModal({
           ...txnStatusModal,
           show: true,
         });
+
+        let hash = '';
 
         if (isNFT721) {
           const { data, to } = contract.safeTransferFrom(
@@ -113,19 +132,18 @@ export const TransferModal = ({
             toAddress,
             tokenId,
           );
-          return sendTransaction({ data, to });
+          hash = await sendTransaction({ data, to });
         } else {
           const { data, to } = contract.safeTransferFrom(
             fromAddress,
             toAddress,
             tokenId,
-            1,
+            amount,
             '0x',
           );
-          return sendTransaction({ data, to });
+          hash = await sendTransaction({ data, to });
         }
-      })
-      .then(hash => {
+
         setTxnStatusModal({
           ...txnStatusModal,
           show: true,
@@ -134,11 +152,12 @@ export const TransferModal = ({
         addRecord({
           hash,
           info: JSON.stringify({
-            code: TXN_ACTION.tranferNFT,
+            code: isNFT721 ? TXN_ACTION.tranferNFT : TXN_ACTION.tranferNFT1155,
             description: '',
             hash,
             id: id,
             type: contractType,
+            amount,
           }),
         });
       })
@@ -197,17 +216,29 @@ export const TransferModal = ({
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        {id && owner && (
+        {id && (
           <Form
             form={form}
             name="basic"
             labelCol={{ span: 4 }}
             initialValues={{
-              fromAddress: owner,
+              fromAddress: account,
               tokenId: id,
             }}
             autoComplete="off"
           >
+            <Form.Item
+              label={t(translations.nftDetail.id)}
+              name="tokenId"
+              rules={[
+                {
+                  required: true,
+                  message: t(translations.nftDetail.error.toAddress),
+                },
+              ]}
+            >
+              <Input disabled />
+            </Form.Item>
             <Form.Item
               label={t(translations.nftDetail.from)}
               name="fromAddress"
@@ -236,18 +267,29 @@ export const TransferModal = ({
             >
               <Input />
             </Form.Item>
-            <Form.Item
-              label={t(translations.nftDetail.id)}
-              name="tokenId"
-              rules={[
-                {
-                  required: true,
-                  message: t(translations.nftDetail.error.toAddress),
-                },
-              ]}
-            >
-              <Input disabled />
-            </Form.Item>
+            {!isNFT721 && (
+              <Form.Item
+                label={t(translations.nftDetail.amount)}
+                extra={t(translations.nftDetail.amountTip, {
+                  amount: NFT1155Quantity,
+                })}
+                name="amount"
+                validateFirst={true}
+                rules={[
+                  {
+                    required: true,
+                    message: t(translations.nftDetail.error.amount),
+                  },
+                  amountValidator,
+                ]}
+              >
+                <InputNumber
+                  min={1}
+                  max={NFT1155Quantity}
+                  style={{ width: '100%' }}
+                />
+              </Form.Item>
+            )}
           </Form>
         )}
       </Modal>

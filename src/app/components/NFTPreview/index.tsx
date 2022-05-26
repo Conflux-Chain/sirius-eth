@@ -24,6 +24,8 @@ import audioPlay from './audio-play.svg';
 import Link from '@zeit-ui/react-icons/link';
 import { Link as ALink } from 'app/components/Link/Loadable';
 import { formatAddress } from 'utils';
+import { formatString } from 'utils';
+import { Tag } from '@cfxjs/antd';
 
 const epiKProtocolKnowledgeBadge =
   'cfx:acev4c2s2ttu3jzxzsd4a2hrzsa4pfc3f6f199y5mk';
@@ -182,10 +184,14 @@ export const NFTPreview = React.memo(
     contractAddress,
     tokenId,
     type = 'preview',
+    amount = 0,
+    owner = '',
   }: {
     contractAddress?: string;
     tokenId?: number | string;
     type?: 'preview' | 'card' | 'primary';
+    amount?: number;
+    owner?: string;
   }) => {
     const { t, i18n } = useTranslation();
     const lang = i18n.language.includes('zh') ? 'zh' : 'en';
@@ -227,28 +233,35 @@ export const NFTPreview = React.memo(
         return (
           <NFTCard>
             <Spin spinning={loading}>
-              {imageUri ? (
-                contractAddress === epiKProtocolKnowledgeBadge ? (
-                  <div className="ant-image">
-                    <iframe title={imageName} src={imageUri} />
-                  </div>
+              <div className="nft-container">
+                {imageUri ? (
+                  contractAddress === epiKProtocolKnowledgeBadge ? (
+                    <div className="ant-image">
+                      <iframe title={imageName} src={imageUri} />
+                    </div>
+                  ) : (
+                    <NFTCardInfo
+                      imageUri={imageUri}
+                      tokenId={tokenId}
+                      width={500}
+                    />
+                  )
+                ) : isFirstTime ? (
+                  <Skeleton.Image />
                 ) : (
-                  <NFTCardInfo
-                    imageUri={imageUri}
-                    tokenId={tokenId}
+                  <Image
                     width={500}
+                    src={NotFoundIcon}
+                    alt={'not found'}
+                    fallback={tokenIdNotFound}
                   />
-                )
-              ) : isFirstTime ? (
-                <Skeleton.Image />
-              ) : (
-                <Image
-                  width={500}
-                  src={NotFoundIcon}
-                  alt={'not found'}
-                  fallback={tokenIdNotFound}
-                />
-              )}
+                )}
+                {!!amount && (
+                  <Tooltip title={t(translations.nftChecker.amount)}>
+                    <Tag className="nft-amount">x{amount}</Tag>
+                  </Tooltip>
+                )}
+              </div>
               <div className="info">
                 <div className="info-name">
                   <Tooltip title={imageName}>
@@ -271,6 +284,15 @@ export const NFTPreview = React.memo(
                   >
                     {t(translations.general.table.token.view)}
                   </ALink>
+                  {owner && (
+                    <>
+                      <br></br>
+                      <Tooltip title={owner}>
+                        {t(translations.nftChecker.owner)}:{' '}
+                        {formatString(owner, 'address')}
+                      </Tooltip>
+                    </>
+                  )}
                 </div>
               </div>
             </Spin>
@@ -483,6 +505,18 @@ const NFTCard = styled.div`
       bottom: 0;
       object-fit: contain;
       border-radius: 5px 5px 0 0;
+    }
+  }
+
+  .nft-container {
+    position: relative;
+
+    .nft-amount {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      margin: 0;
+      padding: 0 5px;
     }
   }
 

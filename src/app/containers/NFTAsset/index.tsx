@@ -13,6 +13,7 @@ import {
   toThousands,
   // isAccountAddress,
   isAddress,
+  formatAddress,
 } from 'utils';
 import { Card } from 'app/components/Card';
 import { Col, Pagination, Row, Spin, Tag } from '@cfxjs/antd';
@@ -20,14 +21,16 @@ import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { NFTPreview } from 'app/components/NFTPreview';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { Empty } from 'app/components/Empty';
-import { trackEvent } from 'utils/ga';
-import { ScanEvent } from 'utils/gaConstants';
-import { reqNFTBalances, reqNFTTokenIds } from 'utils/httpRequest';
+import {
+  reqNFTBalance,
+  reqNFTTokens,
+  reqNFT1155Tokens,
+} from 'utils/httpRequest';
 import qs from 'query-string';
 
 type NFTBalancesType = {
   type: string;
-  address: string;
+  contract: string;
   name: any;
   balance: number;
   index: number;
@@ -35,101 +38,139 @@ type NFTBalancesType = {
 
 const defaultSelectedNFT = {
   type: '',
-  address: '',
+  contract: '',
   name: '',
   balance: 0,
   index: 0,
 };
 
-export function NFTAsset() {
-  const { address } = useParams<{
+export function NFTAsset({
+  contract = '',
+  type = '',
+}: {
+  contract?: string;
+  type?: string;
+}) {
+  const { address = '' } = useParams<{
     address?: string;
   }>();
   const { t, i18n } = useTranslation();
   const history = useHistory();
   const { pathname, search } = useLocation();
-  const {
-    NFTAddress: outerNFTAddress,
-    skip = '0',
-    limit = '12',
-    ...others
-  } = qs.parse(search);
+  const { NFTAddress, skip = '0', limit = '12', ...others } = qs.parse(search);
   const lang = i18n.language.includes('zh') ? 'zh' : 'en';
-  // const [address] = useState<string>(routerAddress);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasSearched, setHasSearched] = useState<boolean>(false);
 
-  const [displayTokenIds, setDisplayTokenIds] = useState<number[]>([]);
+  const [NFTs, setNFTs] = useState<any[]>([]);
   const [NFTBalances, setNFTBalances] = useState<NFTBalancesType[]>([]);
-  const [selectedNFT, setSelectedNFT] = useState<NFTBalancesType>(
-    defaultSelectedNFT,
-  );
+  const [selectedNFT, setSelectedNFT] = useState<NFTBalancesType>({
+    ...defaultSelectedNFT,
+    contract,
+    type,
+  });
+  const [total, setTotal] = useState(0);
 
   const pageSize = Number(limit);
   const page = Math.floor((Number(skip) || 0) / pageSize) + 1;
-  const total = selectedNFT.balance;
 
-  const validateAddress = (address, cb) => {
+  const validateAddress = async function (address) {
     if (isAddress(address)) {
       // TODO, eth space, use isAddress replaced
       // if (isAccountAddress(address)) {
-      cb && cb();
+      return true;
     }
+
+    return false;
   };
 
   const handleNFTSearch = async () => {
-    validateAddress(address, async () => {
-      // ga
-      trackEvent({
-        category: ScanEvent.function.category,
-        action: ScanEvent.function.action.nftChecker,
-        label: address,
-      });
+    let NFTBalances: NFTBalancesType[] = [];
+    let selectedNFT = {
+      ...defaultSelectedNFT,
+      contract,
+      type,
+    };
+    let NFTs: any = {};
+    let total = 0;
 
-      try {
-        setLoading(true);
-        setHasSearched(true);
+    setLoading(true);
+    setHasSearched(true);
 
-        const data = await reqNFTBalances({
+    if (contract) {
+      if (type.includes('1155')) {
+        NFTs = await reqNFT1155Tokens({
           query: {
-            ownerAddress: address,
+            contractAddr: formatAddress(contract), // default NFT
+            skip: skip,
+            limit: limit,
+          },
+        });
+      } else {
+        NFTs = await reqNFTTokens({
+          query: {
+            contract: formatAddress(contract), // default NFT
+            skip: skip,
+            limit: limit,
+          },
+        });
+      }
+
+      // @ts-ignore
+      total = NFTs.total;
+    } else {
+      if (await validateAddress(address)) {
+        const data = await reqNFTBalance({
+          query: {
+            owner: formatAddress(address),
+            limit: 10000,
           },
         });
 
-        if (data && data.length > 0) {
-          const NFTBalances = data.map((d, index) => ({
+        if (data.total) {
+          NFTBalances = data.list.map((d, index) => ({
             ...d,
             index,
           }));
-          let selectedNFT = NFTBalances[0];
+          selectedNFT = NFTBalances[0];
 
-          if (outerNFTAddress) {
-            selectedNFT = NFTBalances.filter(
-              n => n.address === outerNFTAddress,
-            )[0];
+          if (NFTAddress) {
+            selectedNFT = NFTBalances.filter(n => n.contract === NFTAddress)[0];
           }
 
-          const nfts = await reqNFTTokenIds({
-            query: {
-              ownerAddress: address,
-              contractAddress: selectedNFT.address, // default NFT
-              skip: skip,
-              limit: limit,
-            },
-          });
+          total = selectedNFT.balance;
 
-          setNFTBalances(NFTBalances);
-          setSelectedNFT(selectedNFT);
-          setDisplayTokenIds(nfts[1]);
-        } else {
-          setNFTBalances([]);
-          setSelectedNFT(defaultSelectedNFT);
-          setDisplayTokenIds([]);
+          if (selectedNFT.type.includes('1155')) {
+            NFTs = await reqNFT1155Tokens({
+              query: {
+                contractAddr: formatAddress(selectedNFT.contract), // default NFT
+                userAddr: formatAddress(address),
+                skip: skip,
+                limit: limit,
+              },
+            });
+          } else {
+            NFTs = await reqNFTTokens({
+              query: {
+                owner: formatAddress(address),
+                contract: formatAddress(selectedNFT.contract), // default NFT
+                skip: skip,
+                limit: limit,
+              },
+            });
+          }
         }
-      } catch (e) {}
+      }
+    }
 
-      setLoading(false);
-    });
+    // @ts-ignore
+    // NFTs = NFTs.list.map(n => n.tokenId);
+
+    setNFTBalances(NFTBalances);
+    setSelectedNFT(selectedNFT);
+    setNFTs(NFTs.list);
+    setTotal(total);
+    setLoading(false);
   };
 
   const handlePaginationChange = (page, pageSize) => {
@@ -138,7 +179,7 @@ export function NFTAsset() {
         url: pathname,
         query: {
           ...others,
-          NFTAddress: outerNFTAddress,
+          NFTAddress: NFTAddress,
           skip: String((page - 1) * pageSize),
           limit: String(pageSize),
         },
@@ -147,7 +188,7 @@ export function NFTAsset() {
   };
 
   const handleNFTAddressChange = address => {
-    setDisplayTokenIds([]);
+    setNFTs([]);
     history.push(
       qs.stringifyUrl({
         url: pathname,
@@ -162,11 +203,9 @@ export function NFTAsset() {
   };
 
   useEffect(() => {
-    if (address) {
-      handleNFTSearch();
-    }
+    handleNFTSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, outerNFTAddress, skip, limit]);
+  }, [address, NFTAddress, skip, limit, contract, type]);
 
   return (
     <StyledResultWrapper>
@@ -178,17 +217,27 @@ export function NFTAsset() {
                 return (
                   <Tag
                     className={
-                      selectedNFT.address === n.address ? 'current' : ''
+                      selectedNFT.contract === n.contract ? 'current' : ''
                     }
-                    onClick={() => handleNFTAddressChange(n.address)}
-                    key={n.address}
-                  >{`${n.name[lang]} (${toThousands(n.balance)})`}</Tag>
+                    onClick={() => handleNFTAddressChange(n.contract)}
+                    key={n.contract}
+                  >{`${n.name} (${toThousands(n.balance)})`}</Tag>
                 );
               })}
             </TagsWrapper>
           ) : null}
           <NFTWrapper>
-            {!loading && !NFTBalances.length ? (
+            <div className="total">
+              {t(translations.blocks.tipCountBefore)} {toThousands(total)}{' '}
+              {lang === 'zh' ? '个 ' : ''}
+              {selectedNFT.name || ''} NFT{' '}
+              <span>
+                {t(translations.contract.address)}:{' '}
+                <AddressContainer value={selectedNFT.contract} />
+              </span>
+            </div>
+
+            {!loading && !NFTs.length ? (
               <div className="nodata">
                 <Empty
                   show={true}
@@ -205,31 +254,19 @@ export function NFTAsset() {
                 />
               </div>
             ) : (
-              <>
-                {selectedNFT ? (
-                  <div className="total">
-                    {t(translations.blocks.tipCountBefore)} {toThousands(total)}{' '}
-                    {lang === 'zh' ? '个 ' : ''}
-                    {selectedNFT.name[lang] || ''} NFT{' '}
-                    <span>
-                      {selectedNFT.name[lang] || ''}{' '}
-                      {t(translations.contract.address)}:{' '}
-                      <AddressContainer value={selectedNFT.address} />
-                    </span>
-                  </div>
-                ) : null}
-                <Row gutter={20}>
-                  {displayTokenIds.map(id => (
-                    <Col xs={24} sm={12} lg={6} xl={4} key={id}>
-                      <NFTPreview
-                        contractAddress={selectedNFT?.address}
-                        tokenId={id}
-                        type="card"
-                      />
-                    </Col>
-                  ))}
-                </Row>
-              </>
+              <Row gutter={20}>
+                {NFTs.map(({ tokenId, amount, owner }) => (
+                  <Col xs={24} sm={12} lg={6} xl={4} key={tokenId}>
+                    <NFTPreview
+                      contractAddress={selectedNFT?.contract}
+                      tokenId={tokenId}
+                      type="card"
+                      amount={amount}
+                      owner={owner}
+                    />
+                  </Col>
+                ))}
+              </Row>
             )}
 
             <Pagination
