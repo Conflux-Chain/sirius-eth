@@ -79,6 +79,8 @@ export function NFTDetail(props) {
   const creator = formatAddress(data.creator);
   const name =
     i18n.language === 'zh-CN' ? data.imageName?.zh : data.imageName?.en;
+  const owner = formatAddress(data.owner);
+
   return (
     <StyledWrapper>
       <Helmet>
@@ -144,12 +146,10 @@ export function NFTDetail(props) {
                 {data.type?.includes('721') && (
                   <Description title={t(translations.nftDetail.owner)}>
                     <SkeletonContainer shown={loading}>
-                      {data.owner ? (
+                      {owner ? (
                         <>
-                          <Link href={`/address/${data.owner}`}>
-                            {data.owner}
-                          </Link>{' '}
-                          <CopyButton copyText={data.owner} />
+                          <Link href={`/address/${owner}`}>{owner}</Link>{' '}
+                          <CopyButton copyText={owner} />
                         </>
                       ) : (
                         '--'
