@@ -11,7 +11,7 @@ import {
   reqTransferPlot,
 } from '../../../utils/httpRequest';
 import { Link } from 'react-router-dom';
-// import lodash from 'lodash';
+import lodash from 'lodash';
 import { Tx, AccountGrowth } from '../Charts/Loadable';
 
 function Info(title, number: any) {
@@ -113,7 +113,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               <Link to="/charts/tps" className="info-link">
                 {t(translations.charts.tps.title)}
               </Link>,
-              plotData.tps,
+              lodash.isNil(plotData.tps) ? '--' : plotData.tps,
             )}
           </Grid>
           <Grid xs={24} sm={24} md={4}>
@@ -122,7 +122,9 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               <Link to="/charts/blocktime" className="info-link">
                 {t(translations.charts.blockTime.title)}
               </Link>,
-              plotData.blockTime + 's',
+              lodash.isNil(plotData.blockTime)
+                ? '--'
+                : plotData.blockTime + 's',
             )}
           </Grid>
           <Grid xs={24} sm={24} md={4}>
@@ -131,7 +133,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               <Link to="/charts/hashrate" className="info-link">
                 {t(translations.charts.hashRate.title)}
               </Link>,
-              plotData.hashRate,
+              lodash.isNil(plotData.hashRate) ? '--' : plotData.hashRate,
             )}
           </Grid>
 
