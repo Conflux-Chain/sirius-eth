@@ -4,12 +4,11 @@ import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 import { BlockTime } from './BlockTime';
 import { TPS } from './TPS';
 import { HashRate } from './HashRate';
-// import { TotalSupply } from './TotalSupply';
 import { CirculatingSupply } from './CirculatingSupply';
 import { Difficulty } from './Difficulty';
 import { Tx } from './Tx';
@@ -25,8 +24,15 @@ export function NewChart() {
   const iszh = i18n.language.includes('zh');
 
   const format = iszh ? 'YYYY MMMDD' : 'DD MMM YYYY';
-  const current = dayjs().subtract(1, 'day');
+  // TODO, temporary use moment, should use dayjs, but need solve locale issue first
+  moment.locale(iszh ? 'zh-cn' : 'en');
+  const current = moment().subtract(1, 'day');
   const oneMonthBefore = current.subtract(30, 'day');
+
+  if (localStorage.getItem('test')) {
+    console.log(iszh, format);
+    console.log(oneMonthBefore.format(format), current.format(format));
+  }
 
   return (
     <StyledChartPreviewWrapper>
