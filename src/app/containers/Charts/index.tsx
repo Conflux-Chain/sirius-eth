@@ -27,12 +27,7 @@ export function NewChart() {
   // TODO, temporary use moment, should use dayjs, but need solve locale issue first
   moment.locale(iszh ? 'zh-cn' : 'en');
   const current = moment().subtract(1, 'day');
-  const oneMonthBefore = current.subtract(30, 'day');
-
-  if (localStorage.getItem('test')) {
-    console.log(iszh, format);
-    console.log(oneMonthBefore.format(format), current.format(format));
-  }
+  const oneMonthBefore = moment().subtract(30, 'day');
 
   return (
     <StyledChartPreviewWrapper>
