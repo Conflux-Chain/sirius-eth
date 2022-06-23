@@ -192,9 +192,14 @@ export const ICON_DEFAULT_TOKEN =
 
 // export const POS_NULL_ADDRESS = '0000000000000000000000000000000000000000000000000000000000000000';
 
-export const OPEN_API_HOST = IS_TESTNET
+let APIHost = IS_TESTNET
   ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
   : `evmapi${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
+if (window.location.host.startsWith('net')) {
+  APIHost = window.location.host.replace(/cfx|eth/, 'api');
+}
+
+export const OPEN_API_HOST = APIHost;
 
 export const OPEN_API_URLS = Object.entries({
   // charts
