@@ -251,7 +251,7 @@ export function NFTAsset({
                 <div className="total">
                   {t(translations.blocks.tipCountBefore)} {toThousands(total)}{' '}
                   {lang === 'zh' ? '个 ' : ''}
-                  {selectedNFT.name || ''} NFT{' '}
+                  {selectedNFT.name || ''} {lang === 'zh' ? '数字藏品' : 'NFT'}{' '}
                   <span>
                     {t(translations.contract.address)}:{' '}
                     <AddressContainer value={selectedNFT.contract} />
