@@ -6,6 +6,7 @@ import { translations } from 'locales/i18n';
 import { Link } from 'app/components/Link';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { media } from 'styles/media';
+import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
 
 export const Topics = ({ data, signature, contractAndTokenInfo }) => {
   const { t } = useTranslation();
@@ -73,6 +74,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
               <>
                 <Link href={`/address/${value}`}>{value} </Link>
                 <ContractDetail info={contractInfo}></ContractDetail>
+                <AddressLabel address={value} />
               </>
             );
           }

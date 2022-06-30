@@ -10,6 +10,7 @@ import { Text } from 'app/components/Text/Loadable';
 import { Event } from '../Event';
 // import Info from '@zeit-ui/react-icons/info';
 import { media } from 'styles/media';
+import { AddressLabel } from '../AddressLabel';
 
 export const OptimizationDecode = ({
   data = '',
@@ -77,6 +78,7 @@ export const OptimizationDecode = ({
                       {a.hexAddress}{' '}
                     </Link>
                     <ContractDetail info={contractInfo} />
+                    <AddressLabel address={a.hexAddress} />
                   </>
                 );
               }

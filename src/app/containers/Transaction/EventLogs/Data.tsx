@@ -8,6 +8,7 @@ import { translations } from 'locales/i18n';
 import { media } from 'styles/media';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { DecodedParams } from 'app/components/TxnComponents/util';
+import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
 
 type SelectedLineSelect = {
   value?: string;
@@ -77,7 +78,12 @@ const decodeData = (value, type) => {
     switch (type) {
       case 'address':
         const address = `0x${value.substr(24)}`;
-        result = <Link href={`/address/${address}`}>{address}</Link>;
+        result = (
+          <>
+            <Link href={`/address/${address}`}>{address}</Link>
+            <AddressLabel address={address} />
+          </>
+        );
         break;
       case 'number':
         result = SDK.format.bigInt(v).toString();
@@ -167,6 +173,7 @@ export const Data = ({
               <>
                 <Link href={`/address/${d.value}`}>{d.value} </Link>
                 <ContractDetail info={contractInfo}></ContractDetail>
+                <AddressLabel address={d.value} />
               </>
             );
           }

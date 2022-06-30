@@ -15,6 +15,10 @@ import { RotateImg } from './RotateImg';
 import { useCheckHook } from './useCheckHook';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
+import { useGlobalData } from 'utils/hooks/useGlobal';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
+import { Bookmark } from '@zeit-ui/react-icons';
+import { Text } from '../Text/Loadable';
 // import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 import iconLoadingWhite from './assets/loading-white.svg';
@@ -26,13 +30,14 @@ interface Button {
 }
 
 export const Button = ({ className, onClick, showBalance }: Button) => {
+  const [globalData = {}] = useGlobalData();
   const { t } = useTranslation();
   const { installed, connected, accounts, balance } = usePortal();
 
   const { pendingRecords } = useContext(TxnHistoryContext);
   const { isValid } = useCheckHook(true);
 
-  let buttonText = t(translations.connectWallet.button.text);
+  let buttonText: React.ReactNode = t(translations.connectWallet.button.text);
   let buttonStatus: React.ReactNode = '';
   let hasPendingRecords = connected === 1 && !!pendingRecords.length;
 
@@ -50,7 +55,22 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
           count: pendingRecords.length,
         });
       } else {
-        buttonText = formatString(accounts[0], 'address');
+        const addressLabel =
+          globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[accounts[0]];
+        const addressLabelIcon = (
+          <Text span hoverValue={t(translations.profile.tip.label)}>
+            <Bookmark color="var(--theme-color-gray2)" size={16} />
+          </Text>
+        );
+
+        buttonText = addressLabel ? (
+          <StyledAddressLabelWrapper>
+            {addressLabelIcon}
+            {addressLabel}
+          </StyledAddressLabelWrapper>
+        ) : (
+          formatString(accounts[0], 'address')
+        );
         buttonStatus = <span className="button-status-online"></span>;
       }
     }
@@ -153,4 +173,10 @@ const ButtonWrapper = styled.div`
     cursor: pointer;
     flex-grow: 1;
   }
+`;
+
+const StyledAddressLabelWrapper = styled.span`
+  display: inline-flex;
+  vertical-align: middle;
+  line-height: 2;
 `;

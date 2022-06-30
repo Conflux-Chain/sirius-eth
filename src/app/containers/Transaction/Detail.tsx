@@ -43,6 +43,9 @@ import _ from 'lodash';
 import imgChevronDown from 'images/chevronDown.png';
 import { renderAddress } from 'utils/tableColumns/token';
 import { NFTPreview } from '../../components/NFTPreview/Loadable';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
+import { useGlobalData } from 'utils/hooks/useGlobal';
+import { CreateTxNote } from '../Profile/CreateTxNote';
 
 import iconInfo from 'images/info.svg';
 
@@ -51,6 +54,8 @@ import iconInfo from 'images/info.svg';
 
 // Transaction Detail Page
 export const Detail = () => {
+  const [visible, setVisible] = useState(false);
+  const [globalData = {}] = useGlobalData();
   const { t, i18n } = useTranslation();
   const [isContract, setIsContract] = useState(false);
   const [transactionDetail, setTransactionDetail] = useState<any>({});
@@ -637,6 +642,23 @@ export const Detail = () => {
   //     )
   //   : 0;
 
+  const txNoteMap = globalData[LOCALSTORAGE_KEYS_MAP.txPrivateNote];
+  const txNote = txNoteMap[routeHash];
+
+  const txNoteProps = {
+    stage: txNote ? 'edit' : 'create',
+    visible,
+    data: {
+      hash: routeHash,
+    },
+    onOk: () => {
+      setVisible(false);
+    },
+    onCancel: () => {
+      setVisible(false);
+    },
+  };
+
   return (
     <StyledCardWrapper>
       <Card className="sirius-Transactions-card">
@@ -991,17 +1013,49 @@ export const Detail = () => {
             </Description>
           )}
         </div>
-        <StyledFoldButtonWrapper>
-          <div
-            className={clsx('detailResetFoldButton', {
-              folded: folded,
-            })}
-            onClick={handleFolded}
-          >
-            {t(translations.general[folded ? 'viewMore' : 'showLess'])}
-          </div>
-        </StyledFoldButtonWrapper>
+        <Description
+          title={
+            <StyledFoldButtonWrapper>
+              <div
+                className={clsx('detailResetFoldButton', {
+                  folded: folded,
+                })}
+                onClick={handleFolded}
+              >
+                {t(translations.general[folded ? 'viewMore' : 'showLess'])}
+              </div>
+            </StyledFoldButtonWrapper>
+          }
+        >
+          {' '}
+        </Description>
+        <Description
+          noBorder
+          title={
+            <Tooltip text={t(translations.profile.tip.note)} placement="top">
+              {t(translations.transaction.note)}
+            </Tooltip>
+          }
+        >
+          {
+            <div>
+              {txNote ? <span className="tx-note">{txNote}</span> : null}
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setVisible(true);
+                }}
+                href=""
+              >
+                {t(translations.transaction[txNote ? 'updateNote' : 'addNote'])}
+              </a>
+            </div>
+          }
+        </Description>
       </Card>
+      <CreateTxNote {...txNoteProps}></CreateTxNote>
     </StyledCardWrapper>
   );
 };
@@ -1099,6 +1153,11 @@ const StyledCardWrapper = styled.div`
     height: 1.4286rem;
     margin-left: 0.5714rem;
   }
+
+  .tx-note {
+    font-style: italic;
+    margin-right: 10px;
+  }
 `;
 
 const StyledEpochConfirmationsWrapper = styled.span`
@@ -1118,6 +1177,7 @@ const StyledFoldButtonWrapper = styled.div`
     font-size: 1rem;
     color: #002257;
     cursor: pointer;
+    padding: 0;
 
     &::after {
       content: '';

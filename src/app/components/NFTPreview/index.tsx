@@ -24,8 +24,8 @@ import audioPlay from './audio-play.svg';
 import Link from '@zeit-ui/react-icons/link';
 import { Link as ALink } from 'app/components/Link/Loadable';
 import { formatAddress } from 'utils';
-import { formatString } from 'utils';
 import { Tag } from '@cfxjs/antd';
+import { AddressContainer } from '../AddressContainer';
 
 const epiKProtocolKnowledgeBadge =
   'cfx:acev4c2s2ttu3jzxzsd4a2hrzsa4pfc3f6f199y5mk';
@@ -285,15 +285,15 @@ export const NFTPreview = React.memo(
                     {t(translations.general.table.token.view)}
                   </ALink>
                   {owner && (
-                    <>
-                      <br></br>
-                      <Tooltip title={owner}>
+                    <div className="owner">
+                      <span className="title">
                         {t(translations.nftChecker.owner)}:{' '}
-                        <ALink href={`/address/${owner}`}>
-                          {formatString(owner, 'address')}
-                        </ALink>{' '}
-                      </Tooltip>
-                    </>
+                      </span>
+                      <AddressContainer
+                        value={owner}
+                        maxWidth={120}
+                      ></AddressContainer>
+                    </div>
                   )}
                 </div>
               </div>
@@ -548,6 +548,14 @@ const NFTCard = styled.div`
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+    }
+
+    .owner {
+      display: flex;
+
+      .title {
+        margin-right: 4px;
       }
     }
   }
