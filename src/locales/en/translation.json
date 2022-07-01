@@ -26,8 +26,7 @@
       "label": "Name Tags",
       "search": "Please input address or name tags",
       "error": {
-        "invalidAddress": "Please input valid base32 address",
-        "invalidNetwork": "Please input {{network}} address",
+        "invalidAddress": "Please input valid hex address",
         "invalidLabel": "Please input valid name tags",
         "invalidLabelRange": "Please input 1-{{amount}} characters",
         "address": "Please input address",

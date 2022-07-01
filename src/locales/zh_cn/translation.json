@@ -27,7 +27,6 @@
       "search": "请输入地址或标签",
       "error": {
         "invalidAddress": "请输入合法地址",
-        "invalidNetwork": "请输入{{network}}地址",
         "invalidLabel": "请输入合法的标签",
         "invalidLabelRange": "请输入 1-{{amount}} 个字符",
         "address": "请输入地址",
