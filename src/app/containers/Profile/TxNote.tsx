@@ -63,7 +63,7 @@ export function TxNote() {
       render(v) {
         return (
           <ContentWrapper monospace>
-            <Link href={`/transaction/${v}`}>{v}</Link>
+            <Link href={`/tx/${v}`}>{v}</Link>
           </ContentWrapper>
         );
       },
