@@ -67,7 +67,7 @@
       "toAddress": "Please input to address",
       "amount": "Please input amount",
       "id": "Please input token ID",
-      "invalidAddress": "Please input valid base32 address",
+      "invalidAddress": "Please input valid address",
       "invalidAmount": "Please input 1 - {{amount}}"
     }
   },
@@ -495,7 +495,7 @@
   "notFound": {
     "title": "There’s nothing here!",
     "label": "Sorry! This is an invalid search string.",
-    "addressTip": "If you're searching for Conflux addresses, please search for a valid address format (hex address or a checksummed-base32 address).",
+    "addressTip": "If you're searching for Conflux addresses, please search for a valid address format (hex address or a checksummed address).",
     "btn": "Go TO HOMEPAGE"
   },
   "notFoundAddress": {

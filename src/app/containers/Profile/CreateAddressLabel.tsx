@@ -141,7 +141,7 @@ export function CreateAddressLabel({
           return Promise.resolve();
         }
         return Promise.reject(
-          new Error(t(translations.nftDetail.error.invalidAddress)),
+          new Error(t(translations.profile.address.error.invalidAddress)),
         );
       },
     };

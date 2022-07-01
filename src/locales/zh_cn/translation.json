@@ -495,7 +495,7 @@
   "notFound": {
     "title": "无法查询到相关结果",
     "label": "抱歉！您搜索的字符串无效。",
-    "addressTip": "如果您在搜索 Conflux 地址，请搜索有效的地址格式，比如十六进制地址或 base32 带校验和的地址。",
+    "addressTip": "如果您在搜索 Conflux 地址，请搜索有效的地址格式，比如十六进制地址或带校验和的地址。",
     "btn": "前往首页"
   },
   "notFoundAddress": {
