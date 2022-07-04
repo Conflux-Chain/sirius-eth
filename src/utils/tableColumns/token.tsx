@@ -468,6 +468,7 @@ export const contract = (isFull = false) => ({
         isFull={isFull}
         verify={verify}
         isContract={true}
+        showLabeled={false}
       />
     );
   },

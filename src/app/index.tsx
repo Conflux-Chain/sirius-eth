@@ -79,6 +79,7 @@ import { Statistics } from './containers/Statistics/Loadable';
 import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 import { NFTChecker } from './containers/NFTChecker/Loadable';
 import { NFTDetail } from './containers/NFTDetail/Loadable';
+import { Profile } from './containers/Profile/Loadable';
 
 import {
   NewChart,
@@ -222,6 +223,53 @@ export function App() {
       console.log('conflux-network-version:', v);
     });
   }, []);
+
+  useEffect(() => {
+    const key = LOCALSTORAGE_KEYS_MAP.addressLabel;
+    const keyTx = LOCALSTORAGE_KEYS_MAP.txPrivateNote;
+    const data = globalData || {};
+
+    // address label
+    if (!data[key]) {
+      let dStr = localStorage.getItem(key);
+      let d = {};
+
+      if (dStr) {
+        d = JSON.parse(dStr).reduce((prev, curr) => {
+          return {
+            ...prev,
+            [curr.a]: curr.l,
+          };
+        }, {});
+      }
+
+      setGlobalData({
+        ...globalData,
+        [key]: d,
+      });
+    }
+
+    // private tx note
+    if (!data[keyTx]) {
+      let dStrTx = localStorage.getItem(keyTx);
+      let dTx = {};
+
+      if (dStrTx) {
+        dTx = JSON.parse(dStrTx).reduce((prev, curr) => {
+          return {
+            ...prev,
+            [curr.h]: curr.n,
+          };
+        }, {});
+      }
+
+      setGlobalData({
+        ...globalData,
+        [keyTx]: dTx,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [globalData]);
 
   // @todo, add loading for request frontend config info
   return (
@@ -558,6 +606,8 @@ export function App() {
                             path="/charts/contracts"
                             component={ContractsCharts}
                           />
+
+                          <Route exact path="/Profile" component={Profile} />
 
                           {/* <Route
                             exact

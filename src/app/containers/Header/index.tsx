@@ -399,6 +399,17 @@ export const Header = memo(() => {
               afterClick: menuClick,
               href: '/nft-checker',
             },
+            {
+              // profile
+              title: [
+                t(translations.header.profile),
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.home,
+              afterClick: menuClick,
+              href: '/profile',
+              className: 'profile',
+            },
           ],
         },
         {

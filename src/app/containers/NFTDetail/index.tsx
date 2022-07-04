@@ -27,6 +27,7 @@ import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
 
 import lodash from 'lodash';
+import { AddressContainer } from 'app/components/AddressContainer';
 // @ts-ignore
 window.lodash = lodash;
 
@@ -160,7 +161,10 @@ export function NFTDetail(props) {
                     <SkeletonContainer shown={loading}>
                       {owner ? (
                         <>
-                          <Link href={`/address/${owner}`}>{owner}</Link>{' '}
+                          <AddressContainer
+                            value={owner}
+                            isFull={true}
+                          ></AddressContainer>{' '}
                           <CopyButton copyText={owner} />
                         </>
                       ) : (
@@ -178,9 +182,10 @@ export function NFTDetail(props) {
                   <SkeletonContainer shown={loading}>
                     {contractAddress ? (
                       <>
-                        <Link href={`/address/${contractAddress}`}>
-                          {contractAddress}
-                        </Link>{' '}
+                        <AddressContainer
+                          value={contractAddress}
+                          isFull={true}
+                        ></AddressContainer>{' '}
                         <CopyButton copyText={contractAddress} />
                       </>
                     ) : (
@@ -207,7 +212,10 @@ export function NFTDetail(props) {
                   <SkeletonContainer shown={loading}>
                     {creator ? (
                       <>
-                        <Link href={`/address/${creator}`}>{creator}</Link>{' '}
+                        <AddressContainer
+                          value={creator}
+                          isFull={true}
+                        ></AddressContainer>{' '}
                         <CopyButton copyText={creator} />
                       </>
                     ) : (

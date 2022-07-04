@@ -57,6 +57,7 @@ export const ScanEvent = {
       fcCfx: 'fc_cfx',
       crossSpace: 'conflux_hub',
       developerAPI: 'developer_API',
+      profile: 'profile',
     },
   },
   // global search
