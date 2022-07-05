@@ -90,8 +90,8 @@ const checkResponse = ({ data, response }) => {
     // others of confluxscan api use code, data and message as response data params
     return data.data || data.result || data;
   } else {
-    const code = Number(data?.code);
-    publishRequestError({ code: code, message: data.message }, 'http');
+    const code = Number(data?.code || data?.status);
+    publishRequestError({ code, message: data.message }, 'http');
     const error: Partial<ErrorEvent> & {
       response?: ResponseType;
     } = new Error(data.message);
