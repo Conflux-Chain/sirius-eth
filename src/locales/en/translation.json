@@ -4,7 +4,8 @@
     "subtitle": "Private info, like private name tag and transaction private note. Decentralized storage in browser's localstorage.",
     "tip": {
       "label": "Private name tag",
-      "note": "Private note to keep track of the transaction."
+      "note": "Private note to keep track of the transaction",
+      "exceed": "The {{type}} exceeds {{amount}} records, please delete some and try again"
     },
     "tx": {
       "title": "Transaction Private Notes",
@@ -36,6 +37,25 @@
       },
       "publicNameTag": "Public Tag: ",
       "myNameTag": "My Name Tag: "
+    },
+    "file": {
+      "error": {
+        "invalid": "Invalid file"
+      },
+      "export": {
+        "button": "Export",
+        "tip": "Export all user profile info, include address name tags and transaction private notes",
+        "complete": "Export completed",
+        "failed": "Export Failed"
+      },
+      "import": {
+        "button": "Import",
+        "tip": "Import all user profile info, include address name tags and transaction private notes. If there is a configuration data conflict, the imported data overwrites the existing data",
+        "complete": "Import completed",
+        "failed": "Import failed",
+        "address": "Import {{amount}} address name tags",
+        "tx": "Import {{amount}} transaction private notes"
+      }
     }
   },
   "metadata": {
