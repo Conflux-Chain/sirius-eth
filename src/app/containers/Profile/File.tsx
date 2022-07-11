@@ -33,9 +33,19 @@ export const File = ({ onLoading = () => {} }: Props) => {
         );
         const oldList = oldTags ? JSON.parse(oldTags) : [];
 
+        let updateAmount = 0;
         // New imports have higher priority
         const tags = lodash
-          .unionBy(addressNameTags, oldList, 'a')
+          .unionWith(addressNameTags, oldList, (arrVal, othVal) => {
+            if (arrVal.a === othVal.a) {
+              if (arrVal.l !== othVal.l) {
+                updateAmount += 1;
+              }
+              return true;
+            } else {
+              return false;
+            }
+          })
           .sort((a, b) => b.u - a.u);
 
         if (tags.length > 1000) {
@@ -64,6 +74,7 @@ export const File = ({ onLoading = () => {} }: Props) => {
           message.info(
             t(translations.profile.file.import.address, {
               amount: tags.length - oldList.length,
+              updateAmount: updateAmount,
             }),
           );
         }
@@ -74,9 +85,20 @@ export const File = ({ onLoading = () => {} }: Props) => {
           LOCALSTORAGE_KEYS_MAP.txPrivateNote,
         );
         const oldList = oldNotes ? JSON.parse(oldNotes) : [];
+
+        let updateAmount = 0;
         // New imports have higher priority
         const notes = lodash
-          .unionBy(txPrivateNotes, oldList, 'h')
+          .unionWith(txPrivateNotes, oldList, (arrVal, othVal) => {
+            if (arrVal.h === othVal.h) {
+              if (arrVal.n !== othVal.n) {
+                updateAmount += 1;
+              }
+              return true;
+            } else {
+              return false;
+            }
+          })
           .sort((a, b) => b.u - a.u);
 
         if (notes.length > 1000) {
@@ -107,6 +129,7 @@ export const File = ({ onLoading = () => {} }: Props) => {
           message.info(
             t(translations.profile.file.import.tx, {
               amount: notes.length - oldList.length,
+              updateAmount: updateAmount,
             }),
           );
         }
