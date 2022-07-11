@@ -162,7 +162,7 @@ export const File = ({ onLoading = () => {} }: Props) => {
 
       const link = document.createElement('a');
       link.href = jsonString;
-      link.download = 'data.json';
+      link.download = 'confluxscan-user-profile.json';
       link.click();
     } catch (e) {
       message.error(t(translations.profile.file.export.failed));
