@@ -36,6 +36,27 @@
       },
       "publicNameTag": "公共标签：",
       "myNameTag": "我的标签："
+    },
+    "file": {
+      "error": {
+        "invalid": "无效文件",
+        "fileChanged": "文件已更改，请上传未更改文件",
+        "chainIdError": "无效文件，Chain ID 错误，请使用 Chain ID 是 {{chainId}} 的导出文件"
+      },
+      "export": {
+        "button": "导出",
+        "tip": "导出所有用户私人信息，包括地址标签和交易备注",
+        "complete": "导出完成",
+        "failed": "导出失败"
+      },
+      "import": {
+        "button": "导入",
+        "tip": "导入所有用户私人信息，包括地址标签和交易备注, 如果存在配置数据冲突，则导入数据覆盖已有数据",
+        "complete": "导入完成",
+        "failed": "导入失败",
+        "address": "导入 {{amount}} 条地址标签，更新 {{updateAmount}} 条地址标签",
+        "tx": "导入 {{amount}} 条交易备注，更新 {{updateAmount}} 条交易备注"
+      }
     }
   },
   "metadata": {
@@ -436,6 +457,7 @@
     "searchPlaceHolder": "请输入区块高度 / 区块哈希 / 交易哈希 / 地址 / 通证 / 合约名称标签",
     "searchPlaceHolderMobile": "区块高度/区块哈希/交易哈希/地址/通证/合约名称标签",
     "addressConverter": "地址格式转换",
+    "faucet": "测试水管",
     "broadcastTx": "广播交易",
     "blocknumberCalc": "区块计算器",
     "nftChecker": "数字藏品查看器",

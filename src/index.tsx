@@ -63,7 +63,7 @@ Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
   render(App);
 });
 
-const currentVersion = 'v1.7.1';
+const currentVersion = 'v1.8.0';
 
 const brand = `
 ╔═╗┌─┐┌┐┌┌─┐┬  ┬ ┬─┐ ┬  ┌─┐╔═╗┌─┐┌─┐┌─┐┌─┐ ${currentVersion}

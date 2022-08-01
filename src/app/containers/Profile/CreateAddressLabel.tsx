@@ -2,9 +2,10 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Form, Modal, Input, message } from '@cfxjs/antd';
-import { isAddress, publishRequestError } from 'utils';
+import { publishRequestError } from 'utils';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
+import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 type Type = {
   a: string;
@@ -60,6 +61,11 @@ export function CreateAddressLabel({
     } catch (e) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outerList]);
+
+  useEffect(() => {
+    form.setFieldsValue(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const handleOk = () => {
     form.validateFields().then(async function ({ address, label }) {
@@ -137,7 +143,7 @@ export function CreateAddressLabel({
   const validator = useCallback(() => {
     return {
       validator(_, value) {
-        if (isAddress(value)) {
+        if (SDK.address.isValidHexAddress(value)) {
           return Promise.resolve();
         }
         return Promise.reject(
@@ -171,11 +177,6 @@ export function CreateAddressLabel({
     delete: t(translations.general.delete),
   };
 
-  const d = {
-    ...data,
-    label: list.filter(l => l.a === data.address)[0]?.l,
-  };
-
   return (
     <Modal
       title={text[stage]}
@@ -185,15 +186,8 @@ export function CreateAddressLabel({
       onOk={handleOk}
       onCancel={handleCancel}
       confirmLoading={loading}
-      destroyOnClose
     >
-      <Form
-        form={form}
-        name="basic"
-        labelCol={{ span: 5 }}
-        autoComplete="off"
-        initialValues={d}
-      >
+      <Form form={form} name="basic" labelCol={{ span: 5 }} autoComplete="off">
         <Form.Item
           label={t(translations.profile.address.address)}
           name="address"

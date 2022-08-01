@@ -1,7 +1,6 @@
 import { PromiseType } from 'react-use/lib/util';
 import { appendApiPrefix } from './api';
 import { publishRequestError } from './index';
-import lodash from 'lodash';
 
 type FetchWithAbortType = Partial<PromiseType<any>> & {
   abort?: () => void;
@@ -77,20 +76,10 @@ const parseJSON = async function (response) {
 
 // 检查返回值中是否包含错误
 const checkResponse = ({ data, response }) => {
-  // some api has no code, like /stat/tokens/list or /v1/transaction/, return response body directly (exclude evmapi)
-  if (
-    response.status === 200 &&
-    !response.url.includes('evmapi') &&
-    lodash.isNil(data.code)
-  ) {
-    return data;
-  } else if (data.code === 0 || data.status === '1') {
-    // /statistics and /nft in evm open api are compatible with etherscan api, use status, result and message as response data params
-    // some /stat has code, like /stat/tx/top-by-type, but no data and message params
-    // others of confluxscan api use code, data and message as response data params
-    return data.data || data.result || data;
+  if (response.status === 200 && data.status === '1') {
+    return data.result;
   } else {
-    const code = Number(data?.code || data?.status);
+    const code = Number(data?.status);
     publishRequestError({ code, message: data.message }, 'http');
     const error: Partial<ErrorEvent> & {
       response?: ResponseType;
