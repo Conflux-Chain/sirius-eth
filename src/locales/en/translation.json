@@ -151,6 +151,13 @@
     "buttonOk": "Confirm and next"
   },
   "contract": {
+    "status": {
+      "0": "Deployed",
+      "1": "Not Deployed",
+      "2": "Admin Destruct",
+      "3": "Self Destruct"
+    },
+    "thisContract": "This contract is ",
     "address": "Contract Address",
     "nameTag": "Contract Name Tag",
     "registered": "Registered",
@@ -164,6 +171,10 @@
     "tokenIcon": "Token Icon",
     "sourceCode": "Contract Source Code",
     "abi": "Contract ABI",
+    "constructorArgs": "Constructor Arguments",
+    "constructorArgsTips": " (ABI-Encoded and is the last bytes of the Contract Creation Code above)",
+    "encodedView": "Encoded View",
+    "decodedView": "Decoded View",
     "enterPassword": "Please enter your password",
     "contractAdmin": "Contract Admin",
     "creator": "Contract Creator",

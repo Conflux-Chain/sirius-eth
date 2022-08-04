@@ -150,6 +150,13 @@
     "buttonOk": "确认并继续"
   },
   "contract": {
+    "status": {
+      "0": "已部署",
+      "1": "未部署",
+      "2": "已通过 AdminControl 销毁",
+      "3": "已通所有者销毁"
+    },
+    "thisContract": "此合约",
     "address": "合约地址",
     "nameTag": "合约名称标签",
     "registered": "已注册",
@@ -163,6 +170,10 @@
     "tokenIcon": "通证图标",
     "sourceCode": "源码",
     "abi": "合约ABI",
+    "constructorArgs": "构造器参数",
+    "constructorArgsTips": "（ABI-Encoded and is the last bytes of the Contract Creation Code above）",
+    "encodedView": "编码视图",
+    "decodedView": "解码视图",
     "enterPassword": "请输入管理员口令",
     "contractAdmin": "合约管理者",
     "creator": "合约创建者",

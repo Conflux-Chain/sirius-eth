@@ -74,7 +74,7 @@ export function NFTDetail(props) {
         setData(data);
       })
       .catch(e => {
-        setData(e.response?.data || {});
+        setData(e.response?.result || {});
       })
       .finally(() => {
         setLoading(false);

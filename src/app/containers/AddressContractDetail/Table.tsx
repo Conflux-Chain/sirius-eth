@@ -7,10 +7,8 @@ import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
 // import isContractAddress, isAccountAddress,
 import { isZeroAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
-import { ContractContent, CheckCircleIcon } from './ContractContent';
-import AlertCircle from '@zeit-ui/react-icons/alertCircle';
+import { ContractContent } from './ContractContent';
 import { ExcutedAndPendingTxns } from 'app/containers/Transactions/Loadable';
-import lodash from 'lodash';
 import { Contract } from '../Charts/Loadable';
 
 import {
@@ -23,6 +21,7 @@ import {
 } from 'app/containers/Transactions/Loadable';
 import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
 import styled from 'styled-components/macro';
+import { ContractStatus } from '../AddressContractDetail/ContractStatus';
 
 export function Table({ address, addressInfo, type }) {
   const { t } = useTranslation();
@@ -91,26 +90,13 @@ export function Table({ address, addressInfo, type }) {
   }
 
   if (isContract) {
-    //   // trick by frontend, the better way is api always return 'verify' info
-    let checkIcon: React.ReactNode = '';
-    if (
-      (!lodash.isNil(addressInfo.isRegistered) ||
-        !lodash.isNil(addressInfo.cfxTransferCount)) &&
-      addressInfo.codeHash
-    ) {
-      if (addressInfo.verify?.exactMatch === true) {
-        checkIcon = <CheckCircleIcon />;
-      } else {
-        checkIcon = <AlertCircle size={16} color="#e36057" />;
-      }
-    }
-
     tabs.push({
       value: 'contract-viewer',
       action: 'contractViewer',
       label: (
         <div>
-          {t(translations.token.contract)} {checkIcon}
+          {t(translations.token.contract)}
+          <ContractStatus contract={addressInfo} />
         </div>
       ),
       content: <ContractContent contractInfo={addressInfo} />,

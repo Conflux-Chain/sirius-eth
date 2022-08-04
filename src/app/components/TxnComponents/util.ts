@@ -8,7 +8,11 @@ import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
  * @todo
  * 1. handle JSON.stringify issue
  */
-export const formatData = (data, type) => {
+export const formatData = (data, type, option?) => {
+  const _option = option || {
+    space: 4,
+  };
+
   try {
     // handle string type specially, translate to hex format
     // if (type === 'string') {
@@ -35,7 +39,7 @@ export const formatData = (data, type) => {
     // bytes[], uint[], int[], tuple
     // @todo use JSON.stringify to decode data, will cause inner value to be wrapped with quotation mark, like "string" type
     if (Object.prototype.toString.call(data) === '[object Array]') {
-      return JSON.stringify(data, null, 4);
+      return JSON.stringify(data, null, _option.space);
     }
     // others: address, uint, int,
     return data.toString();

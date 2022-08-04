@@ -15,3 +15,4 @@ export const green0 = '#AFE9D2';
 export const green1 = '#05343F';
 export const green2 = '#17B38A';
 export const green3 = '#F0F4F3';
+export const orange0 = '#F8963E';
