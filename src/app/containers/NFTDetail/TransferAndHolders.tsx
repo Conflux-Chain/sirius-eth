@@ -9,6 +9,8 @@ import { TransferList } from './TransferList';
 export const TransferAndHolders = props => {
   const { t } = useTranslation();
 
+  console.log(123, props);
+
   const tabs: any = [
     {
       value: 'transfers',

@@ -14,6 +14,7 @@ import {
   green1,
   green2,
   green3,
+  orange0,
 } from './variable';
 
 export const GlobalStyle = createGlobalStyle`
@@ -30,6 +31,7 @@ export const GlobalStyle = createGlobalStyle`
     --theme-color-green1: ${green1};
     --theme-color-green2: ${green2};
     --theme-color-green3: ${green3};
+    --theme-color-orange0: ${orange0};
   }
 
   html,
