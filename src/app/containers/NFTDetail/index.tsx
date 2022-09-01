@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -8,13 +8,14 @@ import { Card } from 'app/components/Card/Loadable';
 import { Link } from 'app/components/Link/Loadable';
 import { NFTPreview } from 'app/components/NFTPreview';
 import styled from 'styled-components';
-import { Row, Col, Collapse, Tooltip } from '@cfxjs/antd';
+import { Row, Col, Collapse, Tooltip, message } from '@cfxjs/antd';
 import { Description } from 'app/components/Description/Loadable';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
-import { reqNFTDetail, reqToken } from 'utils/httpRequest';
+import { reqNFTDetail, reqToken, reqRefreshMetadata } from 'utils/httpRequest';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
+import { Button } from 'app/components/Button/Loadable';
 
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
@@ -88,6 +89,19 @@ export function NFTDetail(props) {
     });
   }, [address, id]);
 
+  const handleRefresh = useCallback(
+    e => {
+      reqRefreshMetadata({
+        contractAddress: address,
+        tokenId: id,
+      }).then(() => {
+        message.info(t(translations.nftDetail.refreshTip));
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [address, id],
+  );
+
   const contractAddress = formatAddress(address);
   const creator = formatAddress(data.creator);
   const name =
@@ -125,6 +139,13 @@ export function NFTDetail(props) {
         </Col>
         <Col sm={24} md={16} style={{ width: '100%' }}>
           <Card style={{ padding: 0 }}>
+            <Button
+              className="button-refresh"
+              size="small"
+              onClick={handleRefresh}
+            >
+              {t(translations.general.refresh)}
+            </Button>
             <Collapse defaultActiveKey={['details']} ghost>
               <Collapse.Panel
                 header={t(translations.nftDetail.details)}
@@ -304,6 +325,13 @@ const StyledWrapper = styled.div`
     overflow: hidden;
     white-space: nowrap;
     display: inline-block;
+  }
+
+  .button-refresh {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 2;
   }
 `;
 

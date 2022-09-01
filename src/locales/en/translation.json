@@ -91,7 +91,8 @@
       "id": "Please input token ID",
       "invalidAddress": "Please input valid address",
       "invalidAmount": "Please input 1 - {{amount}}"
-    }
+    },
+    "refreshTip": "Request has been submitted, wait a few minute..."
   },
   "fccfx": {
     "title": "FC-CFX Non-reversible Exchange",
@@ -831,6 +832,7 @@
     }
   },
   "general": {
+    "refresh": "Refresh",
     "timestamp": "Timestamp",
     "create": "Create",
     "edit": "Edit",

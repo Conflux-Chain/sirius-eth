@@ -300,3 +300,11 @@ export const reqNFTBalance = (extra?: object) => {
 };
 
 /** open api, end */
+
+export const reqRefreshMetadata = (param?: object, extra?: object) => {
+  return sendRequest({
+    url: `/stat/nft/checker/refresh`,
+    query: param,
+    ...extra,
+  });
+};
