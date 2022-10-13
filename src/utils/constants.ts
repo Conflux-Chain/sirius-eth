@@ -228,3 +228,5 @@ export const OPEN_API_URLS = Object.entries({
 // not open abi, use backend api temp
 OPEN_API_URLS.contract = '/stat/contract/stat/list';
 OPEN_API_URLS.token = '/stat/daily-token-stat';
+
+export const IS_FOREIGN_HOST = /.io$/.test(window.location.host);
