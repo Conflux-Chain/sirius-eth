@@ -59,6 +59,7 @@ export const ScanEvent = {
       crossSpace: 'conflux_hub',
       developerAPI: 'developer_API',
       profile: 'profile',
+      hub: 'confluxhub',
     },
   },
   // global search

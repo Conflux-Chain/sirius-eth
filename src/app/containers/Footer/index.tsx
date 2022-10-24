@@ -113,16 +113,20 @@ export function Footer() {
       {t(translations.footer.fluentwallet)}
     </Link>
   );
-  const bountyLink = (
+  const hubLink = (
     <Link
       className="footer-link"
-      href="https://bounty.confluxnetwork.org"
+      href={
+        NETWORK_TYPE === NETWORK_TYPES.testnet
+          ? 'https://test.confluxhub.io/'
+          : 'https://confluxhub.io/'
+      }
       ga={{
         category: ScanEvent.menu.category,
-        action: ScanEvent.menu.action.confluxBounty,
+        action: ScanEvent.menu.action.hub,
       }}
     >
-      {t(translations.footer.confluxbounty)}
+      {t(translations.footer.hub)}
     </Link>
   );
   const privacyPolicy = (
@@ -384,9 +388,7 @@ export function Footer() {
           <FooterContentRow>
             <FooterContentLink>{websiteLink}</FooterContentLink>
             <FooterContentLink>{portalLink}</FooterContentLink>
-            {IS_FOREIGN_HOST && (
-              <FooterContentLink>{bountyLink}</FooterContentLink>
-            )}
+            <FooterContentLink>{hubLink}</FooterContentLink>
           </FooterContentRow>
         </FooterContent>
       </FooterContentWrapper>

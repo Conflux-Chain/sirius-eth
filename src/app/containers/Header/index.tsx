@@ -175,21 +175,21 @@ export const Header = memo(() => {
           : `https://evmapi.confluxscan.${TLD}/doc`,
     });
 
-    // ecosystemItems.unshift({
-    //   title: [
-    //     t(translations.header.stakingAndGovernance),
-    //     <Check size={18} key="check" />,
-    //   ],
-    //   name: ScanEvent.menu.action.stakingAndGovernance,
-    //   afterClick: menuClick,
-    //   href: iszh
-    //     ? NETWORK_TYPE === NETWORK_TYPES.testnet
-    //       ? 'https://votetest.confluxnetwork.org/zh/'
-    //       : 'https://governance.confluxnetwork.org/zh/'
-    //     : NETWORK_TYPE === NETWORK_TYPES.testnet
-    //     ? 'https://votetest.confluxnetwork.org/en/'
-    //     : 'https://governance.confluxnetwork.org/en/',
-    // });
+    ecosystemItems.unshift({
+      title: [
+        t(translations.header.stakingAndGovernance),
+        <Check size={18} key="check" />,
+      ],
+      name: ScanEvent.menu.action.stakingAndGovernance,
+      afterClick: menuClick,
+      href: iszh
+        ? NETWORK_TYPE === NETWORK_TYPES.testnet
+          ? 'https://test.confluxhub.io/governance/'
+          : 'https://confluxhub.io/governance/'
+        : NETWORK_TYPE === NETWORK_TYPES.testnet
+        ? 'https://test.confluxhub.io/governance/'
+        : 'https://confluxhub.io/governance/',
+    });
 
     ecosystemItems.push({
       title: [
