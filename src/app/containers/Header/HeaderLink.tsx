@@ -371,7 +371,7 @@ const WrappLink = styled.span`
       color: #65709a;
 
       ${media.m} {
-        color: #aab9eb;
+        color: #eeeeee;
       }
     }
 
