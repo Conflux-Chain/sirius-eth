@@ -841,6 +841,8 @@
     }
   },
   "general": {
+    "fold": "Fold",
+    "expand": "Expand",
     "refresh": "Refresh",
     "timestamp": "Timestamp",
     "create": "Create",
