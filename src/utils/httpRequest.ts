@@ -204,6 +204,12 @@ export const reqContractCompiler = () => {
   });
 };
 
+export const reqEVMVersion = () => {
+  return sendRequest({
+    url: `/contract/evm-version`,
+  });
+};
+
 export const reqContractVerification = param => {
   return sendRequest({
     url: `/contract/verify`,
