@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -27,10 +27,8 @@ import { formatTimeStamp, formatAddress } from 'utils';
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
 
-import lodash from 'lodash';
 import { AddressContainer } from 'app/components/AddressContainer';
-// @ts-ignore
-window.lodash = lodash;
+import dayjs from 'dayjs';
 
 const AceEditorStyle = {
   width: 'initial',
@@ -50,6 +48,86 @@ interface Query {
   transactionHash?: string;
   tokenId?: string;
 }
+
+interface StringAttributes {
+  trait_type: string;
+  value: string;
+}
+
+interface NumberAttributes {
+  trait_type: string;
+  value: number;
+}
+
+const TraitPanel = ({ data = [] }: { data: Array<StringAttributes> }) => {
+  return (
+    <StyledTraitPanelWrapper>
+      <Row gutter={[16, 16]} align="stretch">
+        {data.map(d => (
+          <Col span={6} key={d.trait_type}>
+            <div className="container">
+              <div className="type">{d.trait_type}</div>
+              <div className="value">{d.value}</div>
+            </div>
+          </Col>
+        ))}
+      </Row>
+    </StyledTraitPanelWrapper>
+  );
+};
+
+const DatePanel = ({ data = [] }: { data: Array<NumberAttributes> }) => {
+  return (
+    <StyledDatePanelWrapper>
+      {data.map(d => {
+        let date = '--';
+
+        try {
+          date = dayjs(d.value * 1000).format('YYYY-MM-DD HH:mm:ss');
+        } catch (error) {}
+
+        return (
+          <div className="container" key={d.trait_type}>
+            <span className="type">{d.trait_type}</span>
+            <span className="value">{date}</span>
+          </div>
+        );
+      })}
+    </StyledDatePanelWrapper>
+  );
+};
+
+const DescriptionPanel = ({ data = '' }) => {
+  return <div>{data}</div>;
+};
+
+const StyledTraitPanelWrapper = styled.div`
+  .container {
+    border: 1px solid var(--theme-color-blue2);
+    border-radius: 4px;
+    padding: 1rem;
+    text-align: center;
+    background-color: rgba(70, 101, 240, 0.05);
+    height: 100%;
+  }
+
+  .type {
+    color: var(--theme-color-blue2);
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .value {
+    font-weight: 500;
+  }
+`;
+const StyledDatePanelWrapper = styled.div`
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
 
 export function NFTDetail(props) {
   const bp = useBreakpoint();
@@ -107,6 +185,30 @@ export function NFTDetail(props) {
   const name =
     i18n.language === 'zh-CN' ? data.imageName?.zh : data.imageName?.en;
   const owner = formatAddress(data.owner);
+  const { description = '', attributes = [] } = data.detail?.metadata || {};
+
+  const {
+    description: descrptionStr,
+    dateTypeAttributes,
+    stringTypeAttributes,
+  } = useMemo(() => {
+    let dateTypeAttributes: any = [],
+      stringTypeAttributes: any = [];
+
+    attributes.forEach(a => {
+      if (a.display_type === 'date') {
+        dateTypeAttributes.push(a);
+      } else if (a.display_type === undefined) {
+        stringTypeAttributes.push(a);
+      }
+    });
+
+    return {
+      description,
+      dateTypeAttributes,
+      stringTypeAttributes,
+    };
+  }, [description, attributes]);
 
   return (
     <StyledWrapper>
@@ -123,9 +225,10 @@ export function NFTDetail(props) {
         <Col sm={24} md={8} style={{ width: '100%' }}>
           <Card style={{ padding: 0 }}>
             <NFTPreview
-              contractAddress={contractAddress}
+              contractAddress={address}
               tokenId={id}
               type="primary"
+              enable3D={true}
             />
           </Card>
 
@@ -255,6 +358,32 @@ export function NFTDetail(props) {
                   </SkeletonContainer>
                 </Description>
               </Collapse.Panel>
+              {!!stringTypeAttributes.length && (
+                <Collapse.Panel
+                  header={t(translations.nftDetail.trait, {
+                    amount: stringTypeAttributes.length,
+                  })}
+                  key="trait"
+                >
+                  <TraitPanel data={stringTypeAttributes} />
+                </Collapse.Panel>
+              )}
+              {!!dateTypeAttributes.length && (
+                <Collapse.Panel
+                  header={t(translations.nftDetail.datetime)}
+                  key="date"
+                >
+                  <DatePanel data={dateTypeAttributes} />
+                </Collapse.Panel>
+              )}
+              {!!descrptionStr && (
+                <Collapse.Panel
+                  header={t(translations.nftDetail.description)}
+                  key="description"
+                >
+                  <DescriptionPanel data={descrptionStr} />
+                </Collapse.Panel>
+              )}
               {data.detail?.metadata && (
                 <Collapse.Panel
                   header={t(translations.nftDetail.metadata)}
@@ -276,14 +405,6 @@ export function NFTDetail(props) {
                     height="20.1429rem"
                     wrapEnabled={true}
                   />
-                </Collapse.Panel>
-              )}
-              {data.detail?.metadata?.description && (
-                <Collapse.Panel
-                  header={t(translations.nftDetail.description)}
-                  key="description"
-                >
-                  {data.detail?.metadata?.description}
                 </Collapse.Panel>
               )}
             </Collapse>
