@@ -91,7 +91,9 @@
       "invalidAddress": "请输入合法地址",
       "invalidAmount": "请输入 1 - {{amount}} 个"
     },
-    "refreshTip": "请求已提交，请稍等..."
+    "refreshTip": "请求已提交，请稍等...",
+    "trait": "特征（{{amount}}）",
+    "datetime": "日期"
   },
   "fccfx": {
     "title": "FC-CFX 不可逆兑换",
