@@ -1,33 +1,29 @@
 import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import { useLoader } from '@react-three/fiber';
-// @ts-ignore
-import { Environment, OrbitControls } from '@react-three/drei';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { Suspense } from 'react';
 import styled from 'styled-components';
-import { Skeleton } from '@cfxjs/antd';
+
+import '@google/model-viewer';
 
 export const ThreeD = ({ url = '' }) => {
-  const gltf = useLoader(GLTFLoader, url);
-
   return (
     <Container>
-      <Skeleton.Image />
-      <Canvas
-        frameloop="demand"
-        className="3d-canvas"
+      {/* @ts-ignore */}
+      <model-viewer
+        alt="Neil Armstrong's Spacesuit from the Smithsonian Digitization Programs Office and National Air and Space Museum"
+        src={url}
+        // poster="https://vbs-staging.oss-cn-beijing.aliyuncs.com/pattern/thumbnail1024/prop_mask_004_ue_1024.png?versionid=CAEQKRiBgMCc0Jf.oxgiIDU2MGY0Nzc3ZjBjYjRkYmQ4MjdhNzFlMDk5ZWQ3ZjQ1"
+        shadow-intensity="1"
+        camera-controls
+        touch-action="pan-y"
+        // @ts-ignore
         style={{
+          width: '100%',
+          height: '100%',
           position: 'absolute',
           top: '0',
         }}
-      >
-        <Suspense fallback={null}>
-          <primitive object={gltf.scene} scale={0.4} />
-          <OrbitControls />
-          <Environment preset="sunset" background />
-        </Suspense>
-      </Canvas>
+        // @ts-ignore
+      ></model-viewer>
+      {/* @ts-ignore */}
     </Container>
   );
 };
@@ -36,5 +32,5 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  display: flex;
+  padding-top: 100%;
 `;
