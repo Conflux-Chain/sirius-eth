@@ -175,7 +175,7 @@ export const NFTCardInfo = React.memo(
     } else if (nftType === '3d') {
       return (
         <ThreeDCard>
-          <ThreeD url={`${imageUri}?source=3d`} />
+          <ThreeD url={`${imageUri}`} />
         </ThreeDCard>
       );
     } else {
