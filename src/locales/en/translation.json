@@ -92,7 +92,9 @@
       "invalidAddress": "Please input valid address",
       "invalidAmount": "Please input 1 - {{amount}}"
     },
-    "refreshTip": "Request has been submitted, wait a few minute..."
+    "refreshTip": "Request has been submitted, wait a few minute...",
+    "trait": "Trait ({{amount}})",
+    "datetime": "Datetime"
   },
   "fccfx": {
     "title": "FC-CFX Non-reversible Exchange",
@@ -174,6 +176,7 @@
     "abi": "Contract ABI",
     "constructorArgs": "Constructor Arguments",
     "constructorArgsTips": " (ABI-Encoded and is the last bytes of the Contract Creation Code above)",
+    "libraryContracts": "Library Contracts",
     "encodedView": "Encoded View",
     "decodedView": "Decoded View",
     "enterPassword": "Please enter your password",
@@ -194,6 +197,8 @@
       "contractName": "Contract Name: ",
       "optimizationEnabled": "Optimization Enabled: ",
       "otherSettings": "Other Settings: ",
+      "evmVersion": "{{version}} evmVersion",
+      "license": "{{license}} license",
       "compilerVersion": "Compiler Version: ",
       "runs": "{{status}} with {{count}} runs",
       "tipLeft": "You can ",
@@ -286,6 +291,11 @@
     "compiler": "Compiler",
     "optimization": "Optimization",
     "license": "License",
+    "evmVersion": "EVM Version to target",
+    "contractLibraryAddress": "Contract Library Address",
+    "contractLibraryAddressTip": "(for contracts that use libraries, supports up to 10 libraries)",
+    "libraryName": "Library_{{index}} Name",
+    "libraryContractAddress": "Library_{{index}} Contract Address",
     "contractSourceCode": "Contract Source Code",
     "error": {
       "required": "Required",
@@ -833,6 +843,8 @@
     }
   },
   "general": {
+    "fold": "Fold",
+    "expand": "Expand",
     "refresh": "Refresh",
     "timestamp": "Timestamp",
     "create": "Create",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +8,7 @@ import { Card } from 'app/components/Card/Loadable';
 import { Link } from 'app/components/Link/Loadable';
 import { NFTPreview } from 'app/components/NFTPreview';
 import styled from 'styled-components';
-import { Row, Col, Collapse, Tooltip, message } from '@cfxjs/antd';
+import { Row, Col, Collapse, Tooltip, message, Typography } from '@cfxjs/antd';
 import { Description } from 'app/components/Description/Loadable';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { reqNFTDetail, reqToken, reqRefreshMetadata } from 'utils/httpRequest';
@@ -27,10 +27,10 @@ import { formatTimeStamp, formatAddress } from 'utils';
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
 
-import lodash from 'lodash';
 import { AddressContainer } from 'app/components/AddressContainer';
-// @ts-ignore
-window.lodash = lodash;
+import dayjs from 'dayjs';
+
+const { Text } = Typography;
 
 const AceEditorStyle = {
   width: 'initial',
@@ -50,6 +50,113 @@ interface Query {
   transactionHash?: string;
   tokenId?: string;
 }
+
+interface StringAttributes {
+  trait_type: string;
+  value: string;
+}
+
+interface NumberAttributes {
+  trait_type: string;
+  value: number;
+  display_type: string;
+}
+
+const TraitPanel = ({ data = [] }: { data: Array<StringAttributes> }) => {
+  return (
+    <StyledTraitPanelWrapper>
+      <Row gutter={[16, 16]} align="stretch">
+        {data.map(d => (
+          <Col span={6} key={d.trait_type}>
+            <div className="container">
+              <Text className="type" ellipsis={{ tooltip: d.trait_type }}>
+                {d.trait_type}
+              </Text>
+              <Text className="value" ellipsis={{ tooltip: d.value }}>
+                {d.value}
+              </Text>
+            </div>
+          </Col>
+        ))}
+      </Row>
+    </StyledTraitPanelWrapper>
+  );
+};
+
+const DatePanel = ({ data = [] }: { data: Array<NumberAttributes> }) => {
+  return (
+    <StyledDatePanelWrapper>
+      {data.map(d => {
+        let date = '--';
+
+        try {
+          date = dayjs(d.value * 1000).format('YYYY-MM-DD HH:mm:ss');
+        } catch (error) {}
+
+        return (
+          <div className="container" key={d.trait_type}>
+            <span className="type">{d.trait_type}</span>
+            <span className="value">{date}</span>
+          </div>
+        );
+      })}
+    </StyledDatePanelWrapper>
+  );
+};
+
+const DescriptionPanel = ({ data = '' }) => {
+  return <div>{data}</div>;
+};
+
+const StyledTraitPanelWrapper = styled.div`
+  .container {
+    border: 1px solid var(--theme-color-blue4);
+    border-radius: 4px;
+    padding: 1rem;
+    text-align: center;
+    background-color: var(--theme-color-blue3);
+    height: 100%;
+  }
+
+  .type {
+    color: var(--theme-color-gray4);
+    font-weight: 500;
+    font-size: 12px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+
+  .value {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    width: 100%;
+  }
+`;
+const StyledDatePanelWrapper = styled.div`
+  .container {
+    display: flex;
+    justify-content: space-between;
+
+    &:not(:last-child) {
+      padding-bottom: 12px;
+    }
+
+    &:not(:first-child) {
+      padding-top: 12px;
+      border-top: 1px solid var(--theme-color-gray0);
+    }
+  }
+
+  .type {
+    font-size: 14px;
+    color: var(--theme-color-gray4);
+  }
+  .value {
+    font-size: 14px;
+    font-weight: 450;
+  }
+`;
 
 export function NFTDetail(props) {
   const bp = useBreakpoint();
@@ -107,6 +214,30 @@ export function NFTDetail(props) {
   const name =
     i18n.language === 'zh-CN' ? data.imageName?.zh : data.imageName?.en;
   const owner = formatAddress(data.owner);
+  const { description = '', attributes = [] } = data.detail?.metadata || {};
+
+  const {
+    description: descrptionStr,
+    dateTypeAttributes,
+    stringTypeAttributes,
+  } = useMemo(() => {
+    let dateTypeAttributes: any = [],
+      stringTypeAttributes: any = [];
+
+    attributes?.forEach(a => {
+      if (a.display_type === 'date') {
+        dateTypeAttributes.push(a);
+      } else if (a.display_type === undefined) {
+        stringTypeAttributes.push(a);
+      }
+    });
+
+    return {
+      description,
+      dateTypeAttributes,
+      stringTypeAttributes,
+    };
+  }, [description, attributes]);
 
   return (
     <StyledWrapper>
@@ -123,9 +254,10 @@ export function NFTDetail(props) {
         <Col sm={24} md={8} style={{ width: '100%' }}>
           <Card style={{ padding: 0 }}>
             <NFTPreview
-              contractAddress={contractAddress}
+              contractAddress={address}
               tokenId={id}
               type="primary"
+              enable3D={true}
             />
           </Card>
 
@@ -255,6 +387,32 @@ export function NFTDetail(props) {
                   </SkeletonContainer>
                 </Description>
               </Collapse.Panel>
+              {!!stringTypeAttributes.length && (
+                <Collapse.Panel
+                  header={t(translations.nftDetail.trait, {
+                    amount: stringTypeAttributes.length,
+                  })}
+                  key="trait"
+                >
+                  <TraitPanel data={stringTypeAttributes} />
+                </Collapse.Panel>
+              )}
+              {!!dateTypeAttributes.length && (
+                <Collapse.Panel
+                  header={t(translations.nftDetail.datetime)}
+                  key="date"
+                >
+                  <DatePanel data={dateTypeAttributes} />
+                </Collapse.Panel>
+              )}
+              {!!descrptionStr && (
+                <Collapse.Panel
+                  header={t(translations.nftDetail.description)}
+                  key="description"
+                >
+                  <DescriptionPanel data={descrptionStr} />
+                </Collapse.Panel>
+              )}
               {data.detail?.metadata && (
                 <Collapse.Panel
                   header={t(translations.nftDetail.metadata)}
@@ -276,14 +434,6 @@ export function NFTDetail(props) {
                     height="20.1429rem"
                     wrapEnabled={true}
                   />
-                </Collapse.Panel>
-              )}
-              {data.detail?.metadata?.description && (
-                <Collapse.Panel
-                  header={t(translations.nftDetail.description)}
-                  key="description"
-                >
-                  {data.detail?.metadata?.description}
                 </Collapse.Panel>
               )}
             </Collapse>

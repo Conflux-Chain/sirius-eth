@@ -76,7 +76,7 @@
     "contractInfoTip": "合约部署时设置的通证的名称和符号",
     "owner": "所有者",
     "url": "内容链接",
-    "creator": "创作者",
+    "creator": "合约创建者",
     "mintedTime": "发行时间",
     "transfer": "转发",
     "from": "发送方",
@@ -91,7 +91,9 @@
       "invalidAddress": "请输入合法地址",
       "invalidAmount": "请输入 1 - {{amount}} 个"
     },
-    "refreshTip": "请求已提交，请稍等..."
+    "refreshTip": "请求已提交，请稍等...",
+    "trait": "特征（{{amount}}）",
+    "datetime": "日期"
   },
   "fccfx": {
     "title": "FC-CFX 不可逆兑换",
@@ -173,6 +175,7 @@
     "abi": "合约ABI",
     "constructorArgs": "构造器参数",
     "constructorArgsTips": "（ABI-Encoded and is the last bytes of the Contract Creation Code above）",
+    "libraryContracts": "使用的库合约",
     "encodedView": "编码视图",
     "decodedView": "解码视图",
     "enterPassword": "请输入管理员口令",
@@ -193,6 +196,8 @@
       "contractName": "合约名：",
       "optimizationEnabled": "是否优化：",
       "otherSettings": "其他设置：",
+      "evmVersion": "{{version}} evmVersion",
+      "license": "{{license}} license",
       "compilerVersion": "编译版本：",
       "runs": "{{status}} with {{count}} runs",
       "tipLeft": "立刻前往",
@@ -285,6 +290,11 @@
     "compiler": "编译器",
     "optimization": "优化",
     "license": "许可协议",
+    "evmVersion": "EVM 版本",
+    "contractLibraryAddress": "库合约地址",
+    "contractLibraryAddressTip": "（即合约中使用的库合约。库合约名称与地址必须对应，合约名称区分大小写。暂支持验证10份库合约。）",
+    "libraryName": "Library_{{index}} 合约名称",
+    "libraryContractAddress": "Library_{{index}} 合约地址",
     "contractSourceCode": "合约源码",
     "error": {
       "required": "请输入",
@@ -832,6 +842,8 @@
     }
   },
   "general": {
+    "fold": "折叠",
+    "expand": "展开",
     "refresh": "刷新",
     "timestamp": "时间戳",
     "create": "创建",
