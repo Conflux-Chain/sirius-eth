@@ -37,42 +37,48 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
   const { pendingRecords } = useContext(TxnHistoryContext);
   const { isValid } = useCheckHook(true);
 
-  let buttonText: React.ReactNode = t(translations.connectWallet.button.text);
+  let buttonText: React.ReactNode = t(
+    translations.connectWallet.button.connectWallet,
+  );
   let buttonStatus: React.ReactNode = '';
   let hasPendingRecords = connected === 1 && !!pendingRecords.length;
 
-  if (installed) {
-    if (accounts.length && isValid) {
-      if (hasPendingRecords) {
-        buttonStatus = (
-          <RotateImg
-            className="button-status-pending"
-            src={iconLoadingWhite}
-            alt="icon-pending"
-          ></RotateImg>
-        );
-        buttonText = t(translations.connectWallet.button.nPending, {
-          count: pendingRecords.length,
-        });
-      } else {
-        const addressLabel =
-          globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[accounts[0]];
-        const addressLabelIcon = (
-          <Text span hoverValue={t(translations.profile.tip.label)}>
-            <Bookmark color="var(--theme-color-gray2)" size={16} />
-          </Text>
-        );
+  if (installed && connected) {
+    if (isValid) {
+      if (accounts.length) {
+        if (hasPendingRecords) {
+          buttonStatus = (
+            <RotateImg
+              className="button-status-pending"
+              src={iconLoadingWhite}
+              alt="icon-pending"
+            ></RotateImg>
+          );
+          buttonText = t(translations.connectWallet.button.nPending, {
+            count: pendingRecords.length,
+          });
+        } else {
+          const addressLabel =
+            globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[accounts[0]];
+          const addressLabelIcon = (
+            <Text span hoverValue={t(translations.profile.tip.label)}>
+              <Bookmark color="var(--theme-color-gray2)" size={16} />
+            </Text>
+          );
 
-        buttonText = addressLabel ? (
-          <StyledAddressLabelWrapper>
-            {addressLabelIcon}
-            {addressLabel}
-          </StyledAddressLabelWrapper>
-        ) : (
-          formatString(accounts[0], 'address')
-        );
-        buttonStatus = <span className="button-status-online"></span>;
+          buttonText = addressLabel ? (
+            <StyledAddressLabelWrapper>
+              {addressLabelIcon}
+              {addressLabel}
+            </StyledAddressLabelWrapper>
+          ) : (
+            formatString(accounts[0], 'address')
+          );
+          buttonStatus = <span className="button-status-online"></span>;
+        }
       }
+    } else {
+      buttonText = t(translations.connectWallet.button.wrongNetwork);
     }
   }
 

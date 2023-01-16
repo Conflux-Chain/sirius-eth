@@ -1530,8 +1530,9 @@
   },
   "connectWallet": {
     "button": {
-      "text": "Connect Wallet",
-      "nPending": "{{count}} Pending"
+      "connectWallet": "Connect Wallet",
+      "nPending": "{{count}} Pending",
+      "wrongNetwork": "Wrong Network"
     },
     "modal": {
       "title": "Connect to a wallet",

@@ -13,11 +13,11 @@ interface Props {
 
 export const useCheckHook = function <Props>(showNotification = false) {
   const { t } = useTranslation();
-  const { connected, accounts, chainId } = usePortal();
+  const { connected, accounts, chainId, installed } = usePortal();
   const [, setNotifications] = useNotifications();
 
   const checkNetworkValid = () => {
-    if (chainId !== undefined) {
+    if (installed && chainId !== '0xNaN') {
       if (Number(chainId) === NETWORK_ID) {
         return true;
       } else {
@@ -29,7 +29,7 @@ export const useCheckHook = function <Props>(showNotification = false) {
   };
 
   const checkAddressValid = () => {
-    if (connected === 1) {
+    if (installed && connected === 1 && accounts.length) {
       return SDK.address.isValidHexAddress(accounts[0]);
     }
     return true;
@@ -72,12 +72,12 @@ export const useCheckHook = function <Props>(showNotification = false) {
     const isNetworkValid = checkNetworkValid();
     const isAddressValid = checkAddressValid();
 
-    if (showNotification) {
-      if (connected === 1 && !isAddressValid) {
+    if (installed && connected === 1 && showNotification) {
+      if (!isAddressValid) {
         notifyAddressError();
       }
 
-      if (connected === 1 && !isNetworkValid) {
+      if (!isNetworkValid) {
         notifyNetworkError();
       }
     }
