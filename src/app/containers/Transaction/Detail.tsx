@@ -873,8 +873,8 @@ export const Detail = () => {
           >
             <SkeletonContainer shown={loading}>
               {`${fromDripToGdrip(gasPrice, false, {
-                precision: 6,
-                minNum: 1e-6,
+                precision: 9,
+                minNum: 1e-9,
               })} Gdrip`}
             </SkeletonContainer>
           </Description>
