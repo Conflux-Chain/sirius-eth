@@ -23,6 +23,7 @@ import {
   getPercent,
   toThousands,
   isContractAddress,
+  fromDripToGdrip,
 } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
@@ -871,7 +872,10 @@ export const Detail = () => {
             }
           >
             <SkeletonContainer shown={loading}>
-              {`${toThousands(gasPrice)} drip`}
+              {`${fromDripToGdrip(gasPrice, false, {
+                precision: 6,
+                minNum: 1e-6,
+              })} Gdrip`}
             </SkeletonContainer>
           </Description>
           <Description
