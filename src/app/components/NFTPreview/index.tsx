@@ -27,6 +27,7 @@ import { formatAddress } from 'utils';
 import { Tag } from '@cfxjs/antd';
 import { AddressContainer } from '../AddressContainer';
 import { ThreeD } from './3D';
+import { addIPFSGateway } from 'utils';
 
 const epiKProtocolKnowledgeBadge =
   'cfx:acev4c2s2ttu3jzxzsd4a2hrzsa4pfc3f6f199y5mk';
@@ -238,6 +239,9 @@ export const NFTPreview = React.memo(
               if (enable3D && animation_url) {
                 img = animation_url;
               }
+
+              // add ipfs gateway prefix
+              img = addIPFSGateway(img, data.imageGateway);
 
               setImageUri(img);
               setImageName(data.imageName ? data.imageName[lang] || '' : '');

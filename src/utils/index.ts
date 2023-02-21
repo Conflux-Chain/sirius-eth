@@ -908,3 +908,18 @@ export const formatContractAndTokenInfoMap = m => {
 
 export const getDomainTLD = () =>
   (window.location.host.match(/scan\.(.*)$/) || [])[1] || 'net';
+
+export const addIPFSGateway = (
+  imgURL: string,
+  IPFSGatewayURL: string,
+): string => {
+  if (
+    typeof imgURL === 'string' &&
+    typeof IPFSGatewayURL === 'string' &&
+    imgURL.startsWith('ipfs://')
+  ) {
+    imgURL = `${IPFSGatewayURL}/${imgURL.replace('ipfs://', 'ipfs/')}`;
+  }
+
+  return imgURL;
+};

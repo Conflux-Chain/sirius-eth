@@ -22,7 +22,7 @@ import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 
-import { formatTimeStamp, formatAddress } from 'utils';
+import { formatTimeStamp, formatAddress, addIPFSGateway } from 'utils';
 
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
@@ -239,6 +239,11 @@ export function NFTDetail(props) {
     };
   }, [description, attributes]);
 
+  const imgURL = addIPFSGateway(
+    data.detail?.metadata?.image,
+    data.imageGateway,
+  );
+
   return (
     <StyledWrapper>
       <Helmet>
@@ -295,14 +300,14 @@ export function NFTDetail(props) {
                 </Description>
                 <Description title={t(translations.nftDetail.url)}>
                   <SkeletonContainer shown={loading}>
-                    {data.imageUri ? (
+                    {imgURL ? (
                       <div className="image-uri-container">
-                        <Tooltip title={data.imageUri}>
-                          <Link href={data.imageUri} className="image-uri">
-                            {data.imageUri}
+                        <Tooltip title={imgURL}>
+                          <Link href={imgURL} className="image-uri">
+                            {imgURL}
                           </Link>
                         </Tooltip>
-                        <CopyButton copyText={data.imageUri} />
+                        <CopyButton copyText={imgURL} />
                       </div>
                     ) : (
                       '--'
