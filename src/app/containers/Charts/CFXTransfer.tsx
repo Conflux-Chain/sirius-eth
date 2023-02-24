@@ -75,24 +75,26 @@ export function CFXTransfer({ preview = false }: ChildProps) {
           name: `<span>${t(
             translations.highcharts.cfxTransfer.seriesName3,
           )}</span>`,
-          color: '#7cb5ec',
           yAxis: 1,
           tooltip: {
             valueDecimals: 2,
             valueSuffix: ' CFX',
           },
+          color: '#7cb5ec',
         },
         {
           type: 'line',
           name: `<span>${t(
             translations.highcharts.cfxTransfer.seriesName2,
           )}</span>`,
+          color: '#90ed7d',
         },
         {
           type: 'line',
           name: `<span>${t(
             translations.highcharts.cfxTransfer.seriesName,
           )}</span>`,
+          color: '#434348',
         },
       ],
     },
