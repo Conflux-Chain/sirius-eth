@@ -650,7 +650,7 @@
     },
     "circulatingSupply": {
       "title": "Circulating Supply",
-      "subtitle": "Circulating supply contains the CFX in the Zero Address.",
+      "subtitle": "The number of CFX that is available and circulating on the market.",
       "zeroAddress": "Zero Address",
       "others": "Others"
     },
@@ -762,16 +762,6 @@
     "cfxMarketCap": {
       "title": "Market Cap",
       "description": "Market Cap = Current Price x Circulating Supply"
-    },
-    "cfxCirculatingSupply": {
-      "title": "Circulating Supply",
-      "description": "Circulating supply contains the CFX in the Zero Address."
-    },
-    "circulating": {
-      "title": "Circulating Supply",
-      "description": "Circulating supply contains the CFX in the Zero Address.",
-      "labelZeroAddress": "Zero Address",
-      "labelOthers": "Others"
     },
     "issued": {
       "title": "Total Supply",
