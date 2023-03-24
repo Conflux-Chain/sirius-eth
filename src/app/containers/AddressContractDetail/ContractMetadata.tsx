@@ -38,6 +38,23 @@ export function ContractMetadata({ address, contractInfo }) {
 
   const isNotDeployed = [1, 2, 3].includes(contractInfo.destroy?.status);
 
+  const isToken = ['20', '721', '1155', '3525'].includes(
+    /\d+/.exec(tokenInfo.tokenType || tokenInfo.transferType)?.[0] || '', // compatible with open api
+  );
+
+  let tokenName: React.ReactNode = tokenInfo.name
+    ? formatString(
+        `${tokenInfo.name || notAvailableText} (${
+          tokenInfo.symbol || notAvailableText
+        })`,
+        'tokenTracker',
+      )
+    : notAvailableText;
+
+  if (tokenInfo.name && isToken) {
+    tokenName = <Link to={`/token/${address}`}>{tokenName}</Link>;
+  }
+
   let list = [
     {
       title: (
@@ -96,18 +113,7 @@ export function ContractMetadata({ address, contractInfo }) {
             />
 
             <Content className={clsx(!tokenInfo.name && 'not-available')}>
-              {tokenInfo.name ? (
-                <Link to={`/token/${address}`}>
-                  {formatString(
-                    `${tokenInfo.name || notAvailableText} (${
-                      tokenInfo.symbol || notAvailableText
-                    })`,
-                    'tokenTracker',
-                  )}
-                </Link>
-              ) : (
-                notAvailableText
-              )}
+              {tokenName}
             </Content>
           </CenterLine>
         </SkeletonContainer>
