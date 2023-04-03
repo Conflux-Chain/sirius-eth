@@ -76,8 +76,6 @@ export function NFTAsset({
 
   const validateAddress = async function (address) {
     if (isAddress(address)) {
-      // TODO, eth space, use isAddress replaced
-      // if (isAccountAddress(address)) {
       return true;
     }
 
