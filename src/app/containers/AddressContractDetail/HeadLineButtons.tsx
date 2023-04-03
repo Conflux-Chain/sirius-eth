@@ -22,6 +22,56 @@ export function Qrcode({ address = '' } = {}) {
   );
 }
 
+export function Debank({ address = '' } = {}) {
+  return (
+    <HeadAddressLineButton>
+      <IconButton
+        size={18}
+        viewBox="0 0 18 18"
+        className="address-line-icon"
+        tooltipText="Debank"
+        onClick={e => {
+          e.preventDefault();
+          window.open(`https://debank.com/profile/${address}?chain=cfx`);
+        }}
+        style={{
+          marginTop: '-1px',
+        }}
+      >
+        <circle cx="9" cy="9" r="9" fill="transparent" fill-opacity="0.08" />
+        <g clip-path="url(#clip0_601_2536)">
+          <path
+            opacity="0.8"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M12.8691 10.76C12.8691 12.218 11.6693 13.4 10.1895 13.4H5.12799V11.64H10.1895C10.6828 11.64 11.0827 11.246 11.0827 10.76C11.0827 10.274 10.6828 9.88001 10.1895 9.88001H8.40306V8.12H10.1895C10.6828 8.12 11.0827 7.72601 11.0827 7.24001C11.0827 6.754 10.6828 6.36001 10.1895 6.36001H5.12799V4.60001H10.1895C11.6693 4.60001 12.8691 5.78197 12.8691 7.24001C12.8691 7.91617 12.6111 8.53293 12.1868 9.00002C12.6111 9.46708 12.8691 10.0838 12.8691 10.76Z"
+            fill="#8B93A7"
+          />
+          <path
+            opacity="0.12"
+            d="M5.12799 11.64H9.47528C8.55184 12.7087 7.08165 13.4 5.42572 13.4C5.32578 13.4 5.22651 13.3975 5.12799 13.3925V11.64ZM10.386 9.88001H8.70079V8.12H10.386C10.4523 8.40433 10.4872 8.69863 10.4872 9.00002C10.4872 9.30138 10.4523 9.59568 10.386 9.88001ZM9.47528 6.36001H5.12799V4.60749C5.22651 4.60252 5.32578 4.60001 5.42572 4.60001C7.08165 4.60001 8.55184 5.29129 9.47528 6.36001Z"
+            fill="black"
+          />
+          <path
+            d="M5.12799 4.60001C7.5945 4.60001 9.59399 6.56995 9.59399 9.00002C9.59399 11.4301 7.5945 13.4 5.12799 13.4V11.64C6.60789 11.64 7.80759 10.458 7.80759 9.00002C7.80759 7.54198 6.60789 6.36001 5.12799 6.36001V4.60001Z"
+            fill="#616B84"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_601_2536">
+            <rect
+              width="8.8"
+              height="8.8"
+              fill="white"
+              transform="translate(4.59998 4.60001)"
+            />
+          </clipPath>
+        </defs>
+      </IconButton>
+    </HeadAddressLineButton>
+  );
+}
+
 export function Edit({ address = '' } = {}) {
   const { t } = useTranslation();
   return (

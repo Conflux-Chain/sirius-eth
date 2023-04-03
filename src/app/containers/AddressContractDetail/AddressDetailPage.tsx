@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Copy, Qrcode } from './HeadLineButtons';
+import { Copy, Qrcode, Debank } from './HeadLineButtons';
 import { BalanceCard, TokensCard, NonceCard } from './AddressInfoCards';
 import { Main, Title, Bottom, HeadAddressLine, Top, Head } from './layouts';
 import { Table } from './Loadable';
@@ -116,6 +116,7 @@ export const AddressDetailPage = memo(() => {
             <div className="icons">
               <Copy address={address} />
               <Qrcode address={address} />
+              <Debank address={address} />
               <DropdownWrapper overlay={menu} trigger={['hover']}>
                 <span onClick={e => e.preventDefault()}>
                   {t(translations.general.address.more.title)}{' '}
