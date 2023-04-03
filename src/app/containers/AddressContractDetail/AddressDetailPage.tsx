@@ -16,7 +16,6 @@ import { Table } from './Loadable';
 import { isZeroAddress } from '../../../utils';
 import { useAccount } from '../../../utils/api';
 import { Dropdown, Menu } from '@cfxjs/antd';
-import { Link as RouterLink } from 'react-router-dom';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
 import { media } from '../../../styles/media';
@@ -49,11 +48,6 @@ export const AddressDetailPage = memo(() => {
   const menu = (
     <MenuWrapper>
       <Menu.Item>
-        <RouterLink to={`/nft-checker/${address}`}>
-          {t(translations.general.address.more.NFTChecker)}
-        </RouterLink>
-      </Menu.Item>
-      <Menu.Item>
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a
           onClick={e => {
@@ -70,16 +64,6 @@ export const AddressDetailPage = memo(() => {
           )}
         </a>
       </Menu.Item>
-      {/* <Menu.Item>
-        <RouterLink to={`/balance-checker?address=${address}`}>
-          {t(translations.general.address.more.balanceChecker)}
-        </RouterLink>
-      </Menu.Item>
-      <Menu.Item>
-        <RouterLink to={`/report?address=${address}`}>
-          {t(translations.general.address.more.report)}
-        </RouterLink>
-      </Menu.Item> */}
     </MenuWrapper>
   );
 
