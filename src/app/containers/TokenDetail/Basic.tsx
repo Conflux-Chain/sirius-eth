@@ -8,8 +8,8 @@ import { translations } from 'locales/i18n';
 import { List } from 'app/components/List/Loadable';
 import { Text } from 'app/components/Text/Loadable';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
-import { formatBalance, formatNumber, toThousands } from 'utils';
-import { CFX_TOKEN_TYPES, getCurrencySymbol } from 'utils/constants';
+import { formatBalance, toThousands } from 'utils';
+import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { LinkA } from 'utils/tableColumns/token';
 import CRC20bg from 'images/token/crc20bg.png';
@@ -21,6 +21,7 @@ import FlatIcon from 'images/token/flat.svg';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import { Tag } from '@cfxjs/antd';
+import { Price } from 'app/components/Price/Loadable';
 // import { ProjectInfo } from '../../components/ProjectInfo';
 
 interface SecurityAudit {
@@ -115,8 +116,6 @@ export const Basic = ({
     transferType = typeof decimals !== 'undefined' ? CFX_TOKEN_TYPES.erc20 : '';
   }
 
-  const CURRENCY_SYMBOL = getCurrencySymbol();
-
   const fieldPrice = {
     title: (
       <Tooltip text={t(translations.toolTip.token.price)} placement="top">
@@ -125,16 +124,13 @@ export const Basic = ({
     ),
     children:
       price != null ? (
-        <Text hoverValue={`${CURRENCY_SYMBOL}${price}`}>
-          {quoteUrl ? (
-            <LinkA href={quoteUrl} target="_blank">
-              {CURRENCY_SYMBOL}
-              {formatNumber(price || 0, { withUnit: false })}
-            </LinkA>
-          ) : (
-            `${CURRENCY_SYMBOL}${formatNumber(price || 0, { withUnit: false })}`
-          )}
-        </Text>
+        quoteUrl ? (
+          <LinkA href={quoteUrl} target="_blank">
+            <Price>{price}</Price>
+          </LinkA>
+        ) : (
+          <Price>{price}</Price>
+        )
       ) : address ? (
         t(translations.general.notAvailable)
       ) : undefined,
@@ -150,17 +146,7 @@ export const Basic = ({
     ),
     children:
       totalPrice !== undefined ? (
-        <Text
-          hoverValue={
-            totalPrice != null ? `${CURRENCY_SYMBOL}${totalPrice}` : '-'
-          }
-        >
-          {totalPrice != null && totalPrice > 0
-            ? `${CURRENCY_SYMBOL}${formatNumber(totalPrice || 0, {
-                unit: 'K',
-              })}`
-            : '-'}
-        </Text>
+        <Price>{totalPrice}</Price>
       ) : address ? (
         t(translations.general.notAvailable)
       ) : undefined,

@@ -5,7 +5,12 @@ import fetch from './request';
 import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
 import { NetworksType } from './hooks/useGlobal';
-import { IS_PRE_RELEASE, NETWORK_ID, CFX } from 'utils/constants';
+import {
+  IS_PRE_RELEASE,
+  NETWORK_ID,
+  CFX,
+  getCurrencySymbol,
+} from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
@@ -922,4 +927,41 @@ export const addIPFSGateway = (
   }
 
   return imgURL;
+};
+
+const cSymbol = getCurrencySymbol();
+
+export const formatPrice = (
+  price: string | number,
+  symbol: string = cSymbol,
+): string[] => {
+  const p = new BigNumber(price);
+  let precision = 2;
+
+  if (p.lt(0.0001)) {
+    return [
+      '<0.0001',
+      formatNumber(price || 0, {
+        withUnit: false,
+        precision: 18,
+        keepZero: false,
+      }),
+    ];
+  } else if (p.lt(1)) {
+    precision = 4;
+  } else if (p.lt(10)) {
+    precision = 3;
+  } else {
+    precision = 2;
+  }
+
+  return [
+    symbol +
+      formatNumber(price || 0, {
+        withUnit: false,
+        keepZero: false,
+        precision,
+      }),
+    '',
+  ];
 };

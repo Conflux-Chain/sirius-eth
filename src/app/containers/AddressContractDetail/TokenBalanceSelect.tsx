@@ -7,7 +7,7 @@ import { ChevronUp } from '@zeit-ui/react-icons';
 import { useClickAway, useToggle } from 'react-use';
 import { media } from 'styles/media';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { ICON_DEFAULT_TOKEN } from 'utils/constants';
+import { ICON_DEFAULT_TOKEN, getCurrencySymbol } from 'utils/constants';
 import { Link } from 'react-router-dom';
 import { Text } from '../../components/Text';
 import { formatAddress, formatBalance, formatNumber } from 'utils/index';
@@ -15,7 +15,7 @@ import { CFX_TOKEN_TYPES } from '../../../utils/constants';
 import BigNumber from 'bignumber.js';
 import { useTranslation } from 'react-i18next';
 import { translations } from '../../../locales/i18n';
-import { getCurrencySymbol } from 'utils/constants';
+import { Price } from 'app/components/Price/Loadable';
 
 const skeletonStyle = { width: '7rem', height: '2.5rem' };
 
@@ -40,15 +40,15 @@ function Select({ children = [] } = {}) {
 
   const children20 = children
     .filter((c: any) => c && c.transferType === CFX_TOKEN_TYPES.erc20)
-    .map((t, idx) => <SelectItem key={idx} {...t} />);
+    .map((t: any, idx) => <SelectItem key={idx} {...t} />);
 
   const children721 = children
     .filter((c: any) => c && c.transferType === CFX_TOKEN_TYPES.erc721)
-    .map((t, idx) => <SelectItem key={idx} {...t} />);
+    .map((t: any, idx) => <SelectItem key={idx} {...t} />);
 
   const children1155 = children
     .filter((c: any) => c && c.transferType === CFX_TOKEN_TYPES.erc1155)
-    .map((t, idx) => <SelectItem key={idx} {...t} />);
+    .map((t: any, idx) => <SelectItem key={idx} {...t} />);
 
   return (
     <SelectWrapper ref={selectRef}>
@@ -97,7 +97,6 @@ function SelectItem({
   decimals,
   transferType,
 }) {
-  const currencyUnit = getCurrencySymbol();
   const title = (
     <SelectItemTitle key="title">
       <SelectItemTokenIcon
@@ -129,37 +128,26 @@ function SelectItem({
       {transferType === CFX_TOKEN_TYPES.erc20 ? (
         <SelectItemContentBalance key="price">
           <Text
-            hoverValue={`1 ${symbol} ≈ ${currencyUnit}${
+            hoverValue={`1 ${symbol} ≈ ${getCurrencySymbol()}${
               price
                 ? formatNumber(price || 0, {
                     withUnit: false,
-                    precision: 2,
-                    keepZero: true,
+                    precision: 18,
+                    keepZero: false,
                   })
                 : '--'
             }`}
             getPopupContainer={triggerNode => triggerNode}
           >
-            {`${currencyUnit}${
-              price
-                ? formatNumber(
-                    new BigNumber(price || 0)
-                      .multipliedBy(
-                        new BigNumber(
-                          new BigNumber(balance).div(
-                            new BigNumber(10).pow(decimals),
-                          ),
-                        ),
-                      )
-                      .toFixed(2),
-                    {
-                      withUnit: false,
-                      precision: 2,
-                      keepZero: true,
-                    },
-                  )
-                : '--'
-            }`}
+            <Price showTooltip={false}>
+              {new BigNumber(price)
+                .multipliedBy(
+                  new BigNumber(
+                    new BigNumber(balance).div(new BigNumber(10).pow(decimals)),
+                  ),
+                )
+                .toString()}
+            </Price>
           </Text>
         </SelectItemContentBalance>
       ) : null}
