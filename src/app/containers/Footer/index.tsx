@@ -407,12 +407,12 @@ export function Footer() {
             <FooterContentLink>
               {developResourceLinks.developerDocuments}
             </FooterContentLink>
-            <FooterContentLink>
+            {/* <FooterContentLink>
               {developResourceLinks.confluxStudio}
             </FooterContentLink>
             <FooterContentLink>
               {developResourceLinks.confluxTruffle}
-            </FooterContentLink>
+            </FooterContentLink> */}
           </FooterContentRow>
         </FooterContent>
       </FooterContentWrapper>

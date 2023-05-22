@@ -938,7 +938,9 @@ export const formatPrice = (
   const p = new BigNumber(price);
   let precision = 2;
 
-  if (p.lt(0.0001)) {
+  if (p.eq(0)) {
+    return ['0', ''];
+  } else if (p.lt(0.0001)) {
     return [
       '<0.0001',
       formatNumber(price || 0, {
