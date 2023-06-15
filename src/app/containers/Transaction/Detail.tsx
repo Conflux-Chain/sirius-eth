@@ -24,6 +24,7 @@ import {
   toThousands,
   isContractAddress,
   fromDripToGdrip,
+  isZeroAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
@@ -458,10 +459,12 @@ export const Detail = () => {
                 {t(translations.transaction.tokenId)}:
                 <span className="tokenId">
                   {transferItem['tokenId']}
-                  <NFTPreview
-                    contractAddress={transferItem['address']}
-                    tokenId={transferItem['tokenId']}
-                  />
+                  {!isZeroAddress(formatAddress(transferItem['to'])) && (
+                    <NFTPreview
+                      contractAddress={transferItem['address']}
+                      tokenId={transferItem['tokenId']}
+                    />
+                  )}
                 </span>
               </span>
             </div>,
@@ -513,10 +516,12 @@ export const Detail = () => {
                       &nbsp;&nbsp;{t(translations.transaction.tokenId)}:{' '}
                       <span className="tokenId">
                         {item['tokenId']}
-                        <NFTPreview
-                          contractAddress={transferItem['address']}
-                          tokenId={item['tokenId']}
-                        />
+                        {!isZeroAddress(formatAddress(transferItem['to'])) && (
+                          <NFTPreview
+                            contractAddress={transferItem['address']}
+                            tokenId={item['tokenId']}
+                          />
+                        )}
                       </span>
                     </span>
                   </span>
