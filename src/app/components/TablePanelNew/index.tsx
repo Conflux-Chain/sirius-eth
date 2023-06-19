@@ -173,7 +173,9 @@ export const TablePanel = ({
     history.push(url);
   };
 
-  const { data, loading, total, listLimit } = state;
+  const { data, loading, total: stateTotal, listLimit } = state;
+  const total =
+    dataSource && Array.isArray(dataSource) ? dataSource.length : stateTotal;
 
   let _columns: any = columns;
   if (orderBy !== undefined) {
