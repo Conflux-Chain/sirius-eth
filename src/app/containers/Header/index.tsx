@@ -158,6 +158,12 @@ export const Header = memo(() => {
       href: '/profile',
       className: 'profile',
     },
+    {
+      title: [t(translations.header.approval), <Check size={18} key="check" />],
+      name: ScanEvent.menu.action.approval,
+      afterClick: menuClick,
+      href: '/approval',
+    },
   ];
 
   if ([NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {
