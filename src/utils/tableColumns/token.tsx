@@ -12,6 +12,7 @@ import {
   formatNumber,
   formatString,
   checkIfContractByInfo,
+  isZeroAddress,
 } from 'utils';
 import imgArrow from 'images/token/arrow.svg';
 import imgOut from 'images/token/out.svg';
@@ -210,7 +211,7 @@ export const token = {
   },
 };
 
-const Token2 = ({ row }) => {
+export const Token2 = ({ row }) => {
   const { t } = useTranslation();
   const isContract = checkIfContractByInfo(
     row?.transferTokenInfo?.address,
@@ -679,17 +680,21 @@ export const tokenId = (contractAddress?: string) => ({
   ),
   dataIndex: 'tokenId',
   key: 'tokenId',
-  render: (value, row) => (
-    <>
-      <Text span hoverValue={value}>
-        <SpanWrap>{value || '-'}</SpanWrap>
-      </Text>
-      <NFTPreview
-        contractAddress={contractAddress || row?.transferTokenInfo?.address}
-        tokenId={value}
-      />
-    </>
-  ),
+  render: (value, row) => {
+    return (
+      <>
+        <Text span hoverValue={value}>
+          <SpanWrap>{value || '-'}</SpanWrap>
+        </Text>
+        {!isZeroAddress(formatAddress(row.to)) && (
+          <NFTPreview
+            contractAddress={contractAddress || row?.transferTokenInfo?.address}
+            tokenId={value}
+          />
+        )}
+      </>
+    );
+  },
 });
 
 export const details = {

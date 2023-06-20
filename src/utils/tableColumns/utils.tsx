@@ -114,18 +114,21 @@ export const ColumnAge = ({
     dataIndex: dataIndex || 'syncTimestamp',
     key: key || 'syncTimestamp',
     width: 1,
-    render: value =>
-      ageFormat === 'age' ? (
-        <CountDown from={value} />
+    render: value => {
+      const second = /^\d+$/.test(value) ? value : dayjs(value).unix();
+
+      return ageFormat === 'age' ? (
+        <CountDown from={second} />
       ) : (
         <div
           style={{
             whiteSpace: 'nowrap',
           }}
         >
-          {dayjs.unix(value).format('YYYY-MM-DD HH:mm:ss')}
+          {dayjs.unix(second).format('YYYY-MM-DD HH:mm:ss')}
         </div>
-      ),
+      );
+    },
   };
 };
 

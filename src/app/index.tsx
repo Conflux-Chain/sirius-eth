@@ -78,6 +78,7 @@ import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 import { Statistics } from './containers/Statistics/Loadable';
 import { BroadcastTx } from './containers/BroadcastTx/Loadable';
 import { NFTChecker } from './containers/NFTChecker/Loadable';
+import { Approval } from './containers/Approval/Loadable';
 import { NFTDetail } from './containers/NFTDetail/Loadable';
 import { Profile } from './containers/Profile/Loadable';
 
@@ -608,6 +609,12 @@ export function App() {
                           />
 
                           <Route exact path="/Profile" component={Profile} />
+
+                          <Route
+                            exact
+                            path={['/approval']}
+                            component={Approval}
+                          />
 
                           {/* <Route
                             exact

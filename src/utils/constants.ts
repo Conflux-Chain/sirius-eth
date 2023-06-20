@@ -215,6 +215,7 @@ export const OPEN_API_URLS = Object.entries({
   accountGrowth: '/statistics/account/growth',
   activeAccounts: '/statistics/account/active/overall',
   contracts: '/statistics/contract',
+  approvals: '/account/approvals',
 
   // NFT
   NFTTokens: '/nft/tokens',
