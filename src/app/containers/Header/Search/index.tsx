@@ -18,6 +18,8 @@ import _ from 'lodash';
 import fetch from 'utils/request';
 import { formatAddress, isBlockNumber, isHash } from 'utils';
 import { appendApiPrefix } from 'utils/api';
+import verifiedIcon from 'images/nametag/verified.svg';
+import warningIcon from 'images/nametag/warning.svg';
 
 const { Search: SearchInput } = Input;
 
@@ -43,6 +45,12 @@ const TokenItemWrapper = styled.div`
       font-size: 14px;
     }
 
+    .nametag-status-icon {
+      width: 16px;
+      height: 16px;
+      margin-top: -2px;
+    }
+
     .address,
     .website {
       color: #6c6d75;
@@ -66,67 +74,99 @@ const TokenItemWrapper = styled.div`
   }
 `;
 
-const searchResult = (list: any[], notAvailable = '-', type = 'token') =>
-  list.map(l => {
-    const token = {
-      ...l,
-      icon: l.iconUrl || ICON_DEFAULT_TOKEN,
-      name: l.name || notAvailable,
-      address: formatAddress(l.address),
-    };
-
-    return {
-      key: `${type}-${token.address}`,
-      // add type prefix for duplicate value with different type
-      value: `${type}-${token.address}`,
+const searchResult = (list: any[], notAvailable = '-', type = 'token') => {
+  if (type === 'nametag') {
+    return list.map(l => ({
+      key: `nametag-${l.address}`,
+      value: `nametag-${l.address}`,
       type,
-      label: (
+      label: l.address ? (
         <TokenItemWrapper
           onClick={() => {
-            window.location.href = `/${
-              type === 'token' ? 'token' : 'address'
-            }/${token.address}`;
+            window.location.href = `/address/${l.address}`;
           }}
         >
-          {type === 'token' && (
-            <Image
-              preview={false}
-              src={token?.iconUrl || ICON_DEFAULT_TOKEN}
-              fallback={ICON_DEFAULT_TOKEN}
-              alt="token icon"
-            />
-          )}
           <span>
-            <Translation>
-              {t => (
-                <>
-                  <div className="title">
-                    {token?.name}
-                    {token?.symbol ? ` (${token.symbol}) ` : ' '}
-                    {token?.transferType && (
-                      <span className="tag">{token?.transferType}</span>
-                    )}
-                  </div>
-                  {token?.address ? (
-                    <div className="address">{token?.address}</div>
-                  ) : null}
-                  {/*{token?.website ? (*/}
-                  {/*  <div className="website">{token?.website}</div>*/}
-                  {/*) : null}*/}
-                  {token?.holderCount ? (
-                    <div className="holders">
-                      {token?.holderCount}{' '}
-                      {t(translations.tokens.table.holders)}
-                    </div>
-                  ) : null}
-                </>
-              )}
-            </Translation>
+            <div className="title">
+              {l.nameTag}{' '}
+              <img
+                className="nametag-status-icon"
+                src={l.caution ? warningIcon : verifiedIcon}
+                alt="status-icon"
+              ></img>
+            </div>
+            <div className="address">{l.address}</div>
           </span>
         </TokenItemWrapper>
+      ) : (
+        <span>
+          <Translation>{t => t(translations.general.noResult)}</Translation>
+        </span>
       ),
-    };
-  });
+    }));
+  } else {
+    return list.map(l => {
+      const token = {
+        ...l,
+        icon: l.iconUrl || ICON_DEFAULT_TOKEN,
+        name: l.name || notAvailable,
+        address: formatAddress(l.address),
+      };
+
+      return {
+        key: `${type}-${token.address}`,
+        // add type prefix for duplicate value with different type
+        value: `${type}-${token.address}`,
+        type,
+        label: (
+          <TokenItemWrapper
+            onClick={() => {
+              window.location.href = `/${
+                type === 'token' ? 'token' : 'address'
+              }/${token.address}`;
+            }}
+          >
+            {type === 'token' && (
+              <Image
+                preview={false}
+                src={token?.iconUrl || ICON_DEFAULT_TOKEN}
+                fallback={ICON_DEFAULT_TOKEN}
+                alt="token icon"
+              />
+            )}
+            <span>
+              <Translation>
+                {t => (
+                  <>
+                    <div className="title">
+                      {token?.name}
+                      {token?.symbol ? ` (${token.symbol}) ` : ' '}
+                      {token?.transferType && (
+                        <span className="tag">{token?.transferType}</span>
+                      )}
+                    </div>
+                    {token?.address ? (
+                      <div className="address">{token?.address}</div>
+                    ) : null}
+                    {/*{token?.website ? (*/}
+                    {/*  <div className="website">{token?.website}</div>*/}
+                    {/*) : null}*/}
+                    {token?.holderCount ? (
+                      <div className="holders">
+                        {token?.holderCount}{' '}
+                        {t(translations.tokens.table.holders)}
+                      </div>
+                    ) : null}
+                  </>
+                )}
+              </Translation>
+            </span>
+          </TokenItemWrapper>
+        ),
+      };
+    });
+  }
+};
 
 let controller = new AbortController();
 
@@ -165,6 +205,7 @@ export const Search = () => {
                 ),
                 options: searchResult(res.list, notAvailable, 'token'),
               });
+
             if (res.contractList && res.contractList.length > 0)
               options.push({
                 label: (
@@ -183,6 +224,23 @@ export const Search = () => {
                   'contract',
                 ),
               });
+
+            if (res.eoaList && res.eoaList.length > 0)
+              options.push({
+                label: (
+                  <LabelWrapper>
+                    {t(translations.header.search.nametag)}
+                  </LabelWrapper>
+                ),
+                options: searchResult(
+                  res.eoaList.length > 10
+                    ? res.eoaList.slice(0, 10)
+                    : res.eoaList,
+                  notAvailable,
+                  'nametag',
+                ),
+              });
+
             setOptions(options);
           } else {
             setOptions([]);

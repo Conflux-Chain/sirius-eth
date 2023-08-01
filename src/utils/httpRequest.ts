@@ -321,3 +321,14 @@ export const reqRefreshMetadata = (param?: object, extra?: object) => {
     ...extra,
   });
 };
+
+export const reqNametag = (address: string[], extra?: object) => {
+  const query = address.reduce((prev, curr, index) => {
+    return !index ? `address=${curr}` : `${prev}&address=${curr}`;
+  }, '');
+
+  return sendRequest({
+    url: `/nametag?${query}`,
+    ...extra,
+  });
+};

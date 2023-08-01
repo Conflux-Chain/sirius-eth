@@ -1,4 +1,8 @@
 {
+  "nametag": {
+    "label": "Public Name Tag",
+    "tip": "Public Name Tag: "
+  },
   "profile": {
     "title": "Profile",
     "subtitle": "Private info, like private name tag and transaction private note. Decentralized storage in browser's localstorage.",
@@ -491,7 +495,8 @@
     "search": {
       "tokens": "Tokens",
       "contracts": "Contracts",
-      "contractsTip": "Only the 10 contracts with the earliest registration date are displayed"
+      "contractsTip": "Only the 10 contracts with the earliest registration date are displayed",
+      "nametag": "Public Name Tag"
     },
     "profile": "My Profile"
   },
@@ -835,6 +840,7 @@
     }
   },
   "general": {
+    "noResult": "No Result",
     "fold": "Fold",
     "expand": "Expand",
     "refresh": "Refresh",
