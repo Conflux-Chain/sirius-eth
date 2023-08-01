@@ -131,8 +131,7 @@ const RenderAddress = ({
                 {addressLabel}
               </>
             ) : null}
-            <div>{hoverValue || cfxAddress}</div>
-            {addressLabel && alias ? (
+            {alias ? (
               <>
                 <span>
                   <Translation>
@@ -142,6 +141,7 @@ const RenderAddress = ({
                 {alias}
               </>
             ) : null}
+            <div>{hoverValue || cfxAddress}</div>
           </>
         }
       >
@@ -314,7 +314,7 @@ export const AddressContainer = withTranslation()(
       let addressLabel: React.ReactNode = null;
 
       if (showLabeled) {
-        const { label, icon } = getLabelInfo(
+        const { label } = getLabelInfo(
           globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
             formatAddress(cfxAddress)
           ],
@@ -322,17 +322,15 @@ export const AddressContainer = withTranslation()(
         );
 
         addressLabel = label;
-        prefixIcon = icon;
       }
 
       if (showNametag && nametagInfo?.[cfxAddress]?.nametag) {
-        const { label, icon } = getLabelInfo(
+        const { label } = getLabelInfo(
           nametagInfo[cfxAddress].nametag,
           'nametag',
         );
 
         officalNametag = label;
-        prefixIcon = icon;
       }
 
       if (isContract) {
