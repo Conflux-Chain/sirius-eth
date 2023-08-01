@@ -14,6 +14,7 @@ import {
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
+import { Nametag } from 'utils/hooks/useNametag';
 
 // @ts-ignore
 window.SDK = SDK;
@@ -966,4 +967,64 @@ export const formatPrice = (
       }),
     '',
   ];
+};
+
+export const getNametagInfo = (row: {
+  from?: string;
+  fromNameTagInfo?: Nametag;
+  to?: string;
+  toNameTagInfo?: Nametag;
+  address?: string;
+  nameTagInfo?: Nametag;
+  miner?: string;
+  minerNameTagInfo?: Nametag;
+  base32address?: string;
+}): {
+  [k: string]: { address: string; nametag: string };
+} => {
+  let result = {};
+
+  try {
+    if (row.from) {
+      const addr = formatAddress(row.from);
+      result[addr] = {
+        address: addr,
+        nametag: row.fromNameTagInfo?.nameTag,
+      };
+    }
+
+    if (row.to) {
+      const addr = formatAddress(row.to);
+      result[addr] = {
+        address: addr,
+        nametag: row.toNameTagInfo?.nameTag,
+      };
+    }
+
+    if (row.address) {
+      const addr = formatAddress(row.address);
+      result[addr] = {
+        address: addr,
+        nametag: row.nameTagInfo?.nameTag,
+      };
+    }
+
+    if (row.base32address) {
+      const addr = formatAddress(row.base32address);
+      result[addr] = {
+        address: addr,
+        nametag: row.nameTagInfo?.nameTag,
+      };
+    }
+
+    if (row.miner) {
+      const addr = formatAddress(row.miner);
+      result[addr] = {
+        address: addr,
+        nametag: row.minerNameTagInfo?.nameTag,
+      };
+    }
+  } catch (e) {}
+
+  return result;
 };

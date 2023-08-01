@@ -34,6 +34,7 @@ import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { Bookmark } from '@zeit-ui/react-icons';
 import { Text } from 'app/components/Text/Loadable';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
+import Nametag from './Nametag';
 
 interface RouteParams {
   address: string;
@@ -166,7 +167,10 @@ export const ContractDetailPage = memo(() => {
       </Helmet>
       <Main key="main">
         <Head key="head">
-          <Title>{contractInfo.name || t(translations.general.contract)}</Title>
+          <Title>
+            {contractInfo.name || t(translations.general.contract)}{' '}
+            <Nametag address={address}></Nametag>
+          </Title>
           <HeadAddressLine>
             <IconWrapper className="address">
               <img src={ContractIcon} alt={t(translations.general.contract)} />

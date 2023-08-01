@@ -1,4 +1,8 @@
 {
+  "nametag": {
+    "label": "公共标签",
+    "tip": "公共标签："
+  },
   "profile": {
     "title": "用户",
     "subtitle": "私人信息，例如地址标签，交易备注等。去中心化存储，保存在浏览器本地存储中。",
@@ -490,7 +494,8 @@
     "search": {
       "tokens": "通证",
       "contracts": "合约",
-      "contractsTip": "仅显示注册日期最早的 10 个合约"
+      "contractsTip": "仅显示注册日期最早的 10 个合约",
+      "nametag": "公共标签"
     },
     "profile": "用户信息"
   },
@@ -834,6 +839,7 @@
     }
   },
   "general": {
+    "noResult": "暂无结果",
     "fold": "折叠",
     "expand": "展开",
     "refresh": "刷新",

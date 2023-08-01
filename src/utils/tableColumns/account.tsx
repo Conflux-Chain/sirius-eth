@@ -1,7 +1,12 @@
 import React from 'react';
 import { Translation } from 'react-i18next';
 import { translations } from '../../locales/i18n';
-import { toThousands, formatNumber, checkIfContractByInfo } from '../../utils/';
+import {
+  toThousands,
+  formatNumber,
+  checkIfContractByInfo,
+  getNametagInfo,
+} from '../../utils/';
 import { ContentWrapper } from './utils';
 import { AddressContainer } from '../../app/components/AddressContainer/Loadable';
 
@@ -22,7 +27,12 @@ export const address = {
   render: (value, row: any) => {
     const isContract = checkIfContractByInfo(value, row);
     return (
-      <AddressContainer value={value} alias={row.name} isFull={isContract} />
+      <AddressContainer
+        value={value}
+        alias={row.name}
+        isFull={isContract}
+        nametagInfo={getNametagInfo(row)}
+      />
     );
   },
 };

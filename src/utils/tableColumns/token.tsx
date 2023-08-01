@@ -13,6 +13,7 @@ import {
   formatString,
   checkIfContractByInfo,
   isZeroAddress,
+  getNametagInfo,
 } from 'utils';
 import imgArrow from 'images/token/arrow.svg';
 import imgOut from 'images/token/out.svg';
@@ -154,6 +155,7 @@ export const renderAddress = (
         contractCreated={row.contractCreated}
         verify={verify}
         isContract={isContract}
+        nametagInfo={getNametagInfo(row)}
       />
       {type === 'from' && withArrow && (
         <ImgWrap src={fromTypeInfo[getFromType(value)].src} />
@@ -200,6 +202,7 @@ export const token = {
                     alias={row?.contractName || null}
                     showIcon={false}
                     isContract={isContract}
+                    nametagInfo={getNametagInfo(row)}
                   />
                 )}
               </Text>
@@ -256,6 +259,7 @@ export const Token2 = ({ row }) => {
                   alias={t(translations.general.notAvailable)}
                   showIcon={false}
                   isContract={isContract}
+                  nametagInfo={getNametagInfo(row)}
                 />
                 &nbsp;
                 <InfoIconWithTooltip
@@ -557,6 +561,7 @@ export const account = {
           }
           isFull={true}
           isContract={isContract}
+          nametagInfo={getNametagInfo(row)}
         />
       </AccountWrapper>
     );
@@ -886,6 +891,7 @@ export const NFTOwner = {
             : null)
         }
         isFull={true}
+        nametagInfo={getNametagInfo(row)}
       />
     </AccountWrapper>
   ),

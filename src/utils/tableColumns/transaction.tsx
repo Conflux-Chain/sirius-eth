@@ -11,6 +11,7 @@ import {
   toThousands,
   checkIfContractByInfo,
   fromDripToGdrip,
+  getNametagInfo,
 } from 'utils';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
@@ -169,6 +170,7 @@ export const from = {
         alias={row.fromContractInfo ? row.fromContractInfo.name : ''}
         contractCreated={row.contractCreated}
         isContract={isContract}
+        nametagInfo={getNametagInfo(row)}
       />
     );
   },
@@ -208,6 +210,7 @@ export const to = {
         contractCreated={row.contractCreated}
         verify={verify}
         isContract={isContract}
+        nametagInfo={getNametagInfo(row)}
       />
     );
   },
