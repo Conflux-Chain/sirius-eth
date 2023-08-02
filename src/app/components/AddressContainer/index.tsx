@@ -5,7 +5,7 @@ import { WithTranslation, withTranslation, Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import { formatAddress, isZeroAddress, isAddress, formatString } from 'utils';
-import { AlertTriangle, Bookmark } from '@zeit-ui/react-icons';
+import { AlertTriangle, Bookmark, Hash } from '@zeit-ui/react-icons';
 import ContractIcon from 'images/contract-icon.png';
 import isMeIcon from 'images/me.png';
 import VerifiedIcon from 'images/verified.png';
@@ -32,6 +32,13 @@ interface Props {
   verify?: boolean; // show verified contract icon or unverified contract icon
   isContract?: boolean;
   showLabeled?: boolean;
+  showNametag?: boolean;
+  nametagInfo?: {
+    [k: string]: {
+      address: string;
+      nametag: string;
+    };
+  };
 }
 
 const defaultPCMaxWidth = 95;
@@ -41,21 +48,25 @@ const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
 
-const getAddressLabelInfo = label => {
+export const getLabelInfo = (label, type) => {
   if (label) {
+    let trans: string = '';
+    let icon: React.ReactNode = null;
+
+    if (type === 'tag') {
+      trans = translations.profile.tip.label;
+      icon = <Bookmark color="var(--theme-color-gray2)" size={16} />;
+    } else if (type === 'nametag') {
+      trans = translations.nametag.label;
+      icon = <Hash color="var(--theme-color-gray2)" size={16} />;
+    }
+
     return {
       label,
       icon: (
         <IconWrapper>
-          <Text
-            span
-            hoverValue={
-              <Translation>
-                {t => t(translations.profile.tip.label)}
-              </Translation>
-            }
-          >
-            <Bookmark color="var(--theme-color-gray2)" size={16} />
+          <Text span hoverValue={<Translation>{t => t(trans)}</Translation>}>
+            {icon}
           </Text>
         </IconWrapper>
       ),
@@ -83,13 +94,14 @@ const RenderAddress = ({
   suffix = null,
   type = 'pow',
   addressLabel = '',
+  nametag = '',
 }: any) => {
   const href = `/${type === 'pow' ? 'address' : 'pos/accounts'}/${
     hrefAddress || cfxAddress
   }`;
   const aftercontent =
     type === 'pow'
-      ? cfxAddress && !isFull && !addressLabel && !alias
+      ? cfxAddress && !isFull && !addressLabel && !nametag && !alias
         ? cfxAddress.substr(-suffixSize)
         : ''
       : '';
@@ -101,6 +113,14 @@ const RenderAddress = ({
         span
         hoverValue={
           <>
+            {nametag ? (
+              <div>
+                <span>
+                  <Translation>{t => t(translations.nametag.tip)}</Translation>
+                </span>
+                {nametag}
+              </div>
+            ) : null}
             {addressLabel ? (
               <>
                 <span>
@@ -111,8 +131,7 @@ const RenderAddress = ({
                 {addressLabel}
               </>
             ) : null}
-            <div>{hoverValue || cfxAddress}</div>
-            {addressLabel && alias ? (
+            {alias ? (
               <>
                 <span>
                   <Translation>
@@ -122,6 +141,7 @@ const RenderAddress = ({
                 {alias}
               </>
             ) : null}
+            <div>{hoverValue || cfxAddress}</div>
           </>
         }
       >
@@ -133,7 +153,9 @@ const RenderAddress = ({
             alias={alias}
             aftercontent={aftercontent}
           >
-            <span>{content || addressLabel || alias || cfxAddress}</span>
+            <span>
+              {content || nametag || addressLabel || alias || cfxAddress}
+            </span>
           </LinkWrapper>
         ) : (
           <PlainWrapper
@@ -142,7 +164,9 @@ const RenderAddress = ({
             alias={alias}
             aftercontent={aftercontent}
           >
-            <span>{content || addressLabel || alias || cfxAddress}</span>
+            <span>
+              {content || nametag || addressLabel || alias || cfxAddress}
+            </span>
           </PlainWrapper>
         )}
       </Text>
@@ -169,6 +193,8 @@ export const AddressContainer = withTranslation()(
       verify = false,
       isContract = false,
       showLabeled = true,
+      showNametag = true,
+      nametagInfo,
     }: Props & WithTranslation) => {
       const [globalData = {}] = useGlobalData();
 
@@ -185,33 +211,43 @@ export const AddressContainer = withTranslation()(
         );
 
         if (contractCreated) {
-          let addressLabel: React.ReactNode = null,
-            addressLabelIcon: React.ReactNode = null;
+          const fContractCreated = formatAddress(contractCreated);
+
+          let addressLabel: React.ReactNode = null;
+          // official name tag
+          let officalNametag: React.ReactNode = null;
 
           if (showLabeled) {
-            const { label, icon } = getAddressLabelInfo(
-              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
-                formatAddress(contractCreated)
-              ],
+            const { label } = getLabelInfo(
+              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][fContractCreated],
+              'tag',
             );
 
             addressLabel = label;
-            addressLabelIcon = icon;
+          }
+
+          if (showNametag && nametagInfo?.[fContractCreated]?.nametag) {
+            const { label } = getLabelInfo(
+              nametagInfo[fContractCreated].nametag,
+              'nametag',
+            );
+
+            officalNametag = label;
           }
 
           return RenderAddress({
             cfxAddress: '',
             alias: alias || txtContractCreation,
             addressLabel,
-            hoverValue: formatAddress(contractCreated),
-            hrefAddress: formatAddress(contractCreated),
+            nametag: officalNametag,
+            hoverValue: fContractCreated,
+            hrefAddress: fContractCreated,
             isLink,
             isFull,
             maxWidth: 160,
             suffixSize,
             prefix: (
               <IconWrapper>
-                {addressLabelIcon}
                 <Text span hoverValue={txtContractCreation}>
                   <img src={ContractIcon} alt={txtContractCreation} />
                 </Text>
@@ -271,17 +307,30 @@ export const AddressContainer = withTranslation()(
         alias = t(translations.general.zeroAddress);
       }
 
-      let addressLabel: React.ReactNode = null,
-        addressLabelIcon: React.ReactNode = null;
+      // official name tag
+      let officalNametag: React.ReactNode = null;
+      let prefixIcon: React.ReactNode = null;
+
+      let addressLabel: React.ReactNode = null;
+
       if (showLabeled) {
-        const { label, icon } = getAddressLabelInfo(
+        const { label } = getLabelInfo(
           globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
             formatAddress(cfxAddress)
           ],
+          'tag',
         );
 
         addressLabel = label;
-        addressLabelIcon = icon;
+      }
+
+      if (showNametag && nametagInfo?.[cfxAddress]?.nametag) {
+        const { label } = getLabelInfo(
+          nametagInfo[cfxAddress].nametag,
+          'nametag',
+        );
+
+        officalNametag = label;
       }
 
       if (isContract) {
@@ -294,13 +343,14 @@ export const AddressContainer = withTranslation()(
           cfxAddress,
           alias,
           addressLabel,
+          nametag: officalNametag,
           isLink,
           isFull,
           maxWidth,
           suffixSize,
           prefix: showIcon ? (
             <IconWrapper className={`${isFull ? 'icon' : ''}`}>
-              {addressLabelIcon}
+              {prefixIcon}
               <Text span hoverValue={typeText}>
                 <ImgWrapper>
                   {
@@ -327,6 +377,7 @@ export const AddressContainer = withTranslation()(
           cfxAddress,
           alias,
           addressLabel,
+          nametag: officalNametag,
           isLink,
           isFull,
           maxWidth,
@@ -351,11 +402,12 @@ export const AddressContainer = withTranslation()(
         cfxAddress,
         alias,
         addressLabel,
+        nametag: officalNametag,
         isLink,
         isFull,
         maxWidth,
         suffixSize,
-        prefix: addressLabelIcon,
+        prefix: prefixIcon,
       });
     },
   ),

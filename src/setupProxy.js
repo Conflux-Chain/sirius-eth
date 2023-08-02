@@ -11,8 +11,8 @@ let rpcv2 = `${url}/rpcv2`;
 let confluxDag = `${url}`;
 
 if (process.env.REACT_APP_TestNet === 'true') {
-  // const testnet = 'https://evmtestnet-stage.confluxscan.net/';
-  const testnet = 'https://evmtestnet.confluxscan.net/';
+  const testnet = 'https://evmtestnet-stage.confluxscan.net/';
+  // const testnet = 'https://evmtestnet.confluxscan.net/';
   stat = `${testnet}`;
   v1 = `${testnet}`;
   rpcv2 = `${testnet}/rpcv2`;
