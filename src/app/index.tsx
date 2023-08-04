@@ -63,8 +63,8 @@ import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
 import Loading from 'app/components/Loading';
-import { CookieTip } from './components/CookieTip';
-import { GlobalTip } from './components/GlobalTip';
+// import { CookieTip } from './components/CookieTip';
+// import { GlobalTip } from './components/GlobalTip';
 
 // import { Swap } from './containers/Swap';
 import { ContractDeployment } from './containers/ContractDeployment/Loadable';
@@ -655,8 +655,8 @@ export function App() {
                     </Main>
                     <Footer />
                     <GlobalStyle />
-                    <CookieTip />
-                    <GlobalTip tipKey="addressWarning" />
+                    {/* <CookieTip />
+                    <GlobalTip tipKey="addressWarning" /> */}
                   </>
                 )}
                 <GlobalNotify />
