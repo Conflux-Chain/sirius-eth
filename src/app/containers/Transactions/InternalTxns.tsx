@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { fetchWithPrefix } from 'utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
@@ -8,7 +8,11 @@ import { AddressContainer } from 'app/components/AddressContainer';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import styled from 'styled-components/macro';
-import { publishRequestError } from 'utils';
+import { publishRequestError, gotoNetwork } from 'utils';
+import { Button } from '@cfxjs/react-ui';
+import { NETWORK_TYPE, NETWORK_TYPES, IS_PRE_RELEASE } from 'utils/constants';
+import IconQuestion from 'images/icon-question.svg';
+import { Tooltip } from 'app/components/Tooltip/Loadable';
 
 const treeToFlat = tree => {
   let list: Array<any> = [];
@@ -112,6 +116,14 @@ export const InternalTxns = ({ address, from, to }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
+  const AdvancedViewLink = useMemo(() => {
+    const sld = NETWORK_TYPE === NETWORK_TYPES.mainnet ? 'evm' : 'evmtestnet';
+    const preOrPro = IS_PRE_RELEASE ? '-stage' : '';
+    const domain = window.location.hostname.includes('.io') ? 'io' : 'net';
+
+    return `https://${sld}${preOrPro}.confluxscan.${domain}/tracer#${address}`;
+  }, [address]);
+
   const columnsWidth = [3, 4, 4, 3, 3, 5];
   const columns = [
     tokenColunms.traceType,
@@ -154,6 +166,18 @@ export const InternalTxns = ({ address, from, to }: Props) => {
             count={total}
           ></Trans>
         </div>
+        <StyledAdvancedWrapper>
+          <Tooltip
+            text={t(translations.transaction.advancedViewTips)}
+            placement="top"
+          >
+            <img src={IconQuestion} alt="tips" />
+          </Tooltip>
+
+          <a href={AdvancedViewLink} target="_blank">
+            <StyledAdvancedBtn>Advanced View</StyledAdvancedBtn>
+          </a>
+        </StyledAdvancedWrapper>
       </StyledTipWrapper>
     );
   };
@@ -173,8 +197,22 @@ const StyledTipWrapper = styled.span`
   color: #94a3b6;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const StyledCountWrapper = styled.span`
   color: #1e3de4;
+`;
+const StyledAdvancedWrapper = styled.div`
+  display: flex;
+  gap: 11px;
+`;
+const StyledAdvancedBtn = styled.div`
+  height: 24px;
+  border: solid 1px #b7b7b7;
+  background: #f5f5f5;
+  padding: 3px 9px;
+  border-radius: 3px;
+  color: #000;
+  font-size: 12px;
 `;
