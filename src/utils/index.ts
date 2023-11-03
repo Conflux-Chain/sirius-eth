@@ -20,6 +20,7 @@ import { Nametag } from 'utils/hooks/useNametag';
 window.SDK = SDK;
 // @ts-ignore
 window.CFX = CFX;
+// @ts-ignore
 
 dayjs.extend(relativeTime);
 
@@ -1027,4 +1028,11 @@ export const getNametagInfo = (row: {
   } catch (e) {}
 
   return result;
+};
+
+export const isLikeBigNumber = obj => {
+  if (obj === null || typeof obj !== 'object') {
+    return false;
+  }
+  return 's' in obj && 'e' in obj && 'c' in obj && Array.isArray(obj.c);
 };
