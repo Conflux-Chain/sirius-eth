@@ -3,13 +3,13 @@ import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { fetchWithPrefix } from 'utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation, Trans } from 'react-i18next';
+import { Link } from '@cfxjs/react-ui';
 import { translations } from 'locales/i18n';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import styled from 'styled-components/macro';
-import { publishRequestError, gotoNetwork } from 'utils';
-import { Button } from '@cfxjs/react-ui';
+import { publishRequestError } from 'utils';
 import { NETWORK_TYPE, NETWORK_TYPES, IS_PRE_RELEASE } from 'utils/constants';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
@@ -174,9 +174,9 @@ export const InternalTxns = ({ address, from, to }: Props) => {
             <img src={IconQuestion} alt="tips" />
           </Tooltip>
 
-          <a href={AdvancedViewLink} target="_blank">
+          <Link href={AdvancedViewLink} target={'_blank'}>
             <StyledAdvancedBtn>Advanced View</StyledAdvancedBtn>
-          </a>
+          </Link>
         </StyledAdvancedWrapper>
       </StyledTipWrapper>
     );

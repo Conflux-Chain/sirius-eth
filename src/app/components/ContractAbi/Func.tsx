@@ -82,7 +82,11 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
     return input.map(item => {
       if (Array.isArray(item)) {
         return convertBigNumbersToStrings(item);
-      } else if (item !== null && typeof item === 'object') {
+      } else if (
+        item !== null &&
+        typeof item === 'object' &&
+        !isLikeBigNumber(item)
+      ) {
         return convertObjBigNumbersToStrings(item);
       } else if (isLikeBigNumber(item)) {
         return item.toString(10);
@@ -96,6 +100,8 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
     for (let key in input) {
       if (isLikeBigNumber(input[key])) {
         newObj[key] = input[key].toString(10);
+      } else if (Array.isArray(input[key])) {
+        newObj[key] = convertBigNumbersToStrings(input[key]);
       } else if (typeof input[key] === 'object') {
         newObj[key] = convertObjBigNumbersToStrings(input[key] as NestedObject);
       } else {
