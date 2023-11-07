@@ -21,7 +21,7 @@ import {
   checkBytes,
   checkCfxType,
   isAddress,
-  isLikeBigNumber,
+  convertBigNumbersToStrings,
 } from '../../../utils';
 import { formatAddress } from '../../../utils';
 import { TXN_ACTION } from '../../../utils/constants';
@@ -32,7 +32,6 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import JSONBigint from 'json-bigint';
-import BigNumber from 'bignumber.js';
 
 interface FuncProps {
   type?: string;
@@ -42,10 +41,7 @@ interface FuncProps {
   id?: string;
 }
 type NativeAttrs = Omit<React.HTMLAttributes<any>, keyof FuncProps>;
-type NestedArray = (string | number | BigNumber | NestedArray)[];
-type NestedObject = {
-  [key: string]: BigNumber | string | NestedObject | NestedObject[];
-};
+
 export declare type Props = FuncProps & NativeAttrs;
 
 const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
@@ -77,39 +73,6 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
       setOutputError(data['error']);
     }
   }, [data]);
-
-  const convertBigNumbersToStrings = (input: NestedArray) => {
-    return input.map(item => {
-      if (Array.isArray(item)) {
-        return convertBigNumbersToStrings(item);
-      } else if (
-        item !== null &&
-        typeof item === 'object' &&
-        !isLikeBigNumber(item)
-      ) {
-        return convertObjBigNumbersToStrings(item);
-      } else if (isLikeBigNumber(item)) {
-        return item.toString(10);
-      } else {
-        return item;
-      }
-    });
-  };
-  const convertObjBigNumbersToStrings = input => {
-    const newObj: NestedObject = {};
-    for (let key in input) {
-      if (isLikeBigNumber(input[key])) {
-        newObj[key] = input[key].toString(10);
-      } else if (Array.isArray(input[key])) {
-        newObj[key] = convertBigNumbersToStrings(input[key]);
-      } else if (typeof input[key] === 'object') {
-        newObj[key] = convertObjBigNumbersToStrings(input[key] as NestedObject);
-      } else {
-        newObj[key] = input[key];
-      }
-    }
-    return newObj;
-  };
 
   const onFinish = async values => {
     // {type: 'string', val: ''} Only string has no set check, it can be '', undefined is an unfilled string,See getValidator type === 'string'.
@@ -153,13 +116,13 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
       inputs: data['inputs'].filter(i => i.type !== 'cfx'), // remove cfx item
     });
 
-    const objValues2 = convertBigNumbersToStrings(objValues);
+    const objValuesNew = convertBigNumbersToStrings(objValues);
 
     switch (type) {
       case 'read':
         try {
           setQueryLoading(true);
-          const res = await contract[fullNameWithType](...objValues2);
+          const res = await contract[fullNameWithType](...objValuesNew);
           setOutputError('');
           setQueryLoading(false);
           if (data['outputs'].length === 1) {

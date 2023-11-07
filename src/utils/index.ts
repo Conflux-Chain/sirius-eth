@@ -1036,3 +1036,40 @@ export const isLikeBigNumber = obj => {
   }
   return 's' in obj && 'e' in obj && 'c' in obj && Array.isArray(obj.c);
 };
+
+type NestedArray = (string | number | BigNumber | NestedArray)[];
+type NestedObject = {
+  [key: string]: BigNumber | string | NestedObject | NestedObject[];
+};
+export const convertBigNumbersToStrings = (input: NestedArray) => {
+  return input.map(item => {
+    if (Array.isArray(item)) {
+      return convertBigNumbersToStrings(item);
+    } else if (
+      item !== null &&
+      typeof item === 'object' &&
+      !isLikeBigNumber(item)
+    ) {
+      return convertObjBigNumbersToStrings(item);
+    } else if (isLikeBigNumber(item)) {
+      return item.toString(10);
+    } else {
+      return item;
+    }
+  });
+};
+export const convertObjBigNumbersToStrings = input => {
+  const newObj: NestedObject = {};
+  for (let key in input) {
+    if (isLikeBigNumber(input[key])) {
+      newObj[key] = input[key].toString(10);
+    } else if (Array.isArray(input[key])) {
+      newObj[key] = convertBigNumbersToStrings(input[key]);
+    } else if (typeof input[key] === 'object') {
+      newObj[key] = convertObjBigNumbersToStrings(input[key] as NestedObject);
+    } else {
+      newObj[key] = input[key];
+    }
+  }
+  return newObj;
+};
