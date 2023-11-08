@@ -16,6 +16,9 @@ import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 import { Button } from 'app/components/Button/Loadable';
+import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
+import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
+import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
 
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
@@ -23,6 +26,7 @@ import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 
 import { formatTimeStamp, formatAddress, addIPFSGateway } from 'utils';
+import { RPC_SERVER, NETWORK_ID } from 'utils/constants';
 
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
@@ -172,6 +176,45 @@ export function NFTDetail(props) {
     symbol: '',
   });
 
+  const contract721 = useMemo(() => {
+    const CFX = new SDK.Conflux({
+      url: RPC_SERVER,
+      networkId: NETWORK_ID,
+    });
+    return CFX.Contract({
+      address: address,
+      abi: ERC721ABI,
+    });
+  }, [address]);
+
+  const contract1155 = useMemo(() => {
+    const CFX = new SDK.Conflux({
+      url: RPC_SERVER,
+      networkId: NETWORK_ID,
+    });
+    return CFX.Contract({
+      address: address,
+      abi: ERC1155ABI,
+    });
+  }, [address]);
+
+  const reqNFTContract = useCallback(async () => {
+    try {
+      const tokenURI = await contract721.tokenURI(id);
+      const result = await fetch(tokenURI).then(res => res.json());
+      if (result) {
+        setData({ detail: { metadata: result } });
+      }
+    } catch (error) {}
+    try {
+      const tokenURI = await contract1155.uri(id);
+      const result = await fetch(tokenURI).then(res => res.json());
+      if (result) {
+        setData({ detail: { metadata: result } });
+      }
+    } catch (error) {}
+  }, [id, contract721, contract1155]);
+
   useEffect(() => {
     setLoading(true);
 
@@ -183,6 +226,7 @@ export function NFTDetail(props) {
       })
       .catch(e => {
         setData(e.response?.result || {});
+        reqNFTContract();
       })
       .finally(() => {
         setLoading(false);
@@ -194,7 +238,7 @@ export function NFTDetail(props) {
         symbol,
       });
     });
-  }, [address, id]);
+  }, [address, id, reqNFTContract]);
 
   const handleRefresh = useCallback(
     e => {
@@ -265,6 +309,7 @@ export function NFTDetail(props) {
               tokenId={id}
               type="primary"
               enable3D={true}
+              metadata={data.detail?.metadata}
             />
           </Card>
 
