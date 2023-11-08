@@ -1325,6 +1325,7 @@
       "txns_plural": "internal transactions",
       "tip": "The 'Advanced' view also shows zero value CFX transfers, while the 'Simple' view only shows CFX transfers with value."
     },
+    "advancedViewTips": "The Advanced View shows more information about CFX transfers.",
     "logs": {
       "title": "logs",
       "address": "Address",
