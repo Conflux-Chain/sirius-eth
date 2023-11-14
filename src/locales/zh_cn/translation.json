@@ -1254,6 +1254,7 @@
     "note": "交易备注",
     "addNote": "添加交易备注",
     "updateNote": "更新交易备注",
+    "pendingReasonLink": "查看原因",
     "tipOfTokenTransferCount": "最多展示 100 条记录",
     "gotoDetail": "查看更多",
     "inThePosition": "（处于位置 {{position}}）",
@@ -1332,6 +1333,62 @@
       "hex": "十六进制",
       "text": "文字",
       "number": "数字"
+    },
+    "pending": {
+      "view": "查看详情",
+      "detail": "详情：",
+      "tip": "提示：",
+      "reference": "参考：",
+      "link": "http://wiki.conflux123.xyz/books/faqs/chapter/pending-tx"
+    },
+    "pendingDetails": {
+      "futrueNonce": {
+        "summary": "随机数不连续",
+        "detail": "随机数不连续，发送账户随机数为 {{stateNonce}}，当前交易随机数为 {{txNonce}}。",
+        "tip": "补充缺失的随机数的交易。"
+      },
+      "notEnoughCash": {
+        "summary": "余额不足",
+        "contractCreateAndToEOA": {
+          "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) + storageLimit ({{storageLimit}}) * storagePrice (10^18/1024)。账户余额：{{balance}} CFX。",
+          "tip": "1. 增加账户余额 2. gasPrice 或 storageLimit 可能设置过大，请重新设置燃气费，燃气价格。"
+        },
+        "toContract": {
+          "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) + storageLimit ({{storageLimit}}) * storagePrice (10^18/1024){{gasSponsor}}{{storageSponsor}}{{reason}}。账户余额：{{balance}} CFX。",
+          "tip": "1. 增加账户余额 2. gasPrice 或 storageLimit 可能设置过大，请重新设置燃气费，燃气价格。",
+          "reason": {
+            "notSponsored": "，交易未被代付",
+            "exceedUpperBound": "；燃气费代付失败，超过上限（{{sponsorGasBound}}）",
+            "exceedGasFeeBalance": "；燃气费代付失败，超过余额（{{sponsorBalanceForGas}}）",
+            "exceedStorageFeeBalance": "；存储费代付失败，超过余额（{{sponsorBalanceForCollateral}}）"
+          }
+        },
+        "original": {
+          "detail": "{{original}}",
+          "tip": "请提交工单"
+        }
+      },
+      "readyToPack": {
+        "summary": "交易待打包",
+        "epochExceed": {
+          "detail": "发送交易的纪元和当前纪元跨度大于 100000，交易纪元为 {{proposedEpoch}}，当前纪元为 {{confirmedEpoch}}。",
+          "tip": "重新发送交易，使用最新的纪元。"
+        },
+        "lowGasPrice": {
+          "detail": "燃气价格 {{gasPrice}} 太低。",
+          "tip": "提高燃气价格加速交易。"
+        }
+      },
+      "tooOldEpoch": {
+        "summary": "纪元太旧",
+        "detail": "第一笔交易的纪元太旧，无法打包。",
+        "tip": "提交新的交易来更新交易池。"
+      },
+      "fullnodeInnerError": {
+        "summary": "节点内部错误",
+        "detail": "节点内部错误。",
+        "tip": "提交新的交易来更新交易池。"
+      }
     }
   },
   "block": {

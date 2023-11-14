@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation } from 'react-i18next';
-import pubsub from 'utils/pubsub';
-import { CFX } from 'utils/constants';
-import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { translations } from 'locales/i18n';
 import BigNumber from 'bignumber.js';
 import { TxnSwitcher, Title } from './components';
 import { isAccountAddress, isAddress } from 'utils';
+import { reqPendingTxs } from 'utils/httpRequest';
 
 interface Props {
   address: string;
@@ -35,19 +33,25 @@ export const PendingTxns = ({ address }: Props) => {
         ...state,
         loading: true,
       });
-      CFX.getAccountPendingTransactions(
-        address,
-        undefined,
-        SDK.format.hex(10), // default limit
-      )
+      reqPendingTxs({
+        query: {
+          accountAddress: address,
+        },
+      })
         .then(resp => {
           if (resp) {
             try {
-              const { firstTxStatus, pendingCount, pendingTransactions } = resp;
+              const {
+                firstTxStatus,
+                pendingCount,
+                pendingTransactions,
+                pendingDetail,
+              } = resp;
               const list = pendingTransactions.slice(0, 10).map((p, index) => {
                 p.status = '4';
                 if (!index) {
                   p.reason = firstTxStatus;
+                  p.pendingDetail = pendingDetail;
                 }
                 return p;
               });
@@ -65,13 +69,6 @@ export const PendingTxns = ({ address }: Props) => {
           setState({
             ...state,
             error: e,
-          });
-          pubsub.publish('notify', {
-            type: 'request',
-            option: {
-              code: '30001', // rpc call error
-              message: e.message,
-            },
           });
         });
     }

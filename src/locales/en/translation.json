@@ -1257,6 +1257,7 @@
     "note": "Private Note",
     "addNote": "Add Private Note",
     "updateNote": "Update Private Note",
+    "pendingReasonLink": "View Reason",
     "tipOfTokenTransferCount": "Show up to 100 records",
     "gotoDetail": "Click to view details",
     "inThePosition": "(in the position {{position}})",
@@ -1336,6 +1337,62 @@
       "hex": "Hex",
       "text": "Text",
       "number": "Number"
+    },
+    "pending": {
+      "view": "View detail",
+      "detail": "Detail: ",
+      "tip": "Tip: ",
+      "reference": "Reference: ",
+      "link": "https://doc.confluxnetwork.org/docs/general/faq/core-space-transactions/why-transaction-is-pending"
+    },
+    "pendingDetails": {
+      "futrueNonce": {
+        "summary": "Discontinuous nonce",
+        "detail": "Discontinuous nonce, the account nonce is {{stateNonce}}, current transaction config nonce is {{txNonce}}.",
+        "tip": "Supplement transactions with missing nonces."
+      },
+      "notEnoughCash": {
+        "summary": "Insufficient balance",
+        "contractCreateAndToEOA": {
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) + storageLimit ({{storageLimit}}) * storagePrice (10^18/1024). Balance: {{balance}} CFX.",
+          "tip": "1. Increase balance 2. gasPrice or storageLimit is too large, please update gas fee, gas price"
+        },
+        "toContract": {
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) + storageLimit ({{storageLimit}}) * storagePrice (10^18/1024){{gasSponsor}}{{storageSponsor}}{{reason}}. Balance: {{balance}} CFX.",
+          "tip": "1. Increase balance 2. gasPrice or storageLimit is too large, please update gas fee, gas price",
+          "reason": {
+            "notSponsored": ", not sponsored",
+            "exceedUpperBound": "; gas fee sponsored failed, exceed sponsor upperbound ({{sponsorGasBound}})",
+            "exceedGasFeeBalance": "; gas fee sponsored failed, exceed sponsor balance ({{sponsorBalanceForGas}})",
+            "exceedStorageFeeBalance": "; storage fee sponsored failed, exceed sponsor balance ({{sponsorBalanceForCollateral}})"
+          }
+        },
+        "original": {
+          "detail": "{{original}}",
+          "tip": "Please submit a ticket"
+        }
+      },
+      "readyToPack": {
+        "summary": "Ready to pack",
+        "epochExceed": {
+          "detail": "The gap of transaction config epoch and latest epoch is more than 100000. Transaction config epoch is {{proposedEpoch}}，latest epoch is {{confirmedEpoch}}.",
+          "tip": "Resend transaction with latest epoch."
+        },
+        "lowGasPrice": {
+          "detail": "Gas price {{gasPrice}} is too low.",
+          "tip": "Increase gas price to speedup transaction."
+        }
+      },
+      "tooOldEpoch": {
+        "summary": "Too old epoch",
+        "detail": "The epoch height of the first tx is too old to be packed.",
+        "tip": "Submit a new transaction to update the tx pool."
+      },
+      "fullnodeInnerError": {
+        "summary": "Full node error",
+        "detail": "The full node internal error.",
+        "tip": "Submit a new transaction to update the tx pool."
+      }
     }
   },
   "block": {
