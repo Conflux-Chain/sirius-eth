@@ -1354,18 +1354,12 @@
       "notEnoughCash": {
         "summary": "Insufficient balance",
         "contractCreateAndToEOA": {
-          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) + storageLimit ({{storageLimit}}) * storagePrice (10^18/1024). Balance: {{balance}} CFX.",
-          "tip": "1. Increase balance 2. gasPrice or storageLimit is too large, please update gas fee, gas price"
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) (10^18/1024). Balance: {{balance}} CFX.",
+          "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
         },
         "toContract": {
-          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) + storageLimit ({{storageLimit}}) * storagePrice (10^18/1024){{gasSponsor}}{{storageSponsor}}{{reason}}. Balance: {{balance}} CFX.",
-          "tip": "1. Increase balance 2. gasPrice or storageLimit is too large, please update gas fee, gas price",
-          "reason": {
-            "notSponsored": ", not sponsored",
-            "exceedUpperBound": "; gas fee sponsored failed, exceed sponsor upperbound ({{sponsorGasBound}})",
-            "exceedGasFeeBalance": "; gas fee sponsored failed, exceed sponsor balance ({{sponsorBalanceForGas}})",
-            "exceedStorageFeeBalance": "; storage fee sponsored failed, exceed sponsor balance ({{sponsorBalanceForCollateral}})"
-          }
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) (10^18/1024). Balance: {{balance}} CFX.",
+          "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
         },
         "original": {
           "detail": "{{original}}",

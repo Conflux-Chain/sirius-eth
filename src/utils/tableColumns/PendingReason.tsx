@@ -78,7 +78,6 @@ export const PendingReason = ({
         summary: notEnoughCash.summary,
         detail: notEnoughCash.toContract.detail,
         tip: notEnoughCash.toContract.tip,
-        reason: notEnoughCash.toContract.reason,
       },
       '31': {
         summary: readyToPack.summary,
@@ -104,7 +103,6 @@ export const PendingReason = ({
   }, []);
 
   const getDetail = useCallback(() => {
-    const { notEnoughCash } = translations.transaction.pendingDetails;
     const i18n = codeMap[detail.code];
 
     let params = {};
@@ -115,14 +113,12 @@ export const PendingReason = ({
       params = {
         original: detail.message,
       };
-    } else if (detail.code === 21 || detail.code === 22) {
-      const { value, gas, gasPrice, storageLimit, balance } = detail.params;
+    } else if (detail.code === 21 || detail.code === 22 || detail.code === 23) {
+      const { value, gas, gasPrice, balance } = detail.params;
 
       params = {
         total: formatBalance(
-          new BigNumber(value)
-            .plus(new BigNumber(gas).multipliedBy(gasPrice))
-            .plus(new BigNumber(storageLimit).multipliedBy(1e18).div(1024)),
+          new BigNumber(value).plus(new BigNumber(gas).multipliedBy(gasPrice)),
           18,
           false,
           {
@@ -132,79 +128,7 @@ export const PendingReason = ({
         value: detail.params.value,
         gas: detail.params.gas,
         gasPrice: detail.params.gasPrice,
-        storageLimit: detail.params.storageLimit,
         balance: formatBalance(balance),
-      };
-    } else if (detail.code === 23) {
-      const {
-        value,
-        gas,
-        gasPrice,
-        storageLimit,
-        balance,
-        isWhitelisted,
-        isGasFeeSponsored,
-        isColFeeSponsored,
-        sponsorInfo: {
-          sponsorGasBound,
-          sponsorBalanceForGas,
-          sponsorBalanceForCollateral,
-        },
-      } = detail.params;
-
-      const gasFee = new BigNumber(gas).multipliedBy(gasPrice);
-      const storageFee = new BigNumber(storageLimit)
-        .multipliedBy(1e18)
-        .div(1024);
-      let total = new BigNumber(value).plus(gasFee).plus(storageFee);
-      let gasSponsorStr = '';
-      let storageSponsorStr = '';
-      let reason = '';
-
-      if (isWhitelisted) {
-        if (isGasFeeSponsored) {
-          total = total.minus(gasFee);
-          gasSponsorStr = ` - gasFee sponsored (${gasFee.toNumber()})`;
-        } else {
-          if (gasFee.isGreaterThan(sponsorGasBound)) {
-            reason = t(notEnoughCash.toContract.reason.exceedUpperBound, {
-              sponsorGasBound,
-            });
-          } else if (gasFee.isGreaterThan(sponsorBalanceForGas)) {
-            reason = t(notEnoughCash.toContract.reason.exceedGasFeeBalance, {
-              sponsorBalanceForGas,
-            });
-          }
-        }
-        if (isColFeeSponsored) {
-          total = total.minus(storageFee);
-          gasSponsorStr = ` - storageFee sponsored (${storageFee.toNumber()})`;
-        } else {
-          if (storageFee.isGreaterThan(sponsorBalanceForCollateral)) {
-            reason = t(
-              notEnoughCash.toContract.reason.exceedStorageFeeBalance,
-              {
-                sponsorBalanceForCollateral,
-              },
-            );
-          }
-        }
-      } else {
-        reason = t(notEnoughCash.toContract.reason.notSponsored);
-      }
-
-      params = {
-        total: formatBalance(total, 18, false, {
-          precision: 18,
-        }),
-        value: detail.params.value,
-        gas: detail.params.gas,
-        gasPrice: detail.params.gasPrice,
-        storageLimit: detail.params.storageLimit,
-        balance: formatBalance(balance),
-        gasSponsor: gasSponsorStr,
-        storageSponsor: storageSponsorStr,
-        reason,
       };
     }
 
