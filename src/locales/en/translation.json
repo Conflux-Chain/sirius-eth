@@ -1354,11 +1354,11 @@
       "notEnoughCash": {
         "summary": "Insufficient balance",
         "contractCreateAndToEOA": {
-          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) (10^18/1024). Balance: {{balance}} CFX.",
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}). Balance: {{balance}} CFX.",
           "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
         },
         "toContract": {
-          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) (10^18/1024). Balance: {{balance}} CFX.",
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}). Balance: {{balance}} CFX.",
           "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
         },
         "original": {

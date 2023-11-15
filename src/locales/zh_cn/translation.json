@@ -1350,11 +1350,11 @@
       "notEnoughCash": {
         "summary": "余额不足",
         "contractCreateAndToEOA": {
-          "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) (10^18/1024)。账户余额：{{balance}} CFX。",
+          "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}})。账户余额：{{balance}} CFX。",
           "tip": "1. 增加账户余额 2. gasPrice 可能设置过大，请重新设置燃气费，燃气价格。"
         },
         "toContract": {
-          "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}) (10^18/1024){{gasSponsor}}{{storageSponsor}}{{reason}}。账户余额：{{balance}} CFX。",
+          "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}})。账户余额：{{balance}} CFX。",
           "tip": "1. 增加账户余额 2. gasPrice 可能设置过大，请重新设置燃气费，燃气价格。"
         },
         "original": {
