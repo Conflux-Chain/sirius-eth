@@ -1349,39 +1349,26 @@
       },
       "notEnoughCash": {
         "summary": "余额不足",
-        "contractCreateAndToEOA": {
-          "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}})。账户余额：{{balance}} CFX。",
-          "tip": "1. 增加账户余额 2. gasPrice 可能设置过大，请重新设置燃气费，燃气价格。"
-        },
         "toContract": {
           "detail": "余额不足。完成交易共需要：{{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}})。账户余额：{{balance}} CFX。",
           "tip": "1. 增加账户余额 2. gasPrice 可能设置过大，请重新设置燃气费，燃气价格。"
-        },
-        "original": {
-          "detail": "{{original}}",
-          "tip": "请提交工单"
         }
       },
       "readyToPack": {
         "summary": "交易待打包",
         "epochExceed": {
-          "detail": "发送交易的纪元和当前纪元跨度大于 100000，交易纪元为 {{proposedEpoch}}，当前纪元为 {{confirmedEpoch}}。",
+          "detail": "发送交易的纪元和当前纪元跨度大于 100000，交易纪元为 {{proposedBlock}}，当前纪元为 {{confirmedBlock}}。",
           "tip": "重新发送交易，使用最新的纪元。"
         },
         "lowGasPrice": {
-          "detail": "燃气价格 {{gasPrice}} 太低。",
+          "detail": "燃气价格 {{txGasPrice}} 太低。",
           "tip": "提高燃气价格加速交易。"
         }
       },
-      "tooOldEpoch": {
-        "summary": "纪元太旧",
-        "detail": "第一笔交易的纪元太旧，无法打包。",
-        "tip": "提交新的交易来更新交易池。"
-      },
-      "fullnodeInnerError": {
-        "summary": "节点内部错误",
-        "detail": "节点内部错误。",
-        "tip": "提交新的交易来更新交易池。"
+      "original": {
+        "summary": "未知错误",
+        "detail": "{{original}}",
+        "tip": "请提交工单"
       }
     }
   },

@@ -1353,39 +1353,26 @@
       },
       "notEnoughCash": {
         "summary": "Insufficient balance",
-        "contractCreateAndToEOA": {
-          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}). Balance: {{balance}} CFX.",
-          "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
-        },
         "toContract": {
           "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}). Balance: {{balance}} CFX.",
           "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
-        },
-        "original": {
-          "detail": "{{original}}",
-          "tip": "Please submit a ticket"
         }
       },
       "readyToPack": {
         "summary": "Ready to pack",
         "epochExceed": {
-          "detail": "The gap of transaction config epoch and latest epoch is more than 100000. Transaction config epoch is {{proposedEpoch}}，latest epoch is {{confirmedEpoch}}.",
+          "detail": "The gap of transaction config epoch and latest epoch is more than 100000. Transaction config epoch is {{proposedBlock}}，latest epoch is {{confirmedBlock}}.",
           "tip": "Resend transaction with latest epoch."
         },
         "lowGasPrice": {
-          "detail": "Gas price {{gasPrice}} is too low.",
+          "detail": "Gas price {{txGasPrice}} is too low.",
           "tip": "Increase gas price to speedup transaction."
         }
       },
-      "tooOldEpoch": {
-        "summary": "Too old epoch",
-        "detail": "The epoch height of the first tx is too old to be packed.",
-        "tip": "Submit a new transaction to update the tx pool."
-      },
-      "fullnodeInnerError": {
-        "summary": "Full node error",
-        "detail": "The full node internal error.",
-        "tip": "Submit a new transaction to update the tx pool."
+      "original": {
+        "summary": "Error",
+        "detail": "{{original}}",
+        "tip": "Please submit a ticket"
       }
     }
   },

@@ -50,8 +50,7 @@ export const PendingReason = ({
       futrueNonce,
       notEnoughCash,
       readyToPack,
-      tooOldEpoch,
-      fullnodeInnerError,
+      original,
     } = translations.transaction.pendingDetails;
     return {
       '11': {
@@ -59,20 +58,15 @@ export const PendingReason = ({
         detail: futrueNonce.detail,
         tip: futrueNonce.tip,
       },
-      '20': {
-        summary: notEnoughCash.summary,
-        detail: notEnoughCash.original.detail,
-        tip: notEnoughCash.original.tip,
-      },
       '21': {
         summary: notEnoughCash.summary,
-        detail: notEnoughCash.contractCreateAndToEOA.detail,
-        tip: notEnoughCash.contractCreateAndToEOA.tip,
+        detail: notEnoughCash.toContract.detail,
+        tip: notEnoughCash.toContract.tip,
       },
       '22': {
         summary: notEnoughCash.summary,
-        detail: notEnoughCash.contractCreateAndToEOA.detail,
-        tip: notEnoughCash.contractCreateAndToEOA.tip,
+        detail: notEnoughCash.toContract.detail,
+        tip: notEnoughCash.toContract.tip,
       },
       '23': {
         summary: notEnoughCash.summary,
@@ -89,36 +83,28 @@ export const PendingReason = ({
         detail: readyToPack.lowGasPrice.detail,
         tip: readyToPack.lowGasPrice.tip,
       },
-      '41': {
-        summary: tooOldEpoch.summary,
-        detail: tooOldEpoch.detail,
-        tip: tooOldEpoch.tip,
-      },
-      '51': {
-        summary: fullnodeInnerError.summary,
-        detail: fullnodeInnerError.detail,
-        tip: fullnodeInnerError.tip,
+      default: {
+        summary: original.summary,
+        detail: original.detail,
+        tip: original.tip,
       },
     };
   }, []);
 
   const getDetail = useCallback(() => {
-    const i18n = codeMap[detail.code];
+    const i18n = codeMap[detail.code + ''] || codeMap['default'];
 
     let params = {};
 
     if (detail.code === 11 || detail.code === 31 || detail.code === 32) {
       params = detail.params;
-    } else if (detail.code === 20) {
-      params = {
-        original: detail.message,
-      };
     } else if (detail.code === 21 || detail.code === 22 || detail.code === 23) {
-      const { value, gas, gasPrice, balance } = detail.params;
-
+      const { value, gasLimit, gasPrice, balance } = detail.params;
       params = {
         total: formatBalance(
-          new BigNumber(value).plus(new BigNumber(gas).multipliedBy(gasPrice)),
+          new BigNumber(value).plus(
+            new BigNumber(gasLimit).multipliedBy(gasPrice),
+          ),
           18,
           false,
           {
@@ -126,9 +112,13 @@ export const PendingReason = ({
           },
         ),
         value: detail.params.value,
-        gas: detail.params.gas,
+        gas: detail.params.gasLimit,
         gasPrice: detail.params.gasPrice,
         balance: formatBalance(balance),
+      };
+    } else {
+      params = {
+        original: detail.message || '--',
       };
     }
 
