@@ -1257,6 +1257,7 @@
     "note": "Private Note",
     "addNote": "Add Private Note",
     "updateNote": "Update Private Note",
+    "pendingReasonLink": "View Reason",
     "tipOfTokenTransferCount": "Show up to 100 records",
     "gotoDetail": "Click to view details",
     "inThePosition": "(in the position {{position}})",
@@ -1336,6 +1337,43 @@
       "hex": "Hex",
       "text": "Text",
       "number": "Number"
+    },
+    "pending": {
+      "view": "View detail",
+      "detail": "Detail: ",
+      "tip": "Tip: ",
+      "reference": "Reference: ",
+      "link": "https://doc.confluxnetwork.org/docs/general/faq/core-space-transactions/why-transaction-is-pending"
+    },
+    "pendingDetails": {
+      "futrueNonce": {
+        "summary": "Discontinuous nonce",
+        "detail": "Discontinuous nonce, the account nonce is {{stateNonce}}, current transaction config nonce is {{txNonce}}.",
+        "tip": "Supplement transactions with missing nonces."
+      },
+      "notEnoughCash": {
+        "summary": "Insufficient balance",
+        "toContract": {
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}). Balance: {{balance}} CFX.",
+          "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
+        }
+      },
+      "readyToPack": {
+        "summary": "Ready to pack",
+        "epochExceed": {
+          "detail": "The gap of transaction config epoch and latest epoch is more than 100000. Transaction config epoch is {{proposedBlock}}，latest epoch is {{confirmedBlock}}.",
+          "tip": "Resend transaction with latest epoch."
+        },
+        "lowGasPrice": {
+          "detail": "Gas price {{txGasPrice}} is too low.",
+          "tip": "Increase gas price to speedup transaction."
+        }
+      },
+      "original": {
+        "summary": "Error",
+        "detail": "{{original}}",
+        "tip": "Please submit a ticket"
+      }
     }
   },
   "block": {
