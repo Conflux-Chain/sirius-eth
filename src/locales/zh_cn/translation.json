@@ -730,6 +730,10 @@
       "seriesName3": "每日接收账户数",
       "yAxisTitle4": "数量",
       "seriesName4": "每日发送账户数"
+    },
+    "options": {
+      "time": "时间颗粒度",
+      "range": "时间范围"
     }
   },
   "charts": {
