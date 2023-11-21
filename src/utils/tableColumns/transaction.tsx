@@ -12,6 +12,7 @@ import {
   checkIfContractByInfo,
   fromDripToGdrip,
   getNametagInfo,
+  formatNumber,
 } from 'utils';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
@@ -245,7 +246,13 @@ export const gasPrice = {
   key: 'gasPrice',
   width: 1,
   render: value => (
-    <Text span hoverValue={`${toThousands(value)} drip`}>
+    <Text
+      span
+      hoverValue={`${formatNumber(value, {
+        keepDecimal: false,
+        withUnit: false,
+      })} drip`}
+    >
       {`${fromDripToGdrip(value, false, {
         precision: 6,
         minNum: 1e-6,
