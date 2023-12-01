@@ -136,7 +136,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
             arr.push(constprocessResultArray(res));
             setOutputValue(arr);
           } else {
-            setOutputValue(constprocessResultArray(res));
+            setOutputValue(Object.values(constprocessResultArray(res)));
           }
           // setOutputValue(res)
           setOutputShown(true);
