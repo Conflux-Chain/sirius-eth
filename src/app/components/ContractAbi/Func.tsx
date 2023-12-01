@@ -22,6 +22,8 @@ import {
   checkCfxType,
   isAddress,
   convertBigNumbersToStrings,
+  convertObjBigNumbersToStrings,
+  constprocessResultArray,
 } from '../../../utils';
 import { formatAddress } from '../../../utils';
 import { TXN_ACTION } from '../../../utils/constants';
@@ -81,14 +83,18 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
         value === undefined
           ? { type: 'string', val: '' }
           : value['type'] === 'tuple'
-          ? { type: 'string', val: JSONBigint.parse(value['val']) }
+          ? {
+              type: 'string',
+              val: convertObjBigNumbersToStrings(
+                JSONBigint.parse(value['val']),
+              ),
+            }
           : value,
       ),
     );
 
     const items: object[] = Object.values(newValues);
     const objValues: any[] = [];
-
     // Special convert for various types before call sdk
     items.forEach(function (value, index) {
       let val = value['val'];
@@ -127,10 +133,10 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
           setQueryLoading(false);
           if (data['outputs'].length === 1) {
             let arr: any[] = [];
-            arr.push(res);
+            arr.push(constprocessResultArray(res));
             setOutputValue(arr);
           } else {
-            setOutputValue(Object.values(res));
+            setOutputValue(constprocessResultArray(res));
           }
           // setOutputValue(res)
           setOutputShown(true);
@@ -257,13 +263,17 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
         if (isInt) {
           return Promise.resolve();
         }
-        return Promise.reject(t(translations.contract.error.int, { num }));
+        return Promise.reject(
+          t(translations.contract.error.int, { num: Number(num) - 1 }),
+        );
       } else if (type.startsWith('uint')) {
         const [isUint, num] = checkUint(val, type);
         if (isUint) {
           return Promise.resolve();
         }
-        return Promise.reject(t(translations.contract.error.uint, { num }));
+        return Promise.reject(
+          t(translations.contract.error.uint, { num: Number(num) - 1 }),
+        );
       } else if (type.startsWith('byte')) {
         const [isBytes, num] = checkBytes(val, type);
         if (isBytes) {

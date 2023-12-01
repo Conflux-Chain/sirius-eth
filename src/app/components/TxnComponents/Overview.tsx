@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from 'app/components/Link';
 import { Description } from 'app/components/Description/Loadable';
+import { formatAddress } from 'utils';
 // import _ from 'lodash';
 
 import { GasFee } from './GasFee';
@@ -17,6 +18,7 @@ export const Overview = ({ data }) => {
   const {
     hash,
     status,
+    from,
     // confirmedEpochCount,
     gasFee,
     gasCoveredBySponsor,
@@ -29,20 +31,6 @@ export const Overview = ({ data }) => {
     txExecErrorInfo,
   } = data;
 
-  // txn status error detail info
-  let statusErrorMessage = '';
-  if (txExecErrorInfo) {
-    if (txExecErrorInfo?.type === 1) {
-      statusErrorMessage = `${t(
-        translations.transaction.statusError[txExecErrorInfo?.type],
-      )}${txExecErrorInfo.message}`;
-    } else {
-      statusErrorMessage = t(
-        translations.transaction.statusError[txExecErrorInfo?.type],
-      );
-    }
-  }
-
   return (
     <StyledWrapper>
       <div className="overview-title">
@@ -54,7 +42,12 @@ export const Overview = ({ data }) => {
         title={t(translations.transaction.status)}
       >
         <div className="overview-status-and-confirmedEpochCount">
-          <Status type={status}>{statusErrorMessage}</Status>
+          <Status
+            type={status}
+            txExecErrorInfo={txExecErrorInfo}
+            address={formatAddress(from)}
+            hash={hash}
+          />
         </div>
       </Description>
       {tokenTransfer?.total ? (
