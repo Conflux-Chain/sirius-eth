@@ -310,6 +310,9 @@ export function StockChartTemplate({
     },
     options,
   );
+  if (intervalType === 'min' || intervalType === 'hour') {
+    opts.rangeSelector.enabled = false;
+  }
 
   if (preview) {
     opts.chart.height = 240;
