@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Translation, useTranslation } from 'react-i18next';
+import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import clsx from 'clsx';
@@ -46,10 +46,10 @@ export const TxnHashRenderComponent = ({
   txExecErrorMsg,
   txExecErrorInfo,
 }: HashProps) => {
-  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [txnDetail, setTxnDetail] = useState<{
     status?: string;
+    address?: string;
   }>({});
   const bp = useBreakpoint();
 
@@ -68,20 +68,6 @@ export const TxnHashRenderComponent = ({
     });
   };
 
-  // txn status error detail info
-  let statusErrorMessage = txExecErrorMsg;
-  if (txExecErrorInfo) {
-    if (txExecErrorInfo?.type === 1) {
-      statusErrorMessage = `${t(
-        translations.transaction.statusError[txExecErrorInfo?.type],
-      )}${txExecErrorInfo.message}`;
-    } else {
-      statusErrorMessage = t(
-        translations.transaction.statusError[txExecErrorInfo?.type],
-      );
-    }
-  }
-
   // used for skip status in block transactions list
   // original status is null, manually set to 2
   const innerStatus = lodash.isNil(txnDetail.status)
@@ -97,7 +83,10 @@ export const TxnHashRenderComponent = ({
             placement="right"
             trigger="click"
             content={
-              <SkeletonContainer shown={loading} style={{ maxHeight: '566px' }}>
+              <SkeletonContainer
+                shown={Number(status) === 4 ? false : loading}
+                style={{ maxHeight: '566px' }}
+              >
                 <Overview data={{ ...txnDetail, status: innerStatus }} />
               </SkeletonContainer>
             }
@@ -113,9 +102,13 @@ export const TxnHashRenderComponent = ({
             show: status !== 0,
           })}
         >
-          <Status type={status} variant="dot">
-            {statusErrorMessage}
-          </Status>
+          <Status
+            type={status}
+            variant="dot"
+            txExecErrorInfo={txExecErrorInfo}
+            address={txnDetail.address}
+            hash={hash}
+          ></Status>
         </StyledStatusWrapper>
       ) : null}
 
