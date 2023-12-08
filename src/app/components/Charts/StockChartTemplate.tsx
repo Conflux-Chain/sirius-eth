@@ -134,11 +134,16 @@ export function StockChartTemplate({
   const [intervalScope, setIntervalScope] = useState<ScopeType>();
   const [intervalType, setIntervalType] = useState<string>(defaultIntervalType);
   const [limit, setLimit] = useState(defaultLimit);
+  const [customLimit, setCustomLimit] = useState<boolean>(false);
 
   useHighcharts(chart);
 
   const combination = ({ type, limit }: { type: string; limit: number }) => {
-    console.log(type, limit);
+    if (customLimit) {
+      // @ts-ignore
+      chart.current?.chart.xAxis[0].setExtremes(null, null);
+      setCustomLimit(false);
+    }
     if (type) setIntervalType(type);
     if (limit) setLimit(limit);
     getChartData(type, limit);
@@ -147,6 +152,8 @@ export function StockChartTemplate({
   const getChartData = useCallback(
     async (intervalType, limit) => {
       setIntervalType(intervalType);
+      setCustomLimit(false);
+
       // @ts-ignore
       chart.current?.chart.showLoading();
 
@@ -288,6 +295,15 @@ export function StockChartTemplate({
       yAxis: {
         opposite: false,
       },
+      xAxis: {
+        events: {
+          setExtremes: function () {
+            if (!customLimit) {
+              setCustomLimit(true);
+            }
+          },
+        },
+      },
       series: options.series.map((s, i) => ({
         data: request.formatter(data)[i],
       })),
@@ -385,7 +401,9 @@ export function StockChartTemplate({
                       }
                       style={{
                         background:
-                          limit === e.limit ? 'rgb(230, 235, 245)' : '',
+                          limit === e.limit && !customLimit
+                            ? 'rgb(230, 235, 245)'
+                            : '',
                       }}
                     >
                       {e.label}
