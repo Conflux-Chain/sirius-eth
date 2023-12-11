@@ -193,6 +193,7 @@ export function StockChartTemplate({
         alignTicks: false,
         height: 600,
         zoomType: '',
+        animation: false,
       },
       credits: {
         enabled: false,
