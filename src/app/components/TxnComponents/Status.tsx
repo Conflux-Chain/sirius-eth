@@ -12,6 +12,7 @@ import { Popover } from '@cfxjs/react-ui';
 import { PopoverProps } from '@cfxjs/react-ui/dist/popover/popover';
 import { useBreakpoint } from 'styles/media';
 import _ from 'lodash';
+import { PendingReason } from 'utils/tableColumns/PendingReason';
 
 import imgSuccess from 'images/status/success.svg';
 import imgError from 'images/status/error.svg';
@@ -25,6 +26,12 @@ interface Props {
   popoverProps?: Partial<PopoverProps>;
   showMessage?: boolean;
   showTooltip?: boolean;
+  txExecErrorInfo?: {
+    type: number;
+    message: string;
+  };
+  address?: string;
+  hash?: string;
 }
 
 type NativeAttrs = Omit<React.HTMLAttributes<any>, keyof Props>;
@@ -38,6 +45,9 @@ const StatusComponent = ({
   children,
   showMessage,
   showTooltip,
+  txExecErrorInfo,
+  address,
+  hash,
   ...others
 }: StatusProps) => {
   const breakpoint = useBreakpoint();
@@ -80,20 +90,55 @@ const StatusComponent = ({
       translations.general.status[typeMap[type].status].explanation,
     );
     // only error message come from outside
-    if ((type === '1' || type === '4') && children) {
-      explanation = children;
+    if (type === '1' || type === '4') {
+      if (children) {
+        explanation = children;
+      } else if (txExecErrorInfo) {
+        if (txExecErrorInfo.type === 1) {
+          explanation = `${t(
+            translations.transaction.statusError[txExecErrorInfo.type],
+          )}${txExecErrorInfo.message}`;
+        } else {
+          explanation = t(
+            translations.transaction.statusError[txExecErrorInfo.type],
+          );
+        }
+
+        // if not match i18n translations, use fullnode error directly by default
+        if (!explanation) {
+          explanation = txExecErrorInfo.message;
+        }
+      }
+    }
+
+    let icon = typeMap[type].icon;
+    let name = typeMap[type].name;
+
+    if (type === '4') {
+      name = (
+        <>
+          {name}{' '}
+          {address ? (
+            <>
+              <span className="split"></span>
+              <PendingReason account={address} hash={hash} />
+            </>
+          ) : null}
+        </>
+      );
     }
     const content = (
       <>
         <span className="icon-and-text">
-          <img className="icon" src={typeMap[type].icon} alt={type} />
-          <span className="text">{typeMap[type].name}</span>
+          <img className="icon" src={icon} alt={type} />
+          <span className="text">{name}</span>
         </span>
         {!showMessage || variant === 'dot' || type === '4' ? null : (
           <span className="description">{explanation}</span>
         )}
       </>
     );
+
     const { contentClassName: popoverContentClassName, ...popoverOthers } =
       popoverProps || {};
 

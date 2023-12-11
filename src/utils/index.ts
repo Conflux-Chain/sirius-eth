@@ -20,6 +20,7 @@ import { Nametag } from 'utils/hooks/useNametag';
 window.SDK = SDK;
 // @ts-ignore
 window.CFX = CFX;
+// @ts-ignore
 
 dayjs.extend(relativeTime);
 
@@ -599,8 +600,8 @@ export function isObject(o) {
 
 export function checkInt(value, type) {
   const num = Number(type.substr(3));
-  const min = new BigNumber(-Math.pow(2, num - 1));
-  const max = new BigNumber(Math.pow(2, num - 1)).minus(1);
+  const min = new BigNumber(2).pow(num - 1).multipliedBy(-1);
+  const max = new BigNumber(2).pow(num - 1).minus(1);
   let isType = false;
   if (!isNaN(value)) {
     const valNum = new BigNumber(value);
@@ -1027,4 +1028,74 @@ export const getNametagInfo = (row: {
   } catch (e) {}
 
   return result;
+};
+
+export const isLikeBigNumber = obj => {
+  if (obj === null || typeof obj !== 'object') {
+    return false;
+  }
+  return 's' in obj && 'e' in obj && 'c' in obj && Array.isArray(obj.c);
+};
+
+type NestedArray = (string | number | BigNumber | NestedArray)[];
+type NestedObject = {
+  [key: string]: BigNumber | string | NestedObject | NestedObject[];
+};
+export const convertBigNumbersToStrings = (input: NestedArray) => {
+  return input.map(item => {
+    if (item instanceof Uint8Array) {
+      return item;
+    }
+    if (Array.isArray(item)) {
+      return convertBigNumbersToStrings(item);
+    } else if (
+      item !== null &&
+      typeof item === 'object' &&
+      !isLikeBigNumber(item)
+    ) {
+      return convertObjBigNumbersToStrings(item);
+    } else if (isLikeBigNumber(item)) {
+      return item.toString(10);
+    } else {
+      return item;
+    }
+  });
+};
+export const convertObjBigNumbersToStrings = input => {
+  const newObj: NestedObject = {};
+  if (Array.isArray(input)) {
+    return convertBigNumbersToStrings(input);
+  }
+  for (let key in input) {
+    if (isLikeBigNumber(input[key])) {
+      newObj[key] = input[key].toString(10);
+    } else if (Array.isArray(input[key])) {
+      newObj[key] = convertBigNumbersToStrings(input[key]);
+    } else if (typeof input[key] === 'object') {
+      newObj[key] = convertObjBigNumbersToStrings(input[key] as NestedObject);
+    } else {
+      newObj[key] = input[key];
+    }
+  }
+  return newObj;
+};
+
+export const constprocessResultArray = resultArray => {
+  const processElement = element => {
+    if (Array.isArray(element)) {
+      return element.map(processElement);
+    } else if (element.type && element.type === 'Buffer') {
+      return (
+        '0x' +
+        Array.from(element)
+          .map(x => ('00' + (x as number).toString(16)).slice(-2))
+          .join('')
+      );
+    } else {
+      return element;
+    }
+  };
+
+  const inputArray = Array.isArray(resultArray) ? resultArray : [resultArray];
+  return inputArray.map(processElement);
 };

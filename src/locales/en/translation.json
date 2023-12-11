@@ -249,7 +249,7 @@
     "error": {
       "address": "Please enter a conflux address",
       "bool": "Please enter true/false or 0/1",
-      "int": "Please enter an integer in the range -(2^{{num}}-1) ~ 2^{{num}}-1",
+      "int": "Please enter an integer in the range -(2^{{num}}) ~ 2^{{num}}-1",
       "uint": "Please enter a non-negative integer in the range of 0 ~ 2^{{num}}-1",
       "bytes": "Please enter an hexadecimal byte array starting with 0x",
       "bytesM": "Please enter an hexadecimal {{length}} byte array starting with 0x",
@@ -731,6 +731,10 @@
       "seriesName3": "Unique Receivers Count (Day)",
       "yAxisTitle4": "Count",
       "seriesName4": "Unique Senders Count (Day)"
+    },
+    "options": {
+      "time": "Time Granularity",
+      "range": "Date Range"
     }
   },
   "charts": {
@@ -1257,6 +1261,7 @@
     "note": "Private Note",
     "addNote": "Add Private Note",
     "updateNote": "Update Private Note",
+    "pendingReasonLink": "View Reason",
     "tipOfTokenTransferCount": "Show up to 100 records",
     "gotoDetail": "Click to view details",
     "inThePosition": "(in the position {{position}})",
@@ -1325,6 +1330,7 @@
       "txns_plural": "internal transactions",
       "tip": "The 'Advanced' view also shows zero value CFX transfers, while the 'Simple' view only shows CFX transfers with value."
     },
+    "advancedViewTips": "The Advanced View shows more information about CFX transfers.",
     "logs": {
       "title": "logs",
       "address": "Address",
@@ -1335,6 +1341,43 @@
       "hex": "Hex",
       "text": "Text",
       "number": "Number"
+    },
+    "pending": {
+      "view": "View detail",
+      "detail": "Detail: ",
+      "tip": "Tip: ",
+      "reference": "Reference: ",
+      "link": "https://doc.confluxnetwork.org/docs/general/faq/core-space-transactions/why-transaction-is-pending"
+    },
+    "pendingDetails": {
+      "futrueNonce": {
+        "summary": "Discontinuous nonce",
+        "detail": "Discontinuous nonce, the account nonce is {{stateNonce}}, current transaction config nonce is {{txNonce}}.",
+        "tip": "Supplement transactions with missing nonces."
+      },
+      "notEnoughCash": {
+        "summary": "Insufficient balance",
+        "toContract": {
+          "detail": "Insufficient balance. Total needs: {{total}} CFX = value ({{value}}) + gas ({{gas}}) * gasPrice ({{gasPrice}}). Balance: {{balance}} CFX.",
+          "tip": "1. Increase balance 2. gasPrice is too large, please update gas fee, gas price"
+        }
+      },
+      "readyToPack": {
+        "summary": "Ready to pack",
+        "epochExceed": {
+          "detail": "The gap of transaction config epoch and latest epoch is more than 100000. Transaction config epoch is {{proposedBlock}}，latest epoch is {{confirmedBlock}}.",
+          "tip": "Resend transaction with latest epoch."
+        },
+        "lowGasPrice": {
+          "detail": "Gas price {{txGasPrice}} is too low.",
+          "tip": "Increase gas price to speedup transaction."
+        }
+      },
+      "original": {
+        "summary": "Error",
+        "detail": "{{original}}",
+        "tip": "Please submit a ticket"
+      }
     }
   },
   "block": {

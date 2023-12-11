@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Translation, useTranslation } from 'react-i18next';
+import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import clsx from 'clsx';
@@ -12,6 +12,7 @@ import {
   checkIfContractByInfo,
   fromDripToGdrip,
   getNametagInfo,
+  formatNumber,
 } from 'utils';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
@@ -20,7 +21,7 @@ import { Popover } from '@cfxjs/antd';
 import { Overview } from 'app/components/TxnComponents';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
-import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
+import { PendingReason } from './PendingReason';
 
 import iconViewTxn from 'images/view-txn.png';
 import iconViewTxnActive from 'images/view-txn-active.svg';
@@ -45,10 +46,10 @@ export const TxnHashRenderComponent = ({
   txExecErrorMsg,
   txExecErrorInfo,
 }: HashProps) => {
-  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [txnDetail, setTxnDetail] = useState<{
     status?: string;
+    address?: string;
   }>({});
   const bp = useBreakpoint();
 
@@ -67,20 +68,6 @@ export const TxnHashRenderComponent = ({
     });
   };
 
-  // txn status error detail info
-  let statusErrorMessage = txExecErrorMsg;
-  if (txExecErrorInfo) {
-    if (txExecErrorInfo?.type === 1) {
-      statusErrorMessage = `${t(
-        translations.transaction.statusError[txExecErrorInfo?.type],
-      )}${txExecErrorInfo.message}`;
-    } else {
-      statusErrorMessage = t(
-        translations.transaction.statusError[txExecErrorInfo?.type],
-      );
-    }
-  }
-
   // used for skip status in block transactions list
   // original status is null, manually set to 2
   const innerStatus = lodash.isNil(txnDetail.status)
@@ -96,9 +83,16 @@ export const TxnHashRenderComponent = ({
             placement="right"
             trigger="click"
             content={
-              <SkeletonContainer shown={loading} style={{ maxHeight: '566px' }}>
-                <Overview data={{ ...txnDetail, status: innerStatus }} />
-              </SkeletonContainer>
+              <>
+                {loading ? (
+                  <SkeletonContainer
+                    shown={loading}
+                    style={{ width: '25rem', height: '20rem' }}
+                  ></SkeletonContainer>
+                ) : (
+                  <Overview data={{ ...txnDetail, status: innerStatus }} />
+                )}
+              </>
             }
           >
             <button className="icon-view-txn-container" onClick={handleClick} />
@@ -112,9 +106,13 @@ export const TxnHashRenderComponent = ({
             show: status !== 0,
           })}
         >
-          <Status type={status} variant="dot">
-            {statusErrorMessage}
-          </Status>
+          <Status
+            type={status}
+            variant="dot"
+            txExecErrorInfo={txExecErrorInfo}
+            address={txnDetail.address}
+            hash={hash}
+          ></Status>
         </StyledStatusWrapper>
       ) : null}
 
@@ -245,7 +243,13 @@ export const gasPrice = {
   key: 'gasPrice',
   width: 1,
   render: value => (
-    <Text span hoverValue={`${toThousands(value)} drip`}>
+    <Text
+      span
+      hoverValue={`${formatNumber(value, {
+        keepDecimal: false,
+        withUnit: false,
+      })} drip`}
+    >
       {`${fromDripToGdrip(value, false, {
         precision: 6,
         minNum: 1e-6,
@@ -308,20 +312,6 @@ export const method = {
   },
 };
 
-export const PendingReasonText = ({ value }) => {
-  const { t } = useTranslation();
-  let reason = value;
-  if (reason === 'ready') {
-    reason = t(translations.transactions.pendingReason.ready);
-  } else if (reason === SDK.CONST.PENDING_TX_STATUS.FUTURE_NONCE) {
-    reason = t(translations.transactions.pendingReason.futureNonce);
-  } else if (reason === SDK.CONST.PENDING_TX_STATUS.NOT_ENOUGH_CASH) {
-    reason = t(translations.transactions.pendingReason.notEnoughCash);
-  } else {
-    reason = <span>--</span>;
-  }
-  return reason;
-};
 export const pendingReason = {
   title: (
     <Translation>
@@ -331,10 +321,8 @@ export const pendingReason = {
   dataIndex: 'reason',
   key: 'reason',
   width: 1,
-  render: value => (
-    <PendingReasonText
-      value={typeof value === 'string' ? value : value?.pending}
-    ></PendingReasonText>
+  render: (_, row) => (
+    <PendingReason detail={row.pendingDetail}></PendingReason>
   ),
 };
 

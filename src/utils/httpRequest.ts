@@ -314,6 +314,13 @@ export const reqApprovals = (extra?: object) => {
 
 /** open api, end */
 
+export const reqPendingTxs = (extra?: object) => {
+  return sendRequest({
+    url: `/stat/transaction/pending`,
+    ...extra,
+  });
+};
+
 export const reqRefreshMetadata = (param?: object, extra?: object) => {
   return sendRequest({
     url: `/stat/nft/checker/refresh`,

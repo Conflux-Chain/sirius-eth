@@ -14,8 +14,6 @@ import * as serviceWorker from 'serviceWorker';
 import { RecoilRoot } from 'recoil';
 import 'sanitize.css/sanitize.css';
 import '@cfxjs/antd/dist/@cfxjs/antd.css';
-import { completeDetect } from '@cfxjs/use-wallet';
-import { completeDetect as completeDetectEthereum } from '@cfxjs/use-wallet/dist/ethereum';
 
 // Import root app
 import { App } from 'app';
@@ -52,16 +50,11 @@ if (module.hot) {
   module.hot.accept(['./app', './locales/i18n'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
     const App = require('./app').App;
-
-    Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
-      render(App);
-    });
+    render(App);
   });
 }
 
-Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
-  render(App);
-});
+render(App);
 
 const currentVersion = 'v1.10.0';
 
