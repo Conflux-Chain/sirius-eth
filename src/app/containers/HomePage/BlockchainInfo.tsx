@@ -107,7 +107,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               }`,
             )}
           </Grid>
-          <Grid xs={24} sm={24} md={4}>
+          <Grid xs={24} sm={24} md={3}>
             {Info(
               // t(translations.charts.tps.title),
               <Link to="/charts/tps" className="info-link">
@@ -116,7 +116,20 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               lodash.isNil(plotData.tps) ? '--' : plotData.tps,
             )}
           </Grid>
-          <Grid xs={24} sm={24} md={4}>
+          <Grid xs={24} sm={24} md={3}>
+            {Info(
+              t(translations.statistics.home.gasUsed),
+              `${
+                dashboardData.gasUsedPerSecond
+                  ? formatNumber(dashboardData.gasUsedPerSecond, {
+                      withUnit: false,
+                      keepDecimal: false,
+                    })
+                  : '--'
+              }`,
+            )}
+          </Grid>
+          <Grid xs={24} sm={24} md={3}>
             {Info(
               // t(translations.charts.blockTime.title),
               <Link to="/charts/blocktime" className="info-link">
@@ -127,7 +140,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
                 : plotData.blockTime + 's',
             )}
           </Grid>
-          <Grid xs={24} sm={24} md={4}>
+          <Grid xs={24} sm={24} md={3}>
             {Info(
               // t(translations.charts.hashRate.title),
               <Link to="/charts/hashrate" className="info-link">
@@ -249,7 +262,7 @@ const CardWrapper = styled.div`
       &:nth-child(1),
       &:nth-child(2),
       &:nth-child(4) {
-        padding-left: 6rem;
+        padding-left: 2rem;
       }
     }
 
