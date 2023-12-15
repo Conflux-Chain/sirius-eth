@@ -619,7 +619,8 @@
       "cfx-holder-accounts": "CFX 持有账户数",
       "account-growth": "账户增长",
       "active-accounts": "活跃账户数",
-      "contracts": "全部合约"
+      "contracts": "全部合约",
+      "gasUsed": "燃料用量"
     },
     "subtitle": "资源：ConfluxScan.io<br/>点击并拖动绘图区域以放大图表",
     "averageBlockTime": {
@@ -1684,15 +1685,15 @@
       "totalBlocksMined": "挖出总区块",
       "totalRewards": "总奖励",
       "totalTxnFees": "总交易费",
-      "hashRate": "哈希算力 (GH/s)",
-      "gasUsed": "燃料用量"
+      "hashRate": "哈希算力 (GH/s)"
     },
     "home": {
       "currentBlockNumber": "当前区块号",
       "currentEpoch": "当前区块高度",
       "account": "账户总数",
       "transactions": "交易总数",
-      "contract": "合约总数"
+      "contract": "合约总数",
+      "gasUsed": "燃料用量"
     }
   },
   "swap": {
