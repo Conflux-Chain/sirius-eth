@@ -1696,7 +1696,8 @@
       "currentEpoch": "Current Block Height",
       "account": "Accounts",
       "transactions": "Transactions",
-      "contract": "Contracts"
+      "contract": "Contracts",
+      "gasUsed": "Gas Used Per Second"
     }
   },
   "swap": {
