@@ -1697,7 +1697,7 @@
       "account": "Accounts",
       "transactions": "Transactions",
       "contract": "Contracts",
-      "gasUsed": "Gas Used"
+      "gasUsed": "Gas Used Per Second"
     }
   },
   "swap": {

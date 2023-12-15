@@ -1693,7 +1693,7 @@
       "account": "账户总数",
       "transactions": "交易总数",
       "contract": "合约总数",
-      "gasUsed": "燃料用量"
+      "gasUsed": "每秒燃料用量"
     }
   },
   "swap": {
