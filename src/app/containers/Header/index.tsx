@@ -23,6 +23,7 @@ import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
 import { getNetwork, gotoNetwork, getDomainTLD } from 'utils';
 import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 // import { Notices } from 'app/containers/Notices/Loadable';
+import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
 import logo from 'images/logo.svg';
 import logoTest from 'images/logo-test.svg';
@@ -610,6 +611,11 @@ export const Header = memo(() => {
 
   const startLinksJSX = genParseLinkFn(startLinks);
   const endLinksJSX = genParseLinkFn(endLinks);
+  const gasPriceJSX = (
+    <div className="nav-gasprice">
+      <GasPriceDropdown />
+    </div>
+  );
 
   const brand = (
     <LogoWrapper>
@@ -636,6 +642,7 @@ export const Header = memo(() => {
       </>
     ),
     endLinksJSX,
+    gasPriceJSX,
   ];
 
   return (
