@@ -10,10 +10,10 @@ interface Props {
 export const Txns = ({ url }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
 
-  const columnsWidth = [4, 4, 6, 6, 4, 3, 4, 5];
+  const columnsWidth = [5, 4, 5, 5, 4, 3, 4, 4];
   const columns = [
     transactionColunms.hash,
-    blockColunms.epoch,
+    blockColunms.blockHeight,
     transactionColunms.from,
     transactionColunms.to,
     transactionColunms.value,

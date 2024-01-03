@@ -16,8 +16,38 @@ import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
+import eSpaceIcon from 'images/icon-evm.svg';
+import cSpaceIcon from 'images/icon-core.svg';
+import imgInfo from 'images/info.svg';
+import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  img {
+    margin-right: 8px;
+    margin-top: -2px;
+  }
+`;
+const StyleToolTip = styled.div`
+  display: flex;
+  align-items: center;
+  img {
+    margin-top: -4px;
+    margin-left: 4px;
+  }
+`;
 export const epochWithNoLink = {
+  title: (
+    <Translation>{t => t(translations.general.table.block.epoch)}</Translation>
+  ),
+  dataIndex: 'epochNumber',
+  key: 'epochNumber',
+  width: 1,
+  render: (value, row) => <Link href={`/block/${value}`}>{value}</Link>,
+};
+
+export const blockHeight = {
   title: (
     <Translation>{t => t(translations.general.table.block.height)}</Translation>
   ),
@@ -29,12 +59,28 @@ export const epochWithNoLink = {
 
 export const epoch = {
   title: (
-    <Translation>{t => t(translations.general.table.block.height)}</Translation>
+    <Translation>{t => t(translations.general.table.block.epoch)}</Translation>
   ),
   dataIndex: 'epochNumber',
   key: 'epochNumber',
   width: 1,
-  render: (value, row) => <Link href={`/block/${value}`}>{value}</Link>,
+  render: (value, row) => (
+    <Link href={`/block/${value}`}>
+      <IconWrapper>
+        <Text
+          span
+          hoverValue={
+            <Translation>
+              {t => t(translations.general.table.tooltip.crossSpaceCall)}
+            </Translation>
+          }
+        >
+          <img src={row.coreBlock === 1 ? cSpaceIcon : eSpaceIcon} alt="?" />
+        </Text>
+        {value}
+      </IconWrapper>
+    </Link>
+  ),
 };
 
 export const position = {
@@ -50,10 +96,46 @@ export const position = {
 
 export const txns = {
   title: (
-    <Translation>{t => t(translations.general.table.block.txns)}</Translation>
+    <StyleToolTip>
+      <Translation>{t => t(translations.general.table.block.txns)}</Translation>
+      <Text
+        span
+        hoverValue={
+          <Translation>
+            {t => t(translations.general.table.tooltip.txns)}
+          </Translation>
+        }
+      >
+        <img src={imgInfo} alt="tips" />
+      </Text>
+    </StyleToolTip>
   ),
   dataIndex: 'transactionCount',
   key: 'transactionCount',
+  width: 1,
+  render: formatNumber,
+};
+
+export const crossSpaceCalls = {
+  title: (
+    <StyleToolTip>
+      <Translation>
+        {t => t(translations.general.table.block.cross)}
+      </Translation>
+      <Text
+        span
+        hoverValue={
+          <Translation>
+            {t => t(translations.general.table.tooltip.cross)}
+          </Translation>
+        }
+      >
+        <img src={imgInfo} alt="tips" />
+      </Text>
+    </StyleToolTip>
+  ),
+  dataIndex: 'crossSpaceTransactionCount',
+  key: 'crossSpaceTransactionCount',
   width: 1,
   render: formatNumber,
 };
@@ -106,21 +188,36 @@ export const miner = {
 
 export const avgGasPrice = {
   title: (
-    <Translation>
-      {t => t(translations.general.table.block.avgGasPrice)}
-    </Translation>
+    <StyleToolTip>
+      <Translation>
+        {t => t(translations.general.table.block.avgGasPrice)}
+      </Translation>
+      <Text
+        span
+        hoverValue={
+          <Translation>
+            {t => t(translations.general.table.tooltip.avgGasPrice)}
+          </Translation>
+        }
+      >
+        <img src={imgInfo} alt="tips" />
+      </Text>
+    </StyleToolTip>
   ),
   dataIndex: 'avgGasPrice',
   key: 'avgGasPrice',
   width: 1,
-  render: value => (
-    <Text span hoverValue={`${toThousands(value)} drip`}>
-      {`${fromDripToGdrip(value, false, {
-        precision: 6,
-        minNum: 1e-6,
-      })} Gdrip`}
-    </Text>
-  ),
+  render: value =>
+    value && value !== '0' ? (
+      <Text span hoverValue={`${toThousands(value)} drip`}>
+        {`${fromDripToGdrip(value, false, {
+          precision: 6,
+          minNum: 1e-6,
+        })} Gdrip`}
+      </Text>
+    ) : (
+      <NotApplicable />
+    ),
 };
 
 export const gasUsedPercent = {
@@ -133,10 +230,10 @@ export const gasUsedPercent = {
   key: 'gasUsed',
   width: 1,
   render: (value, row: any) => {
-    if (value) {
+    if (value && value !== '0') {
       return getPercent(row.gasUsed, row.gasLimit);
     } else {
-      return '--';
+      return <NotApplicable />;
     }
   },
 };
@@ -156,11 +253,25 @@ export const gasUsedPercentWithProgress = {
       gasUsed.dividedBy(row.gasLimit).multipliedBy(100).toFixed(2),
     );
 
-    if (value) {
+    if (value && value !== '0') {
       return (
         <StyledGasPercentWrapper>
           <div className="gas-detail">
-            {toThousands(gasUsed.toFixed())}{' '}
+            <Text
+              span
+              hoverValue={
+                <Translation>
+                  {t =>
+                    t(translations.general.table.block.gasUsedPercent) +
+                    ': ' +
+                    toThousands(gasUsed.toFixed())
+                  }
+                </Translation>
+              }
+            >
+              {toThousands(gasUsed.toFixed())}{' '}
+            </Text>
+
             <span className="gas-detail-percent">
               ({getPercent(row.gasUsed, row.gasLimit)})
             </span>
@@ -176,7 +287,7 @@ export const gasUsedPercentWithProgress = {
         </StyledGasPercentWrapper>
       );
     } else {
-      return '--';
+      return <NotApplicable />;
     }
   },
 };
@@ -215,14 +326,31 @@ export const difficulty = {
 
 export const gasLimit = {
   title: (
-    <Translation>
-      {t => t(translations.general.table.block.gasLimit)}
-    </Translation>
+    <StyleToolTip>
+      <Translation>
+        {t => t(translations.general.table.block.gasLimit)}
+      </Translation>
+      <Text
+        span
+        hoverValue={
+          <Translation>
+            {t => t(translations.general.table.tooltip.gasLimit)}
+          </Translation>
+        }
+      >
+        <img src={imgInfo} alt="tips" />
+      </Text>
+    </StyleToolTip>
   ),
   dataIndex: 'gasLimit',
   key: 'gasLimit',
   width: 1,
-  render: formatNumber,
+  render: value => {
+    if (value && value !== '0') {
+      return toThousands(value);
+    }
+    return <NotApplicable />;
+  },
 };
 
 const StyledHashWrapper = styled.span`
