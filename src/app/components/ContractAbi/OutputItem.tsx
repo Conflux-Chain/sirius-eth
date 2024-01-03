@@ -65,7 +65,7 @@ const OutputItem = ({ output, value }: Props) => {
       );
     } else if (type.startsWith('byte')) {
       const convertBytesToHex = value => {
-        if (value.indexOf('0x') < 0) {
+        if (value.toString('hex').indexOf('0x') < 0) {
           return '0x' + value.toString('hex');
         }
         return value;
