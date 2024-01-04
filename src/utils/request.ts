@@ -76,8 +76,9 @@ const parseJSON = async function (response) {
 
 // 检查返回值中是否包含错误
 const checkResponse = function ({ data, response }, opts) {
-  if (response.status === 200 && data.status === '1') {
-    return data.result;
+  // 兼容 data.code 和 data.data, 是关于 core space 的数据结构
+  if (response.status === 200 && (data.status === '1' || data.code === 0)) {
+    return data.result || data.data;
   } else if (/HEAD/i.test(opts?.method)) {
     // handle of HEAD method
     return response;

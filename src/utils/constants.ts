@@ -201,11 +201,17 @@ export const ICON_DEFAULT_TOKEN =
 let APIHost = IS_TESTNET
   ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
   : `evmapi${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
+
+let APIHostCore = IS_TESTNET
+  ? `api-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
+  : `api${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
 if (window.location.host.startsWith('net')) {
   APIHost = window.location.host.replace(/cfx|eth/, 'api');
+  APIHostCore = window.location.host.replace(/cfx|eth/, 'api');
 }
 
 export const OPEN_API_HOST = APIHost;
+export const OPEN_API_HOST_CORE = APIHostCore;
 
 export const OPEN_API_URLS = Object.entries({
   // charts
@@ -226,7 +232,9 @@ export const OPEN_API_URLS = Object.entries({
   NFTBalance: '/nft/balances',
 })
   .map(item => ({
-    [item[0]]: `https://${OPEN_API_HOST}${item[1]}`,
+    [item[0]]: `https://${
+      item[1] === '/statistics/mining' ? OPEN_API_HOST_CORE : OPEN_API_HOST
+    }${item[1]}`,
   }))
   .reduce((prev, curr) => ({ ...prev, ...curr }), {});
 

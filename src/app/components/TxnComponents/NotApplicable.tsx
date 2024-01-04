@@ -11,7 +11,7 @@ const StyledWrapper = styled.div`
 `;
 
 const NotApplicable = () => {
-  return <StyledWrapper>Not applicable</StyledWrapper>;
+  return <StyledWrapper>Inapplicable</StyledWrapper>;
 };
 
 export default NotApplicable;
