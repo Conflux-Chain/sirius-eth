@@ -12,6 +12,7 @@ import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { Detail } from './Detail';
 
 import { InternalTxns } from 'app/containers/Transactions/Loadable';
+import iconCross from 'images/icon-crossSpace.svg';
 
 export function Transaction() {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ export function Transaction() {
     });
   }, [hash]);
 
-  const { from, to, eventLogCount } = txnDetail;
+  const { from, to, eventLogCount, gasFee } = txnDetail;
 
   let tabs: any[] = [
     {
@@ -66,7 +67,17 @@ export function Transaction() {
           content={t(translations.transaction.description)}
         />
       </Helmet>
-      <PageHeader>{t(translations.transaction.title)}</PageHeader>
+      <PageHeader>
+        <StyledHeader>
+          {t(translations.transaction.title)}
+          {gasFee === '0' && (
+            <div className="overview-cross">
+              <img src={iconCross} alt="?" />
+              <div>{t(translations.general.table.tooltip.crossSpaceCall)}</div>
+            </div>
+          )}
+        </StyledHeader>
+      </PageHeader>
       <TabsTablePanel tabs={tabs} />
     </StyledPageWrapper>
   );
@@ -82,4 +93,26 @@ Transaction.defaultProps = {
 
 const StyledPageWrapper = styled.div`
   margin-bottom: 2.2857rem;
+`;
+
+const StyledHeader = styled.div`
+  display: flex;
+  align-items: center;
+  .overview-cross {
+    width: fit-content;
+    margin-left: 16px;
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    font-weight: 400;
+    border-radius: 16px;
+    padding: 0px 12px;
+    gap: 8px;
+    font-size: 14px;
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;

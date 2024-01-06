@@ -20,6 +20,7 @@ import eSpaceIcon from 'images/icon-evm.svg';
 import cSpaceIcon from 'images/icon-core.svg';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
+import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 const IconWrapper = styled.div`
   display: flex;
@@ -71,7 +72,16 @@ export const epoch = {
           span
           hoverValue={
             <Translation>
-              {t => t(translations.general.table.tooltip.crossSpaceCall)}
+              {t => {
+                const environment =
+                  NETWORK_TYPE === NETWORK_TYPES.testnet ? 'testnet' : 'hydra';
+                return (
+                  (row.coreBlock === 1
+                    ? t(translations.general.table.tooltip.coreSpace)
+                    : t(translations.general.table.tooltip.evmSpace)) +
+                  ` ${environment}`
+                );
+              }}
             </Translation>
           }
         >
@@ -207,8 +217,8 @@ export const avgGasPrice = {
   dataIndex: 'avgGasPrice',
   key: 'avgGasPrice',
   width: 1,
-  render: value =>
-    value && value !== '0' ? (
+  render: (value, row: any) =>
+    (value && value !== '0') || row.coreBlock === 0 ? (
       <Text span hoverValue={`${toThousands(value)} drip`}>
         {`${fromDripToGdrip(value, false, {
           precision: 6,
@@ -253,7 +263,7 @@ export const gasUsedPercentWithProgress = {
       gasUsed.dividedBy(row.gasLimit).multipliedBy(100).toFixed(2),
     );
 
-    if (value && value !== '0') {
+    if ((value && value !== '0') || row.coreBlock === 0) {
       return (
         <StyledGasPercentWrapper>
           <div className="gas-detail">
