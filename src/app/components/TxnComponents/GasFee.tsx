@@ -16,13 +16,13 @@ export const GasFee = ({ fee, sponsored }) => {
   return (
     <StyledFeeWrapper>
       {`${
-        _.isNil(fee)
+        _.isNil(fee) || fee === '0'
           ? '--'
           : fromDripToCfx(fee, false, {
               precision: 18,
               minNum: 1e-18,
-            })
-      } CFX`}
+            }) + ' CFX'
+      }`}
       {sponsored && (
         <img src={imgSponsored} alt="sponsored" className="icon-sponsored" />
       )}

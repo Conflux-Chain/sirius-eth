@@ -12,6 +12,7 @@ import { GasFee } from './GasFee';
 import { Nonce } from './Nonce';
 import { TokenTransfer } from './TokenTransfer';
 import { Status } from './Status';
+import iconCross from 'images/icon-crossSpace.svg';
 
 export const Overview = ({ data }) => {
   const { t } = useTranslation();
@@ -30,11 +31,16 @@ export const Overview = ({ data }) => {
     tokenTransfer,
     txExecErrorInfo,
   } = data;
-
   return (
     <StyledWrapper>
       <div className="overview-title">
         {t(translations.transaction.overview)}
+        {gasFee === '0' && (
+          <div className="overview-cross">
+            <img src={iconCross} alt="?" />
+            {t(translations.general.table.tooltip.crossSpaceCall)}
+          </div>
+        )}
       </div>
       <Description
         verticle
@@ -118,11 +124,25 @@ const StyledWrapper = styled.div`
   overflow: hidden;
 
   .overview-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-weight: 500;
     color: #7e8598;
     line-height: 1.2857rem;
     border-bottom: 1px solid #e8e9ea !important;
     padding-bottom: 0.8571rem;
+  }
+
+  .overview-cross {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    background: rgba(171, 172, 181, 0.1);
+    font-weight: 400;
+    border-radius: 12px;
+    padding: 5px 15px;
+    gap: 8px;
   }
 
   .overview-status-and-confirmedEpochCount {

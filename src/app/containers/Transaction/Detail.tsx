@@ -871,10 +871,12 @@ export const Detail = () => {
             }
           >
             <SkeletonContainer shown={loading}>
-              {`${fromDripToGdrip(gasPrice, false, {
-                precision: 9,
-                minNum: 1e-9,
-              })} Gdrip`}
+              {!_.isNil(gasPrice) && gasPrice !== '0'
+                ? `${fromDripToGdrip(gasPrice, false, {
+                    precision: 9,
+                    minNum: 1e-9,
+                  })} Gdrip`
+                : '--'}
             </SkeletonContainer>
           </Description>
           <Description
@@ -898,13 +900,16 @@ export const Detail = () => {
             }
           >
             <SkeletonContainer shown={loading}>
-              {`${!_.isNil(gasUsed) ? toThousands(gasUsed) : '--'} | ${
-                !_.isNil(gas) ? toThousands(gas) : '--'
-              } (${getPercent(gasUsed, gas)}) | ${
-                gasUsed && gas
-                  ? toThousands(Math.max(+gasUsed, (+gas * 3) / 4))
-                  : '--'
-              }`}
+              {!_.isNil(gasUsed) && gasUsed !== '0' && gas ? (
+                <>
+                  {`${toThousands(gasUsed)} | ${toThousands(gas)} (${getPercent(
+                    gasUsed,
+                    gas,
+                  )}) | ${toThousands(Math.max(+gasUsed, (+gas * 3) / 4))}`}
+                </>
+              ) : (
+                <>--</>
+              )}
             </SkeletonContainer>
           </Description>
           {/* <Description
