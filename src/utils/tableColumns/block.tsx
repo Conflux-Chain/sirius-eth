@@ -10,6 +10,7 @@ import {
   fromDripToCfx,
   toThousands,
   fromDripToGdrip,
+  roundToFixedPrecision,
 } from 'utils/';
 // import imgPivot from 'images/pivot.svg';
 import { AddressContainer } from 'app/components/AddressContainer';
@@ -20,7 +21,6 @@ import eSpaceIcon from 'images/icon-evm.svg';
 import cSpaceIcon from 'images/icon-core.svg';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 const IconWrapper = styled.div`
   display: flex;
@@ -73,14 +73,9 @@ export const epoch = {
           hoverValue={
             <Translation>
               {t => {
-                const environment =
-                  NETWORK_TYPE === NETWORK_TYPES.testnet ? 'testnet' : 'hydra';
-                return (
-                  (row.coreBlock === 1
-                    ? t(translations.general.table.tooltip.coreSpace)
-                    : t(translations.general.table.tooltip.evmSpace)) +
-                  ` ${environment}`
-                );
+                return row.coreBlock === 1
+                  ? t(translations.general.table.tooltip.coreSpace)
+                  : t(translations.general.table.tooltip.evmSpace);
               }}
             </Translation>
           }
@@ -123,7 +118,8 @@ export const txns = {
   dataIndex: 'transactionCount',
   key: 'transactionCount',
   width: 1,
-  render: formatNumber,
+  render: (value, row: any) =>
+    formatNumber(row.transactionCount - row.crossSpaceTransactionCount),
 };
 
 export const crossSpaceCalls = {
@@ -220,10 +216,13 @@ export const avgGasPrice = {
   render: (value, row: any) =>
     (value && value !== '0') || row.coreBlock === 0 ? (
       <Text span hoverValue={`${toThousands(value)} drip`}>
-        {`${fromDripToGdrip(value, false, {
-          precision: 6,
-          minNum: 1e-6,
-        })} Gdrip`}
+        {`${roundToFixedPrecision(
+          fromDripToGdrip(value, false, {
+            precision: 6,
+            minNum: 1e-6,
+          }),
+          2,
+        )} Gdrip`}
       </Text>
     ) : (
       <NotApplicable />
@@ -241,7 +240,7 @@ export const gasUsedPercent = {
   width: 1,
   render: (value, row: any) => {
     if (value && value !== '0') {
-      return getPercent(row.gasUsed, row.gasLimit);
+      return getPercent(row.gasUsed, row.gasLimit, 2);
     } else {
       return <NotApplicable />;
     }
@@ -283,7 +282,7 @@ export const gasUsedPercentWithProgress = {
             </Text>
 
             <span className="gas-detail-percent">
-              ({getPercent(row.gasUsed, row.gasLimit)})
+              ({getPercent(row.gasUsed, row.gasLimit, 2)})
             </span>
           </div>
           <Progress

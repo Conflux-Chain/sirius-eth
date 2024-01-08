@@ -987,7 +987,7 @@
         "height": "区块高度",
         "position": "位置",
         "txns": "交易数",
-        "cross": "Cross Space Calls",
+        "cross": "跨空间调用",
         "hash": "区块哈希",
         "miner": "矿工",
         "avgGasPrice": "平均燃料价格",
@@ -1000,11 +1000,11 @@
       "tooltip": {
         "coreSpace": "Core Space",
         "evmSpace": "eSpace",
-        "crossSpaceCall": "Cross Space Call",
+        "crossSpaceCall": "跨空间调用",
         "txns": "区块中的交易数量。eSpace区块不包含跨空间调用的交易数量。",
         "cross": "从Core操作eSpace跨空间调用的交易数量。参考链接：http://doc.confluxnetwork.org/docs/espace/build/cross-space-bridge/",
         "avgGasPrice": "eSpace区块的平均燃料价格排除了跨空间调用的交易。",
-        "gasLimit": "Conflux eSpace 是完全兼容EVM的空间（链），独立于Core空间。Conflux链每出5个区块，将有一个区块用于打包eSpace交易，eSpace区块燃料限制为区块总燃料限制的1/2。"
+        "gasLimit": "Conflux eSpace 是完全兼容EVM的空间（链），独立于Core空间。纪元中区块高度可整除5的区块，属于eSpace的区块。eSpace区块的基础限制为15000000，区块限制为纪元中包含的eSpace区块个数*15000000"
       },
       "transaction": {
         "hash": "交易哈希",
@@ -1292,7 +1292,7 @@
     "to": "接收方",
     "tokenTransferred": "通证转移",
     "value": "价值",
-    "gasUsed": "燃料限制/燃料用量/计费燃气",
+    "gasUsed": "燃料限制 | 燃料用量 | 燃料计费",
     "gasPrice": "燃料价格",
     "gasFee": "燃气费",
     "gasCharged": "计费燃气",
@@ -1404,7 +1404,7 @@
     "blockHash": "区块哈希",
     "parentHash": "父区块哈希",
     "nonce": "随机数",
-    "gasUsed": "限制/燃料用量",
+    "gasUsed": "限制｜燃料用量",
     "timestamp": "时间戳",
     "size": "容量",
     "transactions": "交易",
@@ -1880,5 +1880,13 @@
         "title": "票权状态"
       }
     }
+  },
+  "gaspriceDropdown": {
+    "blockHeight": "区块高度",
+    "low": "低",
+    "median": "中",
+    "high": "高",
+    "market": "燃料价格市场",
+    "latest60Blocks": "最新 60 个区块"
   }
 }
