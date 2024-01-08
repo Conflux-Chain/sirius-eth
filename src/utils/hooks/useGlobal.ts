@@ -79,7 +79,7 @@ export const useGlobalData = createGlobalState<object>({
   contracts: {},
 });
 
-interface GasPriceBundle {
+export interface GasPriceBundle {
   gasPriceInfo: {
     min: number;
     tp50: number;
@@ -98,7 +98,7 @@ interface GasPriceBundle {
   minTime: string;
   blockHeight: number;
 }
-export const useGasPrice = createGlobalState<GasPriceBundle>({
+export const defaultGasPriceBundle: GasPriceBundle = {
   gasPriceInfo: {
     min: 0,
     tp50: 0,
@@ -116,4 +116,7 @@ export const useGasPrice = createGlobalState<GasPriceBundle>({
   maxTime: '0',
   minTime: '0',
   blockHeight: 0,
-});
+};
+export const useGasPrice = createGlobalState<GasPriceBundle>(
+  defaultGasPriceBundle,
+);
