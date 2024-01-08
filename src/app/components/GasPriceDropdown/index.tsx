@@ -73,13 +73,6 @@ export const GasPriceDropdown = () => {
     [showModal],
   );
 
-  useEffect(() => {
-    if (!refreshGasPrice.init) {
-      refreshGasPrice.init = true;
-      refreshData();
-    }
-  }, [refreshData]);
-
   const refreshData = useCallback(async () => {
     setIsRefreshing(true);
     const res = await reqGasPrice();
@@ -87,7 +80,14 @@ export const GasPriceDropdown = () => {
       setGasPrice(res);
     }
     setIsRefreshing(false);
-  });
+  }, [setGasPrice]);
+
+  useEffect(() => {
+    if (!refreshGasPrice.init) {
+      refreshGasPrice.init = true;
+      refreshData();
+    }
+  }, [refreshData]);
 
   useInterval(() => {
     refreshData();
