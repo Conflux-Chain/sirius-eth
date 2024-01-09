@@ -19,7 +19,7 @@ export function CFXTransfers() {
   const columnsCFXTransferWidth = [4, 4, 8, 7, 4, 5];
   const columnsCFXTrasfer = [
     tokenColunms.txnHash,
-    blockColunms.epoch,
+    blockColunms.blockHeight,
     tokenColunms.from,
     tokenColunms.to,
     transactionColunms.value,

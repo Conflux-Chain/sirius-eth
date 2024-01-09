@@ -983,7 +983,7 @@
       "dateTime": "日期时间（本地）",
       "switchAgeTip": "点击切换为{{format}}格式显示",
       "block": {
-        "epoch": "纪元",
+        "epoch": "区块高度",
         "height": "区块高度",
         "position": "位置",
         "txns": "交易数",

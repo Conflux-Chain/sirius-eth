@@ -27,6 +27,8 @@ import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
 import logo from 'images/logo.svg';
 import logoTest from 'images/logo-test.svg';
+import IconCore from 'images/icon-core.svg';
+import IconEvm from 'images/icon-evm.svg';
 
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
@@ -532,16 +534,30 @@ export const Header = memo(() => {
     {
       // switch network
       name: 'switch-network',
-      title: getNetwork(networks, networkId).name,
+      title: (
+        <NetWorkWrapper>
+          <img
+            src={[1029, 1].includes(networkId) ? IconCore : IconEvm}
+            alt="Network"
+          />
+          {getNetwork(networks, networkId).name}
+        </NetWorkWrapper>
+      ),
       className: 'not-link',
       children:
         networks.length < 2
           ? []
           : networks.map(n => {
               const isMatch = n.id === networkId;
-
+              const isCore = [1029, 1].includes(n.id);
               return {
-                title: [n.name, isMatch && <Check size={18} key="check" />],
+                title: [
+                  <NetWorkWrapper>
+                    <img src={isCore ? IconCore : IconEvm} alt="" />
+                    {n.name}
+                  </NetWorkWrapper>,
+                  isMatch && <Check size={18} key="check" />,
+                ],
                 onClick: () => {
                   trackEvent({
                     category: ScanEvent.preference.category,
@@ -794,4 +810,9 @@ const WalletWrapper = styled.div`
       }
     }
   }
+`;
+
+const NetWorkWrapper = styled.div`
+  display: flex;
+  gap: 4px;
 `;
