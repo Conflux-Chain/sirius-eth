@@ -20,7 +20,7 @@ export const CFXTxns = ({ address }: Props) => {
   const columnsWidth = [4, 4, 8, 7, 2, 4, 5];
   const columns = [
     tokenColunms.txnHash,
-    blockColunms.epoch,
+    blockColunms.blockHeight,
     {
       ...tokenColunms.from,
       render(text, record, index) {
