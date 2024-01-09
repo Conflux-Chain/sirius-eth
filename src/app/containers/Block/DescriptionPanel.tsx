@@ -231,7 +231,7 @@ export function DescriptionPanel() {
         >
           <SkeletonContainer shown={loading}>
             <StyledCross>
-              {transactionCount || '--'}
+              {transactionCount - crossSpaceTransactionCount}
               <Text
                 span
                 hoverValue={t(
@@ -241,7 +241,7 @@ export function DescriptionPanel() {
                 <div className="overview-cross">
                   <img src={iconCross} alt="?" />
                   Calls: &nbsp;
-                  {crossSpaceTransactionCount || '--'}
+                  {crossSpaceTransactionCount}
                 </div>
               </Text>
             </StyledCross>
@@ -258,9 +258,10 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {`${gasLimit || '--'}/${gasUsed || '--'} (${getPercent(
+            {`${gasLimit || '--'} | ${gasUsed || '--'} (${getPercent(
               gasUsed,
               gasLimit,
+              2,
             )})`}
           </SkeletonContainer>
         </Description>

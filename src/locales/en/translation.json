@@ -1005,7 +1005,7 @@
         "txns": "The number of transactions in this block. Cross space calls are not included in eSpace blocks.",
         "cross": "The number of cross space transactions from Core to eSpace in the block. Reference link: http://doc.confluxnetwork.org/docs/espace/build/cross-space-bridge/",
         "avgGasPrice": "The average gas price of cross space transactions in the block is not included.",
-        "gasLimit": "Conflux eSpace is Conflux's fully EVM-compatible space(chain), it is independent from Core space. For every 5 blocks produced by the Conflux chain, one block will be used to package eSpace transactions, and the eSpace block gas limit is 1/2 of the total gas limit in the block."
+        "gasLimit": "Conflux eSpace is Conflux's fully EVM-compatible space(chain), it is independent from Core space. In epoch, the block height can be divided by 5, which belongs to the eSpace blocks. The basic limit of eSpace block is 15,000,000, and the total limit of the epoch is the number of eSpace blocks contained* 15,000,000."
       },
       "transaction": {
         "hash": "Txn Hash",
@@ -1407,7 +1407,7 @@
     "blockHash": "Block Hash",
     "parentHash": "Parent Hash",
     "nonce": "Nonce",
-    "gasUsed": "Limit/Gas Used",
+    "gasUsed": "Limit | Gas Used",
     "timestamp": "Timestamp",
     "size": "Size",
     "transactions": "Transactions",
@@ -1886,5 +1886,13 @@
         "title": "Voting Status"
       }
     }
+  },
+  "gaspriceDropdown": {
+    "blockHeight": "Block Height",
+    "low": "Low",
+    "median": "Median",
+    "high": "High",
+    "market": "Gas Price Market",
+    "latest60Blocks": "Latest 60 blocks"
   }
 }

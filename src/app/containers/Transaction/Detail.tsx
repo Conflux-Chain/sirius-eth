@@ -902,7 +902,7 @@ export const Detail = () => {
             <SkeletonContainer shown={loading}>
               {!_.isNil(gasUsed) && gasUsed !== '0' && gas ? (
                 <>
-                  {`${toThousands(gasUsed)} | ${toThousands(gas)} (${getPercent(
+                  {`${toThousands(gas)} | ${toThousands(gasUsed)} (${getPercent(
                     gasUsed,
                     gas,
                   )}) | ${toThousands(Math.max(+gasUsed, (+gas * 3) / 4))}`}
