@@ -984,7 +984,7 @@
       "dateTime": "Date Time (Local)",
       "switchAgeTip": "Click to show {{format}} format",
       "block": {
-        "epoch": "Epoch",
+        "epoch": "Block Height",
         "height": "Block Height",
         "position": "Position",
         "txns": "Txn",
