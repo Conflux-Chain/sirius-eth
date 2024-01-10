@@ -153,13 +153,13 @@ export function StockChartTemplate({
     async (intervalType, limit) => {
       setIntervalType(intervalType);
       setCustomLimit(false);
-
       // @ts-ignore
       chart.current?.chart.showLoading();
 
       const data = await reqChartData({
         url: request.url,
-        query: request.query || {
+        query: {
+          ...request.query,
           limit: preview ? 30 : limit,
           intervalType: intervalType,
         },
