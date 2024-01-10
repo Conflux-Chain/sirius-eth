@@ -430,8 +430,8 @@ export function StockChartTemplate({
 const StyledFilterItems = styled.div`
   display: flex;
   position: relative;
-  z-index: 0;
-  top: 62px;
+  z-index: 2;
+  top: 28px;
   left: 40px;
   @media (max-width: 1240px) {
     top: 92px;
