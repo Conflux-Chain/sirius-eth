@@ -725,6 +725,9 @@ const Wrapper = styled.header`
   }
 
   ${media.m} {
+    .nav-gasprice {
+      display: none;
+    }
     .navbar-menu {
       background-color: #4a5064;
       padding: 1.64rem 5.14rem;
@@ -732,6 +735,8 @@ const Wrapper = styled.header`
 
       .navbar-end {
         .navbar-item {
+          display: flex;
+          align-items: flex-start !important;
           flex-direction: row;
           align-items: baseline;
 
