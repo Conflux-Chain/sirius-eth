@@ -202,9 +202,10 @@ let APIHost = IS_TESTNET
   ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
   : `evmapi${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
 
+const domain = window.location.hostname.includes('.io') ? '.io' : '.net';
 let APIHostCore = IS_TESTNET
-  ? `api-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
-  : `api${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
+  ? `api-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`
+  : `api${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`;
 if (window.location.host.startsWith('net')) {
   APIHost = window.location.host.replace(/cfx|eth/, 'api');
   APIHostCore = window.location.host.replace(/cfx|eth/, 'api');
