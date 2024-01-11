@@ -104,7 +104,12 @@ export function AddressMetadata({ address, accountInfo }) {
               .then(res => {
                 setLockedCFX(res || 0);
               })
-              .catch(e => publishRequestError(e, 'rpc'));
+              .catch(e =>
+                publishRequestError(
+                  { ...{ method: 'getLockedStakingBalance' }, ...e },
+                  'rpc',
+                ),
+              );
           } else {
             setCurrentVotingRights(0);
           }
