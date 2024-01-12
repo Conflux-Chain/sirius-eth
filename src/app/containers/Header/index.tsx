@@ -23,9 +23,12 @@ import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
 import { getNetwork, gotoNetwork, getDomainTLD } from 'utils';
 import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 // import { Notices } from 'app/containers/Notices/Loadable';
+import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
 import logo from 'images/logo.svg';
 import logoTest from 'images/logo-test.svg';
+import IconCore from 'images/icon-core.svg';
+import IconEvm from 'images/icon-evm.svg';
 
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
@@ -531,16 +534,30 @@ export const Header = memo(() => {
     {
       // switch network
       name: 'switch-network',
-      title: getNetwork(networks, networkId).name,
+      title: (
+        <NetWorkWrapper>
+          <img
+            src={[1029, 1].includes(networkId) ? IconCore : IconEvm}
+            alt="Network"
+          />
+          {getNetwork(networks, networkId).name}
+        </NetWorkWrapper>
+      ),
       className: 'not-link',
       children:
         networks.length < 2
           ? []
           : networks.map(n => {
               const isMatch = n.id === networkId;
-
+              const isCore = [1029, 1].includes(n.id);
               return {
-                title: [n.name, isMatch && <Check size={18} key="check" />],
+                title: [
+                  <NetWorkWrapper>
+                    <img src={isCore ? IconCore : IconEvm} alt="" />
+                    {n.name}
+                  </NetWorkWrapper>,
+                  isMatch && <Check size={18} key="check" />,
+                ],
                 onClick: () => {
                   trackEvent({
                     category: ScanEvent.preference.category,
@@ -610,6 +627,11 @@ export const Header = memo(() => {
 
   const startLinksJSX = genParseLinkFn(startLinks);
   const endLinksJSX = genParseLinkFn(endLinks);
+  const gasPriceJSX = (
+    <div className="nav-gasprice">
+      <GasPriceDropdown />
+    </div>
+  );
 
   const brand = (
     <LogoWrapper>
@@ -636,6 +658,7 @@ export const Header = memo(() => {
       </>
     ),
     endLinksJSX,
+    gasPriceJSX,
   ];
 
   return (
@@ -702,6 +725,9 @@ const Wrapper = styled.header`
   }
 
   ${media.m} {
+    .nav-gasprice {
+      display: none;
+    }
     .navbar-menu {
       background-color: #4a5064;
       padding: 1.64rem 5.14rem;
@@ -709,6 +735,8 @@ const Wrapper = styled.header`
 
       .navbar-end {
         .navbar-item {
+          display: flex;
+          align-items: flex-start !important;
           flex-direction: row;
           align-items: baseline;
 
@@ -787,4 +815,9 @@ const WalletWrapper = styled.div`
       }
     }
   }
+`;
+
+const NetWorkWrapper = styled.div`
+  display: flex;
+  gap: 4px;
 `;

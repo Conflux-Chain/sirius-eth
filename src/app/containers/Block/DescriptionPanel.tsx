@@ -4,6 +4,7 @@ import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import { Card } from '@cfxjs/react-ui';
 import { useBlockQuery } from 'utils/api';
+import { Text } from 'app/components/Text/Loadable';
 import { Description } from 'app/components/Description/Loadable';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { Link } from 'app/components/Link/Loadable';
@@ -20,6 +21,7 @@ import {
 // import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
+import iconCross from 'images/icon-crossSpace.svg';
 
 export function DescriptionPanel() {
   const { hash: blockHash } = useParams<{
@@ -57,6 +59,8 @@ export function DescriptionPanel() {
     size,
     gasLimit,
     pivotHash,
+    transactionCount,
+    crossSpaceTransactionCount,
   } = data || {};
 
   useEffect(() => {
@@ -218,6 +222,34 @@ export function DescriptionPanel() {
         <Description
           title={
             <Tooltip
+              text={t(translations.toolTip.block.transactions)}
+              placement="top"
+            >
+              {t(translations.block.transactions)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            <StyledCross>
+              {transactionCount - crossSpaceTransactionCount}
+              <Text
+                span
+                hoverValue={t(
+                  translations.general.table.tooltip.crossSpaceCall,
+                )}
+              >
+                <div className="overview-cross">
+                  <img src={iconCross} alt="?" />
+                  Calls: &nbsp;
+                  {crossSpaceTransactionCount}
+                </div>
+              </Text>
+            </StyledCross>
+          </SkeletonContainer>
+        </Description>
+        <Description
+          title={
+            <Tooltip
               text={t(translations.toolTip.block.gasUsedLimit)}
               placement="top"
             >
@@ -226,9 +258,10 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {`${gasUsed || '--'}/${gasLimit || '--'} (${getPercent(
+            {`${gasLimit || '--'} | ${gasUsed || '--'} (${getPercent(
               gasUsed,
               gasLimit,
+              2,
             )})`}
           </SkeletonContainer>
         </Description>
@@ -266,5 +299,24 @@ const StyledCardWrapper = styled.div`
     .content {
       padding: 0 18px;
     }
+  }
+`;
+
+const StyledCross = styled.div`
+  display: flex;
+  align-items: center;
+
+  .overview-cross {
+    width: fit-content;
+    margin-left: 8px;
+    lint-height: 22px;
+    display: flex;
+    align-items: center;
+    background: rgba(171, 172, 181, 0.1);
+    font-weight: 400;
+    border-radius: 12px;
+    padding: 0px 12px;
+    gap: 8px;
+    color: #9b9eac;
   }
 `;

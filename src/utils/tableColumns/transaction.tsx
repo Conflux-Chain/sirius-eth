@@ -13,6 +13,7 @@ import {
   fromDripToGdrip,
   getNametagInfo,
   formatNumber,
+  roundToFixedPrecision,
 } from 'utils';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
@@ -22,10 +23,13 @@ import { Overview } from 'app/components/TxnComponents';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
 import { PendingReason } from './PendingReason';
+import { Tooltip } from 'app/components/Tooltip/Loadable';
+import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 
 import iconViewTxn from 'images/view-txn.png';
 import iconViewTxnActive from 'images/view-txn-active.svg';
 import lodash from 'lodash';
+import iconCross from 'images/icon-crossSpace.svg';
 
 const StyledHashWrapper = styled.span`
   padding-left: 16px;
@@ -37,6 +41,7 @@ interface HashProps {
   status?: number;
   txExecErrorMsg?: string;
   txExecErrorInfo?: any;
+  row?: any;
 }
 
 export const TxnHashRenderComponent = ({
@@ -45,6 +50,7 @@ export const TxnHashRenderComponent = ({
   status,
   txExecErrorMsg,
   txExecErrorInfo,
+  row,
 }: HashProps) => {
   const [loading, setLoading] = useState(true);
   const [txnDetail, setTxnDetail] = useState<{
@@ -52,7 +58,6 @@ export const TxnHashRenderComponent = ({
     address?: string;
   }>({});
   const bp = useBreakpoint();
-
   const handleClick = () => {
     setLoading(true);
     reqTransactionDetail(
@@ -121,6 +126,18 @@ export const TxnHashRenderComponent = ({
           <SpanWrap>{hash}</SpanWrap>
         </Text>
       </Link>
+      {row && row.gasFee === '0' && (
+        <Tooltip
+          text={
+            <Translation>
+              {t => t(translations.general.table.tooltip.crossSpaceCall)}
+            </Translation>
+          }
+          placement="top"
+        >
+          <img className="iconCross" src={iconCross} alt="?" />
+        </Tooltip>
+      )}
     </StyledTransactionHashWrapper>
   );
 };
@@ -146,6 +163,7 @@ export const hash = {
       status={row.status}
       txExecErrorMsg={row.txExecErrorMsg || row?.reason?.pending}
       txExecErrorInfo={row.txExecErrorInfo}
+      row={row}
     />
   ),
 };
@@ -242,20 +260,27 @@ export const gasPrice = {
   dataIndex: 'gasPrice',
   key: 'gasPrice',
   width: 1,
-  render: value => (
-    <Text
-      span
-      hoverValue={`${formatNumber(value, {
-        keepDecimal: false,
-        withUnit: false,
-      })} drip`}
-    >
-      {`${fromDripToGdrip(value, false, {
-        precision: 6,
-        minNum: 1e-6,
-      })} Gdrip`}
-    </Text>
-  ),
+  render: value =>
+    value && value !== '0' ? (
+      <Text
+        span
+        hoverValue={`${formatNumber(value, {
+          keepDecimal: false,
+          withUnit: false,
+        })} drip`}
+      >
+        {`${roundToFixedPrecision(
+          fromDripToGdrip(value, false, {
+            precision: 6,
+            minNum: 1e-6,
+          }),
+          2,
+          'FLOOR',
+        )} Gdrip`}
+      </Text>
+    ) : (
+      <NotApplicable />
+    ),
 };
 
 export const gasFee = {
@@ -267,14 +292,17 @@ export const gasFee = {
   dataIndex: 'gasFee',
   key: 'gasFee',
   width: 1,
-  render: value => (
-    <Text span hoverValue={`${toThousands(value)} drip`}>
-      {`${fromDripToCfx(value, false, {
-        precision: 6,
-        minNum: 1e-6,
-      })} CFX`}
-    </Text>
-  ),
+  render: value =>
+    value && value !== '0' ? (
+      <Text span hoverValue={`${toThousands(value)} drip`}>
+        {`${fromDripToCfx(value, false, {
+          precision: 6,
+          minNum: 1e-6,
+        })} CFX`}
+      </Text>
+    ) : (
+      <NotApplicable />
+    ),
 };
 
 export const age = (ageFormat, toggleAgeFormat) =>
@@ -362,6 +390,10 @@ const StyledTransactionHashWrapper = styled.span`
     &:focus {
       background-image: url(${iconViewTxnActive});
     }
+  }
+
+  .iconCross {
+    margin-left: 4px;
   }
 `;
 

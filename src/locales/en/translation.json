@@ -988,14 +988,24 @@
         "height": "Block Height",
         "position": "Position",
         "txns": "Txn",
-        "hash": "Block Hash",
+        "cross": "Cross Space Calls",
+        "hash": "Hash",
         "miner": "Miner",
         "avgGasPrice": "Avg.Gas Price",
-        "gasUsedPercent": "Gas Used/Limit",
+        "gasUsedPercent": "Gas Used",
         "reward": "Reward",
         "age": "Age",
         "difficulty": "Difficulty",
         "gasLimit": "Gas Limit"
+      },
+      "tooltip": {
+        "coreSpace": "Core Space",
+        "evmSpace": "eSpace",
+        "crossSpaceCall": "Cross Space Call",
+        "txns": "The number of transactions in this block. Cross space calls are not included in eSpace blocks.",
+        "cross": "The number of cross space transactions from Core to eSpace in the block. Reference link: http://doc.confluxnetwork.org/docs/espace/build/cross-space-bridge/",
+        "avgGasPrice": "The average gas price of cross space transactions in the block is not included.",
+        "gasLimit": "Conflux eSpace is Conflux's fully EVM-compatible space(chain), it is independent from Core space. In epoch, the block height can be divided by 5, which belongs to the eSpace blocks. The basic limit of eSpace block is 15,000,000, and the total limit of the epoch is the number of eSpace blocks contained* 15,000,000."
       },
       "transaction": {
         "hash": "Txn Hash",
@@ -1173,11 +1183,14 @@
         "20002": "Request timeout, try again later",
         "20003": "Request abort，try again later",
         "20004": "Network error，try again later",
-        "30001": "RPC call error，try again later",
+        "30001": "RPC Call Error, try again later",
+        "50001": "System error, please try again later, or submit a ticket",
         "50100": "Unknown error, please try again later, or submit a ticket",
         "50101": "The parameter is wrong, please confirm it is correct",
         "50102": "Permission Error",
-        "50103": "API is Busy, try again later",
+        "50103": "System is busy, try again later",
+        "50104": "RPC service is busy, try again later",
+        "50105": "RPC request error, please try again later, or submit a ticket",
         "50200": "Network exception, try again later",
         "50201": "External data request timeout, try again later",
         "50202": "Data parsing exception, try again later",
@@ -1281,7 +1294,7 @@
     "to": "To",
     "tokenTransferred": "Token Transferred",
     "value": "Value",
-    "gasUsed": "Gas Used/Limit",
+    "gasUsed": "Limit | Gas Used | Gas Charged",
     "gasPrice": "Gas Price",
     "gasFee": "Gas Fee",
     "gasCharged": "Gas Charged",
@@ -1394,7 +1407,7 @@
     "blockHash": "Block Hash",
     "parentHash": "Parent Hash",
     "nonce": "Nonce",
-    "gasUsed": "Gas Used/Limit",
+    "gasUsed": "Limit | Gas Used",
     "timestamp": "Timestamp",
     "size": "Size",
     "transactions": "Transactions",
@@ -1525,6 +1538,9 @@
       "gasPrice": "Cost per unit of gas specified for the transaction in GDrip. The higher the gas price the higher chance of getting included in a block.",
       "gasFee": "The exact fee of gas that was used for the transaction.",
       "gasCharged": "Conflux protocol requires that the gas-charged should be at least 3/4 of the gas limit. Usually, gas-charged equals the gas used. But if the gas used is less than 3/4 of the gas limit, gas-charged equals 3/4 of the gas limit.",
+      "gasLimitTip": "Limit: Maximum amount of gas supplied for the transaction to happen. Normal CFX transfers involve 21,000 units while contracts involve higher value.",
+      "gasUsedTip": " Gas Used: The amount of gas used by the specific transaction alone and its percentage of limit in the transaction. ",
+      "gasChargedip": "Gas Charged: Conflux protocol requires that the gas-charged should be at least 3/4 of the gas limit. Usually, gas-charged equals the gas used. But if the gas used is less than 3/4 of the gas limit, gas-charged equals 3/4 of the gas limit. ",
       "nonce": "Sequential running number for an address, beginning with 0 for the first transaction. For example, if the nonce of a transaction is 10, it would be the 11th transaction sent from the sender's address.",
       "blockHash": "A block hash is a unique 66 characters identifier that is generated whenever a transaction is executed.",
       "position": "Index position of Transaction in the block.",
@@ -1870,5 +1886,13 @@
         "title": "Voting Status"
       }
     }
+  },
+  "gaspriceDropdown": {
+    "blockHeight": "Block Height",
+    "low": "Low",
+    "median": "Median",
+    "high": "High",
+    "market": "Gas Price Market",
+    "latest60Blocks": "Latest 60 blocks"
   }
 }

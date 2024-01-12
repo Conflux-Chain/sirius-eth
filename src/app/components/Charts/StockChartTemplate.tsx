@@ -153,13 +153,13 @@ export function StockChartTemplate({
     async (intervalType, limit) => {
       setIntervalType(intervalType);
       setCustomLimit(false);
-
       // @ts-ignore
       chart.current?.chart.showLoading();
 
       const data = await reqChartData({
         url: request.url,
-        query: request.query || {
+        query: {
+          ...request.query,
           limit: preview ? 30 : limit,
           intervalType: intervalType,
         },
@@ -194,6 +194,7 @@ export function StockChartTemplate({
         height: 600,
         zoomType: '',
         animation: false,
+        backgroundColor: null,
       },
       credits: {
         enabled: false,
@@ -428,17 +429,15 @@ export function StockChartTemplate({
 }
 const StyledFilterItems = styled.div`
   display: flex;
-  position: absolute;
-  z-index: 11;
-  top: 62px;
+  position: relative;
+  z-index: 2;
+  top: 10px;
   left: 40px;
-  @media (max-width: 1240px) {
-    top: 92px;
-  }
-  @media (max-width: 770px) {
+
+  @media (max-width: 970px) {
     flex-direction: column;
     gap: 10px;
-    top: 15px;
+    top: 10px;
     left: 15px;
   }
 `;
@@ -461,7 +460,5 @@ const StyledBtn = styled.div`
 `;
 
 const HighchartsWrapper = styled.div`
-  @media (max-width: 770px) {
-    margin-top: 60px;
-  }
+  margin-top: 20px;
 `;

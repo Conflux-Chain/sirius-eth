@@ -28,11 +28,19 @@ export const IS_TESTNET =
   process.env.REACT_APP_TestNet === 'true' ||
   window.location.hostname.includes('testnet');
 
+export const IS_PRIVATENET =
+  process.env.REACT_APP_8889 === 'true' || IS_TESTNET;
+
 const RPC_URL = {
   mainnet: 'https://evm-cfxbridge.confluxrpc.com',
   testnet: 'https://evmtestnet-cfxbridge.confluxrpc.com',
+  privatenet: 'https://net8889eth.confluxrpc.com',
 };
-export const RPC_SERVER = IS_TESTNET ? RPC_URL.testnet : RPC_URL.mainnet;
+export const RPC_SERVER = IS_TESTNET
+  ? RPC_URL.testnet
+  : IS_PRIVATENET
+  ? RPC_URL.privatenet
+  : RPC_URL.mainnet;
 
 export enum DEFAULT_NETWORK_IDS {
   mainnet = 1030,
@@ -201,11 +209,18 @@ export const ICON_DEFAULT_TOKEN =
 let APIHost = IS_TESTNET
   ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
   : `evmapi${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
+
+const domain = window.location.hostname.includes('.io') ? '.io' : '.net';
+let APIHostCore = IS_TESTNET
+  ? `api-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`
+  : `api${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`;
 if (window.location.host.startsWith('net')) {
   APIHost = window.location.host.replace(/cfx|eth/, 'api');
+  APIHostCore = window.location.host.replace(/cfx|eth/, 'api');
 }
 
 export const OPEN_API_HOST = APIHost;
+export const OPEN_API_HOST_CORE = APIHostCore;
 
 export const OPEN_API_URLS = Object.entries({
   // charts
@@ -226,7 +241,9 @@ export const OPEN_API_URLS = Object.entries({
   NFTBalance: '/nft/balances',
 })
   .map(item => ({
-    [item[0]]: `https://${OPEN_API_HOST}${item[1]}`,
+    [item[0]]: `https://${
+      item[1] === '/statistics/mining' ? OPEN_API_HOST_CORE : OPEN_API_HOST
+    }${item[1]}`,
   }))
   .reduce((prev, curr) => ({ ...prev, ...curr }), {});
 

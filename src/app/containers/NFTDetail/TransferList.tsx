@@ -19,7 +19,7 @@ export const TransferList = ({ type, address, id, loading }) => {
       tokenColunms.from,
       tokenColunms.to,
       tokenColunms.age(ageFormat, toggleAgeFormat),
-      blockColunms.epoch,
+      blockColunms.blockHeight,
     ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
   } else if (type === CFX_TOKEN_TYPES.erc1155) {
     columnsWidth = [3, 7, 7, 3, 4, 4];
@@ -29,7 +29,7 @@ export const TransferList = ({ type, address, id, loading }) => {
       tokenColunms.to,
       tokenColunms.quantity,
       tokenColunms.age(ageFormat, toggleAgeFormat),
-      blockColunms.epoch,
+      blockColunms.blockHeight,
     ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
   }
   return (

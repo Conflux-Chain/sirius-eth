@@ -19,11 +19,10 @@ export const ExcutedTxns = ({ address }: Props) => {
 
   const url = `/transaction?accountAddress=${address}`;
 
-  const columnsWidth = [4, 3, 3, 7, 6, 2, 3, 3, 3, 5];
+  const columnsWidth = [5, 4, 5, 5, 3, 4, 4, 4];
   const columns = [
     transactionColunms.hash,
-    transactionColunms.method,
-    blockColunms.epoch,
+    blockColunms.blockHeight,
     {
       ...tokenColunms.from,
       render(text, record, index) {
@@ -31,7 +30,6 @@ export const ExcutedTxns = ({ address }: Props) => {
       },
     },
     tokenColunms.to,
-    tokenColunms.fromType,
     transactionColunms.value,
     transactionColunms.gasPrice,
     transactionColunms.gasFee,

@@ -13,6 +13,7 @@ import {
 import { Link } from 'react-router-dom';
 import lodash from 'lodash';
 import { Tx, AccountGrowth } from '../Charts/Loadable';
+import { IS_TESTNET, IS_PRE_RELEASE } from 'utils/constants';
 
 function Info(title, number: any) {
   return (
@@ -23,12 +24,30 @@ function Info(title, number: any) {
   );
 }
 
+const reqCorePlotData = async () => {
+  let APIHost = IS_TESTNET
+    ? `testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan`
+    : `www${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan`;
+  const domain = window.location.hostname.includes('.io') ? '.io' : '.net';
+  try {
+    const response = await fetch(
+      `https://${APIHost}${domain}/v1/plot?interval=133&limit=7`,
+    );
+
+    return await response.json();
+  } catch (error) {
+    return { error };
+  }
+};
+
 // TODO redesign
 export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
   const { t } = useTranslation();
   const [dashboardData, setDashboardData] = useState<any>({});
   // const [transferData, setTransferData] = useState<any>({});
-  const [plotData, setPlotData] = useState<any>({});
+  const [tps, setTps] = useState<string>();
+  const [blockTime, setBlockTime] = useState<string>();
+  const [hashRate, setHashRate] = useState<string>();
 
   useEffect(() => {
     reqHomeDashboard()
@@ -39,6 +58,12 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
         console.log('reqHomeDashboard error: ', e);
       });
 
+    reqCorePlotData().then(res => {
+      if (res && res.data && res.data.list) {
+        setBlockTime(formatNumber(res.data.list[6].blockTime));
+        setHashRate(formatNumber(res.data.list[6].hashRate));
+      }
+    });
     // reqTransferTPS()
     //   .then(res => {
     //     if (Object.keys(res)) {
@@ -52,11 +77,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
     reqTransferPlot()
       .then(res => {
         if (res.list?.length) {
-          setPlotData({
-            tps: formatNumber(res.list[6].tps),
-            blockTime: formatNumber(res.list[6].blockTime),
-            hashRate: formatNumber(res.list[6].hashRate),
-          });
+          setTps(formatNumber(res.list[6].tps));
         }
       })
       .catch(e => {
@@ -113,7 +134,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               <Link to="/charts/tps" className="info-link">
                 {t(translations.charts.tps.title)}
               </Link>,
-              lodash.isNil(plotData.tps) ? '--' : plotData.tps,
+              lodash.isNil(tps) ? '--' : tps,
             )}
           </Grid>
           <Grid xs={24} sm={24} md={3}>
@@ -135,9 +156,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               <Link to="/charts/blocktime" className="info-link">
                 {t(translations.charts.blockTime.title)}
               </Link>,
-              lodash.isNil(plotData.blockTime)
-                ? '--'
-                : plotData.blockTime + 's',
+              lodash.isNil(blockTime) ? '--' : blockTime + 's',
             )}
           </Grid>
           <Grid xs={24} sm={24} md={3}>
@@ -146,7 +165,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               <Link to="/charts/hashrate" className="info-link">
                 {t(translations.charts.hashRate.title)}
               </Link>,
-              lodash.isNil(plotData.hashRate) ? '--' : plotData.hashRate,
+              lodash.isNil(hashRate) ? '--' : hashRate,
             )}
           </Grid>
 
