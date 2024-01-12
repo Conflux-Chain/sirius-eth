@@ -131,9 +131,14 @@ export const crossSpaceCalls = {
       <Text
         span
         hoverValue={
-          <Translation>
-            {t => t(translations.general.table.tooltip.cross)}
-          </Translation>
+          <>
+            <Translation>
+              {t => t(translations.general.table.tooltip.cross, '')}
+            </Translation>
+            <a href="http://doc.confluxnetwork.org/docs/espace/build/cross-space-bridge/">
+              http://doc.confluxnetwork.org/docs/espace/build/cross-space-bridge/
+            </a>
+          </>
         }
       >
         <img src={imgInfo} alt="tips" />
