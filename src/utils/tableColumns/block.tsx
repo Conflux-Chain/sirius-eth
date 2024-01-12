@@ -17,7 +17,7 @@ import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
-import eSpaceIcon from 'images/icon-evm.svg';
+import eSpaceIcon from 'images/icon-eSpace.svg';
 import cSpaceIcon from 'images/icon-core.svg';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
