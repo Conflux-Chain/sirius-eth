@@ -28,7 +28,7 @@ import { Link } from 'app/components/Link/Loadable';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
-import { sendTransaction } from '@cfxjs/use-wallet/dist/ethereum';
+import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
 
 // @ts-ignore
 window.aaa = aaa;

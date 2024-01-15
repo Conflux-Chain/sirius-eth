@@ -22,7 +22,7 @@ import { getBalance } from 'utils/rpcRequest';
 
 import imgSwapArrowDown from 'images/swap-arrow-down.png';
 import imgInfo from 'images/info.svg';
-import { sendTransaction } from '@cfxjs/use-wallet/dist/ethereum';
+import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
 
 // token decimal
 const MAX_DECIMALS = 18;
@@ -192,7 +192,7 @@ export function Swap() {
   const [cfx, setCfx] = useState('0');
   const [wcfx, setWcfx] = useState('0');
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { accounts, connected } = usePortal();
+  const { accounts, authConnectStatus } = usePortal();
   const [showModal, setShowModal] = useState({
     show: false,
     hash: '',
@@ -239,7 +239,7 @@ export function Swap() {
         clearInterval(interval);
       };
     }
-  }, [accounts, connected, contract]);
+  }, [accounts, authConnectStatus, contract]);
 
   const handleInputChange = value => {
     setFromToken({

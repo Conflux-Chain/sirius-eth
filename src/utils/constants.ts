@@ -252,3 +252,23 @@ OPEN_API_URLS.contract = '/stat/contract/stat/list';
 OPEN_API_URLS.token = '/stat/daily-token-stat';
 
 export const IS_FOREIGN_HOST = /.io$/.test(window.location.host);
+
+export const NETWORK_CONFIG = {
+  chainId: !IS_TESTNET ? 1030 : 71,
+  chainName: !IS_TESTNET ? 'Conflux eSpace' : 'eSpace Testnet',
+  rpcUrls: [
+    !IS_TESTNET
+      ? 'https://evm.confluxrpc.com'
+      : 'https://evmtestnet.confluxrpc.com',
+  ],
+  blockExplorerUrls: [
+    !IS_TESTNET
+      ? 'https://evm.confluxscan.io/'
+      : 'https://evmtestnet.confluxscan.io/',
+  ],
+  nativeCurrency: {
+    name: 'Conflux',
+    symbol: 'CFX',
+    decimals: 18,
+  },
+};
