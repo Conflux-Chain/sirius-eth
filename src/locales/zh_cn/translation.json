@@ -532,6 +532,10 @@
     "techIssue": "技术问题",
     "report": "举报",
     "suggestionBox": "意见箱",
+    "addNetwork": "添加 {{name}}",
+    "modal": {
+      "networkDuplicate": "当前网络已经存在，请在钱包中查看"
+    },
     "developResource": {
       "title": "开发中心",
       "developerDocuments": "开发者文档",
