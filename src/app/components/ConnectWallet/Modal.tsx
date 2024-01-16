@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled, { keyframes } from 'styled-components/macro';
 import clsx from 'clsx';
-import { usePortal } from 'utils/hooks/usePortal';
+import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
 import { Link as ScanLink } from './Link';
 import { RotateImg } from './RotateImg';
 import { History } from './History';
@@ -34,7 +34,7 @@ export const Modal = ({
   onClose = () => {},
 }: Modal) => {
   const { t } = useTranslation();
-  const { installed, login, connected, accounts } = usePortal();
+  const { installed, login, authConnectStatus, accounts } = usePortal();
   const { isNetworkValid, isValid } = useCheckHook();
   let inValidModalTip = '';
 
@@ -106,7 +106,7 @@ export const Modal = ({
   );
 
   if (installed) {
-    if (connected === 0) {
+    if (authConnectStatus === AuthConnectStatus.NotConnected) {
       portal = (
         <>
           <span className="modal-portal-name">
@@ -115,7 +115,7 @@ export const Modal = ({
           {logo}
         </>
       );
-    } else if (connected === 1) {
+    } else if (authConnectStatus === AuthConnectStatus.Connected) {
       if (isValid) {
         title = t(translations.connectWallet.modal.account);
         portal = (
@@ -158,7 +158,7 @@ export const Modal = ({
           </div>
         );
       }
-    } else if (connected === 2) {
+    } else if (authConnectStatus === AuthConnectStatus.Connecting) {
       portal = (
         <>
           <span className="modal-portal-loading">
@@ -190,8 +190,8 @@ export const Modal = ({
     <ModalWrapper
       className={clsx('connect-wallet-modal', className, {
         show: show,
-        connected: connected === 1 && isValid,
-        error: connected === 1 && !isValid,
+        connected: authConnectStatus === AuthConnectStatus.Connected && isValid,
+        error: authConnectStatus === AuthConnectStatus.Connected && !isValid,
       })}
     >
       <div className="modal-and-history-container">
