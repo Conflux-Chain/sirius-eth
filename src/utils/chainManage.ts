@@ -17,8 +17,11 @@ export const switchChain = async () => {
 };
 
 export const addChain = () => {
-  return _addChain({
-    ...NETWORK_CONFIG,
-    chainId: '0x' + NETWORK_CONFIG.chainId.toString(16),
-  });
+  return _addChain(
+    {
+      ...NETWORK_CONFIG,
+      chainId: '0x' + NETWORK_CONFIG.chainId.toString(16),
+    },
+    false,
+  );
 };
