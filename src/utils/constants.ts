@@ -254,7 +254,7 @@ OPEN_API_URLS.token = '/stat/daily-token-stat';
 export const IS_FOREIGN_HOST = /.io$/.test(window.location.host);
 
 export const NETWORK_CONFIG = {
-  chainId: !IS_TESTNET ? 1030 : 71,
+  chainId: NETWORK_ID,
   chainName: !IS_TESTNET ? 'Conflux eSpace' : 'eSpace Testnet',
   rpcUrls: [
     !IS_TESTNET

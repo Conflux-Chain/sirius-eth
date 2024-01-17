@@ -533,6 +533,10 @@
     "techIssue": "Tech Issue",
     "report": "Report",
     "suggestionBox": "Suggestion Box",
+    "addNetwork": "Add {{name}}",
+    "modal": {
+      "networkDuplicate": "Current network already exist, you can find in your wallet"
+    },
     "developResource": {
       "title": "Developer Resources",
       "developerDocuments": "Developer Documents",
