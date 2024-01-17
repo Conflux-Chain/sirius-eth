@@ -390,9 +390,13 @@ export function Footer() {
       await addChain();
     } catch (error) {
       console.log('add chain error:', error);
-      const switchError = error as { code: number };
-      // This error code indicates that the chainId already exists in wallet.
-      if (switchError?.code === -32602) {
+      const switchError = error as { code: number; message?: string };
+      // the chainId already exists in wallet.
+      if (
+        switchError?.code === -32602 &&
+        switchError.message &&
+        /Duplicate chainId/i.test(switchError.message)
+      ) {
         alert(t(translations.footer.modal.networkDuplicate));
       }
     }
