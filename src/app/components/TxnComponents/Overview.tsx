@@ -190,8 +190,3 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-
-const StyledTokenTransferWrapper = styled.div`
-  max-height: 11.4286rem;
-  overflow: auto;
-`;
