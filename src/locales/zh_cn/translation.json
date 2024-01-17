@@ -1388,6 +1388,10 @@
         "detail": "{{original}}",
         "tip": "请提交工单"
       }
+    },
+    "action": {
+      "title": "交易行为",
+      "tooltip": "此交易突出的交易事件。"
     }
   },
   "block": {

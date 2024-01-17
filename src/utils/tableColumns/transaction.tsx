@@ -72,7 +72,6 @@ export const TxnHashRenderComponent = ({
       setLoading(false);
     });
   };
-
   // used for skip status in block transactions list
   // original status is null, manually set to 2
   const innerStatus = lodash.isNil(txnDetail.status)

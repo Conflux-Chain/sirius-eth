@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from 'app/components/Link';
 import { Description } from 'app/components/Description/Loadable';
 import { formatAddress } from 'utils';
-// import _ from 'lodash';
+import { TransactionAction } from 'app/components/TransactionAction';
+import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { reqContract } from 'utils/httpRequest';
+import _ from 'lodash';
 
 import { GasFee } from './GasFee';
 // import { StorageFee } from './StorageFee';
 import { Nonce } from './Nonce';
-import { TokenTransfer } from './TokenTransfer';
 import { Status } from './Status';
 import iconCross from 'images/icon-crossSpace.svg';
 
@@ -20,17 +22,59 @@ export const Overview = ({ data }) => {
     hash,
     status,
     from,
+    to,
     // confirmedEpochCount,
     gasFee,
     gasCoveredBySponsor,
     // storageCollateralized,
     // storageCoveredBySponsor,
     nonce,
+    list,
     transactionIndex,
     tokenTransferTokenInfo,
-    tokenTransfer,
     txExecErrorInfo,
   } = data;
+  const [contractInfo, setContractInfo] = useState({});
+  const [loading, setLoading] = useState(true);
+  const tokenTransferTokenInfoList = useMemo(() => {
+    if (tokenTransferTokenInfo && typeof tokenTransferTokenInfo === 'object') {
+      return Object.keys(tokenTransferTokenInfo).map(key => ({
+        token: tokenTransferTokenInfo[key],
+      }));
+    }
+    return [];
+  }, [tokenTransferTokenInfo]);
+
+  const customInfoList = useMemo(() => {
+    if (tokenTransferTokenInfoList.length > 0) {
+      return [contractInfo, ...tokenTransferTokenInfoList];
+    }
+    return [contractInfo];
+  }, [tokenTransferTokenInfoList, contractInfo]);
+  useEffect(() => {
+    try {
+      if (!to) return;
+      setLoading(true);
+      reqContract({
+        address: to,
+        fields: ['token'],
+      }).then(e => {
+        if (e && _.isObject(e.token) && !_.isEmpty(e.token)) {
+          setContractInfo({ token: { address: to, ...e.token } });
+          setLoading(false);
+        }
+      });
+    } catch (error) {
+      setLoading(false);
+    }
+  }, [to]);
+
+  const transactionAction = TransactionAction({
+    transaction: data,
+    event: list,
+    customInfo: customInfoList,
+  });
+
   return (
     <StyledWrapper>
       <div className="overview-title">
@@ -56,42 +100,17 @@ export const Overview = ({ data }) => {
           />
         </div>
       </Description>
-      {tokenTransfer?.total ? (
+      {transactionAction && transactionAction.show && (
         <Description
           verticle
           size="tiny"
-          title={t(translations.transaction.tokenTransferred)}
+          title={t(translations.transaction.action.title)}
         >
-          <StyledTokenTransferWrapper>
-            <TokenTransfer
-              transferList={tokenTransfer.list}
-              tokenInfoMap={tokenTransferTokenInfo}
-              type="overview"
-            />
-          </StyledTokenTransferWrapper>
+          <SkeletonContainer shown={loading}>
+            {transactionAction.content}
+          </SkeletonContainer>
         </Description>
-      ) : null}
-      {/* <Description
-        verticle
-        size="tiny"
-        title={t(translations.transaction.epochConfirmations)}
-      >
-        <span className="overview-confirmedEpochCount">
-          {t(translations.transaction.epochConfirmations, {
-            count: _.isNil(confirmedEpochCount) ? '--' : confirmedEpochCount,
-          })}
-        </span>
-      </Description> */}
-      {/* <Description
-        verticle
-        size="tiny"
-        title={t(translations.transaction.storageCollateralized)}
-      >
-        <StorageFee
-          fee={storageCollateralized}
-          sponsored={storageCoveredBySponsor}
-        />
-      </Description> */}
+      )}
       <Description
         verticle
         size="tiny"
