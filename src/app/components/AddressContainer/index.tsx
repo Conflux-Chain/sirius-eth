@@ -101,7 +101,12 @@ const RenderAddress = ({
   }`;
   const aftercontent =
     type === 'pow'
-      ? cfxAddress && !isFull && !addressLabel && !nametag && !alias
+      ? cfxAddress &&
+        typeof cfxAddress == 'string' &&
+        !isFull &&
+        !addressLabel &&
+        !nametag &&
+        !alias
         ? cfxAddress.substr(-suffixSize)
         : ''
       : '';

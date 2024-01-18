@@ -1395,6 +1395,10 @@
         "detail": "{{original}}",
         "tip": "Please submit a ticket"
       }
+    },
+    "action": {
+      "title": "Transaction Action",
+      "tooltip": "Highlighted events of the transaction."
     }
   },
   "block": {
