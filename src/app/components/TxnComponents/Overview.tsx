@@ -44,7 +44,6 @@ export const Overview = ({ data }) => {
     }
     return [];
   }, [tokenTransferTokenInfo]);
-
   const customInfoList = useMemo(() => {
     if (tokenTransferTokenInfoList.length > 0) {
       return [contractInfo, ...tokenTransferTokenInfoList];
@@ -60,7 +59,7 @@ export const Overview = ({ data }) => {
         fields: ['token'],
       }).then(e => {
         if (e && _.isObject(e.token) && !_.isEmpty(e.token)) {
-          setContractInfo({ token: { address: to, ...e.token } });
+          setContractInfo({ token: { address: e.address, ...e.token } });
           setLoading(false);
         }
       });
