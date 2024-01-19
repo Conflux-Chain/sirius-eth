@@ -8,10 +8,13 @@ import { tokenColunms, utils } from 'utils/tableColumns';
 import styled from 'styled-components/macro';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
+import { formatNumber, formatLargeNumber } from 'utils';
 import queryString from 'query-string';
 // import { useGlobal } from 'utils/hooks/useGlobal';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useLocation } from 'react-router-dom';
+import { Text } from 'app/components/Text/Loadable';
+import { monospaceFont } from 'styles/variable';
 
 import imgInfo from 'images/info.svg';
 
@@ -44,6 +47,26 @@ export function Tokens() {
       ...tokenColunms.marketCap,
       sorter: true,
       defaultSortOrder: 'descend' as 'descend' | 'ascend',
+      render(value, row, index) {
+        const marketFromatNumber = formatLargeNumber(value);
+        return (
+          <Text
+            hoverValue={formatNumber(value, { precision: 2, withUnit: false })}
+          >
+            <MarketCapWrapper>
+              {marketFromatNumber.value
+                ? '$' +
+                  formatNumber(marketFromatNumber.value, {
+                    precision: 2,
+                    withUnit: false,
+                    unit: '',
+                  }) +
+                  marketFromatNumber.unit
+                : '--'}
+            </MarketCapWrapper>
+          </Text>
+        );
+      },
     },
     {
       ...tokenColunms.transfer,
@@ -199,4 +222,10 @@ const TableWrapper = styled.div`
       }
     }
   }
+`;
+
+const MarketCapWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-family: ${monospaceFont};
 `;
