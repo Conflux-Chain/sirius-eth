@@ -43,8 +43,9 @@ interface Props {
 }
 
 const defaultPCMaxWidth = 95;
+// TODO-btc
 const defaultMobileMaxWidth =
-  NETWORK_TYPE === NETWORK_TYPES.mainnet ? 106 : 140;
+  NETWORK_TYPE === NETWORK_TYPES.evm_mainnet ? 106 : 140;
 const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;

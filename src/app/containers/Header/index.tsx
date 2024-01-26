@@ -30,6 +30,7 @@ import logoTest from 'images/logo-test.svg';
 import IconCore from 'images/icon-core.svg';
 import IconEvm from 'images/icon-evm.svg';
 
+// TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
   const { networkId, networks } = globalData as GlobalDataType;
@@ -169,7 +170,11 @@ export const Header = memo(() => {
     },
   ];
 
-  if ([NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {
+  if (
+    [NETWORK_TYPES.evm_mainnet, NETWORK_TYPES.evm_testnet].includes(
+      NETWORK_TYPE,
+    )
+  ) {
     const TLD = getDomainTLD();
     supportAndHelpMenuItems.unshift({
       title: [
@@ -179,7 +184,7 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.developerAPI,
       afterClick: menuClick,
       href:
-        NETWORK_TYPE === NETWORK_TYPES.testnet
+        NETWORK_TYPE === NETWORK_TYPES.evm_testnet
           ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
           : `https://evmapi.confluxscan.${TLD}/doc`,
     });
@@ -192,10 +197,10 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.stakingAndGovernance,
       afterClick: menuClick,
       href: iszh
-        ? NETWORK_TYPE === NETWORK_TYPES.testnet
+        ? NETWORK_TYPE === NETWORK_TYPES.evm_testnet
           ? 'https://test.confluxhub.io/governance/'
           : 'https://confluxhub.io/governance/'
-        : NETWORK_TYPE === NETWORK_TYPES.testnet
+        : NETWORK_TYPE === NETWORK_TYPES.evm_testnet
         ? 'https://test.confluxhub.io/governance/'
         : 'https://confluxhub.io/governance/',
     });
@@ -208,7 +213,7 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.crossSpace,
       afterClick: menuClick,
       href:
-        NETWORK_TYPE === NETWORK_TYPES.testnet
+        NETWORK_TYPE === NETWORK_TYPES.evm_testnet
           ? 'https://test.confluxhub.io/'
           : 'https://confluxhub.io/',
     });
@@ -225,7 +230,7 @@ export const Header = memo(() => {
     // });
   }
 
-  if (NETWORK_TYPE === NETWORK_TYPES.testnet) {
+  if (NETWORK_TYPE === NETWORK_TYPES.evm_testnet) {
     toolItems.unshift({
       title: [t(translations.header.faucet), <Check size={18} key="check" />],
       name: ScanEvent.menu.action.faucet,
@@ -553,6 +558,7 @@ export const Header = memo(() => {
               return {
                 title: [
                   <NetWorkWrapper>
+                    {/* TODO-btc: icon */}
                     <img src={isCore ? IconCore : IconEvm} alt="" />
                     {n.name}
                   </NetWorkWrapper>,
@@ -572,7 +578,7 @@ export const Header = memo(() => {
                     networkId: n.id,
                   });
 
-                  gotoNetwork(n.id);
+                  gotoNetwork(n.url);
                 },
                 isMatchedFn: () => isMatch,
               };
@@ -639,7 +645,8 @@ export const Header = memo(() => {
         <img
           className="confi-logo"
           alt="conflux scan logo"
-          src={NETWORK_TYPE === NETWORK_TYPES.testnet ? logoTest : logo}
+          // TODO-btc: logo
+          src={NETWORK_TYPE === NETWORK_TYPES.evm_testnet ? logoTest : logo}
         />
       </RouterLink>
     </LogoWrapper>

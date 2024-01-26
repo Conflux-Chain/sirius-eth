@@ -173,7 +173,12 @@ export function ContractMetadata({ address, contractInfo }) {
     },
   ];
 
-  if (![NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {
+  // TODO-btc: remove code
+  if (
+    ![NETWORK_TYPES.evm_mainnet, NETWORK_TYPES.evm_testnet].includes(
+      NETWORK_TYPE,
+    )
+  ) {
     list = list.filter((_, index) => [0, 1, 2, 4].includes(index));
   }
 

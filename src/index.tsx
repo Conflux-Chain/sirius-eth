@@ -69,7 +69,10 @@ const brand = `
 ╚═╝└─┘┘└┘└  ┴─┘└─┘┴ └─  └─┘╚═╝┴  ┴ ┴└─┘└─┘
  `;
 
-if (NETWORK_TYPE === NETWORK_TYPES.testnet) {
+if (
+  NETWORK_TYPE === NETWORK_TYPES.evm_testnet ||
+  NETWORK_TYPE === NETWORK_TYPES.btc_testnet
+) {
   console.log &&
     console.log(
       `%c 
@@ -80,7 +83,10 @@ ${brand}
 `,
       'color:#e4310c;',
     );
-} else if (NETWORK_TYPE === NETWORK_TYPES.mainnet) {
+} else if (
+  NETWORK_TYPE === NETWORK_TYPES.evm_mainnet ||
+  NETWORK_TYPE === NETWORK_TYPES.btc_mainnet
+) {
   console.log &&
     console.log(
       `%c 

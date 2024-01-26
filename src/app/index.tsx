@@ -32,6 +32,7 @@ import {
   LOCALSTORAGE_KEYS_MAP,
   NETWORK_ID,
   CFX_TOKEN_TYPES,
+  NETWORK_OPTIONS,
 } from 'utils/constants';
 import { isAddress } from 'utils';
 import MD5 from 'md5.js';
@@ -153,8 +154,10 @@ export function App() {
     setLoading(true);
     reqProjectConfig()
       .then(resp => {
-        if (resp?.networks.every(n => n.id !== resp?.networkId)) {
-          resp?.networks.push({
+        const networks = NETWORK_OPTIONS;
+        if (networks.every(n => n.id !== resp?.networkId)) {
+          networks.push({
+            url: '',
             name: resp?.networkId,
             id: resp?.networkId,
           });
@@ -208,6 +211,7 @@ export function App() {
         setGlobalData({
           ...globalData,
           ...(resp as object),
+          networks,
         });
 
         setLoading(false);
