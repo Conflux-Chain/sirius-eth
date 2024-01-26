@@ -18,14 +18,10 @@ import { Tooltip } from 'app/components/Tooltip/Loadable';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { formatString } from 'utils';
-import {
-  ICON_DEFAULT_TOKEN,
-  NETWORK_TYPES,
-  NETWORK_TYPE,
-  ICON_DEFAULT_CONTRACT,
-} from 'utils/constants';
+import { ICON_DEFAULT_TOKEN, ICON_DEFAULT_CONTRACT } from 'utils/constants';
 // import Edit3 from '@zeit-ui/react-icons/edit3';
 import { Image } from '@cfxjs/antd';
+import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 const Link = ({ to, children }) => <RouterLink to={to}>{children}</RouterLink>;
 
@@ -175,8 +171,8 @@ export function ContractMetadata({ address, contractInfo }) {
 
   // TODO-btc: remove code
   if (
-    ![NETWORK_TYPES.evm_mainnet, NETWORK_TYPES.evm_testnet].includes(
-      NETWORK_TYPE,
+    ![NETWORK_TYPES.EVM_MAINNET, NETWORK_TYPES.EVM_TESTNET].includes(
+      ENV_CONFIG.ENV_NETWORK_TYPE,
     )
   ) {
     list = list.filter((_, index) => [0, 1, 2, 4].includes(index));

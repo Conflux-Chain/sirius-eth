@@ -16,11 +16,12 @@ import { History } from './History';
 import { CopyButton } from './../CopyButton';
 // import { AddressContainer } from './../../components/AddressContainer';
 import { useCheckHook } from './useCheckHook';
-import { NETWORK_ID, NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import { NETWORK_ID } from 'utils/constants';
 
 import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
 import iconLoading from './assets/loading.svg';
+import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 interface Modal {
   className?: string;
@@ -40,9 +41,9 @@ export const Modal = ({
 
   // TODO-btc: remove code
   if (!isNetworkValid) {
-    if (NETWORK_TYPE === NETWORK_TYPES.evm_testnet) {
+    if (ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET) {
       inValidModalTip = t(translations.connectWallet.modal.switchToTestnet);
-    } else if (NETWORK_TYPE === NETWORK_TYPES.evm_mainnet) {
+    } else if (ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET) {
       inValidModalTip = t(translations.connectWallet.modal.switchToMainnet);
     } else {
       inValidModalTip = t(

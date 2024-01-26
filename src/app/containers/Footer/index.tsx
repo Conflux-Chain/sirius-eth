@@ -15,7 +15,6 @@ import { translations } from 'locales/i18n';
 import { Language } from './Language';
 // import { Currency } from './Currency';
 import { ScanEvent } from 'utils/gaConstants';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 import { getDomainTLD } from 'utils';
 
 import iconWechatQrcode from 'images/footer/wechat-qrcode.png';
@@ -36,7 +35,7 @@ import {
   Youtube,
 } from './Icon';
 import { addChain } from 'utils/chainManage';
-import ENV_CONFIG, { IS_FOREIGN_HOST } from 'env';
+import ENV_CONFIG, { IS_FOREIGN_HOST, NETWORK_TYPES } from 'env';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -121,7 +120,7 @@ export function Footer() {
       className="footer-link"
       // TODO-btc
       href={
-        NETWORK_TYPE === NETWORK_TYPES.evm_testnet
+        ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
           ? 'https://test.confluxhub.io/'
           : 'https://confluxhub.io/'
       }
@@ -324,7 +323,7 @@ export function Footer() {
         className="footer-link"
         href={
           // TODO-btc
-          NETWORK_TYPE === NETWORK_TYPES.evm_testnet
+          ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
             ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
             : `https://evmapi.confluxscan.${TLD}/doc`
         }

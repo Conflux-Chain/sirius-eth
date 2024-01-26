@@ -10,10 +10,9 @@ import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import styled from 'styled-components/macro';
 import { publishRequestError } from 'utils';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
-import { STAGE_FLAG } from 'env';
+import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
 
 const treeToFlat = tree => {
   let list: Array<any> = [];
@@ -120,7 +119,9 @@ export const InternalTxns = ({ address, from, to }: Props) => {
   const AdvancedViewLink = useMemo(() => {
     // TODO-btc: window.location.host ?
     const sld =
-      NETWORK_TYPE === NETWORK_TYPES.evm_mainnet ? 'evm' : 'evmtestnet';
+      ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET
+        ? 'evm'
+        : 'evmtestnet';
     const domain = window.location.hostname.includes('.io') ? 'io' : 'net';
 
     return `https://${sld}${STAGE_FLAG}.confluxscan.${domain}/tracer#${address}`;

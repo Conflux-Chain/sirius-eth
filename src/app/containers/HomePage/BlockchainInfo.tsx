@@ -13,7 +13,7 @@ import {
 import { Link } from 'react-router-dom';
 import lodash from 'lodash';
 import { Tx, AccountGrowth } from '../Charts/Loadable';
-import ENV_CONFIG, { STAGE_FLAG } from 'env';
+import ENV_CONFIG from 'env';
 
 function Info(title, number: any) {
   return (
@@ -25,11 +25,9 @@ function Info(title, number: any) {
 }
 
 const reqCorePlotData = async () => {
-  let APIHost = `${ENV_CONFIG.ENV_CORE_HOST_PREFIX}${STAGE_FLAG}.confluxscan`;
-  const domain = window.location.hostname.includes('.io') ? '.io' : '.net';
   try {
     const response = await fetch(
-      `https://${APIHost}${domain}/v1/plot?interval=133&limit=7`,
+      `https://${ENV_CONFIG.ENV_CORE_SCAN_HOST}/v1/plot?interval=133&limit=7`,
     );
 
     return await response.json();

@@ -23,7 +23,6 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { isAddress } from 'utils';
 import imgWarning from 'images/warning.png';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 interface FormattedAddressesType {
   hexAddress: string;

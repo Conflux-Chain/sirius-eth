@@ -1,6 +1,6 @@
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import lodash from 'lodash';
-import ENV_CONFIG, { DOMAIN, IS_PRE_RELEASE, STAGE_FLAG } from 'env';
+import ENV_CONFIG, { DOMAIN, IS_STAGE } from 'env';
 
 interface ContractsType {
   faucet: string;
@@ -52,24 +52,6 @@ export const NETWORK_ID = (() => {
     networkId = Number(cacheNetworkId);
   }
   return networkId;
-})();
-
-// network type is come from backend network id, now there are three state, can be extended with special case
-export enum NETWORK_TYPES {
-  evm_mainnet = 'EVM_MAINNET',
-  evm_testnet = 'EVM_TESTNET',
-  btc_mainnet = 'BTC_MAINNET',
-  btc_testnet = 'BTC_TESTNET',
-  privatenet = 'PRIVATENET',
-}
-
-export const NETWORK_TYPE = (() => {
-  // TODO：confirm？
-  if (NETWORK_ID === Number(ENV_CONFIG.ENV_NETWORK_ID)) {
-    return ENV_CONFIG.ENV_NETWORK_TYPE as NETWORK_TYPES;
-  } else {
-    return NETWORK_TYPES.privatenet;
-  }
 })();
 
 export const CONTRACTS: ContractsType = (() => {
@@ -178,17 +160,6 @@ export const ICON_DEFAULT_TOKEN =
 
 // export const POS_NULL_ADDRESS = '0000000000000000000000000000000000000000000000000000000000000000';
 
-let APIHost = `${ENV_CONFIG.ENV_API_HOST_PREFIX}${STAGE_FLAG}.confluxscan.net`;
-
-let APIHostCore = `${ENV_CONFIG.ENV_CORE_API_HOST_PREFIX}${STAGE_FLAG}.confluxscan${DOMAIN}`;
-if (window.location.host.startsWith('net')) {
-  APIHost = window.location.host.replace(/cfx|eth/, 'api');
-  APIHostCore = window.location.host.replace(/cfx|eth/, 'api');
-}
-
-export const OPEN_API_HOST = APIHost;
-export const OPEN_API_HOST_CORE = APIHostCore;
-
 export const OPEN_API_URLS = Object.entries({
   // charts
   mining: '/statistics/mining',
@@ -209,7 +180,9 @@ export const OPEN_API_URLS = Object.entries({
 })
   .map(item => ({
     [item[0]]: `https://${
-      item[1] === '/statistics/mining' ? OPEN_API_HOST_CORE : OPEN_API_HOST
+      item[1] === '/statistics/mining'
+        ? ENV_CONFIG.ENV_CORE_API_HOST
+        : ENV_CONFIG.ENV_API_HOST
     }${item[1]}`,
   }))
   .reduce((prev, curr) => ({ ...prev, ...curr }), {});
@@ -223,14 +196,14 @@ export const NETWORK_OPTIONS = [
   {
     name: 'Conflux eSpace (Hydra)',
     id: 1030,
-    url: IS_PRE_RELEASE
+    url: IS_STAGE
       ? '//evm-stage.confluxscan.net'
       : `//evm.confluxscan${DOMAIN}`,
   },
   {
     name: 'Conflux eSpace (Testnet)',
     id: 71,
-    url: IS_PRE_RELEASE
+    url: IS_STAGE
       ? '//evmtestnet-stage.confluxscan.net'
       : `//evmtestnet.confluxscan${DOMAIN}`,
   },
@@ -238,14 +211,12 @@ export const NETWORK_OPTIONS = [
   {
     name: 'Conflux Hydra',
     id: 1029,
-    url: IS_PRE_RELEASE
-      ? '//www-stage.confluxscan.net'
-      : `//confluxscan${DOMAIN}`,
+    url: IS_STAGE ? '//www-stage.confluxscan.net' : `//confluxscan${DOMAIN}`,
   },
   {
     name: 'Conflux Core (Testnet)',
     id: 1,
-    url: IS_PRE_RELEASE
+    url: IS_STAGE
       ? '//testnet-stage.confluxscan.net'
       : `//testnet.confluxscan${DOMAIN}`,
   },
@@ -253,14 +224,14 @@ export const NETWORK_OPTIONS = [
   // {
   //   name: 'Conflux eSpace (Hydra)',
   //   id: 1030,
-  //   url: IS_PRE_RELEASE
+  //   url: IS_STAGE
   //     ? '//evm-stage.confluxscan.net'
   //     : `//evm.confluxscan${DOMAIN}`,
   // },
   // {
   //   name: 'Conflux eSpace (Testnet)',
   //   id: 71,
-  //   url: IS_PRE_RELEASE
+  //   url: IS_STAGE
   //     ? '//evmtestnet-stage.confluxscan.net'
   //     : `//evmtestnet.confluxscan${DOMAIN}`,
   // },
