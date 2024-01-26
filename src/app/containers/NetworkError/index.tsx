@@ -12,12 +12,8 @@ import { translations } from 'locales/i18n';
 import imgNetworkError from 'images/changeNetwork.png';
 import { useParams } from 'react-router-dom';
 import { getNetwork, gotoNetwork } from 'utils';
-import {
-  NETWORK_ID,
-  NETWORK_TYPE,
-  NETWORK_TYPES,
-  NETWORK_OPTIONS,
-} from 'utils/constants';
+import { NETWORK_ID, NETWORK_OPTIONS } from 'utils/constants';
+import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 interface RouteParams {
   network: string;
@@ -29,7 +25,9 @@ export function NetworkError() {
   const { t } = useTranslation();
   const {
     // TODO-btc
-    network = NETWORK_TYPE === NETWORK_TYPES.evm_testnet ? 'Tethys' : 'Testnet',
+    network = ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+      ? 'Tethys'
+      : 'Testnet',
   } = useParams<RouteParams>();
 
   return (

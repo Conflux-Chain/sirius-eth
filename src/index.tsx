@@ -23,7 +23,9 @@ import { HelmetProvider } from 'react-helmet-async';
 
 // Initialize languages
 import './locales/i18n';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import ENV_CONFIG, { NETWORK_TYPES } from 'env';
+
+const { ENV_NETWORK_TYPE } = ENV_CONFIG;
 
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
@@ -70,8 +72,8 @@ const brand = `
  `;
 
 if (
-  NETWORK_TYPE === NETWORK_TYPES.evm_testnet ||
-  NETWORK_TYPE === NETWORK_TYPES.btc_testnet
+  ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET ||
+  ENV_NETWORK_TYPE === NETWORK_TYPES.BTC_TESTNET
 ) {
   console.log &&
     console.log(
@@ -84,8 +86,8 @@ ${brand}
       'color:#e4310c;',
     );
 } else if (
-  NETWORK_TYPE === NETWORK_TYPES.evm_mainnet ||
-  NETWORK_TYPE === NETWORK_TYPES.btc_mainnet
+  ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET ||
+  ENV_NETWORK_TYPE === NETWORK_TYPES.BTC_MAINNET
 ) {
   console.log &&
     console.log(
