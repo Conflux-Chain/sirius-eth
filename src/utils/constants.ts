@@ -1,5 +1,6 @@
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import lodash from 'lodash';
+import ENV_CONFIG, { DOMAIN, IS_PRE_RELEASE, STAGE_FLAG } from 'env';
 
 interface ContractsType {
   faucet: string;
@@ -17,34 +18,6 @@ interface ContractsType {
 
 interface ContractNameTagType {
   [index: string]: string;
-}
-
-// only for dev and qa, use with caution
-export const IS_PRE_RELEASE =
-  process.env.REACT_APP_TestNet === 'true' ||
-  window.location.hostname.includes('stage');
-
-export const IS_TESTNET =
-  process.env.REACT_APP_TestNet === 'true' ||
-  window.location.hostname.includes('testnet');
-
-export const IS_PRIVATENET =
-  process.env.REACT_APP_8889 === 'true' || IS_TESTNET;
-
-const RPC_URL = {
-  mainnet: 'https://evm-cfxbridge.confluxrpc.com',
-  testnet: 'https://evmtestnet-cfxbridge.confluxrpc.com',
-  privatenet: 'https://net8889eth.confluxrpc.com',
-};
-export const RPC_SERVER = IS_TESTNET
-  ? RPC_URL.testnet
-  : IS_PRIVATENET
-  ? RPC_URL.privatenet
-  : RPC_URL.mainnet;
-
-export enum DEFAULT_NETWORK_IDS {
-  mainnet = 1030,
-  testnet = 71,
 }
 
 /**
@@ -70,9 +43,7 @@ export enum LOCALSTORAGE_KEYS_MAP {
 }
 
 export const NETWORK_ID = (() => {
-  let networkId = IS_TESTNET
-    ? DEFAULT_NETWORK_IDS.testnet
-    : DEFAULT_NETWORK_IDS.mainnet;
+  let networkId = ENV_CONFIG.ENV_NETWORK_ID;
   let cacheNetworkId = Number(
     localStorage.getItem(LOCALSTORAGE_KEYS_MAP.networkId),
   );
@@ -85,16 +56,17 @@ export const NETWORK_ID = (() => {
 
 // network type is come from backend network id, now there are three state, can be extended with special case
 export enum NETWORK_TYPES {
-  mainnet = 'MAINNET',
-  testnet = 'TESTNET',
+  evm_mainnet = 'EVM_MAINNET',
+  evm_testnet = 'EVM_TESTNET',
+  btc_mainnet = 'BTC_MAINNET',
+  btc_testnet = 'BTC_TESTNET',
   privatenet = 'PRIVATENET',
 }
 
 export const NETWORK_TYPE = (() => {
-  if (NETWORK_ID === 71) {
-    return NETWORK_TYPES.testnet;
-  } else if (NETWORK_ID === 1030) {
-    return NETWORK_TYPES.mainnet;
+  // TODO：confirm？
+  if (NETWORK_ID === Number(ENV_CONFIG.ENV_NETWORK_ID)) {
+    return ENV_CONFIG.ENV_NETWORK_TYPE as NETWORK_TYPES;
   } else {
     return NETWORK_TYPES.privatenet;
   }
@@ -191,12 +163,12 @@ export const getCurrencySymbol = () => {
 };
 
 export const CFX = new SDK.Conflux({
-  url: RPC_SERVER,
+  url: ENV_CONFIG.ENV_RPC_SERVER,
   networkId: NETWORK_ID,
 });
 
 export const CFXToDecode = new SDK.Conflux({
-  url: RPC_SERVER,
+  url: ENV_CONFIG.ENV_RPC_SERVER,
 });
 
 export const ICON_DEFAULT_CONTRACT =
@@ -206,14 +178,9 @@ export const ICON_DEFAULT_TOKEN =
 
 // export const POS_NULL_ADDRESS = '0000000000000000000000000000000000000000000000000000000000000000';
 
-let APIHost = IS_TESTNET
-  ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
-  : `evmapi${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
+let APIHost = `${ENV_CONFIG.ENV_API_HOST_PREFIX}${STAGE_FLAG}.confluxscan.net`;
 
-const domain = window.location.hostname.includes('.io') ? '.io' : '.net';
-let APIHostCore = IS_TESTNET
-  ? `api-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`
-  : `api${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`;
+let APIHostCore = `${ENV_CONFIG.ENV_CORE_API_HOST_PREFIX}${STAGE_FLAG}.confluxscan${DOMAIN}`;
 if (window.location.host.startsWith('net')) {
   APIHost = window.location.host.replace(/cfx|eth/, 'api');
   APIHostCore = window.location.host.replace(/cfx|eth/, 'api');
@@ -251,24 +218,50 @@ export const OPEN_API_URLS = Object.entries({
 OPEN_API_URLS.contract = '/stat/contract/stat/list';
 OPEN_API_URLS.token = '/stat/daily-token-stat';
 
-export const IS_FOREIGN_HOST = /.io$/.test(window.location.host);
-
-export const NETWORK_CONFIG = {
-  chainId: NETWORK_ID,
-  chainName: !IS_TESTNET ? 'Conflux eSpace' : 'eSpace Testnet',
-  rpcUrls: [
-    !IS_TESTNET
-      ? 'https://evm.confluxrpc.com'
-      : 'https://evmtestnet.confluxrpc.com',
-  ],
-  blockExplorerUrls: [
-    !IS_TESTNET
-      ? 'https://evm.confluxscan.io/'
-      : 'https://evmtestnet.confluxscan.io/',
-  ],
-  nativeCurrency: {
-    name: 'Conflux',
-    symbol: 'CFX',
-    decimals: 18,
+export const NETWORK_OPTIONS = [
+  // espace
+  {
+    name: 'Conflux eSpace (Hydra)',
+    id: 1030,
+    url: IS_PRE_RELEASE
+      ? '//evm-stage.confluxscan.net'
+      : `//evm.confluxscan${DOMAIN}`,
   },
-};
+  {
+    name: 'Conflux eSpace (Testnet)',
+    id: 71,
+    url: IS_PRE_RELEASE
+      ? '//evmtestnet-stage.confluxscan.net'
+      : `//evmtestnet.confluxscan${DOMAIN}`,
+  },
+  // core space
+  {
+    name: 'Conflux Hydra',
+    id: 1029,
+    url: IS_PRE_RELEASE
+      ? '//www-stage.confluxscan.net'
+      : `//confluxscan${DOMAIN}`,
+  },
+  {
+    name: 'Conflux Core (Testnet)',
+    id: 1,
+    url: IS_PRE_RELEASE
+      ? '//testnet-stage.confluxscan.net'
+      : `//testnet.confluxscan${DOMAIN}`,
+  },
+  // TODO: bspace
+  // {
+  //   name: 'Conflux eSpace (Hydra)',
+  //   id: 1030,
+  //   url: IS_PRE_RELEASE
+  //     ? '//evm-stage.confluxscan.net'
+  //     : `//evm.confluxscan${DOMAIN}`,
+  // },
+  // {
+  //   name: 'Conflux eSpace (Testnet)',
+  //   id: 71,
+  //   url: IS_PRE_RELEASE
+  //     ? '//evmtestnet-stage.confluxscan.net'
+  //     : `//evmtestnet.confluxscan${DOMAIN}`,
+  // },
+];

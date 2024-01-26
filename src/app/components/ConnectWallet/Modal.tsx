@@ -38,10 +38,11 @@ export const Modal = ({
   const { isNetworkValid, isValid } = useCheckHook();
   let inValidModalTip = '';
 
+  // TODO-btc: remove code
   if (!isNetworkValid) {
-    if (NETWORK_TYPE === NETWORK_TYPES.testnet) {
+    if (NETWORK_TYPE === NETWORK_TYPES.evm_testnet) {
       inValidModalTip = t(translations.connectWallet.modal.switchToTestnet);
-    } else if (NETWORK_TYPE === NETWORK_TYPES.mainnet) {
+    } else if (NETWORK_TYPE === NETWORK_TYPES.evm_mainnet) {
       inValidModalTip = t(translations.connectWallet.modal.switchToMainnet);
     } else {
       inValidModalTip = t(

@@ -44,6 +44,7 @@ const stakingContract = CFX.Contract({
   address: CONTRACTS.staking,
 });
 
+// TODO-btc: remove code?
 export function AddressMetadata({ address, accountInfo }) {
   const { t } = useTranslation();
   const loading = accountInfo.name === t(translations.general.loading);
@@ -136,7 +137,7 @@ export function AddressMetadata({ address, accountInfo }) {
                 text={
                   <>
                     {t(translations.toolTip.address.stakedBegin)}
-                    {NETWORK_TYPE === NETWORK_TYPES.testnet ? (
+                    {NETWORK_TYPE === NETWORK_TYPES.evm_testnet ? (
                       <a
                         href="https://votetest.confluxnetwork.org/"
                         target="_blank"
@@ -184,7 +185,7 @@ export function AddressMetadata({ address, accountInfo }) {
                 text={
                   <>
                     {t(translations.toolTip.address.lockedBegin)}
-                    {NETWORK_TYPE === NETWORK_TYPES.testnet ? (
+                    {NETWORK_TYPE === NETWORK_TYPES.evm_testnet ? (
                       <a
                         href="https://votetest.confluxnetwork.org/"
                         target="_blank"

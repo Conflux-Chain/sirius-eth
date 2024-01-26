@@ -11,8 +11,13 @@ import { media } from 'styles/media';
 import { translations } from 'locales/i18n';
 import imgNetworkError from 'images/changeNetwork.png';
 import { useParams } from 'react-router-dom';
-import { gotoNetwork } from 'utils';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import { getNetwork, gotoNetwork } from 'utils';
+import {
+  NETWORK_ID,
+  NETWORK_TYPE,
+  NETWORK_TYPES,
+  NETWORK_OPTIONS,
+} from 'utils/constants';
 
 interface RouteParams {
   network: string;
@@ -23,7 +28,8 @@ export function NetworkError() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t } = useTranslation();
   const {
-    network = NETWORK_TYPE === NETWORK_TYPES.testnet ? 'Tethys' : 'Testnet',
+    // TODO-btc
+    network = NETWORK_TYPE === NETWORK_TYPES.evm_testnet ? 'Tethys' : 'Testnet',
   } = useParams<RouteParams>();
 
   return (
@@ -41,9 +47,8 @@ export function NetworkError() {
           href="#"
           onClick={e => {
             e.preventDefault();
-            NETWORK_TYPE === NETWORK_TYPES.testnet
-              ? gotoNetwork(1030)
-              : gotoNetwork(71);
+            const network = getNetwork(NETWORK_OPTIONS, NETWORK_ID);
+            gotoNetwork(network.url);
           }}
         >
           {t(translations.networkError.btn, { network })}
