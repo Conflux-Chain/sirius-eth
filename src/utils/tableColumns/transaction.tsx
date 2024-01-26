@@ -178,7 +178,6 @@ export const from = {
   width: 1,
   render: (value, row) => {
     const isContract = checkIfContractByInfo(value, row);
-
     return (
       <AddressContainer
         value={value}

@@ -45,7 +45,7 @@ export const formatAddress = (
     if (isAddress(address)) {
       if (outputType === 'hex') {
         if (isBase32Address(address)) {
-          return SDK.format.hexAddress(address);
+          return SDK.format.checksumAddress(SDK.format.hexAddress(address));
         } else {
           return address;
         }
@@ -56,7 +56,7 @@ export const formatAddress = (
       }
     } else if (isBase32Address(address)) {
       if (outputType === 'hex') {
-        return SDK.format.hexAddress(address);
+        return SDK.format.checksumAddress(SDK.format.hexAddress(address));
       } else if (outputType === 'base32') {
         const reg = /(.*):(.*):(.*)/;
         let lowercaseAddress = address;

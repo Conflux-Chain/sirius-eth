@@ -224,16 +224,21 @@ export const AddressContainer = withTranslation()(
 
           if (showLabeled) {
             const { label } = getLabelInfo(
-              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][fContractCreated],
+              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
+                fContractCreated.toLocaleLowerCase()
+              ],
               'tag',
             );
 
             addressLabel = label;
           }
 
-          if (showNametag && nametagInfo?.[fContractCreated]?.nametag) {
+          if (
+            showNametag &&
+            nametagInfo?.[fContractCreated.toLocaleLowerCase()]?.nametag
+          ) {
             const { label } = getLabelInfo(
-              nametagInfo[fContractCreated].nametag,
+              nametagInfo[fContractCreated.toLocaleLowerCase()].nametag,
               'nametag',
             );
 
@@ -321,7 +326,7 @@ export const AddressContainer = withTranslation()(
       if (showLabeled) {
         const { label } = getLabelInfo(
           globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
-            formatAddress(cfxAddress)
+            formatAddress(cfxAddress.toLocaleLowerCase())
           ],
           'tag',
         );
@@ -329,9 +334,12 @@ export const AddressContainer = withTranslation()(
         addressLabel = label;
       }
 
-      if (showNametag && nametagInfo?.[cfxAddress]?.nametag) {
+      if (
+        showNametag &&
+        nametagInfo?.[cfxAddress.toLocaleLowerCase()]?.nametag
+      ) {
         const { label } = getLabelInfo(
-          nametagInfo[cfxAddress].nametag,
+          nametagInfo[cfxAddress.toLocaleLowerCase()].nametag,
           'nametag',
         );
 
