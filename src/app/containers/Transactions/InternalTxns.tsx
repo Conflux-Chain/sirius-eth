@@ -84,6 +84,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
                   toTokenInfo: tokenInfo[l.to] || {},
                 };
               });
+              // return;
               setState({
                 ...state,
                 data: list,
@@ -185,7 +186,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
   return (
     <TablePanelNew
       columns={columns}
-      pagination={false}
+      pagination={state.total > 20 ? {} : false}
       dataSource={data}
       loading={loading}
       title={tableHeader}
