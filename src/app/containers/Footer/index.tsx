@@ -15,7 +15,7 @@ import { translations } from 'locales/i18n';
 import { Language } from './Language';
 // import { Currency } from './Currency';
 import { ScanEvent } from 'utils/gaConstants';
-import { getDomainTLD } from 'utils';
+// import { getDomainTLD } from 'utils';
 
 import iconWechatQrcode from 'images/footer/wechat-qrcode.png';
 import IconAdd from 'images/icon-add.svg';
@@ -316,25 +316,24 @@ export function Footer() {
     </FooterContentIconWrapper>
   );
 
-  const TLD = getDomainTLD();
+  // const TLD = getDomainTLD();
   const developResourceLinks = {
-    developerAPI: (
-      <Link
-        className="footer-link"
-        href={
-          // TODO-btc
-          ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
-            ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
-            : `https://evmapi.confluxscan.${TLD}/doc`
-        }
-        ga={{
-          category: ScanEvent.menu.category,
-          action: ScanEvent.menu.action.developerAPI,
-        }}
-      >
-        {t(translations.footer.developResource.developerAPI)}
-      </Link>
-    ),
+    // developerAPI: (
+    //   <Link
+    //     className="footer-link"
+    //     href={
+    //       ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+    //         ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
+    //         : `https://evmapi.confluxscan.${TLD}/doc`
+    //     }
+    //     ga={{
+    //       category: ScanEvent.menu.category,
+    //       action: ScanEvent.menu.action.developerAPI,
+    //     }}
+    //   >
+    //     {t(translations.footer.developResource.developerAPI)}
+    //   </Link>
+    // ),
     developerDocuments: (
       <Link
         className="footer-link"
@@ -347,30 +346,30 @@ export function Footer() {
         {t(translations.footer.developResource.developerDocuments)}
       </Link>
     ),
-    confluxStudio: (
-      <Link
-        className="footer-link"
-        href="https://github.com/ObsidianLabs/ConfluxStudio/"
-        ga={{
-          category: ScanEvent.menu.category,
-          action: ScanEvent.menu.action.confluxStudio,
-        }}
-      >
-        {t(translations.footer.developResource.confluxStudio)}
-      </Link>
-    ),
-    confluxTruffle: (
-      <Link
-        className="footer-link"
-        href="https://github.com/Conflux-Chain/conflux-truffle/"
-        ga={{
-          category: ScanEvent.menu.category,
-          action: ScanEvent.menu.action.confluxTruffle,
-        }}
-      >
-        {t(translations.footer.developResource.confluxTruffle)}
-      </Link>
-    ),
+    // confluxStudio: (
+    //   <Link
+    //     className="footer-link"
+    //     href="https://github.com/ObsidianLabs/ConfluxStudio/"
+    //     ga={{
+    //       category: ScanEvent.menu.category,
+    //       action: ScanEvent.menu.action.confluxStudio,
+    //     }}
+    //   >
+    //     {t(translations.footer.developResource.confluxStudio)}
+    //   </Link>
+    // ),
+    // confluxTruffle: (
+    //   <Link
+    //     className="footer-link"
+    //     href="https://github.com/Conflux-Chain/conflux-truffle/"
+    //     ga={{
+    //       category: ScanEvent.menu.category,
+    //       action: ScanEvent.menu.action.confluxTruffle,
+    //     }}
+    //   >
+    //     {t(translations.footer.developResource.confluxTruffle)}
+    //   </Link>
+    // ),
   };
   const ICP = useMemo(() => {
     return window.location.hostname.includes('confluxscan.net') ? (
