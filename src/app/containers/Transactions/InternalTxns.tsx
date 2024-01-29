@@ -84,7 +84,6 @@ export const InternalTxns = ({ address, from, to }: Props) => {
                   toTokenInfo: tokenInfo[l.to] || {},
                 };
               });
-              // return;
               setState({
                 ...state,
                 data: list,
