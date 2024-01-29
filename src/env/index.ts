@@ -12,8 +12,6 @@ import {
   IS_BSPACE_TESTNET,
   IS_BSPACE_DEVNET,
 } from './env-constants';
-export * from './env-constants';
-export * from './types';
 
 const ENV_CONFIG = (() => {
   if (IS_ESPACE_MAINNET) {
@@ -33,4 +31,6 @@ const ENV_CONFIG = (() => {
   throw new Error('Unknown env');
 })();
 
+export * from './env-constants';
+export * from './types';
 export default ENV_CONFIG;

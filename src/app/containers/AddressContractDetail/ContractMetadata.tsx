@@ -21,7 +21,6 @@ import { formatString } from 'utils';
 import { ICON_DEFAULT_TOKEN, ICON_DEFAULT_CONTRACT } from 'utils/constants';
 // import Edit3 from '@zeit-ui/react-icons/edit3';
 import { Image } from '@cfxjs/antd';
-import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 const Link = ({ to, children }) => <RouterLink to={to}>{children}</RouterLink>;
 
@@ -51,7 +50,7 @@ export function ContractMetadata({ address, contractInfo }) {
     tokenName = <Link to={`/token/${address}`}>{tokenName}</Link>;
   }
 
-  let list = [
+  const list = [
     {
       title: (
         <Tooltip
@@ -168,15 +167,6 @@ export function ContractMetadata({ address, contractInfo }) {
       ),
     },
   ];
-
-  // TODO-btc: remove code
-  if (
-    ![NETWORK_TYPES.EVM_MAINNET, NETWORK_TYPES.EVM_TESTNET].includes(
-      ENV_CONFIG.ENV_NETWORK_TYPE,
-    )
-  ) {
-    list = list.filter((_, index) => [0, 1, 2, 4].includes(index));
-  }
 
   return <List list={list} />;
 }

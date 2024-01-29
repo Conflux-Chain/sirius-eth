@@ -13,7 +13,7 @@ import { media, sizes } from 'styles/media';
 import { monospaceFont } from 'styles/variable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
-import ENV_CONFIG, { NETWORK_TYPES } from 'env';
+import { IS_MAINNET } from 'env';
 
 interface Props {
   value: string; // address value
@@ -38,9 +38,7 @@ interface Props {
 }
 
 const defaultPCMaxWidth = 95;
-// TODO-btc
-const defaultMobileMaxWidth =
-  ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET ? 106 : 140;
+const defaultMobileMaxWidth = IS_MAINNET ? 106 : 140;
 const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;

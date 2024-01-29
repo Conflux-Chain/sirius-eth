@@ -20,11 +20,11 @@ interface RouteParams {
 }
 
 // only in testnet or mainnet environment will come to this page
+// TODO-btc: unused component
 export function NetworkError() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t } = useTranslation();
   const {
-    // TODO-btc
     network = ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
       ? 'Tethys'
       : 'Testnet',

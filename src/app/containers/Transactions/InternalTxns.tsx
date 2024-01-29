@@ -116,8 +116,8 @@ export const InternalTxns = ({ address, from, to }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
+  // TODO-btc: hide in bspace ?
   const AdvancedViewLink = useMemo(() => {
-    // TODO-btc: window.location.host ?
     const sld =
       ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET
         ? 'evm'

@@ -23,9 +23,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 // Initialize languages
 import './locales/i18n';
-import ENV_CONFIG, { NETWORK_TYPES } from 'env';
-
-const { ENV_NETWORK_TYPE } = ENV_CONFIG;
+import { IS_TESTNET, IS_MAINNET } from 'env';
 
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
@@ -71,10 +69,7 @@ const brand = `
 ╚═╝└─┘┘└┘└  ┴─┘└─┘┴ └─  └─┘╚═╝┴  ┴ ┴└─┘└─┘
  `;
 
-if (
-  ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET ||
-  ENV_NETWORK_TYPE === NETWORK_TYPES.BTC_TESTNET
-) {
+if (IS_TESTNET) {
   console.log &&
     console.log(
       `%c 
@@ -85,10 +80,7 @@ ${brand}
 `,
       'color:#e4310c;',
     );
-} else if (
-  ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET ||
-  ENV_NETWORK_TYPE === NETWORK_TYPES.BTC_MAINNET
-) {
+} else if (IS_MAINNET) {
   console.log &&
     console.log(
       `%c 

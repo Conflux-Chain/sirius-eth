@@ -45,7 +45,7 @@ const stakingContract = CFX.Contract({
   address: CONTRACTS.staking,
 });
 
-// TODO-btc: remove code?
+// TODO-btc: unused component
 export function AddressMetadata({ address, accountInfo }) {
   const { t } = useTranslation();
   const loading = accountInfo.name === t(translations.general.loading);
