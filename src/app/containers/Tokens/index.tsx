@@ -29,7 +29,7 @@ export function Tokens() {
   const { tokenType = CFX_TOKEN_TYPES.erc20 } = useParams<RouteParams>();
   const { orderBy } = queryString.parse(location.search);
 
-  let columnsWidth = [1, 7, 4, 3, 3, 3, 2];
+  let columnsWidth = [1, 7, 3, 3, 3, 3, 2];
   let columns = [
     {
       ...utils.number,
@@ -48,29 +48,59 @@ export function Tokens() {
       sorter: true,
       defaultSortOrder: 'descend' as 'descend' | 'ascend',
       render(value, row, index) {
-        const marketFromatNumber = formatLargeNumber(value);
+        const largeShrinkNumber = formatLargeNumber(value);
         return (
-          <Text
-            hoverValue={formatNumber(value, { precision: 2, withUnit: false })}
-          >
-            <MarketCapWrapper>
-              {marketFromatNumber.value
-                ? '$' +
-                  formatNumber(marketFromatNumber.value, {
-                    precision: 2,
-                    withUnit: false,
-                    unit: '',
-                  }) +
-                  marketFromatNumber.unit
-                : '--'}
-            </MarketCapWrapper>
-          </Text>
+          <LargeNumber>
+            <Text
+              hoverValue={formatNumber(value, {
+                precision: 2,
+                withUnit: false,
+              })}
+            >
+              <span>
+                {largeShrinkNumber.value
+                  ? '$' +
+                    formatNumber(largeShrinkNumber.value, {
+                      precision: 2,
+                      withUnit: false,
+                      unit: '',
+                    }) +
+                    largeShrinkNumber.unit
+                  : '--'}
+              </span>
+            </Text>
+          </LargeNumber>
         );
       },
     },
     {
       ...tokenColunms.transfer,
       sorter: true,
+      render(value, row, index) {
+        const largeShrinkNumber = formatLargeNumber(value);
+        return (
+          <LargeNumber>
+            <Text
+              hoverValue={formatNumber(value, {
+                precision: 2,
+                withUnit: false,
+              })}
+            >
+              <span>
+                {largeShrinkNumber.value
+                  ? '$' +
+                    formatNumber(largeShrinkNumber.value, {
+                      precision: 2,
+                      withUnit: false,
+                      unit: '',
+                    }) +
+                    largeShrinkNumber.unit
+                  : '--'}
+              </span>
+            </Text>
+          </LargeNumber>
+        );
+      },
     },
     {
       ...tokenColunms.holders,
@@ -224,8 +254,10 @@ const TableWrapper = styled.div`
   }
 `;
 
-const MarketCapWrapper = styled.div`
+const LargeNumber = styled.div`
   display: flex;
   justify-content: flex-end;
-  font-family: ${monospaceFont};
+  span {
+    font-family: ${monospaceFont};
+  }
 `;
