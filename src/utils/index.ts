@@ -5,17 +5,12 @@ import fetch from './request';
 import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
 import { NetworksType } from './hooks/useGlobal';
-import {
-  IS_PRE_RELEASE,
-  NETWORK_ID,
-  CFX,
-  getCurrencySymbol,
-  RPC_SERVER,
-} from 'utils/constants';
+import { NETWORK_ID, CFX, getCurrencySymbol } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
 import { Nametag } from 'utils/hooks/useNametag';
+import ENV_CONFIG from 'env';
 
 // @ts-ignore
 window.SDK = SDK;
@@ -855,31 +850,8 @@ export const getNetwork = (networks: Array<NetworksType>, id: number) => {
   return network;
 };
 
-const urls = {
-  stage: {
-    1: '//testnet-stage.confluxscan.net',
-    1029: '//www-stage.confluxscan.net',
-    71: '//evmtestnet-stage.confluxscan.net',
-    1030: '//evm-stage.confluxscan.net',
-  },
-  online: {
-    1: '//testnet.confluxscan',
-    1029: '//confluxscan',
-    71: '//evmtestnet.confluxscan',
-    1030: '//evm.confluxscan',
-  },
-};
-
-export const gotoNetwork = (networkId: string | number): void => {
-  if (IS_PRE_RELEASE) {
-    window.location.assign(urls.stage[networkId]);
-  } else {
-    window.location.assign(
-      `${urls.online[networkId]}${
-        window.location.hostname.includes('.io') ? '.io' : '.net'
-      }`,
-    );
-  }
+export const gotoNetwork = (networkUrl: string): void => {
+  window.location.assign(networkUrl);
 };
 
 export function padLeft(n: string, totalLength?: number): string;
@@ -947,7 +919,7 @@ export const publishRequestError = (
         } \n`;
       }
       if (type === 'rpc') {
-        detail += `RPC Url: ${RPC_SERVER} \n`;
+        detail += `RPC Url: ${ENV_CONFIG.ENV_RPC_SERVER} \n`;
         if (!lodash.isNil(e.method)) {
           detail += `Method: ${e.method} \n`;
         }

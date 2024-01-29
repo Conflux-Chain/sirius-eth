@@ -13,7 +13,7 @@ import {
   publishRequestError,
 } from 'utils';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { CONTRACTS, CFX, NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import { CONTRACTS, CFX } from 'utils/constants';
 import ViewMore from '../../../images/contract-address/viewmore.png';
 import { abi as governanceAbi } from 'utils/contract/governance.json';
 import { abi as stakingAbi } from 'utils/contract/staking.json';
@@ -24,6 +24,7 @@ import {
   getAccumulateInterestRate,
   getVoteList,
 } from 'utils/rpcRequest';
+import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 // https://github.com/Conflux-Dev/vote/blob/main/src/pages/staking/index.js
 function getCurrentStakingEarned(list, rate, stakedCfx) {
@@ -44,6 +45,7 @@ const stakingContract = CFX.Contract({
   address: CONTRACTS.staking,
 });
 
+// TODO-btc: unused component
 export function AddressMetadata({ address, accountInfo }) {
   const { t } = useTranslation();
   const loading = accountInfo.name === t(translations.general.loading);
@@ -136,7 +138,8 @@ export function AddressMetadata({ address, accountInfo }) {
                 text={
                   <>
                     {t(translations.toolTip.address.stakedBegin)}
-                    {NETWORK_TYPE === NETWORK_TYPES.testnet ? (
+                    {ENV_CONFIG.ENV_NETWORK_TYPE ===
+                    NETWORK_TYPES.EVM_TESTNET ? (
                       <a
                         href="https://votetest.confluxnetwork.org/"
                         target="_blank"
@@ -184,7 +187,8 @@ export function AddressMetadata({ address, accountInfo }) {
                 text={
                   <>
                     {t(translations.toolTip.address.lockedBegin)}
-                    {NETWORK_TYPE === NETWORK_TYPES.testnet ? (
+                    {ENV_CONFIG.ENV_NETWORK_TYPE ===
+                    NETWORK_TYPES.EVM_TESTNET ? (
                       <a
                         href="https://votetest.confluxnetwork.org/"
                         target="_blank"

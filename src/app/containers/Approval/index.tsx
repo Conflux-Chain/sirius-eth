@@ -20,7 +20,7 @@ import { usePortal } from 'utils/hooks/usePortal';
 import { abi as ERC20ABI } from 'utils/contract/ERC20.json';
 import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
 import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
-import { RPC_SERVER, NETWORK_ID } from 'utils/constants';
+import { NETWORK_ID } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import BigNumber from 'bignumber.js';
 import { NFTPreview } from 'app/components/NFTPreview/Loadable';
@@ -29,6 +29,7 @@ import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
 import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
+import ENV_CONFIG from 'env';
 
 // @ts-ignore
 window.aaa = aaa;
@@ -56,7 +57,7 @@ export function Approval() {
   const getContract = useCallback(
     (address: string, type: string) => {
       const CFX = new SDK.Conflux({
-        url: RPC_SERVER,
+        url: ENV_CONFIG.ENV_RPC_SERVER,
         networkId: NETWORK_ID,
       });
 

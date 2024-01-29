@@ -86,10 +86,13 @@
     "webfontloader": "1.6.28"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "start:testnet": "REACT_APP_TestNet=true react-app-rewired start",
-    "start:8889": "REACT_APP_8889=true react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start:evm": "REACT_APP_EVM_MAINNET=true react-app-rewired start",
+    "start:evm-testnet": "REACT_APP_EVM_TESTNET=true react-app-rewired start",
+    "start:evm-devnet": "REACT_APP_EVM_DEVNET=true react-app-rewired start",
+    "start:btc": "REACT_APP_BTC_MAINNET=true react-app-rewired start",
+    "start:btc-testnet": "REACT_APP_BTC_TESTNET=true react-app-rewired start",
+    "build:dev": "REACT_APP_DEV=true react-app-rewired build",
+    "build:prod": "react-app-rewired build",
     "build:MEASURE": "MEASURE=true react-app-rewired build",
     "test": "react-app-rewired  test --env=jest-environment-jsdom-sixteen",
     "test:u": "react-app-rewired  test --env=jest-environment-jsdom-sixteen --updateSnapshot",

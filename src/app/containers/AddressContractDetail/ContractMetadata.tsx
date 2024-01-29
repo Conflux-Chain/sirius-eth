@@ -18,12 +18,7 @@ import { Tooltip } from 'app/components/Tooltip/Loadable';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { formatString } from 'utils';
-import {
-  ICON_DEFAULT_TOKEN,
-  NETWORK_TYPES,
-  NETWORK_TYPE,
-  ICON_DEFAULT_CONTRACT,
-} from 'utils/constants';
+import { ICON_DEFAULT_TOKEN, ICON_DEFAULT_CONTRACT } from 'utils/constants';
 // import Edit3 from '@zeit-ui/react-icons/edit3';
 import { Image } from '@cfxjs/antd';
 
@@ -55,7 +50,7 @@ export function ContractMetadata({ address, contractInfo }) {
     tokenName = <Link to={`/token/${address}`}>{tokenName}</Link>;
   }
 
-  let list = [
+  const list = [
     {
       title: (
         <Tooltip
@@ -172,10 +167,6 @@ export function ContractMetadata({ address, contractInfo }) {
       ),
     },
   ];
-
-  if (![NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {
-    list = list.filter((_, index) => [0, 1, 2, 4].includes(index));
-  }
 
   return <List list={list} />;
 }

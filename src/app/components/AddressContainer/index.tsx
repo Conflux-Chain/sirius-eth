@@ -10,14 +10,10 @@ import ContractIcon from 'images/contract-icon.png';
 import isMeIcon from 'images/me.png';
 import VerifiedIcon from 'images/verified.png';
 import { media, sizes } from 'styles/media';
-import {
-  NETWORK_TYPE,
-  NETWORK_TYPES,
-  // CONTRACTS_NAME_LABEL,
-} from 'utils/constants';
 import { monospaceFont } from 'styles/variable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
+import { IS_MAINNET } from 'env';
 
 interface Props {
   value: string; // address value
@@ -42,8 +38,7 @@ interface Props {
 }
 
 const defaultPCMaxWidth = 95;
-const defaultMobileMaxWidth =
-  NETWORK_TYPE === NETWORK_TYPES.mainnet ? 106 : 140;
+const defaultMobileMaxWidth = IS_MAINNET ? 106 : 140;
 const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
