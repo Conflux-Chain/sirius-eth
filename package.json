@@ -92,6 +92,7 @@
     "start:evm-devnet": "REACT_APP_EVM_DEVNET=true react-app-rewired start",
     "start:btc": "REACT_APP_BTC_MAINNET=true react-app-rewired start",
     "start:btc-testnet": "REACT_APP_BTC_TESTNET=true react-app-rewired start",
+    "start:btc-devnet": "REACT_APP_BTC_DEVNET=true react-app-rewired start",
     "build:dev": "REACT_APP_DEV=true react-app-rewired build",
     "build:prod": "react-app-rewired build",
     "build:MEASURE": "MEASURE=true react-app-rewired build",

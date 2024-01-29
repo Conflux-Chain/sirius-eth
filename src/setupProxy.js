@@ -9,8 +9,9 @@ const configs = {
   evm_devnet_url: 'https://net8889eth.confluxscan.net/',
   // TODO-btc
   btc_mainnet_url: 'https://evm.confluxscan.net/',
+  // TODO-btc
   btc_testnet_url: 'https://evmtestnet-stage.confluxscan.net/',
-  btc_devnet_url: 'https://net8889eth.confluxscan.net/',
+  btc_devnet_url: 'https://net8890btc.confluxscan.net/',
 };
 
 let url = configs.evm_mainnet_url;
