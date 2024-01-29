@@ -220,7 +220,7 @@ export const NETWORK_OPTIONS = [
       ? '//testnet-stage.confluxscan.net'
       : `//testnet.confluxscan${DOMAIN}`,
   },
-  // TODO: bspace
+  // TODO-btc
   // {
   //   name: 'Conflux eSpace (Hydra)',
   //   id: 1030,
@@ -235,4 +235,10 @@ export const NETWORK_OPTIONS = [
   //     ? '//evmtestnet-stage.confluxscan.net'
   //     : `//evmtestnet.confluxscan${DOMAIN}`,
   // },
+  {
+    name: 'Conflux bSpace (Devnet)',
+    // TODO-btc
+    id: 8889,
+    url: '//net8890btc.confluxscan.net',
+  },
 ];
