@@ -20,14 +20,10 @@ import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
 import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
-import { getNetwork, gotoNetwork, getDomainTLD } from 'utils';
+import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
-import logo from 'images/logo.svg';
-import logoTest from 'images/logo-test.svg';
-import IconCore from 'images/icon-core.svg';
-import IconEvm from 'images/icon-evm.svg';
 import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 // TODO-btc: NETWORK_TYPES
@@ -541,10 +537,7 @@ export const Header = memo(() => {
       name: 'switch-network',
       title: (
         <NetWorkWrapper>
-          <img
-            src={[1029, 1].includes(networkId) ? IconCore : IconEvm}
-            alt="Network"
-          />
+          <img src={getNetworkIcon(networkId)} alt="Network" />
           {getNetwork(networks, networkId).name}
         </NetWorkWrapper>
       ),
@@ -554,12 +547,10 @@ export const Header = memo(() => {
           ? []
           : networks.map(n => {
               const isMatch = n.id === networkId;
-              const isCore = [1029, 1].includes(n.id);
               return {
                 title: [
                   <NetWorkWrapper>
-                    {/* TODO-btc: icon */}
-                    <img src={isCore ? IconCore : IconEvm} alt="" />
+                    <img src={getNetworkIcon(n.id)} alt="" />
                     {n.name}
                   </NetWorkWrapper>,
                   isMatch && <Check size={18} key="check" />,
@@ -645,12 +636,7 @@ export const Header = memo(() => {
         <img
           className="confi-logo"
           alt="conflux scan logo"
-          // TODO-btc: logo
-          src={
-            ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
-              ? logoTest
-              : logo
-          }
+          src={ENV_CONFIG.ENV_LOGO}
         />
       </RouterLink>
     </LogoWrapper>
