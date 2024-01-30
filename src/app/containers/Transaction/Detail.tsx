@@ -852,17 +852,12 @@ export const Detail = () => {
         {status === 0 && transactionActionElement.show && (
           <Description
             title={
-              <>
-                <Tooltip
-                  text={t(translations.transaction.action.tooltip)}
-                  placement="top"
-                >
-                  <IconQuestion>
-                    <img src={iconQuestion} alt="warning-icon"></img>
-                  </IconQuestion>
-                </Tooltip>
+              <Tooltip
+                text={t(translations.transaction.action.tooltip)}
+                placement="top"
+              >
                 {t(translations.transaction.action.title)}
-              </>
+              </Tooltip>
             }
           >
             {loading ? (
