@@ -5,12 +5,22 @@ import fetch from './request';
 import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
 import { NetworksType } from './hooks/useGlobal';
-import { NETWORK_ID, CFX, getCurrencySymbol } from 'utils/constants';
+import {
+  NETWORK_ID,
+  CFX,
+  getCurrencySymbol,
+  CORE_SPACE_CHAIN_IDS,
+  ESPACE_CHAIN_IDS,
+  BSPACE_CHAIN_IDS,
+} from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
 import { Nametag } from 'utils/hooks/useNametag';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG, { IS_BSPACE, IS_ESPACE } from 'env';
+import IconCore from 'images/core-space/icon.svg';
+import IconEvm from 'images/espace/icon.svg';
+import IconBtc from 'images/bspace/icon.svg';
 
 // @ts-ignore
 window.SDK = SDK;
@@ -852,6 +862,31 @@ export const getNetwork = (networks: Array<NetworksType>, id: number) => {
 
 export const gotoNetwork = (networkUrl: string): void => {
   window.location.assign(networkUrl);
+};
+
+export const getNetworkIcon = (
+  id = NaN,
+  props?: {
+    isCore?: boolean;
+    isEvm?: boolean;
+    isBtc?: boolean;
+  },
+) => {
+  const isCore = CORE_SPACE_CHAIN_IDS.includes(id) || props?.isCore;
+  const isEvm = ESPACE_CHAIN_IDS.includes(id) || props?.isEvm;
+  const isBtc = BSPACE_CHAIN_IDS.includes(id) || props?.isBtc;
+  if (isCore) {
+    return IconCore;
+  } else if (isEvm) {
+    return IconEvm;
+  } else if (isBtc) {
+    return IconBtc;
+  }
+  if (IS_ESPACE) {
+    return IconEvm;
+  } else if (IS_BSPACE) {
+    return IconBtc;
+  }
 };
 
 export function padLeft(n: string, totalLength?: number): string;
