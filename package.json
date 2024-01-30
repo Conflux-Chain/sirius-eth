@@ -166,6 +166,7 @@
   "devDependencies": {
     "@babel/plugin-transform-class-properties": "7.23.3",
     "@testing-library/user-event": "12.1.6",
+    "@types/lodash": "4.14.202",
     "babel-loader": "8.1.0",
     "canvas": "2.6.1",
     "cz-conventional-changelog": "3.3.0",

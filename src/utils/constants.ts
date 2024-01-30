@@ -1,6 +1,6 @@
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import lodash from 'lodash';
-import ENV_CONFIG, { DOMAIN, IS_STAGE } from 'env';
+import ENV_CONFIG, { DOMAIN, IS_DEVNET, IS_STAGE } from 'env';
 
 interface ContractsType {
   faucet: string;
@@ -191,7 +191,10 @@ export const OPEN_API_URLS = Object.entries({
 OPEN_API_URLS.contract = '/stat/contract/stat/list';
 OPEN_API_URLS.token = '/stat/daily-token-stat';
 
-export const NETWORK_OPTIONS = [
+export const CORE_SPACE_CHAIN_IDS = [1029, 1];
+export const ESPACE_CHAIN_IDS = [1030, 71, 8889];
+export const BSPACE_CHAIN_IDS = [8890];
+export const NETWORK_OPTIONS = lodash.compact([
   // espace
   {
     name: 'Conflux eSpace (Hydra)',
@@ -235,10 +238,9 @@ export const NETWORK_OPTIONS = [
   //     ? '//evmtestnet-stage.confluxscan.net'
   //     : `//evmtestnet.confluxscan${DOMAIN}`,
   // },
-  {
+  IS_DEVNET && {
     name: 'Conflux bSpace (Devnet)',
-    // TODO-btc
-    id: 8889,
+    id: 8890,
     url: '//net8890btc.confluxscan.net',
   },
-];
+]);
