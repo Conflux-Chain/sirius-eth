@@ -112,13 +112,10 @@ export const Detail = () => {
   const nametags = useNametag([from, to]);
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
-    setLoading(true); // 假设这是开始加载的标志
+    setLoading(true);
 
     try {
-      // 存储所有的异步操作
       const proArr: Promise<any>[] = [];
-
-      // 如果 toCheckAddress 不是 null，并且是合约地址，则请求合约信息
       if (
         toCheckAddress !== null &&
         (await isContractAddress(toCheckAddress))
