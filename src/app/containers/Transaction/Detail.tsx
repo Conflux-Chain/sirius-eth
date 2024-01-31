@@ -112,10 +112,20 @@ export const Detail = () => {
   const nametags = useNametag([from, to]);
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
+    setLoading(true); // 假设这是开始加载的标志
+
     try {
-      if (toCheckAddress && (await isContractAddress(toCheckAddress))) {
+      // 存储所有的异步操作
+      const proArr: Promise<any>[] = [];
+
+      // 如果 toCheckAddress 不是 null，并且是合约地址，则请求合约信息
+      if (
+        toCheckAddress !== null &&
+        (await isContractAddress(toCheckAddress))
+      ) {
         setIsContract(true);
-        const fields = [
+
+        const contractFields = [
           'address',
           'type',
           'name',
@@ -130,51 +140,58 @@ export const Detail = () => {
           'sourceCode',
           'typeCode',
         ];
-        const proArr: Array<any> = [];
-        proArr.push(reqContract({ address: toCheckAddress, fields: fields }));
-        proArr.push(
-          reqTransferList({
-            transactionHash: txnhash,
-            fields: 'token',
-            limit: 100,
-            reverse: false,
-          }),
-        );
-        proArr.push(
-          reqTransactionEventlogs({
-            transactionHash: txnhash,
-            aggregate: false,
-          }),
-        );
 
-        Promise.all(proArr)
-          .then(proRes => {
-            const contractResponse = proRes[0];
-            // update contract info
-            setContractInfo(contractResponse);
-            const transferListReponse = proRes[1];
-            const resultTransferList = transferListReponse;
-            const list = resultTransferList['list'];
-            setTransferList(list);
-            setEventlogs(proRes[2].list);
-            let addressList = list.map(v => v.address);
-            addressList = Array.from(new Set(addressList));
-            reqTokenList({
-              addressArray: addressList,
-              fields: ['iconUrl'],
-            })
-              .then(res => {
-                setLoading(false);
-                setTokenList(res.list);
-              })
-              .catch(() => {});
-          })
-          .catch(() => {});
-      } else {
-        setLoading(false);
+        proArr.push(
+          reqContract({ address: toCheckAddress, fields: contractFields }),
+        );
       }
+
+      const transferFields = 'token';
+      proArr.push(
+        reqTransferList({
+          transactionHash: txnhash,
+          fields: transferFields,
+          limit: 100,
+          reverse: false,
+        }),
+      );
+
+      proArr.push(
+        reqTransactionEventlogs({
+          transactionHash: txnhash,
+          aggregate: false,
+        }),
+      );
+
+      const proRes = await Promise.all(proArr);
+
+      if (
+        toCheckAddress !== null &&
+        (await isContractAddress(toCheckAddress))
+      ) {
+        const contractResponse = proRes.shift();
+        setContractInfo(contractResponse);
+      }
+
+      const transferListResponse = proRes[0];
+      const list = transferListResponse.list || [];
+      setTransferList(list);
+
+      const eventlogsResponse = proRes[1];
+      console.log(eventlogsResponse.list);
+      setEventlogs(eventlogsResponse.list);
+
+      let addressList = list.map(v => v.address);
+      addressList = Array.from(new Set(addressList));
+      const tokenListResponse = await reqTokenList({
+        addressArray: addressList,
+        fields: ['iconUrl'],
+      });
+
+      setTokenList(tokenListResponse.list || []);
     } catch (e) {
-      console.log('fetchTxTransfer error: ', e);
+      console.error('fetchTxTransfer error: ', e);
+    } finally {
       setLoading(false);
     }
   };
@@ -221,7 +238,6 @@ export const Detail = () => {
           setDetailsInfoSetHash(txnhash);
 
           let toCheckAddress = txDetailDta.to;
-
           fetchTxTransfer(toCheckAddress, txnhash);
         }
       });
