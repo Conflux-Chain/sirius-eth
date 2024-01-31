@@ -26,3 +26,11 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
+export const ENV_THEME = {
+  primary: '#17B38A',
+  searchButtonBg: '#AFE9D2',
+  searchButtonHoverBg: '#17B38A',
+  gasPriceLineBg: '#F0F4F3',
+  footerBg: '#05343F',
+  footerHighLightColor: '#AFE9D2',
+};
