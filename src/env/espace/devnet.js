@@ -14,9 +14,9 @@ export const ENV_RPC_SERVER = 'https://net8889eth-cfxbridge.confluxrpc.com';
 export const ENV_CORE_SCAN_HOST = 'www.confluxscan.net';
 export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
-  chainName: 'Conflux eSpace',
-  rpcUrls: ['https://evm.confluxrpc.com'],
-  blockExplorerUrls: ['https://evm.confluxscan.io/'],
+  chainName: 'eSpace Devnet',
+  rpcUrls: ['https://net8889eth-cfxbridge.confluxrpc.com'],
+  blockExplorerUrls: ['https://net8889eth.confluxscan.net/'],
   nativeCurrency: {
     name: 'Conflux',
     symbol: 'CFX',
@@ -24,3 +24,11 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
+export const ENV_THEME = {
+  primary: '#17B38A',
+  searchButtonBg: '#AFE9D2',
+  searchButtonHoverBg: '#17B38A',
+  gasPriceLineBg: '#F0F4F3',
+  footerBg: '#05343F',
+  footerHighLightColor: '#AFE9D2',
+};

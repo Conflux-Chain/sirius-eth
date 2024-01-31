@@ -5,6 +5,7 @@ import styled from 'styled-components/macro';
 import Globe from '@zeit-ui/react-icons/globe';
 import { trackEvent } from '../../../utils/ga';
 import { ScanEvent } from '../../../utils/gaConstants';
+import ENV_CONFIG from 'env';
 
 export function Language() {
   const { i18n } = useTranslation();
@@ -66,10 +67,10 @@ const StyledWrapper = styled.span`
   color: var(--theme-color-gray0);
 
   &:hover {
-    color: var(--theme-color-green0);
+    color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
 
     .select.sirius-select.btnSelectContainer .value .option {
-      color: var(--theme-color-green0) !important;
+      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor} !important;
     }
   }
 

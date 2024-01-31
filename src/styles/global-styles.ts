@@ -20,6 +20,7 @@ import {
   orange0,
   black0,
 } from './variable';
+import ENV_CONFIG from 'env';
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -400,8 +401,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .option.selected {
-      color: #fff;
-      background-color: var(--theme-color-green0);
+      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
       border: none;
     }
 

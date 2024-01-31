@@ -2,7 +2,7 @@ import { IS_DEV } from 'env/env-constants';
 import { NETWORK_TYPES } from 'env/types';
 import logo from 'images/bspace/logo.svg';
 
-export const ENV_NETWORK_ID = 8890;
+export const ENV_NETWORK_ID = 1030;
 export const ENV_NETWORK_TYPE = NETWORK_TYPES.BTC_DEVNET;
 export const ENV_API_HOST = IS_DEV
   ? 'net8890api.confluxscan.net'
@@ -26,3 +26,11 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
+export const ENV_THEME = {
+  primary: '#F7931A',
+  searchButtonBg: '#F7931A',
+  searchButtonHoverBg: '#EDA54E',
+  gasPriceLineBg: '#FDF4E9',
+  footerBg: '#13161E',
+  footerHighLightColor: '#F7931A',
+};

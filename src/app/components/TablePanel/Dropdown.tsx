@@ -8,6 +8,7 @@ import { Check } from '@zeit-ui/react-icons';
 import { media } from 'styles/media';
 import { ActionButton } from '../ActionButton';
 import MoreHorizontal from '@zeit-ui/react-icons/moreHorizontal';
+import ENV_CONFIG from 'env';
 
 // options example:
 // [
@@ -163,8 +164,7 @@ const Option = styled.div`
   }
 
   &.selected {
-    background-color: var(--theme-color-green0);
-    color: white;
+    color: ${ENV_CONFIG.ENV_THEME.primary};
     svg {
       visibility: visible;
     }

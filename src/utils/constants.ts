@@ -210,6 +210,11 @@ export const NETWORK_OPTIONS = lodash.compact([
       ? '//evmtestnet-stage.confluxscan.net'
       : `//evmtestnet.confluxscan${DOMAIN}`,
   },
+  IS_DEVNET && {
+    name: 'Conflux eSpace (Devnet)',
+    id: 8889,
+    url: '//net8889eth.confluxscan.net',
+  },
   // core space
   {
     name: 'Conflux Hydra',
