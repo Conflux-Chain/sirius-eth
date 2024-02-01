@@ -9,6 +9,7 @@ import {
 import { OPEN_API_URLS } from 'utils/constants';
 import { Wrapper } from './Wrapper';
 import BigNumber from 'bignumber.js';
+import ENV_CONFIG from 'env';
 
 export function CFXTransfer({ preview = false }: ChildProps) {
   const { t } = useTranslation();
@@ -80,21 +81,21 @@ export function CFXTransfer({ preview = false }: ChildProps) {
             valueDecimals: 2,
             valueSuffix: ' CFX',
           },
-          color: '#7cb5ec',
+          color: ENV_CONFIG.ENV_THEME.mixedChartColors[0],
         },
         {
           type: 'line',
           name: `<span>${t(
             translations.highcharts.cfxTransfer.seriesName2,
           )}</span>`,
-          color: '#90ed7d',
+          color: ENV_CONFIG.ENV_THEME.mixedChartColors[1],
         },
         {
           type: 'line',
           name: `<span>${t(
             translations.highcharts.cfxTransfer.seriesName,
           )}</span>`,
-          color: '#434348',
+          color: ENV_CONFIG.ENV_THEME.mixedChartColors[2],
         },
       ],
     },

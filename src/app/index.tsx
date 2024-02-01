@@ -105,6 +105,7 @@ import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
 import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
+import ENV_CONFIG from 'env';
 
 // WebFontLoader.load({
 //   custom: {
@@ -695,6 +696,10 @@ const Main = styled.div`
   ${media.s} {
     padding: 100px 16px 32px;
     //min-height: calc(100vh - 254px);
+  }
+
+  .link {
+    color: ${ENV_CONFIG.ENV_THEME.linkColor} !important;
   }
 `;
 

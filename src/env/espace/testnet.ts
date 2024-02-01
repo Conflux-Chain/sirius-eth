@@ -1,6 +1,7 @@
 import { DOMAIN, IS_STAGE } from 'env/env-constants';
 import { NETWORK_TYPES } from 'env/types';
 import logo from 'images/espace/logo-testnet.svg';
+export * from './base';
 
 export const ENV_NETWORK_ID = 71;
 export const ENV_NETWORK_TYPE = NETWORK_TYPES.EVM_TESTNET;

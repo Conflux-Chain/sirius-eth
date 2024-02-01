@@ -23,6 +23,7 @@ import { Text } from '../Text/Loadable';
 
 import iconLoadingWhite from './assets/loading-white.svg';
 import { Balance } from './Balance';
+import ENV_CONFIG from 'env';
 
 interface Button {
   className?: string;
@@ -159,7 +160,8 @@ const ButtonWrapper = styled.div`
     background: #ffe872;
 
     .connect-wallet-button-left {
-      background: #ffe872;
+      color: #ffffff;
+      background: ${ENV_CONFIG.ENV_THEME.primary};
     }
   }
 
@@ -186,7 +188,8 @@ const ButtonWrapper = styled.div`
     align-items: center;
     height: 2.2857rem;
     padding: 0 0.8571rem;
-    background: #f5f6fa;
+    color: #424a71;
+    background: linear-gradient(0deg, #f5f6fa 0%, #f5f6fa 100%), #fff9f1;
     border-radius: 3.5714rem;
     cursor: pointer;
     flex-grow: 1;

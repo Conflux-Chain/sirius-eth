@@ -1,6 +1,7 @@
 import { DOMAIN, IS_STAGE } from 'env/env-constants';
 import { NETWORK_TYPES } from 'env/types';
 import logo from 'images/bspace/logo.svg';
+export * from './base';
 
 // TODO-btc
 export const ENV_NETWORK_ID = 1030;

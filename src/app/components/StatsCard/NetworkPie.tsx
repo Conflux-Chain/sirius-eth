@@ -4,12 +4,14 @@ import { translations } from 'locales/i18n';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { formatNumber } from 'utils';
+import ENV_CONFIG from 'env';
 
 export function NetworkPie({ data }) {
   const { t } = useTranslation();
   const chart = useRef(null);
 
   const options = {
+    colors: ENV_CONFIG.ENV_THEME.pieChartColors,
     title: {
       text: '',
     },
