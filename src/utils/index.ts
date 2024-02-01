@@ -41,11 +41,12 @@ export const formatAddress = (
   // return input address as default value if it can not convert to conflux chain base32/hex format
   // if necessary, check for errors at the call site
   const invalidAddressReturnValue = address;
+
   try {
     if (isAddress(address)) {
       if (outputType === 'hex') {
         if (isBase32Address(address)) {
-          return SDK.format.checksumAddress(SDK.format.hexAddress(address));
+          return SDK.format.hexAddress(address);
         } else {
           return address;
         }
@@ -56,7 +57,7 @@ export const formatAddress = (
       }
     } else if (isBase32Address(address)) {
       if (outputType === 'hex') {
-        return SDK.format.checksumAddress(SDK.format.hexAddress(address));
+        return SDK.format.hexAddress(address);
       } else if (outputType === 'base32') {
         const reg = /(.*):(.*):(.*)/;
         let lowercaseAddress = address;

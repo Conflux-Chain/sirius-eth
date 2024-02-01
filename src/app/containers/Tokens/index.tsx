@@ -88,13 +88,11 @@ export function Tokens() {
             >
               <span>
                 {largeShrinkNumber.value
-                  ? '$' +
-                    formatNumber(largeShrinkNumber.value, {
+                  ? formatNumber(largeShrinkNumber.value, {
                       precision: 2,
                       withUnit: false,
                       unit: '',
-                    }) +
-                    largeShrinkNumber.unit
+                    }) + largeShrinkNumber.unit
                   : '--'}
               </span>
             </Text>
