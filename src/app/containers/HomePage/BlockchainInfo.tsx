@@ -353,7 +353,7 @@ const CardWrapper = styled.div`
     cursor: pointer;
 
     &:hover {
-      border-bottom: 1px solid #1e3de4;
+      border-bottom: 1px solid ${ENV_CONFIG.ENV_THEME.linkColor};
     }
   }
 `;

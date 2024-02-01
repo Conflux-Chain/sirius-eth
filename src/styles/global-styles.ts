@@ -56,10 +56,10 @@ export const GlobalStyle = createGlobalStyle`
     letter-spacing: 0;
 
     a {
-      color: #1e3de4;
+      color: ${ENV_CONFIG.ENV_THEME.linkColor};
 
       &:hover, &:active {
-        color: #0f23bd;
+        color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
       }
     }
 
