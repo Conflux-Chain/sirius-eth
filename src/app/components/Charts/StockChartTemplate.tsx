@@ -229,12 +229,10 @@ export function StockChartTemplate({
               y2: 1,
             },
             stops: [
-              // @ts-ignore
-              [0, Highcharts.getOptions().colors[0]],
+              [0, ENV_CONFIG.ENV_THEME.chartColors[0]],
               [
                 1,
-                // @ts-ignore
-                Highcharts.color(Highcharts.getOptions().colors[0])
+                Highcharts.color(ENV_CONFIG.ENV_THEME.chartColors[0])
                   .setOpacity(0)
                   .get('rgba'),
               ],
