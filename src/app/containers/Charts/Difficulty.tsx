@@ -1,5 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
+import Highcharts from 'highcharts';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import {
@@ -8,6 +9,7 @@ import {
 } from 'app/components/Charts/StockChartTemplate';
 import { OPEN_API_URLS } from 'utils/constants';
 import { Wrapper } from './Wrapper';
+import ENV_CONFIG from 'env';
 
 export function Difficulty({ preview = false }: ChildProps) {
   const { t } = useTranslation();
@@ -55,6 +57,23 @@ export function Difficulty({ preview = false }: ChildProps) {
           name: `<span>${t(
             translations.highcharts.difficulty.seriesName,
           )}</span>`,
+          fillColor: {
+            linearGradient: [0, 0, 0, 300],
+            stops: [
+              [
+                0,
+                Highcharts.color(ENV_CONFIG.ENV_THEME.chartColors[0])
+                  .setOpacity(0.75)
+                  .get('rgba'),
+              ],
+              [
+                1,
+                Highcharts.color(ENV_CONFIG.ENV_THEME.chartColors[0])
+                  .setOpacity(0)
+                  .get('rgba'),
+              ],
+            ],
+          },
         },
       ],
     },
