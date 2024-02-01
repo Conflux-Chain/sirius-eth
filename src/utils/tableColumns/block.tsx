@@ -20,6 +20,7 @@ import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
+import ENV_CONFIG from 'env';
 
 const IconWrapper = styled.div`
   display: flex;
@@ -296,7 +297,7 @@ export const gasUsedPercentWithProgress = {
             size="small"
             showInfo={false}
             strokeWidth={2}
-            strokeColor="#1e3de4"
+            strokeColor={ENV_CONFIG.ENV_THEME.linkColor}
             trailColor="#eeeeee"
           />
         </StyledGasPercentWrapper>

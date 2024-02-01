@@ -6,6 +6,8 @@ export const ENV_THEME = {
   gasPriceLineBg: '#F0F4F3',
   footerBg: '#05343F',
   footerHighLightColor: '#AFE9D2',
+  linkColor: '#1e3de4',
+  linkHoverColor: '#0f23bd',
   chartColors: [
     '#7cb5ec',
     '#434348',
