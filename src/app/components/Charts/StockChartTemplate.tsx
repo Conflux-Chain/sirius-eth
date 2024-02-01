@@ -13,6 +13,7 @@ import { useHighcharts } from 'utils/hooks/useHighcharts';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
+import ENV_CONFIG from 'env';
 
 // @ts-ignore
 window.dayjs = dayjs;
@@ -203,18 +204,7 @@ export function StockChartTemplate({
       credits: {
         enabled: false,
       },
-      colors: [
-        '#7cb5ec',
-        '#434348',
-        '#f7a35c',
-        '#2b908f',
-        '#91e8e1',
-        '#90ed7d',
-        '#8085e9',
-        '#f15c80',
-        '#e4d354',
-        '#f45b5b',
-      ],
+      colors: ENV_CONFIG.ENV_THEME.chartColors,
       navigator: {
         enabled: true,
       },

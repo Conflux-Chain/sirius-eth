@@ -1,9 +1,12 @@
 import { DOMAIN, IS_STAGE } from 'env/env-constants';
 import { NETWORK_TYPES } from 'env/types';
-import logo from 'images/espace/logo.svg';
+import logo from 'images/bspace/logo.svg';
+export * from './base';
 
+// TODO-btc
 export const ENV_NETWORK_ID = 1030;
-export const ENV_NETWORK_TYPE = NETWORK_TYPES.EVM_MAINNET;
+export const ENV_NETWORK_TYPE = NETWORK_TYPES.BTC_MAINNET;
+// TODO-btc
 export const ENV_API_HOST = IS_STAGE
   ? `evmapi-stage.confluxscan${DOMAIN}`
   : `evmapi.confluxscan${DOMAIN}`;
@@ -13,7 +16,9 @@ export const ENV_CORE_API_HOST = IS_STAGE
 export const ENV_CORE_SCAN_HOST = IS_STAGE
   ? `www-stage.confluxscan${DOMAIN}`
   : `www.confluxscan${DOMAIN}`;
+// TODO-btc
 export const ENV_RPC_SERVER = 'https://evm-cfxbridge.confluxrpc.com';
+// TODO-btc
 export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
   chainName: 'Conflux eSpace',
@@ -26,11 +31,3 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
-export const ENV_THEME = {
-  primary: '#17B38A',
-  searchButtonBg: '#AFE9D2',
-  searchButtonHoverBg: '#17B38A',
-  gasPriceLineBg: '#F0F4F3',
-  footerBg: '#05343F',
-  footerHighLightColor: '#AFE9D2',
-};
