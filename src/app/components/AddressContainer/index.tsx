@@ -158,7 +158,7 @@ const RenderAddress = ({
             href={href}
             maxwidth={
               (content || nametag || addressLabel || alias) && isFullNameTag
-                ? maxWidth
+                ? 1000
                 : isFull
                 ? 430
                 : maxWidth
@@ -175,7 +175,7 @@ const RenderAddress = ({
             style={style}
             maxwidth={
               (content || nametag || addressLabel || alias) && isFullNameTag
-                ? maxWidth
+                ? 1000
                 : isFull
                 ? 430
                 : maxWidth
