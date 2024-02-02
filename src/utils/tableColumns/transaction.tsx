@@ -72,7 +72,6 @@ export const TxnHashRenderComponent = ({
       setLoading(false);
     });
   };
-
   // used for skip status in block transactions list
   // original status is null, manually set to 2
   const innerStatus = lodash.isNil(txnDetail.status)
@@ -179,7 +178,6 @@ export const from = {
   width: 1,
   render: (value, row) => {
     const isContract = checkIfContractByInfo(value, row);
-
     return (
       <AddressContainer
         value={value}

@@ -532,6 +532,10 @@
     "techIssue": "技术问题",
     "report": "举报",
     "suggestionBox": "意见箱",
+    "addNetwork": "添加 {{name}}",
+    "modal": {
+      "networkDuplicate": "当前网络已经存在，请在钱包中查看"
+    },
     "developResource": {
       "title": "开发中心",
       "developerDocuments": "开发者文档",
@@ -1388,6 +1392,10 @@
         "detail": "{{original}}",
         "tip": "请提交工单"
       }
+    },
+    "action": {
+      "title": "交易行为",
+      "tooltip": "此交易突出的交易事件。"
     }
   },
   "block": {
@@ -1586,7 +1594,8 @@
     "button": {
       "connectWallet": "连接钱包",
       "nPending": "{{count}} 个交易处理中",
-      "wrongNetwork": "网络错误"
+      "wrongNetwork": "网络错误",
+      "switchNetwork": "切换网络"
     },
     "modal": {
       "title": "请连接您的钱包",

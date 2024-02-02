@@ -25,6 +25,7 @@ interface Props {
   contractCreated?: string; // contract creation address
   maxWidth?: number; // address max width for view, default 200/170 for default, 400 for full
   isFull?: boolean; // show full address, default false
+  isFullNameTag?: boolean; // show full nametag
   isLink?: boolean; // add link to address, default true
   isMe?: boolean; // when `address === portal selected address`, set isMe to true to add special tag, default false
   suffixAddressSize?: number; // suffix address size, default is 8
@@ -87,6 +88,7 @@ const RenderAddress = ({
   content,
   isLink = true,
   isFull = false,
+  isFullNameTag = false,
   style = {},
   maxWidth,
   suffixSize = defaultPCSuffixAddressSize,
@@ -101,7 +103,12 @@ const RenderAddress = ({
   }`;
   const aftercontent =
     type === 'pow'
-      ? cfxAddress && !isFull && !addressLabel && !nametag && !alias
+      ? cfxAddress &&
+        typeof cfxAddress == 'string' &&
+        !isFull &&
+        !addressLabel &&
+        !nametag &&
+        !alias
         ? cfxAddress.substr(-suffixSize)
         : ''
       : '';
@@ -149,7 +156,13 @@ const RenderAddress = ({
           <LinkWrapper
             style={style}
             href={href}
-            maxwidth={isFull ? 430 : maxWidth}
+            maxwidth={
+              (content || nametag || addressLabel || alias) && isFullNameTag
+                ? 1000
+                : isFull
+                ? 430
+                : maxWidth
+            }
             alias={alias}
             aftercontent={aftercontent}
           >
@@ -160,7 +173,13 @@ const RenderAddress = ({
         ) : (
           <PlainWrapper
             style={style}
-            maxwidth={isFull ? 430 : maxWidth}
+            maxwidth={
+              (content || nametag || addressLabel || alias) && isFullNameTag
+                ? 1000
+                : isFull
+                ? 430
+                : maxWidth
+            }
             alias={alias}
             aftercontent={aftercontent}
           >
@@ -185,6 +204,7 @@ export const AddressContainer = withTranslation()(
       contractCreated,
       maxWidth,
       isFull = false,
+      isFullNameTag = false,
       isLink = true,
       isMe = false,
       suffixAddressSize,
@@ -219,16 +239,21 @@ export const AddressContainer = withTranslation()(
 
           if (showLabeled) {
             const { label } = getLabelInfo(
-              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][fContractCreated],
+              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
+                fContractCreated.toLocaleLowerCase()
+              ],
               'tag',
             );
 
             addressLabel = label;
           }
 
-          if (showNametag && nametagInfo?.[fContractCreated]?.nametag) {
+          if (
+            showNametag &&
+            nametagInfo?.[fContractCreated.toLocaleLowerCase()]?.nametag
+          ) {
             const { label } = getLabelInfo(
-              nametagInfo[fContractCreated].nametag,
+              nametagInfo[fContractCreated.toLocaleLowerCase()].nametag,
               'nametag',
             );
 
@@ -244,6 +269,7 @@ export const AddressContainer = withTranslation()(
             hrefAddress: fContractCreated,
             isLink,
             isFull,
+            isFullNameTag,
             maxWidth: 160,
             suffixSize,
             prefix: (
@@ -283,6 +309,7 @@ export const AddressContainer = withTranslation()(
           content: alias ? formatString(alias, 'tag') : value,
           isLink: false,
           isFull,
+          isFullNameTag,
           maxWidth,
           suffixSize,
           style: { color: '#e00909' },
@@ -316,7 +343,7 @@ export const AddressContainer = withTranslation()(
       if (showLabeled) {
         const { label } = getLabelInfo(
           globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
-            formatAddress(cfxAddress)
+            formatAddress(cfxAddress.toLocaleLowerCase())
           ],
           'tag',
         );
@@ -324,9 +351,12 @@ export const AddressContainer = withTranslation()(
         addressLabel = label;
       }
 
-      if (showNametag && nametagInfo?.[cfxAddress]?.nametag) {
+      if (
+        showNametag &&
+        nametagInfo?.[cfxAddress.toLocaleLowerCase()]?.nametag
+      ) {
         const { label } = getLabelInfo(
-          nametagInfo[cfxAddress].nametag,
+          nametagInfo[cfxAddress.toLocaleLowerCase()].nametag,
           'nametag',
         );
 
@@ -346,6 +376,7 @@ export const AddressContainer = withTranslation()(
           nametag: officalNametag,
           isLink,
           isFull,
+          isFullNameTag,
           maxWidth,
           suffixSize,
           prefix: showIcon ? (
@@ -380,6 +411,7 @@ export const AddressContainer = withTranslation()(
           nametag: officalNametag,
           isLink,
           isFull,
+          isFullNameTag,
           maxWidth,
           suffixSize,
           suffix: (
@@ -405,6 +437,7 @@ export const AddressContainer = withTranslation()(
         nametag: officalNametag,
         isLink,
         isFull,
+        isFullNameTag,
         maxWidth,
         suffixSize,
         prefix: prefixIcon,

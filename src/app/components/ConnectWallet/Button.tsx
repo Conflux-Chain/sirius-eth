@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import clsx from 'clsx';
-import { usePortal } from 'utils/hooks/usePortal';
+import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
 import { TxnHistoryContext } from 'utils/hooks/useTxnHistory';
 import { formatString } from 'utils';
 import { RotateImg } from './RotateImg';
@@ -22,6 +22,7 @@ import { Text } from '../Text/Loadable';
 // import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 import iconLoadingWhite from './assets/loading-white.svg';
+import { Balance } from './Balance';
 
 interface Button {
   className?: string;
@@ -32,18 +33,20 @@ interface Button {
 export const Button = ({ className, onClick, showBalance }: Button) => {
   const [globalData = {}] = useGlobalData();
   const { t } = useTranslation();
-  const { installed, connected, accounts, balance } = usePortal();
+  const { authConnectStatus, accounts } = usePortal();
 
   const { pendingRecords } = useContext(TxnHistoryContext);
-  const { isValid } = useCheckHook(true);
+  const { isValid } = useCheckHook();
 
   let buttonText: React.ReactNode = t(
     translations.connectWallet.button.connectWallet,
   );
   let buttonStatus: React.ReactNode = '';
-  let hasPendingRecords = connected === 1 && !!pendingRecords.length;
+  let hasPendingRecords =
+    authConnectStatus === AuthConnectStatus.Connected &&
+    !!pendingRecords.length;
 
-  if (installed && connected) {
+  if (authConnectStatus !== AuthConnectStatus.NotConnected) {
     if (isValid) {
       if (accounts.length) {
         if (hasPendingRecords) {
@@ -78,23 +81,23 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
         }
       }
     } else {
-      buttonText = t(translations.connectWallet.button.wrongNetwork);
+      buttonText = t(translations.connectWallet.button.switchNetwork);
     }
   }
 
   useEffect(() => {
-    if (connected === 0) {
+    if (authConnectStatus === AuthConnectStatus.NotConnected) {
       trackEvent({
         category: ScanEvent.wallet.category,
         action: ScanEvent.wallet.action.disconnect,
       });
-    } else if (connected === 1) {
+    } else if (authConnectStatus === AuthConnectStatus.Connected) {
       trackEvent({
         category: ScanEvent.wallet.category,
         action: ScanEvent.wallet.action.connect,
       });
     }
-  }, [connected]);
+  }, [authConnectStatus]);
 
   return (
     <ButtonWrapper
@@ -102,6 +105,8 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
         pending: hasPendingRecords,
         connected: accounts.length && isValid,
         notConnected: !(accounts.length && isValid),
+        switchNetowrk:
+          authConnectStatus !== AuthConnectStatus.NotConnected && !isValid,
       })}
       onClick={onClick}
     >
@@ -110,7 +115,7 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
         <span className="text">{buttonText}</span>
       </span>
       {accounts.length && showBalance && !hasPendingRecords ? (
-        <span className="balance">{balance} CFX</span>
+        <Balance />
       ) : null}
     </ButtonWrapper>
   );
@@ -133,6 +138,13 @@ const ButtonWrapper = styled.div`
   color: #65709a;
   cursor: pointer;
 
+  &.switchNetowrk {
+    .connect-wallet-button-left {
+      background: #fbebeb;
+      color: #e15c56;
+    }
+  }
+
   &.pending {
     background: #fede1b;
     color: #ffffff;
@@ -143,7 +155,7 @@ const ButtonWrapper = styled.div`
     }
   }
 
-  &:not(.pending):hover {
+  &:not(.pending, .switchNetowrk):hover {
     background: #ffe872;
 
     .connect-wallet-button-left {

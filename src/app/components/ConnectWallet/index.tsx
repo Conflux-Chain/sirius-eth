@@ -6,12 +6,13 @@
 import React, { useState } from 'react';
 import { Modal } from './Modal';
 import { Button } from './Button';
-import { usePortal } from 'utils/hooks/usePortal';
+import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
 import { useCheckHook } from './useCheckHook';
 import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useLocation } from 'react-router';
+import { switchChain } from 'utils/chainManage';
 
 interface Props {
   children?: React.ReactChild;
@@ -21,27 +22,18 @@ interface Props {
 export const ConnectButton = ({ children, profile = false }: Props) => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
-  const { installed, connected } = usePortal();
-  const {
-    isValid,
-    notifyAddressError,
-    notifyNetworkError,
-    isNetworkValid,
-    isAddressValid,
-  } = useCheckHook();
+  const { authConnectStatus } = usePortal();
+  const { isValid } = useCheckHook();
 
-  const handleClick = e => {
+  const handleClick = async e => {
     if (!isValid) {
-      // network error or version error
       e.stopPropagation();
       e.preventDefault();
-      if (!isAddressValid) {
-        notifyAddressError();
-      }
-      if (!isNetworkValid) {
-        notifyNetworkError();
-      }
-    } else if (profile || !installed || connected === 0) {
+      switchChain();
+    } else if (
+      profile ||
+      authConnectStatus === AuthConnectStatus.NotConnected
+    ) {
       e.stopPropagation();
       e.preventDefault();
       setShowModal(true);
@@ -55,7 +47,10 @@ export const ConnectButton = ({ children, profile = false }: Props) => {
   let child = <span onClickCapture={handleClick}>{children}</span>;
 
   // wrap button which must connect portal
-  if (!profile && (!installed || connected === 0 || !isValid)) {
+  if (
+    !profile &&
+    (authConnectStatus === AuthConnectStatus.NotConnected || !isValid)
+  ) {
     child = (
       <Text
         onClickCapture={handleClick}
