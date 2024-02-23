@@ -60,7 +60,11 @@ export interface NetworksType {
 }
 
 export interface GlobalDataType {
-  networks: Array<NetworksType>;
+  networks: {
+    mainnet: NetworksType[];
+    testnet: NetworksType[];
+    devnet: NetworksType[];
+  };
   networkId: number;
   contracts: ContractsType;
 }
