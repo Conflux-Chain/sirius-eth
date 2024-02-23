@@ -200,21 +200,23 @@ const MAINNET_NETWORK_OPTIONS = lodash.compact([
     name: 'Conflux eSpace (Hydra)',
     id: 1030,
     url: IS_STAGE
-      ? '//evm-stage.confluxscan.net'
+      ? `//evm-stage.confluxscan${DOMAIN}`
       : `//evm.confluxscan${DOMAIN}`,
   },
   // core space
   {
     name: 'Conflux Hydra',
     id: 1029,
-    url: IS_STAGE ? '//www-stage.confluxscan.net' : `//confluxscan${DOMAIN}`,
+    url: IS_STAGE
+      ? `//www-stage.confluxscan${DOMAIN}`
+      : `//confluxscan${DOMAIN}`,
   },
   // TODO-btc
   // {
   //   name: 'Conflux eSpace (Hydra)',
   //   id: 1030,
   //   url: IS_STAGE
-  //     ? '//evm-stage.confluxscan.net'
+  //     ? `//evm-stage.confluxscan${DOMAIN}`
   //     : `//evm.confluxscan${DOMAIN}`,
   // },
 ]);
@@ -224,7 +226,7 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
     name: 'Conflux eSpace (Testnet)',
     id: 71,
     url: IS_STAGE
-      ? '//evmtestnet-stage.confluxscan.net'
+      ? `//evmtestnet-stage.confluxscan${DOMAIN}`
       : `//evmtestnet.confluxscan${DOMAIN}`,
   },
   // core space
@@ -232,7 +234,7 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
     name: 'Conflux Core (Testnet)',
     id: 1,
     url: IS_STAGE
-      ? '//testnet-stage.confluxscan.net'
+      ? `//testnet-stage.confluxscan${DOMAIN}`
       : `//testnet.confluxscan${DOMAIN}`,
   },
   // TODO-btc
@@ -240,7 +242,7 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
   //   name: 'Conflux eSpace (Testnet)',
   //   id: 71,
   //   url: IS_STAGE
-  //     ? '//evmtestnet-stage.confluxscan.net'
+  //     ? `//evmtestnet-stage.confluxscan${DOMAIN}`
   //     : `//evmtestnet.confluxscan${DOMAIN}`,
   // },
 ]);
