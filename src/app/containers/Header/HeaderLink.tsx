@@ -11,7 +11,7 @@ import { trackEvent } from '../../../utils/ga';
 import { Link } from '../../components/Link/Loadable';
 import ENV_CONFIG from 'env';
 
-export type HeaderLinkTitle = ReactNode | Array<ReactNode>;
+export type HeaderLinkTitle = ReactNode | Array<ReactNode> | false;
 
 export interface HeaderLink {
   title: HeaderLinkTitle;
@@ -24,6 +24,7 @@ export interface HeaderLink {
   matched?: boolean;
   afterClick?: any;
   plain?: boolean;
+  vertical?: boolean;
 }
 
 export type HeaderLinks = HeaderLink[];
@@ -41,6 +42,7 @@ export function genParseLinkFn(links: HeaderLinks, level = 0) {
       matched: customMatched,
       afterClick,
       plain,
+      vertical,
     } = link;
 
     let matched: boolean = customMatched || false;
@@ -67,15 +69,15 @@ export function genParseLinkFn(links: HeaderLinks, level = 0) {
         href={href}
         name={name}
         level={level}
-        className={`navbar-link level-${level} ${
-          plain ? 'plain' : ''
+        className={`navbar-link level-${level} ${plain ? 'plain' : ''} ${
+          vertical ? 'vertical' : ''
         } ${className}`}
         onClick={onClick}
         matched={matched}
         afterClick={afterClick}
         plain={plain}
       >
-        {plain ? <span>{title}</span> : title}
+        {title === false ? null : plain ? <span>{title}</span> : title}
         <SubLinkWrap
           className={`sub-link-wrap level-${level} ${plain ? 'plain' : ''}`}
         >
@@ -381,8 +383,10 @@ const WrappLink = styled.span`
       &.matched {
         color: ${ENV_CONFIG.ENV_THEME.primary} !important;
       }
-      :hover:not(.matched) {
-        color: #424a71 !important;
+      :hover {
+        &:not(.matched) {
+          color: #424a71 !important;
+        }
         border-radius: 0.14286rem;
         background: #f5f6fa;
       }
@@ -418,8 +422,14 @@ const WrappLink = styled.span`
       }
     }
   }
+  &.plain-wrap.level-1.vertical:not(:first-child) {
+    display: block;
+    border-top: 1px solid #e8e9ea;
+    padding-top: 8px;
+    margin-top: 8px;
+  }
 
-  &.plain-wrap.level-1 {
+  &.plain-wrap.level-1:not(.vertical) {
     &:last-child {
       border-left: 1px solid #eee;
     }

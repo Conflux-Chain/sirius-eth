@@ -19,7 +19,11 @@ import { useLocation } from 'react-router';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
-import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
+import {
+  useGlobalData,
+  GlobalDataType,
+  NetworksType,
+} from 'utils/hooks/useGlobal';
 import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
@@ -531,6 +535,36 @@ export const Header = memo(() => {
     // // },
   ];
 
+  const getNetworkLink = (n: NetworksType) => {
+    const isMatch = n.id === networkId;
+    return {
+      title: [
+        <NetWorkWrapper>
+          <img src={getNetworkIcon(n.id)} alt="" />
+          {n.name}
+        </NetWorkWrapper>,
+        isMatch && <Check size={18} key="check" />,
+      ],
+      onClick: () => {
+        trackEvent({
+          category: ScanEvent.preference.category,
+          action: ScanEvent.preference.action.changeNet,
+          label: n.name,
+        });
+
+        menuClick();
+
+        setGlobalData({
+          ...globalData,
+          networkId: n.id,
+        });
+
+        gotoNetwork(n.url);
+      },
+      isMatchedFn: () => isMatch,
+    };
+  };
+
   const endLinks: HeaderLinks = [
     {
       // switch network
@@ -542,38 +576,26 @@ export const Header = memo(() => {
         </NetWorkWrapper>
       ),
       className: 'not-link',
-      children:
-        networks.length < 2
-          ? []
-          : networks.map(n => {
-              const isMatch = n.id === networkId;
-              return {
-                title: [
-                  <NetWorkWrapper>
-                    <img src={getNetworkIcon(n.id)} alt="" />
-                    {n.name}
-                  </NetWorkWrapper>,
-                  isMatch && <Check size={18} key="check" />,
-                ],
-                onClick: () => {
-                  trackEvent({
-                    category: ScanEvent.preference.category,
-                    action: ScanEvent.preference.action.changeNet,
-                    label: n.name,
-                  });
-
-                  menuClick();
-
-                  setGlobalData({
-                    ...globalData,
-                    networkId: n.id,
-                  });
-
-                  gotoNetwork(n.url);
-                },
-                isMatchedFn: () => isMatch,
-              };
-            }),
+      children: [
+        {
+          title: false,
+          plain: true,
+          vertical: true,
+          children: networks.mainnet.map(getNetworkLink),
+        },
+        {
+          title: false,
+          plain: true,
+          vertical: true,
+          children: networks.testnet.map(getNetworkLink),
+        },
+        {
+          title: false,
+          plain: true,
+          vertical: true,
+          children: networks.devnet.map(getNetworkLink),
+        },
+      ],
     },
   ];
 

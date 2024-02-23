@@ -4,7 +4,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import fetch from './request';
 import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
-import { NetworksType } from './hooks/useGlobal';
+import { GlobalDataType, NetworksType } from './hooks/useGlobal';
 import {
   NETWORK_ID,
   CFX,
@@ -847,12 +847,19 @@ export const getInitialDate = (minTimestamp, maxTimestamp) => {
   };
 };
 
-export const getNetwork = (networks: Array<NetworksType>, id: number) => {
-  let matchs = networks.filter(n => n.id === id);
+export const getNetwork = (
+  networks: GlobalDataType['networks'],
+  id: number,
+) => {
+  const matched = [
+    ...networks.mainnet,
+    ...networks.testnet,
+    ...networks.devnet,
+  ].find(n => n.id === id);
   let network: NetworksType;
 
-  if (matchs) {
-    network = matchs[0];
+  if (matched) {
+    network = matched;
   } else {
     network = networks[0];
   }

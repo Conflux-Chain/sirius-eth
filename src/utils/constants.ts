@@ -194,7 +194,7 @@ OPEN_API_URLS.token = '/stat/daily-token-stat';
 export const CORE_SPACE_CHAIN_IDS = [1029, 1];
 export const ESPACE_CHAIN_IDS = [1030, 71, 8889];
 export const BSPACE_CHAIN_IDS = [8890];
-export const NETWORK_OPTIONS = lodash.compact([
+const MAINNET_NETWORK_OPTIONS = lodash.compact([
   // espace
   {
     name: 'Conflux eSpace (Hydra)',
@@ -203,30 +203,11 @@ export const NETWORK_OPTIONS = lodash.compact([
       ? '//evm-stage.confluxscan.net'
       : `//evm.confluxscan${DOMAIN}`,
   },
-  {
-    name: 'Conflux eSpace (Testnet)',
-    id: 71,
-    url: IS_STAGE
-      ? '//evmtestnet-stage.confluxscan.net'
-      : `//evmtestnet.confluxscan${DOMAIN}`,
-  },
-  IS_DEVNET && {
-    name: 'Conflux eSpace (Devnet)',
-    id: 8889,
-    url: '//net8889eth.confluxscan.net',
-  },
   // core space
   {
     name: 'Conflux Hydra',
     id: 1029,
     url: IS_STAGE ? '//www-stage.confluxscan.net' : `//confluxscan${DOMAIN}`,
-  },
-  {
-    name: 'Conflux Core (Testnet)',
-    id: 1,
-    url: IS_STAGE
-      ? '//testnet-stage.confluxscan.net'
-      : `//testnet.confluxscan${DOMAIN}`,
   },
   // TODO-btc
   // {
@@ -236,6 +217,25 @@ export const NETWORK_OPTIONS = lodash.compact([
   //     ? '//evm-stage.confluxscan.net'
   //     : `//evm.confluxscan${DOMAIN}`,
   // },
+]);
+const TESTNET_NETWORK_OPTIONS = lodash.compact([
+  // espace
+  {
+    name: 'Conflux eSpace (Testnet)',
+    id: 71,
+    url: IS_STAGE
+      ? '//evmtestnet-stage.confluxscan.net'
+      : `//evmtestnet.confluxscan${DOMAIN}`,
+  },
+  // core space
+  {
+    name: 'Conflux Core (Testnet)',
+    id: 1,
+    url: IS_STAGE
+      ? '//testnet-stage.confluxscan.net'
+      : `//testnet.confluxscan${DOMAIN}`,
+  },
+  // TODO-btc
   // {
   //   name: 'Conflux eSpace (Testnet)',
   //   id: 71,
@@ -243,9 +243,24 @@ export const NETWORK_OPTIONS = lodash.compact([
   //     ? '//evmtestnet-stage.confluxscan.net'
   //     : `//evmtestnet.confluxscan${DOMAIN}`,
   // },
+]);
+const DEVNET_NETWORK_OPTIONS = lodash.compact([
+  // espace
+  IS_DEVNET && {
+    name: 'Conflux eSpace (Devnet)',
+    id: 8889,
+    url: '//net8889eth.confluxscan.net',
+  },
+  // core space
+  // TODO-btc
   IS_DEVNET && {
     name: 'Conflux bSpace (Devnet)',
     id: 8890,
     url: '//net8890btc.confluxscan.net',
   },
 ]);
+export const NETWORK_OPTIONS = {
+  mainnet: MAINNET_NETWORK_OPTIONS,
+  testnet: TESTNET_NETWORK_OPTIONS,
+  devnet: DEVNET_NETWORK_OPTIONS,
+};
