@@ -244,7 +244,7 @@
     "pattern": "实现执行合约的 ABI 位于 <0>address</0>, 使用 <1>pattern</1> 代理模式.",
     "expandAll": "全部展开",
     "reset": "重置",
-    "payableAmountCfx": "payableAmount (cfx) ",
+    "payableAmount": "payableAmount (cfx) ",
     "error": {
       "address": "请输入一个合法的 Conflux 地址",
       "bool": "请输入 true/false 或 0/1",
@@ -252,7 +252,7 @@
       "uint": "请输入一个范围在 0 ~ 2^{{num}}-1 非负整数",
       "bytes": "请输入以 0x 开头的十六进制字节数组",
       "bytesM": "请输入以 0x 开头的 长度为{{length}} 的十六进制字节数组",
-      "cfx": "请输入小数位数不超过18位的非负数字",
+      "numberLimit": "请输入小数位数不超过18位的非负数字",
       "array": "请输入有效的 {{type}} 数组，用中括号包裹",
       "tuple": "请输入有效的元组（符合参数顺序和格式的 json 数组或对象）",
       "tupleArray": "请输入有效的元组（符合参数顺序和格式的 json 数组或对象）数组",
@@ -386,7 +386,7 @@
     },
     "viewTxn": "查看{{type}}"
   },
-  "cfxTransfers": {
+  "transfers": {
     "title": "CFX 转移",
     "description": "仅展示 Conflux 网络上发生 CFX 转移的交易。",
     "tipCountBefore": "共计",
@@ -449,7 +449,7 @@
     "bnt": "区块&交易",
     "block": "区块",
     "txn": "交易",
-    "cfxTransfers": "CFX 转移",
+    "transfers": "CFX 转移",
     "blockchain": "区块链",
     "accounts": "账户",
     "tokens": "通证",
@@ -619,8 +619,8 @@
       "circulating": "流通量",
       "tx": "每日交易次数",
       "token-transfer": "每日交易-通证",
-      "cfx-transfer": "每日交易-CFX",
-      "cfx-holder-accounts": "CFX 持有账户数",
+      "transfer": "每日交易-CFX",
+      "holder-accounts": "CFX 持有账户数",
       "account-growth": "账户增长",
       "active-accounts": "活跃账户数",
       "contracts": "全部合约",
@@ -670,7 +670,7 @@
       "yAxisTitle": "每日交易次数",
       "seriesName": "每日交易次数"
     },
-    "cfxTransfer": {
+    "transfer": {
       "title": "每日交易 CFX",
       "subtitle": "Conflux 网络上 CFX 的每日交易数据统计",
       "yAxisTitle": "CFX 日交易次数",
@@ -688,7 +688,7 @@
       "yAxisTitle2": "每日转移账户数",
       "seriesName2": "每日转移账户数"
     },
-    "CFXHolderAccounts": {
+    "holderAccounts": {
       "title": "CFX 持有账户数",
       "subtitle": "Conflux 网络上持有 CFX 的账户的总数",
       "yAxisTitle": "持有账户数",
@@ -769,11 +769,11 @@
       "title": "哈希算力",
       "description": "矿工每秒计算哈希值的次数"
     },
-    "cfxPrice": {
+    "price": {
       "title": "CFX 价格",
       "description": "数据提供方：<a href='https://moondex.io/trade/cfxusdt' target='_blank'>MoonDEX</a>"
     },
-    "cfxMarketCap": {
+    "marketCap": {
       "title": "市值",
       "description": "市值 = 当前价格 x 流通量"
     },
@@ -805,7 +805,7 @@
       "txnCount": "日转移次数",
       "userCount": "日转移账户数"
     },
-    "cfxHoldingAccounts": {
+    "holdingAccounts": {
       "title": "CFX 持有账户数",
       "description": "Conflux 网络上持有 CFX 的账户的总数"
     },
@@ -843,7 +843,7 @@
       "title": "合约分析",
       "description": "每日转账统计",
       "tx": "交易",
-      "cfxTransfer": "CFX转移",
+      "transfer": "CFX转移",
       "tokenTransfer": "通证转移"
     }
   },
@@ -977,7 +977,7 @@
     "transaction": "交易",
     "transactions": "交易",
     "tokenTxns": "通证交易",
-    "cfxTransfer": "CFX 交易",
+    "transfer": "CFX 交易",
     "tokenTxnsErc20": "ERC20 交易",
     "tokenTxnsErc721": "ERC721 交易",
     "tokenTxnsErc1155": "ERC1155 交易",
@@ -1666,8 +1666,8 @@
     "overviewMore": "查看图表",
     "topTxnCountSent": "最佳地址--发送交易数",
     "topTxnCountReceived": "最佳地址--接收交易数",
-    "topCFXSend": "最佳地址--CFX 发送量",
-    "topCFXReceived": "最佳地址--CFX 接收量",
+    "topSend": "最佳地址--CFX 发送量",
+    "topReceived": "最佳地址--CFX 接收量",
     "topTokensBySenders": "最佳通证--发送账户数",
     "topTokensByReceivers": "最佳通证--接收账户数",
     "topTokensByTxnCount": "最佳通证--交易数",
@@ -1683,8 +1683,8 @@
       "7d": "7天"
     },
     "overviewColumns": {
-      "totalCFXSent": "CFX 总发送量",
-      "totalCFXReceived": "CFX 总接收量",
+      "totalSent": "CFX 总发送量",
+      "totalReceived": "CFX 总接收量",
       "totalTxnCount": "交易总数",
       "totalTxnCountSent": "发送交易总数",
       "totalTxnCountReceived": "接收交易总数",
@@ -1776,7 +1776,7 @@
     "subtitle": "您可以在特定的区块高度或日期查找 Conflux 网络上的账户历史余额",
     "tokenQuantity": "通证数量",
     "tokenSupply": "通证供应",
-    "cfxBalance": "CFX 余额",
+    "balance": "CFX 余额",
     "address": "地址",
     "contractAddress": "合约地址",
     "epochNoOrDate": "区块高度或者日期",
@@ -1789,7 +1789,7 @@
     "reset": "重置",
     "tokenQuantityForAccountAddress": "账户地址通证总数量",
     "totalSupplyForContractAddress": "合约地址通证总供应量",
-    "cfxBalanceForAddress": "地址 CFX 总余额",
+    "balanceForAddress": "地址 CFX 总余额",
     "snapshotDate": "截止日期",
     "epoch": "区块",
     "epochNo": "区块高度"

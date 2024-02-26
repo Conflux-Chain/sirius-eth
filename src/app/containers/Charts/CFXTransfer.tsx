@@ -19,8 +19,8 @@ export function CFXTransfer({ preview = false }: ChildProps) {
   const props = {
     preview: preview,
     name: 'cfx-transfer',
-    title: t(translations.highcharts.cfxTransfer.title),
-    subtitle: t(translations.highcharts.cfxTransfer.subtitle),
+    title: t(translations.highcharts.transfer.title),
+    subtitle: t(translations.highcharts.transfer.subtitle),
     request: {
       url: OPEN_API_URLS.cfxTransfer,
       formatter: data => {
@@ -43,7 +43,7 @@ export function CFXTransfer({ preview = false }: ChildProps) {
         zoomType: 'x',
       },
       title: {
-        text: t(translations.highcharts.cfxTransfer.title),
+        text: t(translations.highcharts.transfer.title),
       },
       subtitle: {
         text: t(translations.highcharts.subtitle),
@@ -57,14 +57,14 @@ export function CFXTransfer({ preview = false }: ChildProps) {
       yAxis: [
         {
           title: {
-            text: t(translations.highcharts.cfxTransfer.yAxisTitle),
+            text: t(translations.highcharts.transfer.yAxisTitle),
           },
           opposite: false,
           tickAmount,
         },
         {
           title: {
-            text: t(translations.highcharts.cfxTransfer.yAxisTitle3),
+            text: t(translations.highcharts.transfer.yAxisTitle3),
           },
           opposite: true,
           tickAmount,
@@ -74,7 +74,7 @@ export function CFXTransfer({ preview = false }: ChildProps) {
         {
           type: 'column',
           name: `<span>${t(
-            translations.highcharts.cfxTransfer.seriesName3,
+            translations.highcharts.transfer.seriesName3,
           )}</span>`,
           yAxis: 1,
           tooltip: {
@@ -86,14 +86,14 @@ export function CFXTransfer({ preview = false }: ChildProps) {
         {
           type: 'line',
           name: `<span>${t(
-            translations.highcharts.cfxTransfer.seriesName2,
+            translations.highcharts.transfer.seriesName2,
           )}</span>`,
           color: ENV_CONFIG.ENV_THEME.mixedChartColors[1],
         },
         {
           type: 'line',
           name: `<span>${t(
-            translations.highcharts.cfxTransfer.seriesName,
+            translations.highcharts.transfer.seriesName,
           )}</span>`,
           color: ENV_CONFIG.ENV_THEME.mixedChartColors[2],
         },

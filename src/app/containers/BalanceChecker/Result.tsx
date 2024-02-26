@@ -106,7 +106,7 @@ export function Result({ radioValue, resultVisible, formData }) {
   const CFXCard = (
     <AntdCard.Meta
       avatar={<Avatar src={TokenIcon} />}
-      title={t(translations.balanceChecker.cfxBalance)}
+      title={t(translations.balanceChecker.balance)}
       description={
         loading ? (
           <Spin />
