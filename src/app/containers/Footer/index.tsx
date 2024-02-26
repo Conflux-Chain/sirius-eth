@@ -15,10 +15,16 @@ import { translations } from 'locales/i18n';
 import { Language } from './Language';
 // import { Currency } from './Currency';
 import { ScanEvent } from 'utils/gaConstants';
-import { NETWORK_TYPE, NETWORK_TYPES, IS_FOREIGN_HOST } from 'utils/constants';
+import {
+  NETWORK_TYPE,
+  NETWORK_TYPES,
+  IS_FOREIGN_HOST,
+  NETWORK_CONFIG,
+} from 'utils/constants';
 import { getDomainTLD } from 'utils';
 
 import iconWechatQrcode from 'images/footer/wechat-qrcode.png';
+import IconAdd from 'images/icon-add.svg';
 
 import {
   Conflux,
@@ -34,6 +40,7 @@ import {
   Weibo,
   Youtube,
 } from './Icon';
+import { addChain } from 'utils/chainManage';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -378,6 +385,23 @@ export function Footer() {
     );
   }, []);
 
+  const handleAddChain = async () => {
+    try {
+      await addChain();
+    } catch (error) {
+      console.log('add chain error:', error);
+      const switchError = error as { code: number; message?: string };
+      // the chainId already exists in wallet.
+      if (
+        switchError?.code === -32602 &&
+        switchError.message &&
+        /Duplicate chainId/i.test(switchError.message)
+      ) {
+        alert(t(translations.footer.modal.networkDuplicate));
+      }
+    }
+  };
+
   const rightTop = [
     <FooterWrapper key="right-top">
       <FooterContentWrapper>
@@ -461,8 +485,16 @@ export function Footer() {
     <FooterContentRow key="right-top-icons">{icons}</FooterContentRow>,
   ];
   const rightBottom = [
-    <CopyRight key="copryRight">{t(translations.footer.copryRight)}</CopyRight>,
-    <span key="ICP">{ICP}</span>,
+    <div key="copryRight&ICP">
+      <CopyRight>{t(translations.footer.copryRight)}</CopyRight>
+      {ICP}
+    </div>,
+    <AddNetwork key="addNetwork" onClick={handleAddChain}>
+      <img src={IconAdd} alt="add network" />
+      {t(translations.footer.addNetwork, {
+        name: NETWORK_CONFIG.chainName,
+      })}
+    </AddNetwork>,
   ];
 
   return (
@@ -583,6 +615,27 @@ const CopyRight = styled.span`
 
   ${media.s} {
     font-size: 0.71rem;
+  }
+`;
+
+const AddNetwork = styled.div`
+  display: flex;
+  align-items: center;
+  color: var(--theme-color-gray0);
+  border-radius: 0.21rem;
+  border: 1px solid var(--theme-color-gray0);
+  padding: 0.29rem 0.36rem;
+  margin-left: auto;
+  cursor: pointer;
+  ${media.s} {
+    font-size: 0.71rem;
+  }
+
+  img {
+    width: 0.71rem;
+    height: 0.71rem;
+    margin-left: 0.28rem;
+    margin-right: 0.36rem;
   }
 `;
 

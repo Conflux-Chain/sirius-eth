@@ -43,6 +43,8 @@ const RightTop = styled.div`
   }
 `;
 const RightBottom = styled.div`
+  display: flex;
+  align-items: start;
   ${media.s} {
     padding: 0 0.21rem;
   }

@@ -12,10 +12,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as serviceWorker from 'serviceWorker';
 import { RecoilRoot } from 'recoil';
+import { completeDetect } from '@cfxjs/use-wallet-react/ethereum';
 import 'sanitize.css/sanitize.css';
 import '@cfxjs/antd/dist/@cfxjs/antd.css';
-import { completeDetect } from '@cfxjs/use-wallet';
-import { completeDetect as completeDetectEthereum } from '@cfxjs/use-wallet/dist/ethereum';
 
 // Import root app
 import { App } from 'app';
@@ -51,15 +50,14 @@ if (module.hot) {
   // have to be constants at compile-time
   module.hot.accept(['./app', './locales/i18n'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
-    const App = require('./app').App;
-
-    Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
+    Promise.all([completeDetect()]).then(() => {
+      const App = require('./app').App;
       render(App);
     });
   });
 }
 
-Promise.all([completeDetect(), completeDetectEthereum()]).then(() => {
+Promise.all([completeDetect()]).then(() => {
   render(App);
 });
 
