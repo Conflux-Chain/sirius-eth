@@ -23,9 +23,9 @@ export const ENV_RPC_SERVER = 'https://evmtestnet-cfxbridge.confluxrpc.com';
 // TODO-btc
 export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
-  chainName: 'eSpace Testnet',
+  chainName: 'bSpace Testnet',
   rpcUrls: ['https://evmtestnet.confluxrpc.com'],
-  blockExplorerUrls: ['https://evmtestnet.confluxscan.io/'],
+  blockExplorerUrls: ['https://btctestnet.confluxscan.io/'],
   nativeCurrency: {
     name: 'Conflux',
     symbol: 'CFX',

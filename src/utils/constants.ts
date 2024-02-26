@@ -216,8 +216,8 @@ const MAINNET_NETWORK_OPTIONS = lodash.compact([
   //   name: 'Conflux eSpace (Hydra)',
   //   id: 1030,
   //   url: IS_STAGE
-  //     ? `//evm-stage.confluxscan${DOMAIN}`
-  //     : `//evm.confluxscan${DOMAIN}`,
+  //     ? `//btc-stage.confluxscan${DOMAIN}`
+  //     : `//btc.confluxscan${DOMAIN}`,
   // },
 ]);
 const TESTNET_NETWORK_OPTIONS = lodash.compact([
@@ -242,8 +242,8 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
   //   name: 'Conflux eSpace (Testnet)',
   //   id: 71,
   //   url: IS_STAGE
-  //     ? `//evmtestnet-stage.confluxscan${DOMAIN}`
-  //     : `//evmtestnet.confluxscan${DOMAIN}`,
+  //     ? `//btctestnet-stage.confluxscan${DOMAIN}`
+  //     : `//btctestnet.confluxscan${DOMAIN}`,
   // },
 ]);
 const DEVNET_NETWORK_OPTIONS = lodash.compact([
