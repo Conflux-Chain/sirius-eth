@@ -29,7 +29,9 @@ export const IS_TESTNET =
   window.location.hostname.includes('testnet');
 
 export const IS_PRIVATENET =
-  process.env.REACT_APP_8889 === 'true' || IS_TESTNET;
+  process.env.REACT_APP_8889 === 'true' ||
+  window.location.hostname.startsWith('net8889') ||
+  IS_TESTNET;
 
 const RPC_URL = {
   mainnet: 'https://evm-cfxbridge.confluxrpc.com',
