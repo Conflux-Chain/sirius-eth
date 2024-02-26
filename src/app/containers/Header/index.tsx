@@ -5,6 +5,7 @@
  */
 
 import React, { memo } from 'react';
+import lodash from 'lodash';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
@@ -286,7 +287,7 @@ export const Header = memo(() => {
             {
               // cfx transfers
               title: [
-                t(translations.header.cfxTransfers),
+                t(translations.header.transfers),
                 <Check size={18} key="check" />,
               ],
               name: ScanEvent.menu.action.cfxTransfers,
@@ -576,7 +577,7 @@ export const Header = memo(() => {
         </NetWorkWrapper>
       ),
       className: 'not-link',
-      children: [
+      children: lodash.compact([
         {
           title: false,
           plain: true,
@@ -589,13 +590,13 @@ export const Header = memo(() => {
           vertical: true,
           children: networks.testnet.map(getNetworkLink),
         },
-        {
+        networks.devnet.length > 0 && {
           title: false,
           plain: true,
           vertical: true,
           children: networks.devnet.map(getNetworkLink),
         },
-      ],
+      ]),
     },
   ];
 

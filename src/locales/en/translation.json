@@ -245,7 +245,7 @@
     "pattern": "ABI for the implementation contract at <0>address</0>, using <1>pattern</1> proxy pattern.",
     "expandAll": "Expand All",
     "reset": "Reset",
-    "payableAmountCfx": "payableAmount (cfx) ",
+    "payableAmount": "payableAmount (cfx) ",
     "error": {
       "address": "Please enter a conflux address",
       "bool": "Please enter true/false or 0/1",
@@ -253,7 +253,7 @@
       "uint": "Please enter a non-negative integer in the range of 0 ~ 2^{{num}}-1",
       "bytes": "Please enter an hexadecimal byte array starting with 0x",
       "bytesM": "Please enter an hexadecimal {{length}} byte array starting with 0x",
-      "cfx": "Please enter a non-negative number with no more than 18 decimal places",
+      "numberLimit": "Please enter a non-negative number with no more than 18 decimal places",
       "array": "Please enter a valid {{type}} array with square brackets",
       "tuple": "Please enter a valid tuple (JSON array or object that conforms to the parameter order and format)",
       "tupleArray": "Please enter a valid tuple (JSON array or object that conforms to the parameter order and format) array",
@@ -387,7 +387,7 @@
     },
     "viewTxn": "View {{type}}"
   },
-  "cfxTransfers": {
+  "transfers": {
     "title": "CFX Txns",
     "description": "Show only CFX txns on the Conflux network.",
     "tipCountBefore": "A total of",
@@ -450,7 +450,7 @@
     "bnt": "Blocks & Transactions",
     "block": "Blocks",
     "txn": "Transactions",
-    "cfxTransfers": "CFX Txns",
+    "transfers": "CFX Txns",
     "blockchain": "Blockchain",
     "accounts": "Accounts",
     "tokens": "Tokens",
@@ -620,8 +620,8 @@
       "circulating": "Circulating Supply",
       "tx": "Daily Transactions",
       "token-transfer": "Daily Token Transfer",
-      "cfx-transfer": "Daily CFX Transfer Statistics",
-      "cfx-holder-accounts": "CFX Holders Statistics",
+      "transfer": "Daily CFX Transfer Statistics",
+      "holder-accounts": "CFX Holders Statistics",
       "account-growth": "Account Growth",
       "active-accounts": "Active Accounts",
       "contracts": "Contracts Statistics"
@@ -670,7 +670,7 @@
       "yAxisTitle": "Transactions per Day",
       "seriesName": "Total Transactions (Day)"
     },
-    "cfxTransfer": {
+    "transfer": {
       "title": "CFX Transfer Statistics",
       "subtitle": "Daily transfer statistics for CFX on the Conflux network.",
       "yAxisTitle": "CFX Transfer",
@@ -688,7 +688,7 @@
       "yAxisTitle2": "Token Transfer Accounts per Day",
       "seriesName2": "Total Token Transfer Accounts (Day)"
     },
-    "CFXHolderAccounts": {
+    "holderAccounts": {
       "title": "CFX Holding Accounts",
       "subtitle": "The total number of CFX accounts held on the Conflux network.",
       "yAxisTitle": "Total Accounts",
@@ -769,11 +769,11 @@
       "title": "Hash Rate",
       "description": "The number of times a miner calculates hashes per second"
     },
-    "cfxPrice": {
+    "price": {
       "title": "CFX Price",
       "description": "Market Data Source: <a href='https://moondex.io/trade/cfxusdt' target='_blank'>MoonDEX</a>"
     },
-    "cfxMarketCap": {
+    "marketCap": {
       "title": "Market Cap",
       "description": "Market Cap = Current Price x Circulating Supply"
     },
@@ -805,7 +805,7 @@
       "txnCount": "Daily Token Transfers Count",
       "userCount": "Daily Transfer Accounts Count"
     },
-    "cfxHoldingAccounts": {
+    "holdingAccounts": {
       "title": "CFX Holding Accounts",
       "description": "The total number of CFX accounts held on the Conflux network."
     },
@@ -843,7 +843,7 @@
       "title": "Contract Analysis",
       "description": "daily transfers statistics.",
       "tx": "Transactions",
-      "cfxTransfer": "CFX Transfers",
+      "transfer": "CFX Transfers",
       "tokenTransfer": "Token Transfers"
     }
   },
@@ -978,7 +978,7 @@
     "transaction": "transaction",
     "transactions": "transactions",
     "tokenTxns": "Token Txns",
-    "cfxTransfer": "CFX Txns",
+    "transfer": "CFX Txns",
     "tokenTxnsErc20": "ERC20 Txns",
     "tokenTxnsErc721": "ERC721 Txns",
     "tokenTxnsErc1155": "ERC1155 Txns",
@@ -1669,8 +1669,8 @@
     "overviewMore": "View Charts",
     "topTxnCountSent": "Top Txn Count Sent",
     "topTxnCountReceived": "Top Txn Count Received",
-    "topCFXSend": "Top CFX Sent",
-    "topCFXReceived": "Top CFX Received",
+    "topSend": "Top CFX Sent",
+    "topReceived": "Top CFX Received",
     "topTokensBySenders": "Top Tokens by Senders",
     "topTokensByReceivers": "Top Tokens by Receivers",
     "topTokensByTxnCount": "Top Tokens by Txn Count",
@@ -1686,8 +1686,8 @@
       "7d": "7 Days"
     },
     "overviewColumns": {
-      "totalCFXSent": "Total CFX Sent",
-      "totalCFXReceived": "Total CFX Received",
+      "totalSent": "Total CFX Sent",
+      "totalReceived": "Total CFX Received",
       "totalTxnCount": "Total Txn Count",
       "totalTxnCountSent": "Total Txn Count Sent",
       "totalTxnCountReceived": "Total Txn Count Received",
@@ -1780,7 +1780,7 @@
     "subtitle": "You can lookup the address historical balance on the Conflux network at a specific Block Height or Date",
     "tokenQuantity": "Token Quantity",
     "tokenSupply": "Token Supply",
-    "cfxBalance": "CFX Balance",
+    "balance": "CFX Balance",
     "address": "Address",
     "contractAddress": "Contract Address",
     "epochNoOrDate": "Block Height or Date",
@@ -1793,7 +1793,7 @@
     "reset": "Reset",
     "tokenQuantityForAccountAddress": "Token Quantity for Account Address",
     "totalSupplyForContractAddress": "Total Supply for Contract Address",
-    "cfxBalanceForAddress": "CFX Balance for Address",
+    "balanceForAddress": "CFX Balance for Address",
     "snapshotDate": "Snapshot Date",
     "epoch": "Block",
     "epochNo": "Block Height"
