@@ -29,12 +29,13 @@ export const IS_TESTNET =
   window.location.hostname.includes('testnet');
 
 export const IS_PRIVATENET =
-  process.env.REACT_APP_8889 === 'true' || IS_TESTNET;
+  process.env.REACT_APP_8889 === 'true' ||
+  window.location.hostname.startsWith('net8889');
 
 const RPC_URL = {
   mainnet: 'https://evm-cfxbridge.confluxrpc.com',
   testnet: 'https://evmtestnet-cfxbridge.confluxrpc.com',
-  privatenet: 'https://net8889eth.confluxrpc.com',
+  privatenet: 'https://net8889eth-cfxbridge.confluxrpc.com',
 };
 export const RPC_SERVER = IS_TESTNET
   ? RPC_URL.testnet
@@ -45,6 +46,7 @@ export const RPC_SERVER = IS_TESTNET
 export enum DEFAULT_NETWORK_IDS {
   mainnet = 1030,
   testnet = 71,
+  privatenet = 8889,
 }
 
 /**
@@ -72,6 +74,8 @@ export enum LOCALSTORAGE_KEYS_MAP {
 export const NETWORK_ID = (() => {
   let networkId = IS_TESTNET
     ? DEFAULT_NETWORK_IDS.testnet
+    : IS_PRIVATENET
+    ? DEFAULT_NETWORK_IDS.privatenet
     : DEFAULT_NETWORK_IDS.mainnet;
   let cacheNetworkId = Number(
     localStorage.getItem(LOCALSTORAGE_KEYS_MAP.networkId),
