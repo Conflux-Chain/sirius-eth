@@ -1,6 +1,9 @@
 const baseColor = '#17B38A';
 export const ENV_THEME = {
   primary: baseColor,
+  buttonBg: '#7789D3',
+  outlineColor: '#7789D3',
+  shadowColor: 'rgba(30, 61, 228, 0.2)',
   searchButtonBg: '#AFE9D2',
   searchButtonHoverBg: baseColor,
   gasPriceLineBg: '#F0F4F3',

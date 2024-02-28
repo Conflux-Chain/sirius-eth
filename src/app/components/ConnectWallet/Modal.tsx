@@ -20,6 +20,7 @@ import { useCheckHook } from './useCheckHook';
 import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
 import iconLoading from './assets/loading.svg';
+import ENV_CONFIG from 'env';
 
 interface Modal {
   className?: string;
@@ -206,7 +207,7 @@ const rotate = keyframes`
   }
 `;
 
-const linkColor = '#0e47ef';
+const linkColor = ENV_CONFIG.ENV_THEME.linkColor;
 const redColor = '#e15c56';
 
 const ModalWrapper = styled.div`

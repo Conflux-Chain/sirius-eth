@@ -84,7 +84,7 @@ const StyledPreviewWrapper = styled.div`
   transition: border-color 0.25s;
 
   &:hover {
-    border: 1px solid var(--theme-color-blue0);
+    border: 1px solid ${ENV_CONFIG.ENV_THEME.outlineColor};
   }
 
   .header {

@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { message } from '@cfxjs/antd';
 import MD5 from 'md5.js';
+import ENV_CONFIG from 'env';
 
 interface Props {
   onLoading?: (loading: boolean) => void;
@@ -232,11 +233,11 @@ const StyledFileManagementWrapper = styled.div`
   text-align: right;
 
   .button {
-    color: #1e3de4;
+    color: ${ENV_CONFIG.ENV_THEME.linkColor};
     cursor: pointer;
 
     &:hover {
-      color: #0f23bd;
+      color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
     }
   }
 `;

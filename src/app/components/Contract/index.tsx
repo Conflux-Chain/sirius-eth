@@ -19,7 +19,7 @@ import {
 import { byteToKb, validURL, isAddress, formatAddress } from 'utils';
 import { reqContract, reqContractNameTag, reqToken } from 'utils/httpRequest';
 import SkelontonContainer from '../SkeletonContainer';
-import imgUpload from 'images/contract/upload.svg';
+import { ReactComponent as UploadIcon } from 'images/contract/upload.svg';
 import imgWarning from 'images/warning.png';
 import { usePortal } from 'utils/hooks/usePortal';
 import { DappButton } from '../DappButton/Loadable';
@@ -29,6 +29,7 @@ import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
 import { Text } from 'app/components/Text/Loadable';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
+import ENV_CONFIG from 'env';
 
 interface Props {
   contractDetail: any;
@@ -595,11 +596,7 @@ export const ContractOrTokenInfo = ({
                     onChange={handleContractIconChange}
                   />
                   <div className="firstItem" onClick={uploadContractIcon}>
-                    <img
-                      src={imgUpload}
-                      className="labelIcon"
-                      alt={t(translations.contract.contractIcon)}
-                    ></img>
+                    <UploadIcon className="labelIcon" />
                     <span className="labelText">
                       {t(translations.contract.contractIcon)}
                     </span>
@@ -646,11 +643,7 @@ export const ContractOrTokenInfo = ({
                     onChange={handleTokenIconChange}
                   />
                   <div className="firstItem" onClick={uploadTokenIcon}>
-                    <img
-                      src={imgUpload}
-                      className="labelIcon"
-                      alt="upload"
-                    ></img>
+                    <UploadIcon className="labelIcon" />
                     <span className="labelText">
                       {t(translations.contract.tokenIcon)}
                     </span>
@@ -941,6 +934,7 @@ const TopContainer = styled.div`
     .labelIcon {
       width: 0.8571rem;
       height: 0.8571rem;
+      color: ${ENV_CONFIG.ENV_THEME.linkColor};
     }
 
     .labelText {
