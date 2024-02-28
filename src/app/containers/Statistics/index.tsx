@@ -9,7 +9,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { translations } from '../../../locales/i18n';
 import { Helmet } from 'react-helmet-async';
 import { PageHeader } from '../../components/PageHeader/Loadable';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import queryString from 'query-string';
 import { StatsType } from '../../components/StatsCard';
 // TODO antd slimming

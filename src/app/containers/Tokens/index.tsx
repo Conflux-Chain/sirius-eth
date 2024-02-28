@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { translations } from 'locales/i18n';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { tokenColunms, utils } from 'utils/tableColumns';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { formatNumber, formatLargeNumber } from 'utils';

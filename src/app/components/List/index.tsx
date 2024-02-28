@@ -4,7 +4,7 @@
  *
  */
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Skeleton } from '@cfxjs/react-ui';
 import { useBreakpoint, media } from 'styles/media';
 import { Card } from '../Card';

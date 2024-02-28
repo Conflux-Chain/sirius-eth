@@ -5,7 +5,7 @@
  */
 
 import React, { memo, ReactNode } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Card } from '../../components/Card';
 import { media } from 'styles/media';
 

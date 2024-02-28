@@ -10,7 +10,7 @@ import lodash from 'lodash';
 import { reqChartData } from 'utils/httpRequest';
 import { useBreakpoint } from 'styles/media';
 import { useHighcharts } from 'utils/hooks/useHighcharts';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import ENV_CONFIG from 'env';

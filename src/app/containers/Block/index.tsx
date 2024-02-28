@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { Helmet } from 'react-helmet-async';
 import { DescriptionPanel } from './DescriptionPanel';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { reqBlockDetail } from 'utils/httpRequest';
 import { useBreakpoint } from 'styles/media';
 

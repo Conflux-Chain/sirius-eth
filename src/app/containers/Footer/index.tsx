@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Link } from 'app/components/Link/Loadable';
 import { media } from 'styles/media';
 import { Footer as FooterComp } from 'app/components/Footer/Loadable';

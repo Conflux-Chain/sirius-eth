@@ -23,7 +23,7 @@ import {
   Top,
 } from './layouts';
 import ContractIcon from '../../../images/contract-icon.png';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import DownIcon from '../../../images/down.png';
 import { Menu } from '@cfxjs/antd';
 import { DropdownWrapper, MenuWrapper } from './AddressDetailPage';

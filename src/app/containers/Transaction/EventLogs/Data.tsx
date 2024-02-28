@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Select } from 'app/components/Select';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { Link } from 'app/components/Link/Loadable';
 import { useTranslation } from 'react-i18next';

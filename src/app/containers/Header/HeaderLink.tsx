@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, ReactNode, useRef } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import clsx from 'clsx';
 import { Link as UILink } from '@cfxjs/react-ui';
 import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
@@ -153,7 +153,7 @@ export const HeaderLink: React.FC<{
   afterClick?: any;
   level: number;
   plain?: boolean;
-  children:React.ReactNode;
+  children: React.ReactNode;
 }> = ({
   className,
   href,
@@ -471,7 +471,7 @@ const WrappLink = styled.span`
       color: #aab9eb;
       padding-top: 0.43rem;
       padding-bottom: 0.43rem;
-      &:hover {
+      :hover {
         color: #aab9eb;
       }
       &.level-0 {

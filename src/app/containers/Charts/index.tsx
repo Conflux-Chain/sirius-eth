@@ -3,7 +3,7 @@ import { Row, Col, Divider } from '@cfxjs/antd';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import moment from 'moment';
 
 import { BlockTime } from './BlockTime';

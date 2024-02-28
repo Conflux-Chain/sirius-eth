@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { monospaceFont } from 'styles/variable';
 
 interface Props {

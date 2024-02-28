@@ -7,7 +7,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { media } from 'styles/media';
 import { toThousands, isAddress, formatAddress } from 'utils';
 import { Card } from 'app/components/Card';

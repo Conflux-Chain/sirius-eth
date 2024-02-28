@@ -1,6 +1,6 @@
 import React from 'react';
 import imgNotFound from 'images/home/notFoundAddress.svg';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 export const NotFound = ({ children = 'reason' }) => {
   return (

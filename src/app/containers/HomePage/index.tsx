@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'app/components/Link/Loadable';
 import { media, useBreakpoint } from 'styles/media';

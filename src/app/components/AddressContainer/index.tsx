@@ -3,7 +3,7 @@ import { Text } from '../Text/Loadable';
 import { Link } from '../Link/Loadable';
 import { WithTranslation, withTranslation, Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { formatAddress, isZeroAddress, isAddress, formatString } from 'utils';
 import { AlertTriangle, Bookmark, Hash } from '@zeit-ui/react-icons';
 import ContractIcon from 'images/contract-icon.png';

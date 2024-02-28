@@ -15,7 +15,7 @@ import {
   CRC1155Txns,
 } from 'app/containers/Transactions/Loadable';
 import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { ContractStatus } from '../AddressContractDetail/ContractStatus';
 
 export function Table({ address, addressInfo, type }) {

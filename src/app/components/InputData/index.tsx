@@ -2,7 +2,7 @@ import React from 'react';
 import 'react-json-pretty/themes/monikai.css';
 import { hex2utf8 } from '../../../utils';
 import ReactJson from 'react-json-view';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { Text } from '@cfxjs/react-ui';
 type InputDataProps = {
   byteCode?: string;
