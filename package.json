@@ -124,6 +124,12 @@
       "prettier --write"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run checkTs && lint-staged",
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
