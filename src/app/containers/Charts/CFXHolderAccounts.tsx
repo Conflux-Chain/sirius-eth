@@ -15,8 +15,8 @@ export function CFXHolderAccounts({ preview = false }: ChildProps) {
   const props = {
     preview: preview,
     name: 'cfx-holder-accounts',
-    title: t(translations.highcharts.CFXHolderAccounts.title),
-    subtitle: t(translations.highcharts.CFXHolderAccounts.subtitle),
+    title: t(translations.highcharts.holderAccounts.title),
+    subtitle: t(translations.highcharts.holderAccounts.subtitle),
     request: {
       url: OPEN_API_URLS.cfxHolderAccounts,
       formatter: data => {
@@ -35,7 +35,7 @@ export function CFXHolderAccounts({ preview = false }: ChildProps) {
         zoomType: 'x',
       },
       title: {
-        text: t(translations.highcharts.CFXHolderAccounts.title),
+        text: t(translations.highcharts.holderAccounts.title),
       },
       subtitle: {
         text: t(translations.highcharts.subtitle),
@@ -45,14 +45,14 @@ export function CFXHolderAccounts({ preview = false }: ChildProps) {
       },
       yAxis: {
         title: {
-          text: t(translations.highcharts.CFXHolderAccounts.yAxisTitle),
+          text: t(translations.highcharts.holderAccounts.yAxisTitle),
         },
       },
       series: [
         {
           type: 'line',
           name: `<span>${t(
-            translations.highcharts.CFXHolderAccounts.seriesName,
+            translations.highcharts.holderAccounts.seriesName,
           )}</span>`,
         },
       ],

@@ -7,6 +7,7 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { useGlobal } from 'utils/hooks/useGlobal';
+import ENV_CONFIG from 'env';
 
 export function Currency() {
   const { t } = useTranslation();
@@ -116,7 +117,7 @@ const StyledWrapper = styled.span`
     .value .option {
       font-weight: normal;
       &:not(:hover) {
-        background-color: var(--theme-color-green0);
+        color: ${ENV_CONFIG.ENV_THEME.primary};
       }
     }
   }

@@ -6,13 +6,15 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import en from './en/translation.json';
 import zh_cn from './zh_cn/translation.json';
 import { ConvertedToObjectType } from './types';
+import ENV_CONFIG from 'env';
+import lodash from 'lodash';
 
 const translationsJson = {
   en: {
-    translation: en,
+    translation: lodash.merge(en, ENV_CONFIG.ENV_LOCALES_EN),
   },
   'zh-CN': {
-    translation: zh_cn,
+    translation: lodash.merge(zh_cn, ENV_CONFIG.ENV_LOCALES_CN),
   },
 };
 
@@ -60,6 +62,9 @@ export const i18n = i18next
       },
     },
     () => {
-      convertLanguageJsonToObject(en, translations);
+      convertLanguageJsonToObject(
+        lodash.merge(en, ENV_CONFIG.ENV_LOCALES_EN),
+        translations,
+      );
     },
   );

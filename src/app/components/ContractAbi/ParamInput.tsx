@@ -75,9 +75,9 @@ const ParamInput = ({ value, onChange, type, input = {} }: Props) => {
       }
     } else if (type === 'cfx') {
       text =
-        t(translations.contract.payableAmountCfx) +
+        t(translations.contract.payableAmount) +
         ':' +
-        t(translations.contract.error.cfx);
+        t(translations.contract.error.numberLimit);
     }
     return text;
   }

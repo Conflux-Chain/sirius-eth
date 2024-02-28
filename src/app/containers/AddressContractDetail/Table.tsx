@@ -33,7 +33,7 @@ export function Table({ address, addressInfo, type }) {
       hidden: !addressInfo.cfxTransferTab,
       value: `transfers-${CFX_TOKEN_TYPES.cfx}`,
       action: 'cfxTransfers',
-      label: t(translations.general.cfxTransfer),
+      label: t(translations.general.transfer),
       content: <CFXTxns address={address} />,
     },
     {

@@ -223,9 +223,7 @@ export function BalanceChecker() {
               {/*<Radio value={2}>*/}
               {/*  {t(translations.balanceChecker.tokenSupply)}*/}
               {/*</Radio>*/}
-              <Radio value={3}>
-                {t(translations.balanceChecker.cfxBalance)}
-              </Radio>
+              <Radio value={3}>{t(translations.balanceChecker.balance)}</Radio>
             </Radio.Group>
           </RadioGroup>
           <Divider />

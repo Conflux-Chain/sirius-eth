@@ -6,6 +6,7 @@ import { translations } from 'locales/i18n';
 import { Breadcrumb } from '@cfxjs/antd';
 import { useHistory } from 'react-router-dom';
 import { media } from 'styles/media';
+import ENV_CONFIG from 'env';
 
 export const Wrapper = ({
   children,
@@ -105,6 +106,7 @@ const StyledPreviewWrapper = styled.div`
 
   .view-detail {
     flex-shrink: 0;
+    color: ${ENV_CONFIG.ENV_THEME.chartDetailLinkColor} !important;
   }
 `;
 

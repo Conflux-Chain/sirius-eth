@@ -29,14 +29,14 @@ export function CFXTransfers() {
   return (
     <>
       <Helmet>
-        <title>{t(translations.cfxTransfers.title)}</title>
+        <title>{t(translations.transfers.title)}</title>
         <meta
           name="description"
-          content={t(translations.cfxTransfers.description)}
+          content={t(translations.transfers.description)}
         />
       </Helmet>
-      <PageHeader subtitle={t(translations.cfxTransfers.description)}>
-        {t(translations.cfxTransfers.title)}
+      <PageHeader subtitle={t(translations.transfers.description)}>
+        {t(translations.transfers.title)}
       </PageHeader>
 
       <TablePanelNew url={url} columns={columnsCFXTrasfer}></TablePanelNew>

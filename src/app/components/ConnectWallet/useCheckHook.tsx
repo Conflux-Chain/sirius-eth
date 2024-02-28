@@ -12,7 +12,7 @@ export const useCheckHook = function () {
       return false;
     }
     if (accounts[0]) {
-      return SDK.address.isValidHexAddress(accounts[0]);
+      return !!SDK.address.isValidHexAddress(accounts[0]);
     }
     return true;
   };

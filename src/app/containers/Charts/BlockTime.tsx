@@ -58,6 +58,7 @@ export function BlockTime({ preview = false }: ChildProps) {
           tooltip: {
             valueSuffix: 's',
           },
+          opacity: 0.75,
         },
       ],
     },

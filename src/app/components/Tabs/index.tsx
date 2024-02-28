@@ -4,6 +4,7 @@ import { TabsProps } from '@cfxjs/react-ui/dist/tabs/tabs';
 import styled from 'styled-components/macro';
 import clsx from 'clsx';
 import { media } from '../../../styles/media';
+import ENV_CONFIG from 'env';
 
 const Tabs = ({ children, className, ...others }: TabsProps) => {
   return (
@@ -39,6 +40,7 @@ const StyledTabsWrapper = styled.div`
         }
       }
       .bottom {
+        background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
         height: 0.4286rem;
         border-top-left-radius: 0.5714rem;
         border-top-right-radius: 0.5714rem;

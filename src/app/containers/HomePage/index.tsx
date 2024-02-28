@@ -14,6 +14,7 @@ import { useInterval } from 'react-use';
 
 import { Blocks } from './Blocks';
 import { Txns } from './Txns';
+import ENV_CONFIG from 'env';
 
 export function HomePage() {
   const { t } = useTranslation();
@@ -110,11 +111,14 @@ const ViewAllLinkWrapper = styled.div`
   position: absolute;
   top: 1rem;
   right: 0;
-  border-bottom: 2px solid #1e3de4;
+  border-bottom: 2px solid ${ENV_CONFIG.ENV_THEME.linkColor};
   ${media.s} {
     top: 0.6429rem;
   }
   .viewall-link.link {
-    color: #1e3de4;
+    color: ${ENV_CONFIG.ENV_THEME.linkColor};
+    &:hover {
+      color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
+    }
   }
 `;

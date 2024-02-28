@@ -9,6 +9,7 @@ import {
 import { OPEN_API_URLS } from 'utils/constants';
 import { Wrapper } from './Wrapper';
 import BigNumber from 'bignumber.js';
+import ENV_CONFIG from 'env';
 
 export function CFXTransfer({ preview = false }: ChildProps) {
   const { t } = useTranslation();
@@ -18,8 +19,8 @@ export function CFXTransfer({ preview = false }: ChildProps) {
   const props = {
     preview: preview,
     name: 'cfx-transfer',
-    title: t(translations.highcharts.cfxTransfer.title),
-    subtitle: t(translations.highcharts.cfxTransfer.subtitle),
+    title: t(translations.highcharts.transfer.title),
+    subtitle: t(translations.highcharts.transfer.subtitle),
     request: {
       url: OPEN_API_URLS.cfxTransfer,
       formatter: data => {
@@ -42,7 +43,7 @@ export function CFXTransfer({ preview = false }: ChildProps) {
         zoomType: 'x',
       },
       title: {
-        text: t(translations.highcharts.cfxTransfer.title),
+        text: t(translations.highcharts.transfer.title),
       },
       subtitle: {
         text: t(translations.highcharts.subtitle),
@@ -56,14 +57,14 @@ export function CFXTransfer({ preview = false }: ChildProps) {
       yAxis: [
         {
           title: {
-            text: t(translations.highcharts.cfxTransfer.yAxisTitle),
+            text: t(translations.highcharts.transfer.yAxisTitle),
           },
           opposite: false,
           tickAmount,
         },
         {
           title: {
-            text: t(translations.highcharts.cfxTransfer.yAxisTitle3),
+            text: t(translations.highcharts.transfer.yAxisTitle3),
           },
           opposite: true,
           tickAmount,
@@ -73,28 +74,28 @@ export function CFXTransfer({ preview = false }: ChildProps) {
         {
           type: 'column',
           name: `<span>${t(
-            translations.highcharts.cfxTransfer.seriesName3,
+            translations.highcharts.transfer.seriesName3,
           )}</span>`,
           yAxis: 1,
           tooltip: {
             valueDecimals: 2,
             valueSuffix: ' CFX',
           },
-          color: '#7cb5ec',
+          color: ENV_CONFIG.ENV_THEME.mixedChartColors[0],
         },
         {
           type: 'line',
           name: `<span>${t(
-            translations.highcharts.cfxTransfer.seriesName2,
+            translations.highcharts.transfer.seriesName2,
           )}</span>`,
-          color: '#90ed7d',
+          color: ENV_CONFIG.ENV_THEME.mixedChartColors[1],
         },
         {
           type: 'line',
           name: `<span>${t(
-            translations.highcharts.cfxTransfer.seriesName,
+            translations.highcharts.transfer.seriesName,
           )}</span>`,
-          color: '#434348',
+          color: ENV_CONFIG.ENV_THEME.mixedChartColors[2],
         },
       ],
     },
