@@ -175,8 +175,8 @@
     }
   },
   "resolutions": {
-    "@types/react": "16.9.25",
-    "@types/react-dom": "16.9.3",
+    "@types/react": "18.2.58",
+    "@types/react-dom": "18.2.19",
     "lodash": "4.17.21"
   }
 }

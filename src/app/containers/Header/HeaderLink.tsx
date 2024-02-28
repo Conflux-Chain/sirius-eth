@@ -153,6 +153,7 @@ export const HeaderLink: React.FC<{
   afterClick?: any;
   level: number;
   plain?: boolean;
+  children:React.ReactNode;
 }> = ({
   className,
   href,

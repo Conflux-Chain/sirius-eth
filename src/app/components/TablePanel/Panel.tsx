@@ -212,7 +212,7 @@ export const TablePanel = ({
   const showPagination =
     pagination !== false && numberCacheTotal > numberPageSize;
 
-  let tableHeader = outerTableHeader;
+  let tableHeader: TablePanelType['tableHeader'] = outerTableHeader;
   if (typeof tableHeader === 'function') {
     // add related params to tableHeader
     tableHeader = tableHeader({
@@ -221,7 +221,7 @@ export const TablePanel = ({
     });
   }
 
-  let tableFooter = outerTableFooter;
+  let tableFooter: TablePanelType['tableFooter'] = outerTableFooter;
   if (typeof tableFooter === 'function') {
     // add related params to tableFooter
     tableFooter = tableFooter({});

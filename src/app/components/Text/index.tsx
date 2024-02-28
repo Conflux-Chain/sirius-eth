@@ -85,6 +85,7 @@ export const Text = React.memo(
     }
     return React.createElement(Tooltip, p, [
       <StyledTextWrapper maxWidth={maxWidth} key="text">
+      {/* @ts-ignore */}
         <UIText className={clsx('sirius-text', className)} {...props}>
           {child}
         </UIText>

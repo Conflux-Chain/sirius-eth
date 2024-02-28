@@ -67,7 +67,9 @@ export const TitleTotal = ({
         limit: formatNumber(listLimit),
       })
     ) : (
+      // @ts-ignore
       <Trans i18nKey="general.totalRecord" count={total}>
+        {/* @ts-ignore */}
         You got {{ total: toThousands(total) }} messages.
       </Trans>
     );

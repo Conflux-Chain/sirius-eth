@@ -316,6 +316,7 @@ export function App() {
               errorRetryCount: 0,
             }}
           >
+            {/* @ts-ignore */}
             <BrowserRouter>
               <CfxProvider
                 theme={{

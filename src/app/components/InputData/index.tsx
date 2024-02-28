@@ -59,6 +59,7 @@ export const InputData = React.memo(
             displayDataTypes={false}
           />
         ) : (
+          // @ts-ignore
           <Text className="textContainer">{str}</Text>
         )}
       </Wrap>
