@@ -13,6 +13,8 @@ import {
   IS_BSPACE_DEVNET,
 } from './env-constants';
 
+const DEFAULT_NETWORK_CONFIG = ESPACE_MAINNET_CONFIG;
+
 const ENV_CONFIG = (() => {
   if (IS_ESPACE_MAINNET) {
     return ESPACE_MAINNET_CONFIG;
@@ -28,7 +30,8 @@ const ENV_CONFIG = (() => {
   } else if (IS_BSPACE_DEVNET) {
     return BSPACE_DEVNET_CONFIG;
   }
-  throw new Error('Unknown env');
+  console.warn('Unknown env');
+  return DEFAULT_NETWORK_CONFIG;
 })();
 
 export * from './env-constants';

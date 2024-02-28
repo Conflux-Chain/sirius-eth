@@ -18422,6 +18422,13 @@ yn@3.1.1:
   resolved "https://registry.npmjs.org/yn/-/yn-3.1.1.tgz"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
 
+zustand@4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.1.4.tgz#b0286da4cc9edd35e91c96414fa54bfa4652a54d"
+  integrity sha512-k2jVOlWo8p4R83mQ+/uyB8ILPO2PCJOf+QVjcL+1PbMCk1w5OoPYpAIxy9zd93FSfmJqoH6lGdwzzjwqJIRU5A==
+  dependencies:
+    use-sync-external-store "1.2.0"
+
 zustand@^4.3.6:
   version "4.4.7"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.4.7.tgz#355406be6b11ab335f59a66d2cf9815e8f24038c"
