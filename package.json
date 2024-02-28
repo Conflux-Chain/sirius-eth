@@ -163,6 +163,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "7.22.9",
     "@babel/plugin-transform-class-properties": "7.23.3",
     "@testing-library/user-event": "12.1.6",
     "@types/lodash": "4.14.202",
