@@ -329,10 +329,10 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-btn.ant-btn-primary {
-    background-color: ${ENV_CONFIG.ENV_THEME.buttonBg};
+    background-color: ${ENV_CONFIG.ENV_THEME.antdPrimaryButtonBg};
     color: #ffffff;
   }
-  .ant-input:focus, .ant-input-focused {
+  .ant-input:focus, .ant-input-focused, .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
     border-color: ${ENV_CONFIG.ENV_THEME.outlineColor};
     box-shadow: 0 0 0 2px ${ENV_CONFIG.ENV_THEME.shadowColor};
   }
@@ -342,7 +342,7 @@ export const GlobalStyle = createGlobalStyle`
 
   .ant-btn {
     &:hover {
-      background: #4665f0;
+      background: ${ENV_CONFIG.ENV_THEME.buttonBg};
       color: #ffffff;
     }
 
