@@ -1,7 +1,9 @@
+import imgArrow from 'images/token/arrow.svg';
 const baseColor = '#17B38A';
 export const ENV_THEME = {
   primary: baseColor,
-  buttonBg: '#7789D3',
+  antdPrimaryButtonBg: '#7789D3',
+  buttonBg: 'rgba(0, 84, 254, 0.8)',
   outlineColor: '#7789D3',
   shadowColor: 'rgba(30, 61, 228, 0.2)',
   searchButtonBg: '#AFE9D2',
@@ -36,5 +38,9 @@ export const ENV_THEME = {
     '#e4d354',
     '#f45b5b',
   ] as const,
+  chartTitleColor: '#7789D3',
   chartDetailLinkColor: '#1e3de4',
+};
+export const ENV_ICONS = {
+  imgArrow,
 };

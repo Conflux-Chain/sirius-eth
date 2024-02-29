@@ -15,7 +15,6 @@ import {
   isZeroAddress,
   getNametagInfo,
 } from 'utils';
-import imgArrow from 'images/token/arrow.svg';
 import imgOut from 'images/token/out.svg';
 import imgIn from 'images/token/in.svg';
 import imgInfo from 'images/info.svg';
@@ -36,10 +35,11 @@ import { ProjectInfo } from 'app/components/ProjectInfo';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 import { Tag } from '@cfxjs/antd';
 import { Price } from '../../app/components/Price/Loadable';
+import ENV_CONFIG from 'env';
 
 const fromTypeInfo = {
   arrow: {
-    src: imgArrow,
+    src: ENV_CONFIG.ENV_ICONS.imgArrow,
     text: (
       <Translation>
         {t => t(translations.general.table.token.fromTypeOut)}
