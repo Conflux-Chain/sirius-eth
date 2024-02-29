@@ -16,12 +16,13 @@ export const ENV_CORE_API_HOST = IS_DEV
 export const ENV_CORE_SCAN_HOST = 'www.confluxscan.net';
 // TODO-btc
 export const ENV_RPC_SERVER = 'https://net8889eth-cfxbridge.confluxrpc.com';
-// TODO-btc
 export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
   chainName: 'Conflux bSpace',
-  rpcUrls: ['https://evm.confluxrpc.com'],
-  blockExplorerUrls: ['https://btc.confluxscan.io/'],
+  // TODO-btc
+  rpcUrls: ['https://net8889eth-cfxbridge.confluxrpc.com'],
+  blockExplorerUrls: ['https://net8890btc.confluxscan.net'],
+  // TODO-btc
   nativeCurrency: {
     name: 'Conflux',
     symbol: 'CFX',

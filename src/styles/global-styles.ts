@@ -141,8 +141,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-pagination-item-active, .ant-pagination-item-active:hover {
-    border-color: #1e3de4;
-    background-color: #1e3de4;
+    border-color: ${ENV_CONFIG.ENV_THEME.linkColor};
+    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
 
     a {
       color: #ffffff;
@@ -324,9 +324,20 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .ant-switch-checked {
+    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
+  }
+
   .ant-btn.ant-btn-primary {
-    background-color: var(--theme-color-blue0);
+    background-color: ${ENV_CONFIG.ENV_THEME.buttonBg};
     color: #ffffff;
+  }
+  .ant-input:focus, .ant-input-focused {
+    border-color: ${ENV_CONFIG.ENV_THEME.outlineColor};
+    box-shadow: 0 0 0 2px ${ENV_CONFIG.ENV_THEME.shadowColor};
+  }
+  .ant-input:hover, .ant-select:hover, .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: ${ENV_CONFIG.ENV_THEME.outlineColor};
   }
 
   .ant-btn {

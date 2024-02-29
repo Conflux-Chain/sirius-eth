@@ -254,7 +254,7 @@ const DEVNET_NETWORK_OPTIONS = lodash.compact([
     url: '//net8889eth.confluxscan.net',
   },
   // core space
-  // TODO-btc
+  // bspace
   IS_DEVNET && {
     name: 'Conflux bSpace (Devnet)',
     id: 8890,
