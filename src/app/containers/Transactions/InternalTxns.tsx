@@ -10,9 +10,9 @@ import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import styled from 'styled-components/macro';
 import { publishRequestError } from 'utils';
-import { NETWORK_TYPE, NETWORK_TYPES, IS_PRE_RELEASE } from 'utils/constants';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
+import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
 
 const treeToFlat = tree => {
   let list: Array<any> = [];
@@ -116,12 +116,15 @@ export const InternalTxns = ({ address, from, to }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
+  // TODO-btc: hide in bspace ?
   const AdvancedViewLink = useMemo(() => {
-    const sld = NETWORK_TYPE === NETWORK_TYPES.mainnet ? 'evm' : 'evmtestnet';
-    const preOrPro = IS_PRE_RELEASE ? '-stage' : '';
+    const sld =
+      ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET
+        ? 'evm'
+        : 'evmtestnet';
     const domain = window.location.hostname.includes('.io') ? 'io' : 'net';
 
-    return `https://${sld}${preOrPro}.confluxscan.${domain}/tracer#${address}`;
+    return `https://${sld}${STAGE_FLAG}.confluxscan.${domain}/tracer#${address}`;
   }, [address]);
 
   const columnsWidth = [3, 4, 4, 3, 3, 5];
@@ -185,7 +188,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
   return (
     <TablePanelNew
       columns={columns}
-      pagination={false}
+      pagination={state.total > 20 ? {} : false}
       dataSource={data}
       loading={loading}
       title={tableHeader}

@@ -4,18 +4,23 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import fetch from './request';
 import { getAccount } from './rpcRequest';
 import { Buffer } from 'buffer';
-import { NetworksType } from './hooks/useGlobal';
+import { GlobalDataType, NetworksType } from './hooks/useGlobal';
 import {
-  IS_PRE_RELEASE,
   NETWORK_ID,
   CFX,
   getCurrencySymbol,
-  RPC_SERVER,
+  CORE_SPACE_CHAIN_IDS,
+  ESPACE_CHAIN_IDS,
+  BSPACE_CHAIN_IDS,
 } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
 import { Nametag } from 'utils/hooks/useNametag';
+import ENV_CONFIG, { IS_BSPACE, IS_ESPACE } from 'env';
+import IconCore from 'images/core-space/icon.svg';
+import IconEvm from 'images/espace/icon.svg';
+import IconBtc from 'images/bspace/icon.svg';
 
 // @ts-ignore
 window.SDK = SDK;
@@ -41,6 +46,7 @@ export const formatAddress = (
   // return input address as default value if it can not convert to conflux chain base32/hex format
   // if necessary, check for errors at the call site
   const invalidAddressReturnValue = address;
+
   try {
     if (isAddress(address)) {
       if (outputType === 'hex') {
@@ -501,6 +507,9 @@ export const roundToFixedPrecision = (
   precision: number,
   method: string = 'ROUND',
 ) => {
+  if (typeof number === 'string' && number.includes('<')) {
+    return number;
+  }
   const numberFormat = typeof number === 'number' ? number : parseFloat(number);
   const factor = Math.pow(10, precision);
   let resultNum: number;
@@ -842,12 +851,19 @@ export const getInitialDate = (minTimestamp, maxTimestamp) => {
   };
 };
 
-export const getNetwork = (networks: Array<NetworksType>, id: number) => {
-  let matchs = networks.filter(n => n.id === id);
+export const getNetwork = (
+  networks: GlobalDataType['networks'],
+  id: number,
+) => {
+  const matched = [
+    ...networks.mainnet,
+    ...networks.testnet,
+    ...networks.devnet,
+  ].find(n => n.id === id);
   let network: NetworksType;
 
-  if (matchs) {
-    network = matchs[0];
+  if (matched) {
+    network = matched;
   } else {
     network = networks[0];
   }
@@ -855,32 +871,32 @@ export const getNetwork = (networks: Array<NetworksType>, id: number) => {
   return network;
 };
 
-const urls = {
-  stage: {
-    1: '//testnet-stage.confluxscan.net',
-    1029: '//www-stage.confluxscan.net',
-    71: '//evmtestnet-stage.confluxscan.net',
-    1030: '//evm-stage.confluxscan.net',
-    8889: '//net8889eth.confluxscan.net',
-  },
-  online: {
-    1: '//testnet.confluxscan',
-    1029: '//confluxscan',
-    71: '//evmtestnet.confluxscan',
-    1030: '//evm.confluxscan',
-    8889: '//net8889eth.confluxscan',
-  },
+export const gotoNetwork = (networkUrl: string): void => {
+  window.location.assign(networkUrl);
 };
 
-export const gotoNetwork = (networkId: string | number): void => {
-  if (IS_PRE_RELEASE) {
-    window.location.assign(urls.stage[networkId]);
-  } else {
-    window.location.assign(
-      `${urls.online[networkId]}${
-        window.location.hostname.includes('.io') ? '.io' : '.net'
-      }`,
-    );
+export const getNetworkIcon = (
+  id = NaN,
+  props?: {
+    isCore?: boolean;
+    isEvm?: boolean;
+    isBtc?: boolean;
+  },
+) => {
+  const isCore = CORE_SPACE_CHAIN_IDS.includes(id) || props?.isCore;
+  const isEvm = ESPACE_CHAIN_IDS.includes(id) || props?.isEvm;
+  const isBtc = BSPACE_CHAIN_IDS.includes(id) || props?.isBtc;
+  if (isCore) {
+    return IconCore;
+  } else if (isEvm) {
+    return IconEvm;
+  } else if (isBtc) {
+    return IconBtc;
+  }
+  if (IS_ESPACE) {
+    return IconEvm;
+  } else if (IS_BSPACE) {
+    return IconBtc;
   }
 };
 
@@ -949,7 +965,7 @@ export const publishRequestError = (
         } \n`;
       }
       if (type === 'rpc') {
-        detail += `RPC Url: ${RPC_SERVER} \n`;
+        detail += `RPC Url: ${ENV_CONFIG.ENV_RPC_SERVER} \n`;
         if (!lodash.isNil(e.method)) {
           detail += `Method: ${e.method} \n`;
         }
@@ -1173,4 +1189,41 @@ export const constprocessResultArray = resultArray => {
 
   const inputArray = Array.isArray(resultArray) ? resultArray : [resultArray];
   return inputArray.map(processElement);
+};
+
+export const formatLargeNumber = (number: string | number) => {
+  const num = new BigNumber(number);
+
+  if (num.isNaN()) {
+    return { value: null, unit: '' };
+  }
+
+  const T = new BigNumber(10).pow(12);
+  const P = new BigNumber(10).pow(15);
+  const E = new BigNumber(10).pow(18);
+
+  if (num.isGreaterThanOrEqualTo(E)) {
+    const result = num.dividedBy(E);
+    return {
+      value: result.isNaN() ? null : result.toString(),
+      unit: 'E',
+    };
+  } else if (num.isGreaterThanOrEqualTo(P)) {
+    const result = num.dividedBy(P);
+    return {
+      value: result.isNaN() ? null : result.toString(),
+      unit: 'P',
+    };
+  } else if (num.isGreaterThanOrEqualTo(T)) {
+    const result = num.dividedBy(T);
+    return {
+      value: result.isNaN() ? null : result.toString(),
+      unit: 'T',
+    };
+  } else {
+    return {
+      value: num.toString(),
+      unit: '',
+    };
+  }
 };

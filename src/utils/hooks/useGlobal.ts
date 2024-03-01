@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { getCurrency, DEFAULT_NETWORK_IDS } from 'utils/constants';
+import { getCurrency, NETWORK_OPTIONS } from 'utils/constants';
 import { createGlobalState } from 'react-use';
+import ENV_CONFIG from 'env';
 
 const defatultGlobalData = {
   currency: getCurrency(),
@@ -53,29 +54,25 @@ export interface ContractsType {
 }
 
 export interface NetworksType {
+  url: string;
   name: string;
   id: number;
 }
 
 export interface GlobalDataType {
-  networks: Array<NetworksType>;
+  networks: {
+    mainnet: NetworksType[];
+    testnet: NetworksType[];
+    devnet: NetworksType[];
+  };
   networkId: number;
   contracts: ContractsType;
 }
 
 // @todo, if no default global data, homepage should loading until getProjectConfig return resp
 export const useGlobalData = createGlobalState<object>({
-  networks: [
-    {
-      name: 'Conflux eSpace (Hydra)',
-      id: 1030,
-    },
-    {
-      name: 'Conflux eSpace (Testnet)',
-      id: 71,
-    },
-  ],
-  networkId: DEFAULT_NETWORK_IDS.mainnet,
+  networks: NETWORK_OPTIONS,
+  networkId: ENV_CONFIG.ENV_NETWORK_ID,
   contracts: {},
 });
 

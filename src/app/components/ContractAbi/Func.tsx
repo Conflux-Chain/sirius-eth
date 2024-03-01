@@ -300,7 +300,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
         if (checkCfxType(val)) {
           return Promise.resolve();
         }
-        return Promise.reject(t(translations.contract.error.cfx));
+        return Promise.reject(t(translations.contract.error.numberLimit));
       }
     };
     return check;

@@ -2,16 +2,146 @@ import { Interface } from '@ethersproject/abi';
 import { formatUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 const Zero = '0x0000000000000000000000000000000000000000';
+const eventZero =
+  '0x0000000000000000000000000000000000000000000000000000000000000000';
+const eventOne =
+  '0x0000000000000000000000000000000000000000000000000000000000000001';
+
 const ERC20_ABI = [
+  {
+    constant: true,
+    inputs: [],
+    name: 'name',
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
   {
     constant: false,
     inputs: [
       {
-        name: 'to',
+        name: '_spender',
         type: 'address',
       },
       {
-        name: 'value',
+        name: '_value',
+        type: 'uint256',
+      },
+    ],
+    name: 'approve',
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+      },
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_from',
+        type: 'address',
+      },
+      {
+        name: '_to',
+        type: 'address',
+      },
+      {
+        name: '_value',
+        type: 'uint256',
+      },
+    ],
+    name: 'transferFrom',
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+      },
+    ],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'decimals',
+    outputs: [
+      {
+        name: '',
+        type: 'uint8',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: '_owner',
+        type: 'address',
+      },
+    ],
+    name: 'balanceOf',
+    outputs: [
+      {
+        name: 'balance',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'symbol',
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: '_to',
+        type: 'address',
+      },
+      {
+        name: '_value',
         type: 'uint256',
       },
     ],
@@ -22,152 +152,134 @@ const ERC20_ABI = [
         type: 'bool',
       },
     ],
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-    ],
-    name: 'transferFrom',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
+    constant: true,
     inputs: [
       {
-        internalType: 'address',
+        name: '_owner',
+        type: 'address',
+      },
+      {
+        name: '_spender',
+        type: 'address',
+      },
+    ],
+    name: 'allowance',
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    payable: true,
+    stateMutability: 'payable',
+    type: 'fallback',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        indexed: true,
         name: 'spender',
         type: 'address',
       },
       {
-        internalType: 'uint256',
+        indexed: false,
         name: 'value',
         type: 'uint256',
       },
     ],
-    name: 'approve',
-    outputs: [
+    name: 'Approval',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
+        indexed: true,
+        name: 'from',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        name: 'to',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        name: 'value',
+        type: 'uint256',
       },
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    name: 'Transfer',
+    type: 'event',
   },
 ];
 
 const ERC721_ABI = [
   {
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
         internalType: 'address',
-        name: 'from',
+        name: 'owner',
         type: 'address',
       },
       {
+        indexed: true,
         internalType: 'address',
-        name: 'to',
+        name: 'approved',
         type: 'address',
       },
       {
+        indexed: true,
         internalType: 'uint256',
         name: 'tokenId',
         type: 'uint256',
       },
     ],
-    name: 'transferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    name: 'Approval',
+    type: 'event',
   },
   {
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
         internalType: 'address',
-        name: 'from',
+        name: 'owner',
         type: 'address',
       },
       {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { name: 'from', type: 'address' },
-      { name: 'to', type: 'address' },
-      { name: 'tokenId', type: 'uint256' },
-      { name: '_data', type: 'bytes' },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
+        indexed: true,
         internalType: 'address',
         name: 'operator',
         type: 'address',
       },
       {
+        indexed: false,
         internalType: 'bool',
         name: 'approved',
         type: 'bool',
       },
     ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-    ],
-    name: 'mint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    name: 'ApprovalForAll',
+    type: 'event',
   },
   {
     anonymous: false,
@@ -194,9 +306,132 @@ const ERC721_ABI = [
     name: 'Transfer',
     type: 'event',
   },
-];
-
-const ERC1155_ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'approve',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    constant: true,
+    inputs: [],
+    name: 'totalSupply',
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+    ],
+    name: 'balanceOf',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'balance',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'getApproved',
+    outputs: [
+      {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address',
+      },
+    ],
+    name: 'isApprovedForAll',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'name',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'ownerOf',
+    outputs: [
+      {
+        internalType: 'address',
+        name: 'owner',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
   {
     inputs: [
       {
@@ -211,18 +446,8 @@ const ERC1155_ABI = [
       },
       {
         internalType: 'uint256',
-        name: 'id',
+        name: 'tokenId',
         type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
       },
     ],
     name: 'safeTransferFrom',
@@ -243,14 +468,9 @@ const ERC1155_ABI = [
         type: 'address',
       },
       {
-        internalType: 'uint256[]',
-        name: 'ids',
-        type: 'uint256[]',
-      },
-      {
-        internalType: 'uint256[]',
-        name: 'values',
-        type: 'uint256[]',
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
       },
       {
         internalType: 'bytes',
@@ -258,14 +478,115 @@ const ERC1155_ABI = [
         type: 'bytes',
       },
     ],
-    name: 'safeBatchTransferFrom',
+    name: 'safeTransferFrom',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address',
+      },
+      {
+        internalType: 'bool',
+        name: '_approved',
+        type: 'bool',
+      },
+    ],
+    name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes4',
+        name: 'interfaceId',
+        type: 'bytes4',
+      },
+    ],
+    name: 'supportsInterface',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'symbol',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'tokenURI',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'transferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
+
+const ERC1155_ABI = [
+  {
     anonymous: false,
     inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
       {
         indexed: true,
         internalType: 'address',
@@ -273,31 +594,13 @@ const ERC1155_ABI = [
         type: 'address',
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
-      {
         indexed: false,
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
+        internalType: 'bool',
+        name: 'approved',
+        type: 'bool',
       },
     ],
-    name: 'TransferSingle',
+    name: 'ApprovalForAll',
     type: 'event',
   },
   {
@@ -343,24 +646,193 @@ const ERC1155_ABI = [
       {
         indexed: true,
         internalType: 'address',
-        name: 'account',
+        name: 'operator',
         type: 'address',
       },
       {
         indexed: true,
         internalType: 'address',
-        name: 'operator',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'to',
         type: 'address',
       },
       {
         indexed: false,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'value',
+        type: 'uint256',
+      },
+    ],
+    name: 'TransferSingle',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'string',
+        name: 'value',
+        type: 'string',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+    ],
+    name: 'URI',
+    type: 'event',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+    ],
+    name: 'balanceOf',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address[]',
+        name: 'accounts',
+        type: 'address[]',
+      },
+      {
+        internalType: 'uint256[]',
+        name: 'ids',
+        type: 'uint256[]',
+      },
+    ],
+    name: 'balanceOfBatch',
+    outputs: [
+      {
+        internalType: 'uint256[]',
+        name: '',
+        type: 'uint256[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'operator',
+        type: 'address',
+      },
+    ],
+    name: 'isApprovedForAll',
+    outputs: [
+      {
         internalType: 'bool',
-        name: 'approved',
+        name: '',
         type: 'bool',
       },
     ],
-    name: 'ApprovalForAll',
-    type: 'event',
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256[]',
+        name: 'ids',
+        type: 'uint256[]',
+      },
+      {
+        internalType: 'uint256[]',
+        name: 'amounts',
+        type: 'uint256[]',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'safeBatchTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'from',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'safeTransferFrom',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [
@@ -378,6 +850,44 @@ const ERC1155_ABI = [
     name: 'setApprovalForAll',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'bytes4',
+        name: 'interfaceId',
+        type: 'bytes4',
+      },
+    ],
+    name: 'supportsInterface',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+    ],
+    name: 'uri',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
 ];
@@ -623,7 +1133,7 @@ const ActionTranslate: Translation = {
         type: 'ERC721_Transfer',
         title: 'Transfer',
         args: parsed.args,
-        value,
+        value: '1',
         address: to || address,
         toAddress: parsed.args[1],
         customInfo: arg,
@@ -647,7 +1157,7 @@ const ActionTranslate: Translation = {
       return {
         type: 'ERC20_Revoked',
         address: to || address,
-        toAddress: parsed.args[1],
+        toAddress: parsed.args[0],
         title: 'Revoked',
         args: parsed.args,
         customInfo: arg,
@@ -675,7 +1185,7 @@ const ActionTranslate: Translation = {
       args: parsed.args,
       value: '1',
       address: to || address,
-      toAddress: parsed.args[0],
+      toAddress: parsed.args[1],
       customInfo: arg,
     };
   },
@@ -812,6 +1322,7 @@ const ActionTranslate: Translation = {
     };
   },
 };
+
 const EventTranslate: TranslationEvent = {
   // Approval (ERC20,ERC721)
   '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925': (
@@ -825,10 +1336,27 @@ const EventTranslate: TranslationEvent = {
         arg.token.transferType = 'ERC721';
       }
       arg.transferType = 'ERC721';
+      const parsed = ERC721_INTERFACE.parseLog(arg);
+
+      // parsed.args[2] instanceof BigNumber is for ERC721 Approve, else is for ERC721 Revoked
+      const value =
+        parsed.args[2] instanceof BigNumber
+          ? eventOne.substring(2)
+          : eventZero.substring(2);
+      const eTransaction: TranslationArgs = {
+        ...arg,
+        data: methodId + arg.topics[2].substring(2) + value, // spender, value
+        icon,
+        symbol,
+        decimals,
+        name,
+      };
+      return ActionTranslate[methodId](eTransaction);
     }
+
     const eTransaction: TranslationArgs = {
       ...arg,
-      data: methodId + arg.topics[1].substring(2) + arg.topics[2].substring(2), // spender, value
+      data: methodId + arg.topics[2].substring(2) + arg.data.substring(2), // spender, value
       icon,
       symbol,
       decimals,
@@ -847,12 +1375,20 @@ const EventTranslate: TranslationEvent = {
     // ERC721
     if (arg.data === '0x') {
       // Mint
-      if (
-        arg.topics[1] ===
-        '0x0000000000000000000000000000000000000000000000000000000000000000'
-      ) {
+      if (arg.topics[1] === eventZero) {
         return {
           type: 'ERC721_Mint',
+          title: 'Mint',
+          args: [arg.topics[2], arg.topics[3]], // to, tokenId
+          address: arg.address, //`0x${Buffer.from(stripZeros(arg.topics[2])).toString('hex',)}`,
+          value: '1',
+          customInfo: arg,
+        };
+      }
+      // Burn
+      if (arg.topics[2] === eventZero) {
+        return {
+          type: 'ERC721_Burn',
           title: 'Mint',
           args: [arg.topics[2], arg.topics[3]], // to, tokenId
           address: arg.address, //`0x${Buffer.from(stripZeros(arg.topics[2])).toString('hex',)}`,
@@ -863,10 +1399,7 @@ const EventTranslate: TranslationEvent = {
       // transferFrom
       else {
         eTransaction.decimals = 0;
-        if (
-          arg.topics[2] ===
-          '0x0000000000000000000000000000000000000000000000000000000000000000'
-        ) {
+        if (arg.topics[2] === eventZero) {
           eTransaction.data =
             methodId +
             arg.topics[1].substring(2) +
@@ -912,16 +1445,17 @@ const EventTranslate: TranslationEvent = {
     const tokenInfo =
       arg?.token?.transferType ||
       arg.transferType ||
-      filterByTokenAddress(arg.token, arg.to)?.token.transferType;
+      filterByTokenAddress(arg.token, arg.to || arg.address)?.token
+        .transferType;
     if (tokenInfo === 'ERC721') {
-      if (parsed.args[1] === false) {
+      if (parsed.args[2] === false) {
         return {
           ...arg,
           type: 'ERC721_Revoked',
           title: 'Revoked',
           args: parsed.args,
           address: arg.address,
-          toAddress: parsed.args[0],
+          toAddress: parsed.args[1],
           customInfo: arg,
         };
       } else {
@@ -936,14 +1470,14 @@ const EventTranslate: TranslationEvent = {
         };
       }
     }
-    if (parsed.args[1] === false) {
+    if (parsed.args[2] === false) {
       return {
         ...arg,
         type: 'ERC1155_Revoked',
         title: 'Revoked',
         args: parsed.args,
         address: arg.address,
-        toAddress: parsed.args[0],
+        toAddress: parsed.args[1],
         customInfo: arg,
       };
     } else {
@@ -1107,7 +1641,7 @@ export const decodeData = (
     }
 
     // If the method is not in the whitelist, the event will not be translated.
-    if (dataContent && dataContent.length > 0 && event) {
+    if (dataContent && dataContent.length > 0 && event && event.length > 0) {
       let eventContent: any = [];
 
       event.forEach((e: EventList, i: number) => {
@@ -1117,10 +1651,15 @@ export const decodeData = (
             token: customInfo,
             ...e,
           });
-
           // Special processing for ERC721.safeTransferFrom, event is not translated approve
           if (
-            (methodId === '0x42842e0e' || methodId === '0xb88d4fde') &&
+            [
+              '0x23b872dd',
+              '0x42842e0e',
+              '0xb88d4fde',
+              '0xf242432a',
+              '0x2eb2c2d6',
+            ].includes(methodId) &&
             (eResult.type === 'ERC721_Revoked' ||
               eResult.type === 'ERC721_Approved')
           ) {
@@ -1140,12 +1679,92 @@ export const decodeData = (
       }
     }
 
+    // Add a separate whitelist for events.
+    if (
+      dataContent &&
+      dataContent.length === 0 &&
+      event &&
+      event.length > 0 &&
+      customUI
+    ) {
+      let eventContent: any = [];
+      let eResultArr: any = [];
+      event.forEach((e: EventList, i: number) => {
+        // ERC721,1155 Transfer, mint,burn
+        const EventWihtelist = [
+          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+          '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
+          '0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb',
+        ];
+
+        if (EventWihtelist.includes(e.topics[0])) {
+          // 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef maybe ERC20, filter out these transactions.
+          if (
+            [
+              '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+            ].includes(e.topics[0]) &&
+            e.data !== '0x'
+          ) {
+            return;
+          }
+          // Contains only mint, burn.
+          if (!(e.topics[1] === eventZero || e.topics[2] === eventZero)) {
+            return;
+          }
+          const evnetHash = e.topics[0];
+          if (EventTranslate[evnetHash]) {
+            const eResult = EventTranslate[evnetHash]({
+              token: customInfo,
+              ...e,
+            });
+
+            const actionType: string = eResult.type;
+            if (customUI[actionType]) {
+              eResultArr.push(eResult);
+            }
+          }
+        }
+      });
+
+      const uniqueArray = eResultArr.reduce(
+        (acc: EventList, current: EventList) => {
+          const found = acc.find(
+            (item: EventList) =>
+              item['address'] === current['address'] &&
+              [
+                'ERC721_Mint',
+                'ERC721_Burn',
+                'ERC721_Transfer',
+                'ERC1155_Mint',
+                'ERC1155_Burn',
+                'ERC1155_Transfer',
+              ].includes(item['type']),
+          );
+          if (found) {
+            found.value = Number(found.value) + Number(current.value);
+          } else {
+            acc.push(current);
+          }
+          return acc;
+        },
+        [],
+      );
+
+      uniqueArray.forEach((item: any) => {
+        eventContent.push(customUI[item.type](item));
+      });
+      // If event has a value, use event first.
+      if (eventContent.length > 0) {
+        dataContent = eventContent;
+      }
+    }
+
     return {
       args: result && result.args,
       content: dataContent,
     };
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return {
       args: undefined,
       content: undefined,

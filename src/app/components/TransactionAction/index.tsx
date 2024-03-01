@@ -1,9 +1,11 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect, useCallback } from 'react';
 import { formatAddress, formatBalance } from 'utils';
 import { Link } from 'app/components/Link';
 import { decodeData, filterByTokenAddress, MultiAction } from './minibus';
 import styled from 'styled-components/macro';
 import { AddressContainer } from 'app/components/AddressContainer';
+import { reqContractAndToken, reqNametag } from 'utils/httpRequest';
+import { useNametagCacheStore } from 'utils/store';
 
 const LogoStyle = styled.img`
   width: 16px;
@@ -63,11 +65,9 @@ const Token = (
       )}
       {tokenExhibit.includes('symbol') ? (
         <Link href={`/address/${formatAddress(address)}`}>
-          {`${tokenType === 'ERC20' ? '' : '('}${
-            customInfoToken['token']['symbol']
-              ? customInfoToken['token']['symbol']
-              : TokenSymbol
-          }${tokenType === 'ERC20' ? '' : ')'}`}{' '}
+          {customInfoToken['token']['symbol']
+            ? customInfoToken['token']['symbol']
+            : TokenSymbol}{' '}
         </Link>
       ) : (
         <></>
@@ -84,6 +84,85 @@ const Token = (
   );
 };
 
+interface AddressNameTagContainerProps {
+  value: string;
+}
+
+const AddressNameTagContainer: React.FC<AddressNameTagContainerProps> = ({
+  value,
+}) => {
+  const {
+    nametagCache,
+    contractCache,
+    setNametagCache,
+    setContractCache,
+  } = useNametagCacheStore(state => ({
+    // @ts-ignore
+    nametagCache: state.nametagCache,
+    // @ts-ignore
+    contractCache: state.contractCache,
+    // @ts-ignore
+    setNametagCache: state.setNametagCache,
+    // @ts-ignore
+    setContractCache: state.setContractCache,
+  }));
+
+  const fetchContractAndToken = useCallback(
+    async (address: string) => {
+      try {
+        const data = await reqContractAndToken({ address: [address] });
+        if (data && data.total > 0 && data.map[address]) {
+          setContractCache({ [address]: data.map[address] });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [setContractCache],
+  );
+
+  const fetchNameTag = useCallback(
+    async (address: string) => {
+      try {
+        const data = await reqNametag([address]);
+        if (data && data.total > 0 && data.map[address]) {
+          setNametagCache({ [address]: data.map[address] });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [setNametagCache],
+  );
+
+  useEffect(() => {
+    if (value && !contractCache[value]) {
+      fetchContractAndToken(value);
+    }
+
+    if (value && !nametagCache[value]) {
+      fetchNameTag(value);
+    }
+  }, [value, fetchContractAndToken, fetchNameTag, nametagCache, contractCache]);
+
+  const nametagInfo = {
+    [value]: {
+      address: value,
+      nametag: nametagCache[value]?.nameTag || '',
+    },
+  };
+  return (
+    <AddressContainer
+      value={value}
+      alias={
+        contractCache[value]?.contract?.name ||
+        contractCache[value]?.token?.name
+      }
+      isFullNameTag={true}
+      nametagInfo={nametagInfo}
+    />
+  );
+};
 const customUI: MultiAction = {
   ERC20_Transfer: ({ address, toAddress, value, customInfo }) => {
     return (
@@ -94,7 +173,7 @@ const customUI: MultiAction = {
         </BalanceStyle>{' '}
         {Token(address, customInfo, 'ERC20', ['icon', 'symbol'])} to{' '}
         <Link href={`/address/${toAddress}`}>
-          <AddressContainer value={toAddress} />
+          <AddressNameTagContainer value={formatAddress(toAddress, 'base32')} />
         </Link>
       </div>
     );
@@ -106,7 +185,9 @@ const customUI: MultiAction = {
         {Token(address, customInfo, 'ERC20', ['icon', 'symbol'])} for
         {toAddress && (
           <Link href={`/address/${toAddress}`}>
-            <AddressContainer value={toAddress} />
+            <AddressNameTagContainer
+              value={formatAddress(toAddress, 'base32')}
+            />
           </Link>
         )}
       </div>
@@ -119,7 +200,9 @@ const customUI: MultiAction = {
         {Token(address, customInfo, 'ERC20', ['icon', 'symbol'])} from
         {toAddress && (
           <Link href={`/address/${toAddress}`}>
-            <AddressContainer value={toAddress} />
+            <AddressNameTagContainer
+              value={formatAddress(toAddress, 'base32')}
+            />
           </Link>
         )}
       </div>
@@ -128,7 +211,7 @@ const customUI: MultiAction = {
   ERC721_Mint: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Mint <BalanceStyle>1</BalanceStyle> of{' '}
+        Mint <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC721', ['icon', 'name', 'symbol'])}
       </div>
     );
@@ -136,7 +219,7 @@ const customUI: MultiAction = {
   ERC721_Transfer: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Transfer <BalanceStyle>1</BalanceStyle> of{' '}
+        Transfer <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC721', ['icon', 'name', 'symbol'])}
       </div>
     );
@@ -144,7 +227,7 @@ const customUI: MultiAction = {
   ERC721_Burn: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Burn <BalanceStyle>1</BalanceStyle> of{' '}
+        Burn <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC721', ['icon', 'name', 'symbol'])}
       </div>
     );
@@ -153,18 +236,20 @@ const customUI: MultiAction = {
     return (
       <div style={{ ...StyleWrap }}>
         Transfer <BalanceStyle>{value}</BalanceStyle> of{' '}
-        {Token(address, customInfo, 'ERC721', ['symbol'])}
+        {Token(address, customInfo, 'ERC721', ['icon', 'name', 'symbol'])}
       </div>
     );
   },
   ERC721_Revoked: ({ address, toAddress, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Revoked {Token(address, customInfo, 'ERC721', ['symbol'])}
+        Revoked {Token(address, customInfo, 'ERC721', ['icon', 'symbol'])}
         from
         {toAddress && (
           <Link href={`/address/${toAddress}`}>
-            <AddressContainer value={toAddress} />
+            <AddressNameTagContainer
+              value={formatAddress(toAddress, 'base32')}
+            />
           </Link>
         )}
       </div>
@@ -173,11 +258,13 @@ const customUI: MultiAction = {
   ERC721_Approved: ({ address, toAddress, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Approved {Token(address, customInfo, 'ERC721', ['symbol'])}
+        Approved {Token(address, customInfo, 'ERC721', ['icon', 'symbol'])}
         for
         {toAddress && (
           <Link href={`/address/${toAddress}`}>
-            <AddressContainer value={toAddress} />
+            <AddressNameTagContainer
+              value={formatAddress(toAddress, 'base32')}
+            />
           </Link>
         )}
       </div>
@@ -186,11 +273,13 @@ const customUI: MultiAction = {
   ERC1155_Approved: ({ address, toAddress, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Approved {Token(address, customInfo, 'ERC1155', ['symbol'])}
+        Approved {Token(address, customInfo, 'ERC1155', ['icon', 'symbol'])}
         for
         {toAddress && (
           <Link href={`/address/${toAddress}`}>
-            <AddressContainer value={toAddress} />
+            <AddressNameTagContainer
+              value={formatAddress(toAddress, 'base32')}
+            />
           </Link>
         )}
       </div>
@@ -199,11 +288,13 @@ const customUI: MultiAction = {
   ERC1155_Revoked: ({ address, toAddress, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Revoked {Token(address, customInfo, 'ERC1155', ['symbol'])}
-        for
+        Revoked {Token(address, customInfo, 'ERC1155', ['icon', 'symbol'])}
+        from
         {toAddress && (
           <Link href={`/address/${toAddress}`}>
-            <AddressContainer value={toAddress} />
+            <AddressNameTagContainer
+              value={formatAddress(toAddress, 'base32')}
+            />
           </Link>
         )}
       </div>
@@ -220,7 +311,7 @@ const customUI: MultiAction = {
   ERC1155_SafeTransferFrom: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Transfer <BalanceStyle>{value}</BalanceStyle>{' '}
+        Transfer <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC1155', ['icon', 'name', 'symbol'])}
       </div>
     );
@@ -228,7 +319,7 @@ const customUI: MultiAction = {
   ERC1155_Burn: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Burn <BalanceStyle>{value}</BalanceStyle>{' '}
+        Burn <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC1155', ['icon', 'name', 'symbol'])}
       </div>
     );
@@ -236,7 +327,7 @@ const customUI: MultiAction = {
   ERC1155_Transfer: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Transfer <BalanceStyle>{value}</BalanceStyle>{' '}
+        Transfer <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC1155', ['icon', 'name', 'symbol'])}
       </div>
     );
@@ -244,7 +335,7 @@ const customUI: MultiAction = {
   ERC1155_SafeBatchTransferFrom: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Transfer <BalanceStyle>{value}</BalanceStyle>{' '}
+        Transfer <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC1155', ['icon', 'name', 'symbol'])}
       </div>
     );
@@ -252,7 +343,7 @@ const customUI: MultiAction = {
   ERC1155_BatchBurn: ({ value, address, customInfo }) => {
     return (
       <div style={{ ...StyleWrap }}>
-        Burn <BalanceStyle>{value}</BalanceStyle>{' '}
+        Burn <BalanceStyle>{value}</BalanceStyle> of{' '}
         {Token(address, customInfo, 'ERC1155', ['icon', 'name', 'symbol'])}
       </div>
     );

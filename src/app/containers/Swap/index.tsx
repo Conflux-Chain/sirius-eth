@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BigNumber from 'bignumber.js';
 import { usePortal } from 'utils/hooks/usePortal';
 import { abi } from 'utils/contract/wcfx.json';
-import { TXN_ACTION, CONTRACTS, RPC_SERVER, NETWORK_ID } from 'utils/constants';
+import { TXN_ACTION, CONTRACTS, CFX } from 'utils/constants';
 import { isSafeNumberOrNumericStringInput, formatNumber } from 'utils';
 import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import { trackEvent } from 'utils/ga';
@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { media } from 'styles/media';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
-import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { getBalance } from 'utils/rpcRequest';
 
 import imgSwapArrowDown from 'images/swap-arrow-down.png';
@@ -197,11 +196,6 @@ export function Swap() {
     show: false,
     hash: '',
     status: '',
-  });
-
-  const CFX = new SDK.Conflux({
-    url: RPC_SERVER,
-    networkId: NETWORK_ID,
   });
 
   const contract = CFX.Contract({

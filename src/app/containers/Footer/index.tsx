@@ -15,13 +15,7 @@ import { translations } from 'locales/i18n';
 import { Language } from './Language';
 // import { Currency } from './Currency';
 import { ScanEvent } from 'utils/gaConstants';
-import {
-  NETWORK_TYPE,
-  NETWORK_TYPES,
-  IS_FOREIGN_HOST,
-  NETWORK_CONFIG,
-} from 'utils/constants';
-import { getDomainTLD } from 'utils';
+// import { getDomainTLD } from 'utils';
 
 import iconWechatQrcode from 'images/footer/wechat-qrcode.png';
 import IconAdd from 'images/icon-add.svg';
@@ -41,6 +35,7 @@ import {
   Youtube,
 } from './Icon';
 import { addChain } from 'utils/chainManage';
+import ENV_CONFIG, { IS_FOREIGN_HOST, NETWORK_TYPES } from 'env';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -123,8 +118,9 @@ export function Footer() {
   const hubLink = (
     <Link
       className="footer-link"
+      // TODO-btc
       href={
-        NETWORK_TYPE === NETWORK_TYPES.testnet
+        ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
           ? 'https://test.confluxhub.io/'
           : 'https://confluxhub.io/'
       }
@@ -320,24 +316,24 @@ export function Footer() {
     </FooterContentIconWrapper>
   );
 
-  const TLD = getDomainTLD();
+  // const TLD = getDomainTLD();
   const developResourceLinks = {
-    developerAPI: (
-      <Link
-        className="footer-link"
-        href={
-          NETWORK_TYPE === NETWORK_TYPES.testnet
-            ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
-            : `https://evmapi.confluxscan.${TLD}/doc`
-        }
-        ga={{
-          category: ScanEvent.menu.category,
-          action: ScanEvent.menu.action.developerAPI,
-        }}
-      >
-        {t(translations.footer.developResource.developerAPI)}
-      </Link>
-    ),
+    // developerAPI: (
+    //   <Link
+    //     className="footer-link"
+    //     href={
+    //       ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+    //         ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
+    //         : `https://evmapi.confluxscan.${TLD}/doc`
+    //     }
+    //     ga={{
+    //       category: ScanEvent.menu.category,
+    //       action: ScanEvent.menu.action.developerAPI,
+    //     }}
+    //   >
+    //     {t(translations.footer.developResource.developerAPI)}
+    //   </Link>
+    // ),
     developerDocuments: (
       <Link
         className="footer-link"
@@ -350,30 +346,30 @@ export function Footer() {
         {t(translations.footer.developResource.developerDocuments)}
       </Link>
     ),
-    confluxStudio: (
-      <Link
-        className="footer-link"
-        href="https://github.com/ObsidianLabs/ConfluxStudio/"
-        ga={{
-          category: ScanEvent.menu.category,
-          action: ScanEvent.menu.action.confluxStudio,
-        }}
-      >
-        {t(translations.footer.developResource.confluxStudio)}
-      </Link>
-    ),
-    confluxTruffle: (
-      <Link
-        className="footer-link"
-        href="https://github.com/Conflux-Chain/conflux-truffle/"
-        ga={{
-          category: ScanEvent.menu.category,
-          action: ScanEvent.menu.action.confluxTruffle,
-        }}
-      >
-        {t(translations.footer.developResource.confluxTruffle)}
-      </Link>
-    ),
+    // confluxStudio: (
+    //   <Link
+    //     className="footer-link"
+    //     href="https://github.com/ObsidianLabs/ConfluxStudio/"
+    //     ga={{
+    //       category: ScanEvent.menu.category,
+    //       action: ScanEvent.menu.action.confluxStudio,
+    //     }}
+    //   >
+    //     {t(translations.footer.developResource.confluxStudio)}
+    //   </Link>
+    // ),
+    // confluxTruffle: (
+    //   <Link
+    //     className="footer-link"
+    //     href="https://github.com/Conflux-Chain/conflux-truffle/"
+    //     ga={{
+    //       category: ScanEvent.menu.category,
+    //       action: ScanEvent.menu.action.confluxTruffle,
+    //     }}
+    //   >
+    //     {t(translations.footer.developResource.confluxTruffle)}
+    //   </Link>
+    // ),
   };
   const ICP = useMemo(() => {
     return window.location.hostname.includes('confluxscan.net') ? (
@@ -492,7 +488,7 @@ export function Footer() {
     <AddNetwork key="addNetwork" onClick={handleAddChain}>
       <img src={IconAdd} alt="add network" />
       {t(translations.footer.addNetwork, {
-        name: NETWORK_CONFIG.chainName,
+        name: ENV_CONFIG.ENV_WALLET_CONFIG.chainName,
       })}
     </AddNetwork>,
   ];
@@ -526,7 +522,7 @@ const FooterContentWrapper = styled.div`
 const FooterContentTitle = styled.span`
   margin-bottom: 1.07rem;
   font-weight: 600;
-  color: var(--theme-color-green0);
+  color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
   margin-right: 6rem;
   /* margin-right: 8.5714rem;
   width: 5.7143rem;
@@ -569,7 +565,7 @@ const FooterContentLink = styled.span`
     margin-right: 5.1429rem;
 
     &:hover {
-      color: var(--theme-color-green0);
+      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
     }
 
     ${media.m} {
@@ -594,7 +590,7 @@ const FooterContentIconLink = styled.span`
     color: var(--theme-color-gray2);
 
     &:hover {
-      color: var(--theme-color-green0);
+      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
     }
   }
 

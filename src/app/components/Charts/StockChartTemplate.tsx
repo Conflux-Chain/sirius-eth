@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
+import Exporting from 'highcharts/modules/exporting';
+import ExportData from 'highcharts/modules/export-data';
 import dayjs from 'dayjs';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { Card } from 'app/components/Card/Loadable';
@@ -11,9 +13,12 @@ import { useHighcharts } from 'utils/hooks/useHighcharts';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
+import ENV_CONFIG from 'env';
 
 // @ts-ignore
 window.dayjs = dayjs;
+Exporting(Highcharts);
+ExportData(Highcharts);
 
 interface Props {
   plain?: boolean;
@@ -199,18 +204,7 @@ export function StockChartTemplate({
       credits: {
         enabled: false,
       },
-      colors: [
-        '#7cb5ec',
-        '#434348',
-        '#f7a35c',
-        '#2b908f',
-        '#91e8e1',
-        '#90ed7d',
-        '#8085e9',
-        '#f15c80',
-        '#e4d354',
-        '#f45b5b',
-      ],
+      colors: ENV_CONFIG.ENV_THEME.chartColors,
       navigator: {
         enabled: true,
       },
@@ -239,12 +233,10 @@ export function StockChartTemplate({
               y2: 1,
             },
             stops: [
-              // @ts-ignore
-              [0, Highcharts.getOptions().colors[0]],
+              [0, ENV_CONFIG.ENV_THEME.chartColors[0]],
               [
                 1,
-                // @ts-ignore
-                Highcharts.color(Highcharts.getOptions().colors[0])
+                Highcharts.color(ENV_CONFIG.ENV_THEME.chartColors[0])
                   .setOpacity(0)
                   .get('rgba'),
               ],
@@ -321,6 +313,8 @@ export function StockChartTemplate({
               'downloadJPEG',
               'downloadPDF',
               'downloadSVG',
+              'downloadCSV',
+              'downloadXLS',
             ],
           },
         },

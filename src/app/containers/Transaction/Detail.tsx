@@ -59,7 +59,6 @@ import { CreateTxNote } from '../Profile/CreateTxNote';
 import { useNametag } from 'utils/hooks/useNametag';
 
 import iconInfo from 'images/info.svg';
-import iconQuestion from 'images/icon-question.svg';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -113,10 +112,17 @@ export const Detail = () => {
   const nametags = useNametag([from, to]);
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
+    setLoading(true);
+
     try {
-      if (toCheckAddress && (await isContractAddress(toCheckAddress))) {
+      const proArr: Promise<any>[] = [];
+      if (
+        toCheckAddress !== null &&
+        (await isContractAddress(toCheckAddress))
+      ) {
         setIsContract(true);
-        const fields = [
+
+        const contractFields = [
           'address',
           'type',
           'name',
@@ -131,51 +137,58 @@ export const Detail = () => {
           'sourceCode',
           'typeCode',
         ];
-        const proArr: Array<any> = [];
-        proArr.push(reqContract({ address: toCheckAddress, fields: fields }));
-        proArr.push(
-          reqTransferList({
-            transactionHash: txnhash,
-            fields: 'token',
-            limit: 100,
-            reverse: false,
-          }),
-        );
-        proArr.push(
-          reqTransactionEventlogs({
-            transactionHash: txnhash,
-            aggregate: false,
-          }),
-        );
 
-        Promise.all(proArr)
-          .then(proRes => {
-            const contractResponse = proRes[0];
-            // update contract info
-            setContractInfo(contractResponse);
-            const transferListReponse = proRes[1];
-            const resultTransferList = transferListReponse;
-            const list = resultTransferList['list'];
-            setTransferList(list);
-            setEventlogs(proRes[2].list);
-            let addressList = list.map(v => v.address);
-            addressList = Array.from(new Set(addressList));
-            reqTokenList({
-              addressArray: addressList,
-              fields: ['iconUrl'],
-            })
-              .then(res => {
-                setLoading(false);
-                setTokenList(res.list);
-              })
-              .catch(() => {});
-          })
-          .catch(() => {});
-      } else {
-        setLoading(false);
+        proArr.push(
+          reqContract({ address: toCheckAddress, fields: contractFields }),
+        );
       }
+
+      const transferFields = 'token';
+      proArr.push(
+        reqTransferList({
+          transactionHash: txnhash,
+          fields: transferFields,
+          limit: 100,
+          reverse: false,
+        }),
+      );
+
+      proArr.push(
+        reqTransactionEventlogs({
+          transactionHash: txnhash,
+          aggregate: false,
+        }),
+      );
+
+      const proRes = await Promise.all(proArr);
+
+      if (
+        toCheckAddress !== null &&
+        (await isContractAddress(toCheckAddress))
+      ) {
+        const contractResponse = proRes.shift();
+        setContractInfo(contractResponse);
+      }
+
+      const transferListResponse = proRes[0];
+      const list = transferListResponse.list || [];
+      setTransferList(list);
+
+      const eventlogsResponse = proRes[1];
+      console.log(eventlogsResponse.list);
+      setEventlogs(eventlogsResponse.list);
+
+      let addressList = list.map(v => v.address);
+      addressList = Array.from(new Set(addressList));
+      const tokenListResponse = await reqTokenList({
+        addressArray: addressList,
+        fields: ['iconUrl'],
+      });
+
+      setTokenList(tokenListResponse.list || []);
     } catch (e) {
-      console.log('fetchTxTransfer error: ', e);
+      console.error('fetchTxTransfer error: ', e);
+    } finally {
       setLoading(false);
     }
   };
@@ -222,7 +235,6 @@ export const Detail = () => {
           setDetailsInfoSetHash(txnhash);
 
           let toCheckAddress = txDetailDta.to;
-
           fetchTxTransfer(toCheckAddress, txnhash);
         }
       });
@@ -849,20 +861,15 @@ export const Detail = () => {
             )}
           </SkeletonContainer>
         </Description>
-        {transactionActionElement.show && (
+        {status === 0 && transactionActionElement.show && (
           <Description
             title={
-              <>
-                <Tooltip
-                  text={t(translations.transaction.action.tooltip)}
-                  placement="top"
-                >
-                  <IconQuestion>
-                    <img src={iconQuestion} alt="warning-icon"></img>
-                  </IconQuestion>
-                </Tooltip>
+              <Tooltip
+                text={t(translations.transaction.action.tooltip)}
+                placement="top"
+              >
                 {t(translations.transaction.action.title)}
-              </>
+              </Tooltip>
             }
           >
             {loading ? (
@@ -1327,11 +1334,7 @@ const IconWrapper = styled.div`
     margin-left: 0.3571rem;
   }
 `;
-const IconQuestion = styled.div`
-  padding-right: 0.2857rem;
-  width: 1.2857rem;
-  cursor: pointer;
-`;
+
 const StyleToolTipText = styled.div`
   width: 316px;
   font-size: 12px;

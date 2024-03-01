@@ -7,6 +7,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components/macro';
 import { Divider } from '@cfxjs/react-ui';
 import { media } from 'styles/media';
+import ENV_CONFIG from 'env';
 
 interface Props {
   rightTop: JSX.Element[];
@@ -60,7 +61,7 @@ const Left = styled.div`
 `;
 const Wrapper = styled.footer`
   box-sizing: border-box;
-  background-color: var(--theme-color-green1);
+  background-color: ${ENV_CONFIG.ENV_THEME.footerBg};
   width: 100vw;
   max-width: 100%; // fix horizontal scroll
   display: flex;

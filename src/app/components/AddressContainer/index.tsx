@@ -10,14 +10,10 @@ import ContractIcon from 'images/contract-icon.png';
 import isMeIcon from 'images/me.png';
 import VerifiedIcon from 'images/verified.png';
 import { media, sizes } from 'styles/media';
-import {
-  NETWORK_TYPE,
-  NETWORK_TYPES,
-  // CONTRACTS_NAME_LABEL,
-} from 'utils/constants';
 import { monospaceFont } from 'styles/variable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
+import { IS_MAINNET } from 'env';
 
 interface Props {
   value: string; // address value
@@ -25,6 +21,7 @@ interface Props {
   contractCreated?: string; // contract creation address
   maxWidth?: number; // address max width for view, default 200/170 for default, 400 for full
   isFull?: boolean; // show full address, default false
+  isFullNameTag?: boolean; // show full nametag
   isLink?: boolean; // add link to address, default true
   isMe?: boolean; // when `address === portal selected address`, set isMe to true to add special tag, default false
   suffixAddressSize?: number; // suffix address size, default is 8
@@ -42,8 +39,7 @@ interface Props {
 }
 
 const defaultPCMaxWidth = 95;
-const defaultMobileMaxWidth =
-  NETWORK_TYPE === NETWORK_TYPES.mainnet ? 106 : 140;
+const defaultMobileMaxWidth = IS_MAINNET ? 106 : 140;
 const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
@@ -87,6 +83,7 @@ const RenderAddress = ({
   content,
   isLink = true,
   isFull = false,
+  isFullNameTag = false,
   style = {},
   maxWidth,
   suffixSize = defaultPCSuffixAddressSize,
@@ -154,7 +151,13 @@ const RenderAddress = ({
           <LinkWrapper
             style={style}
             href={href}
-            maxwidth={isFull ? 430 : maxWidth}
+            maxwidth={
+              (content || nametag || addressLabel || alias) && isFullNameTag
+                ? 1000
+                : isFull
+                ? 430
+                : maxWidth
+            }
             alias={alias}
             aftercontent={aftercontent}
           >
@@ -165,7 +168,13 @@ const RenderAddress = ({
         ) : (
           <PlainWrapper
             style={style}
-            maxwidth={isFull ? 430 : maxWidth}
+            maxwidth={
+              (content || nametag || addressLabel || alias) && isFullNameTag
+                ? 1000
+                : isFull
+                ? 430
+                : maxWidth
+            }
             alias={alias}
             aftercontent={aftercontent}
           >
@@ -190,6 +199,7 @@ export const AddressContainer = withTranslation()(
       contractCreated,
       maxWidth,
       isFull = false,
+      isFullNameTag = false,
       isLink = true,
       isMe = false,
       suffixAddressSize,
@@ -224,16 +234,21 @@ export const AddressContainer = withTranslation()(
 
           if (showLabeled) {
             const { label } = getLabelInfo(
-              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][fContractCreated],
+              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
+                fContractCreated.toLocaleLowerCase()
+              ],
               'tag',
             );
 
             addressLabel = label;
           }
 
-          if (showNametag && nametagInfo?.[fContractCreated]?.nametag) {
+          if (
+            showNametag &&
+            nametagInfo?.[fContractCreated.toLocaleLowerCase()]?.nametag
+          ) {
             const { label } = getLabelInfo(
-              nametagInfo[fContractCreated].nametag,
+              nametagInfo[fContractCreated.toLocaleLowerCase()].nametag,
               'nametag',
             );
 
@@ -249,6 +264,7 @@ export const AddressContainer = withTranslation()(
             hrefAddress: fContractCreated,
             isLink,
             isFull,
+            isFullNameTag,
             maxWidth: 160,
             suffixSize,
             prefix: (
@@ -288,6 +304,7 @@ export const AddressContainer = withTranslation()(
           content: alias ? formatString(alias, 'tag') : value,
           isLink: false,
           isFull,
+          isFullNameTag,
           maxWidth,
           suffixSize,
           style: { color: '#e00909' },
@@ -321,7 +338,7 @@ export const AddressContainer = withTranslation()(
       if (showLabeled) {
         const { label } = getLabelInfo(
           globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
-            formatAddress(cfxAddress)
+            formatAddress(cfxAddress.toLocaleLowerCase())
           ],
           'tag',
         );
@@ -329,9 +346,12 @@ export const AddressContainer = withTranslation()(
         addressLabel = label;
       }
 
-      if (showNametag && nametagInfo?.[cfxAddress]?.nametag) {
+      if (
+        showNametag &&
+        nametagInfo?.[cfxAddress.toLocaleLowerCase()]?.nametag
+      ) {
         const { label } = getLabelInfo(
-          nametagInfo[cfxAddress].nametag,
+          nametagInfo[cfxAddress.toLocaleLowerCase()].nametag,
           'nametag',
         );
 
@@ -351,6 +371,7 @@ export const AddressContainer = withTranslation()(
           nametag: officalNametag,
           isLink,
           isFull,
+          isFullNameTag,
           maxWidth,
           suffixSize,
           prefix: showIcon ? (
@@ -385,6 +406,7 @@ export const AddressContainer = withTranslation()(
           nametag: officalNametag,
           isLink,
           isFull,
+          isFullNameTag,
           maxWidth,
           suffixSize,
           suffix: (
@@ -410,6 +432,7 @@ export const AddressContainer = withTranslation()(
         nametag: officalNametag,
         isLink,
         isFull,
+        isFullNameTag,
         maxWidth,
         suffixSize,
         prefix: prefixIcon,

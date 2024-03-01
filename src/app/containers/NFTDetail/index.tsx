@@ -16,7 +16,6 @@ import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 import { Button } from 'app/components/Button/Loadable';
-import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
 import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
 
@@ -26,7 +25,7 @@ import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 
 import { formatTimeStamp, formatAddress, addIPFSGateway } from 'utils';
-import { RPC_SERVER, NETWORK_ID } from 'utils/constants';
+import { CFX } from 'utils/constants';
 
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
@@ -177,10 +176,6 @@ export function NFTDetail(props) {
   });
 
   const contract721 = useMemo(() => {
-    const CFX = new SDK.Conflux({
-      url: RPC_SERVER,
-      networkId: NETWORK_ID,
-    });
     return CFX.Contract({
       address: address,
       abi: ERC721ABI,
@@ -188,10 +183,6 @@ export function NFTDetail(props) {
   }, [address]);
 
   const contract1155 = useMemo(() => {
-    const CFX = new SDK.Conflux({
-      url: RPC_SERVER,
-      networkId: NETWORK_ID,
-    });
     return CFX.Contract({
       address: address,
       abi: ERC1155ABI,
@@ -309,7 +300,7 @@ export function NFTDetail(props) {
               tokenId={id}
               type="primary"
               enable3D={true}
-              metadata={data.detail?.metadata}
+              nftInfo={data}
             />
           </Card>
 

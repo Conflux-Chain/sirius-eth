@@ -7,7 +7,7 @@ import { Description } from 'app/components/Description/Loadable';
 import { formatAddress } from 'utils';
 import { TransactionAction } from 'app/components/TransactionAction';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { reqContract } from 'utils/httpRequest';
+import { reqContract, reqTransactionEventlogs } from 'utils/httpRequest';
 import _ from 'lodash';
 
 import { GasFee } from './GasFee';
@@ -29,13 +29,13 @@ export const Overview = ({ data }) => {
     // storageCollateralized,
     // storageCoveredBySponsor,
     nonce,
-    list,
     transactionIndex,
     tokenTransferTokenInfo,
     txExecErrorInfo,
   } = data;
   const [contractInfo, setContractInfo] = useState({});
   const [loading, setLoading] = useState(true);
+  const [eventlogs, setEventlogs] = useState<any>([]);
   const tokenTransferTokenInfoList = useMemo(() => {
     if (tokenTransferTokenInfo && typeof tokenTransferTokenInfo === 'object') {
       return Object.keys(tokenTransferTokenInfo).map(key => ({
@@ -44,34 +44,69 @@ export const Overview = ({ data }) => {
     }
     return [];
   }, [tokenTransferTokenInfo]);
-
   const customInfoList = useMemo(() => {
     if (tokenTransferTokenInfoList.length > 0) {
       return [contractInfo, ...tokenTransferTokenInfoList];
     }
     return [contractInfo];
   }, [tokenTransferTokenInfoList, contractInfo]);
+
   useEffect(() => {
-    try {
-      if (!to) return;
-      setLoading(true);
-      reqContract({
-        address: to,
-        fields: ['token'],
-      }).then(e => {
-        if (e && _.isObject(e.token) && !_.isEmpty(e.token)) {
-          setContractInfo({ token: { address: to, ...e.token } });
-          setLoading(false);
+    const fetchData = async () => {
+      try {
+        if (!hash) return;
+        setLoading(true);
+
+        const reqArr: Promise<any>[] = [];
+        if (to) {
+          reqArr.push(
+            reqContract({
+              address: to,
+              fields: ['token'],
+            }),
+          );
         }
-      });
-    } catch (error) {
-      setLoading(false);
-    }
-  }, [to]);
+
+        reqArr.push(
+          reqTransactionEventlogs({
+            transactionHash: hash,
+            aggregate: false,
+          }),
+        );
+
+        const res = await Promise.all(reqArr);
+
+        if (
+          to &&
+          res[0] &&
+          _.isObject(res[0].token) &&
+          !_.isEmpty(res[0].token)
+        ) {
+          setContractInfo({
+            token: { address: res[0].address, ...res[0].token },
+          });
+        }
+
+        const eventlogsIndex = to ? 1 : 0;
+        if (
+          res[eventlogsIndex] &&
+          res[eventlogsIndex].list &&
+          res[eventlogsIndex].list.length > 0
+        ) {
+          setEventlogs(res[eventlogsIndex].list);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [to, hash]);
 
   const transactionAction = TransactionAction({
     transaction: data,
-    event: list,
+    event: eventlogs,
     customInfo: customInfoList,
   });
 
@@ -100,7 +135,7 @@ export const Overview = ({ data }) => {
           />
         </div>
       </Description>
-      {transactionAction && transactionAction.show && (
+      {status === 0 && transactionAction && transactionAction.show && (
         <Description
           verticle
           size="tiny"

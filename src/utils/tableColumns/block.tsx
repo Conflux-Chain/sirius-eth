@@ -11,16 +11,16 @@ import {
   toThousands,
   fromDripToGdrip,
   roundToFixedPrecision,
+  getNetworkIcon,
 } from 'utils/';
 // import imgPivot from 'images/pivot.svg';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
-import eSpaceIcon from 'images/icon-eSpace.svg';
-import cSpaceIcon from 'images/icon-core.svg';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
+import ENV_CONFIG from 'env';
 
 const IconWrapper = styled.div`
   display: flex;
@@ -80,7 +80,14 @@ export const epoch = {
             </Translation>
           }
         >
-          <img src={row.coreBlock === 1 ? cSpaceIcon : eSpaceIcon} alt="?" />
+          {/* TODO-btc */}
+          <img
+            src={getNetworkIcon(undefined, {
+              isCore: row.coreBlock === 1,
+              isEvm: row.coreBlock !== 1,
+            })}
+            alt="?"
+          />
         </Text>
         {value}
       </IconWrapper>
@@ -290,7 +297,7 @@ export const gasUsedPercentWithProgress = {
             size="small"
             showInfo={false}
             strokeWidth={2}
-            strokeColor="#1e3de4"
+            strokeColor={ENV_CONFIG.ENV_THEME.linkColor}
             trailColor="#eeeeee"
           />
         </StyledGasPercentWrapper>

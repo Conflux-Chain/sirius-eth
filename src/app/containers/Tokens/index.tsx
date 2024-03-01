@@ -8,10 +8,13 @@ import { tokenColunms, utils } from 'utils/tableColumns';
 import styled from 'styled-components/macro';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
+import { formatNumber, formatLargeNumber } from 'utils';
 import queryString from 'query-string';
 // import { useGlobal } from 'utils/hooks/useGlobal';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useLocation } from 'react-router-dom';
+import { Text } from 'app/components/Text/Loadable';
+import { monospaceFont } from 'styles/variable';
 
 import imgInfo from 'images/info.svg';
 
@@ -26,7 +29,7 @@ export function Tokens() {
   const { tokenType = CFX_TOKEN_TYPES.erc20 } = useParams<RouteParams>();
   const { orderBy } = queryString.parse(location.search);
 
-  let columnsWidth = [1, 7, 4, 3, 3, 3, 2];
+  let columnsWidth = [1, 7, 3, 3, 3, 3, 2];
   let columns = [
     {
       ...utils.number,
@@ -44,10 +47,58 @@ export function Tokens() {
       ...tokenColunms.marketCap,
       sorter: true,
       defaultSortOrder: 'descend' as 'descend' | 'ascend',
+      render(value, row, index) {
+        const largeShrinkNumber = formatLargeNumber(value);
+        return (
+          <LargeNumber>
+            <Text
+              hoverValue={formatNumber(value, {
+                precision: 2,
+                withUnit: false,
+              })}
+            >
+              <span>
+                {largeShrinkNumber.value
+                  ? '$' +
+                    formatNumber(largeShrinkNumber.value, {
+                      precision: 2,
+                      withUnit: false,
+                      unit: '',
+                    }) +
+                    largeShrinkNumber.unit
+                  : '--'}
+              </span>
+            </Text>
+          </LargeNumber>
+        );
+      },
     },
     {
       ...tokenColunms.transfer,
       sorter: true,
+      render(value, row, index) {
+        const largeShrinkNumber = formatLargeNumber(value);
+        return (
+          <LargeNumber>
+            <Text
+              hoverValue={formatNumber(value, {
+                precision: 2,
+                withUnit: false,
+              })}
+            >
+              <span>
+                {largeShrinkNumber.value
+                  ? formatNumber(largeShrinkNumber.value, {
+                      precision: 2,
+                      withUnit: false,
+                      unit: '',
+                    }) + largeShrinkNumber.unit
+                  : '--'}
+              </span>
+            </Text>
+          </LargeNumber>
+        );
+      },
     },
     {
       ...tokenColunms.holders,
@@ -198,5 +249,13 @@ const TableWrapper = styled.div`
         margin-right: 7px;
       }
     }
+  }
+`;
+
+const LargeNumber = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  span {
+    font-family: ${monospaceFont};
   }
 `;

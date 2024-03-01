@@ -8,6 +8,7 @@ import lodash from 'lodash';
 import { reqChartData } from 'utils/httpRequest';
 import { useBreakpoint } from 'styles/media';
 import { useHighcharts } from 'utils/hooks/useHighcharts';
+import ENV_CONFIG from 'env';
 
 // @ts-ignore
 window.dayjs = dayjs;
@@ -67,6 +68,7 @@ export function ChartTemplate({
 
   const opts = lodash.merge(
     {
+      colors: ENV_CONFIG.ENV_THEME.pieChartColors,
       chart: {
         animation: false,
         height: 600,
@@ -143,6 +145,8 @@ export function ChartTemplate({
               'downloadJPEG',
               'downloadPDF',
               'downloadSVG',
+              'downloadCSV',
+              'downloadXLS',
             ],
           },
         },

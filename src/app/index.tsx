@@ -32,6 +32,7 @@ import {
   LOCALSTORAGE_KEYS_MAP,
   NETWORK_ID,
   CFX_TOKEN_TYPES,
+  NETWORK_OPTIONS,
 } from 'utils/constants';
 import { isAddress } from 'utils';
 import MD5 from 'md5.js';
@@ -104,6 +105,7 @@ import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
 import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
+import ENV_CONFIG from 'env';
 
 // WebFontLoader.load({
 //   custom: {
@@ -153,11 +155,22 @@ export function App() {
     setLoading(true);
     reqProjectConfig()
       .then(resp => {
-        if (resp?.networks.every(n => n.id !== resp?.networkId)) {
-          resp?.networks.push({
-            name: resp?.networkId,
-            id: resp?.networkId,
-          });
+        const networks = {
+          ...NETWORK_OPTIONS,
+        };
+        if (
+          networks.mainnet.every(n => n.id !== resp?.networkId) &&
+          networks.testnet.every(n => n.id !== resp?.networkId) &&
+          networks.devnet.every(n => n.id !== resp?.networkId)
+        ) {
+          networks.devnet = [
+            ...networks.devnet,
+            {
+              url: '',
+              name: resp?.networkId,
+              id: resp?.networkId,
+            },
+          ];
         }
 
         // @ts-ignore
@@ -208,6 +221,7 @@ export function App() {
         setGlobalData({
           ...globalData,
           ...(resp as object),
+          networks,
         });
 
         setLoading(false);
@@ -691,6 +705,10 @@ const Main = styled.div`
   ${media.s} {
     padding: 100px 16px 32px;
     //min-height: calc(100vh - 254px);
+  }
+
+  .link {
+    color: ${ENV_CONFIG.ENV_THEME.linkColor} !important;
   }
 `;
 
