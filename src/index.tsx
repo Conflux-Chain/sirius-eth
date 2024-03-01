@@ -33,9 +33,9 @@ interface Props {
 const ConnectedApp = ({ Component }: Props) => (
   <HelmetProvider>
     <RecoilRoot>
-      <React.StrictMode>
-        <Component />
-      </React.StrictMode>
+      {/* <React.StrictMode> */}
+      <Component />
+      {/* </React.StrictMode> */}
     </RecoilRoot>
   </HelmetProvider>
 );
