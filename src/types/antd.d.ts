@@ -1,7 +1,7 @@
 import '@cfxjs/antd';
 import React from 'react';
 
-declare module "@cfxjs/antd" {
+declare module '@cfxjs/antd' {
   interface SpinProps {
     children?: React.ReactNode;
   }
