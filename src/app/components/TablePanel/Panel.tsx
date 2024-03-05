@@ -5,7 +5,7 @@ import { Table, Pagination, Skeleton } from '@cfxjs/react-ui';
 import { PaginationProps } from '@cfxjs/react-ui/dist/pagination/pagination';
 import { Props as TableProps } from '@cfxjs/react-ui/dist/table/table';
 import clsx from 'clsx';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { Card } from '../Card';
 import { media, useBreakpoint } from 'styles/media';
 import { useTableData } from '../TabsTablePanel';
