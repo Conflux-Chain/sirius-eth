@@ -319,6 +319,7 @@ export function StockChartTemplate({
           },
         },
       },
+      intervalType: { value: intervalType },
     },
     options,
   );
