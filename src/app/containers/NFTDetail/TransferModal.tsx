@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { usePortal } from 'utils/hooks/usePortal';
 import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
 import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
-import { TXN_ACTION, RPC_SERVER, NETWORK_ID } from 'utils/constants';
+import { TXN_ACTION, CFX } from 'utils/constants';
 import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
@@ -37,11 +37,6 @@ export const TransferModal = ({
   const isNFT721 = contractType?.includes('721');
 
   const contract = useMemo(() => {
-    const CFX = new SDK.Conflux({
-      url: RPC_SERVER,
-      networkId: NETWORK_ID,
-    });
-
     return CFX.Contract({
       address: contractAddress,
       abi: isNFT721 ? ERC721ABI : ERC1155ABI,

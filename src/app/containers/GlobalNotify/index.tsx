@@ -13,6 +13,7 @@ import InfoFill from '@zeit-ui/react-icons/infoFill';
 import styled from 'styled-components/macro';
 import { Collapse } from '@cfxjs/antd';
 import { CaretRightOutlined } from '@ant-design/icons';
+import ENV_CONFIG from 'env';
 const { Panel } = Collapse;
 
 enum Status {
@@ -129,7 +130,7 @@ export function GlobalNotify() {
 
 const LinkWrapper = styled.span`
   .link-anchor {
-    color: #0e47ef;
+    color: ${ENV_CONFIG.ENV_THEME.linkColor};
   }
 `;
 

@@ -3,6 +3,7 @@ import styled from 'styled-components/macro';
 import clsx from 'clsx';
 
 import iconArrow from './assets/arrow.svg';
+import ENV_CONFIG from 'env';
 
 export const Link = ({
   children,
@@ -36,7 +37,7 @@ export const Link = ({
 
 const LinkWrapper = styled.span`
   .link-anchor {
-    color: #0e47ef;
+    color: ${ENV_CONFIG.ENV_THEME.linkColor};
   }
 
   .link-text {

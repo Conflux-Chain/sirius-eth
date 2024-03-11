@@ -20,6 +20,7 @@ import {
   orange0,
   black0,
 } from './variable';
+import ENV_CONFIG from 'env';
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -55,10 +56,10 @@ export const GlobalStyle = createGlobalStyle`
     letter-spacing: 0;
 
     a {
-      color: #1e3de4;
+      color: ${ENV_CONFIG.ENV_THEME.linkColor};
 
       &:hover, &:active {
-        color: #0f23bd;
+        color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
       }
     }
 
@@ -140,8 +141,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-pagination-item-active, .ant-pagination-item-active:hover {
-    border-color: #1e3de4;
-    background-color: #1e3de4;
+    border-color: ${ENV_CONFIG.ENV_THEME.linkColor};
+    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
 
     a {
       color: #ffffff;
@@ -323,14 +324,25 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .ant-switch-checked {
+    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
+  }
+
   .ant-btn.ant-btn-primary {
-    background-color: var(--theme-color-blue0);
+    background-color: ${ENV_CONFIG.ENV_THEME.antdPrimaryButtonBg};
     color: #ffffff;
+  }
+  .ant-input:focus, .ant-input-focused, .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: ${ENV_CONFIG.ENV_THEME.outlineColor};
+    box-shadow: 0 0 0 2px ${ENV_CONFIG.ENV_THEME.shadowColor};
+  }
+  .ant-input:hover, .ant-select:hover, .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: ${ENV_CONFIG.ENV_THEME.outlineColor};
   }
 
   .ant-btn {
     &:hover {
-      background: #4665f0;
+      background: ${ENV_CONFIG.ENV_THEME.buttonBg};
       color: #ffffff;
     }
 
@@ -400,8 +412,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .option.selected {
-      color: #fff;
-      background-color: var(--theme-color-green0);
+      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
       border: none;
     }
 

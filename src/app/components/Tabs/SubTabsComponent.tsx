@@ -3,6 +3,7 @@ import styled from 'styled-components/macro';
 import { Button } from '@cfxjs/react-ui';
 import clsx from 'clsx';
 import { media } from 'styles/media';
+import ENV_CONFIG from 'env';
 
 interface Props {
   tabs: Array<{
@@ -65,7 +66,7 @@ const StyledSubTabsWrapper = styled.div`
     &:hover,
     &:active {
       color: #ffffff;
-      background-color: rgba(0, 84, 254, 0.8);
+      background-color: ${ENV_CONFIG.ENV_THEME.buttonBg};
     }
 
     .text {
@@ -75,7 +76,7 @@ const StyledSubTabsWrapper = styled.div`
 
   .subtabs-tabItem-active.btn {
     color: #ffffff;
-    background-color: rgba(0, 84, 254, 0.8);
+    background-color: ${ENV_CONFIG.ENV_THEME.buttonBg};
   }
 
   .subtabs-tabItem-extra {

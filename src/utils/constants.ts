@@ -1,5 +1,6 @@
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import lodash from 'lodash';
+import ENV_CONFIG, { DOMAIN, IS_DEVNET, IS_STAGE } from 'env';
 
 interface ContractsType {
   faucet: string;
@@ -17,34 +18,6 @@ interface ContractsType {
 
 interface ContractNameTagType {
   [index: string]: string;
-}
-
-// only for dev and qa, use with caution
-export const IS_PRE_RELEASE =
-  process.env.REACT_APP_TestNet === 'true' ||
-  window.location.hostname.includes('stage');
-
-export const IS_TESTNET =
-  process.env.REACT_APP_TestNet === 'true' ||
-  window.location.hostname.includes('testnet');
-
-export const IS_PRIVATENET =
-  process.env.REACT_APP_8889 === 'true' || IS_TESTNET;
-
-const RPC_URL = {
-  mainnet: 'https://evm-cfxbridge.confluxrpc.com',
-  testnet: 'https://evmtestnet-cfxbridge.confluxrpc.com',
-  privatenet: 'https://net8889eth.confluxrpc.com',
-};
-export const RPC_SERVER = IS_TESTNET
-  ? RPC_URL.testnet
-  : IS_PRIVATENET
-  ? RPC_URL.privatenet
-  : RPC_URL.mainnet;
-
-export enum DEFAULT_NETWORK_IDS {
-  mainnet = 1030,
-  testnet = 71,
 }
 
 /**
@@ -70,9 +43,7 @@ export enum LOCALSTORAGE_KEYS_MAP {
 }
 
 export const NETWORK_ID = (() => {
-  let networkId = IS_TESTNET
-    ? DEFAULT_NETWORK_IDS.testnet
-    : DEFAULT_NETWORK_IDS.mainnet;
+  let networkId = ENV_CONFIG.ENV_NETWORK_ID;
   let cacheNetworkId = Number(
     localStorage.getItem(LOCALSTORAGE_KEYS_MAP.networkId),
   );
@@ -81,23 +52,6 @@ export const NETWORK_ID = (() => {
     networkId = Number(cacheNetworkId);
   }
   return networkId;
-})();
-
-// network type is come from backend network id, now there are three state, can be extended with special case
-export enum NETWORK_TYPES {
-  mainnet = 'MAINNET',
-  testnet = 'TESTNET',
-  privatenet = 'PRIVATENET',
-}
-
-export const NETWORK_TYPE = (() => {
-  if (NETWORK_ID === 71) {
-    return NETWORK_TYPES.testnet;
-  } else if (NETWORK_ID === 1030) {
-    return NETWORK_TYPES.mainnet;
-  } else {
-    return NETWORK_TYPES.privatenet;
-  }
 })();
 
 export const CONTRACTS: ContractsType = (() => {
@@ -191,12 +145,12 @@ export const getCurrencySymbol = () => {
 };
 
 export const CFX = new SDK.Conflux({
-  url: RPC_SERVER,
+  url: ENV_CONFIG.ENV_RPC_SERVER,
   networkId: NETWORK_ID,
 });
 
 export const CFXToDecode = new SDK.Conflux({
-  url: RPC_SERVER,
+  url: ENV_CONFIG.ENV_RPC_SERVER,
 });
 
 export const ICON_DEFAULT_CONTRACT =
@@ -205,22 +159,6 @@ export const ICON_DEFAULT_TOKEN =
   'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMzNweCIgaGVpZ2h0PSIzM3B4IiB2aWV3Qm94PSIwIDAgMzMgMzMiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDYxLjIgKDg5NjUzKSAtIGh0dHBzOi8vc2tldGNoLmNvbSAtLT4KICAgIDx0aXRsZT5Ub2tlbnM8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0i6aG16Z2iLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSLnlLvmnb8iIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00NzUuMDAwMDAwLCAtMzEuMDAwMDAwKSI+CiAgICAgICAgICAgIDxnIGlkPSJUb2tlbnMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ2My4wMDAwMDAsIDE4LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPGcgaWQ9Ik1haW4iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyLjAwMDAwMCwgMTMuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTE0LjA5Mzc5NDEsOS42MTI5NjI4NiBDMTMuODI1MTcwNSw5LjIzMjgzNDcgMTMuMzU0NjM0MSw5LjAwMTM2MzM1IDEyLjg0Nzc5NjcsOSBMNC4xNTUyOTU4Niw5IEMzLjY0NTgzNTIxLDguOTk5MTE2MzYgMy4xNzE5MzgxMiw5LjIzMDg3MDA1IDIuOTAxOTI0ODUsOS42MTI5NjI4NyBMMC4yMjU2MTM1MjcsMTMuNDAxNDg4OCBDLTAuMTE4NTc4MzcxLDEzLjg4NjUyMzggLTAuMDY0NzQ2MDY4OCwxNC41MTMzOTYyIDAuMzU4MzIzMzY0LDE0Ljk0Njg4NyBMNy45Mzc1MjYzNCwyMi43NzE3MTM4IEM4LjIwMjE2NjI4LDIzLjA0NTQxMDcgOC42Njc1Njc0MywyMy4wNzc1NDY0IDguOTc3MDMwNTIsMjIuODQzNDkxNiBDOS4wMDYxNTA3MywyMi44MjE0NjcyIDkuMDMzMjg1MzEsMjIuNzk3NDY4NiA5LjA1ODE4NzY5LDIyLjc3MTcxMzggTDE2LjYzNzM5MDcsMTQuOTQ2ODg3IEMxNy4wNjI4MDQxLDE0LjUxNDg3ODIgMTcuMTE5NjMzNywxMy44ODc5MTQzIDE2Ljc3NzQ3MzIsMTMuNDAxNDg4OCBMMTQuMDkzNzk0MSw5LjYxMjk2Mjg2IFoiIGlkPSLot6/lvoQiIGZpbGw9IiNDNEM2RDIiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPgogICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0yNi43Nzc2MDcyLDE4LjQ2NTY5MjYgQzI2LjU3MjE4OTIsMTguMTc2ODkzOSAyNi4yMTIzNjczLDE4LjAwMTAzNTggMjUuODI0Nzg1NywxOCBMMTkuMTc3NTc5MiwxOCBDMTguNzg3OTkxNiwxNy45OTkzMjg3IDE4LjQyNTU5OTcsMTguMTc1NDAxMyAxOC4yMTkxMTksMTguNDY1NjkyNiBMMTYuMTcyNTI4LDIxLjM0Mzk4ODIgQzE1LjkwOTMyMjQsMjEuNzEyNDg4OSAxNS45NTA0ODgzLDIyLjE4ODc0OSAxNi4yNzQwMTIsMjIuNTE4MDg5NCBMMjIuMDY5ODczMSwyOC40NjI5MjU0IEMyMi4yNzIyNDQ4LDI4LjY3MDg2NCAyMi42MjgxMzk4LDI4LjY5NTI3ODcgMjIuODY0Nzg4LDI4LjUxNzQ1NzkgQzIyLjg4NzA1NjQsMjguNTAwNzI1MSAyMi45MDc4MDY0LDI4LjQ4MjQ5MjQgMjIuOTI2ODQ5NCwyOC40NjI5MjU0IEwyOC43MjI3MTA1LDIyLjUxODA4OTQgQzI5LjA0ODAyNjYsMjIuMTg5ODc1IDI5LjA5MTQ4NDYsMjEuNzEzNTQ1MiAyOC44Mjk4MzI1LDIxLjM0Mzk4ODIgTDI2Ljc3NzYwNzIsMTguNDY1NjkyNiBaIiBpZD0i6Lev5b6EIiBmaWxsPSIjN0Y4Mjk2IiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMjUuNTgwOTM0MiwzLjc0NDMxMjcyIEMyNS4yNjQ5MDY1LDMuMjgyNzI4MTEgMjQuNzExMzM0MywzLjAwMTY1NTQ5IDI0LjExNTA1NSwzIEwxMy44ODg1ODM0LDMgQzEzLjI4OTIxNzksMi45OTg5MjcwMSAxMi43MzE2OTE5LDMuMjgwMzQyNDYgMTIuNDE0MDI5MiwzLjc0NDMxMjc0IEw5LjI2NTQyNzY4LDguMzQ0NjY5ODMgQzguODYwNDk2MDMsOC45MzM2NDE0OSA4LjkyMzgyODE1LDkuNjk0ODQ0MzMgOS40MjE1NTY5LDEwLjIyMTIyNjUgTDE4LjMzODI2NjMsMTkuNzIyODEwNiBDMTguNjQ5NjA3NCwyMC4wNTUxNTcxIDE5LjE5NzEzODIsMjAuMDk0MTc5MSAxOS41NjEyMTI0LDE5LjgwOTk2OTUgQzE5LjU5NTQ3MTQsMTkuNzgzMjI1NSAxOS42MjczOTQ1LDE5Ljc1NDA4NDMgMTkuNjU2NjkxNCwxOS43MjI4MTA2IEwyOC41NzM0MDA4LDEwLjIyMTIyNjUgQzI5LjA3Mzg4NzEsOS42OTY2NDM5NSAyOS4xNDA3NDU2LDguOTM1MzI5ODggMjguNzM4MjAzOCw4LjM0NDY2OTgyIEwyNS41ODA5MzQyLDMuNzQ0MzEyNzIgWiIgaWQ9Iui3r+W+hCIgZmlsbD0iIzRDNEY2MCIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPGcgaWQ9InNwYXJrIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyLjAwMDAwMCwgMTAuMDAwMDAwKSIgZmlsbD0iI0ZGRkZGRiI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxyZWN0IGlkPSLnn6nlvaIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0LjAwMDAwMCwgNC42MDAwMDApIHJvdGF0ZSg0Ny4wMDAwMDApIHRyYW5zbGF0ZSgtMTQuMDAwMDAwLCAtNC42MDAwMDApICIgeD0iMTAiIHk9IjQiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuMiIgcng9IjAuNiI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCBpZD0i55+p5b2i5aSH5Lu9IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0LjAwMDAwMCwgOC42MDAwMDApIHJvdGF0ZSg0Ny4wMDAwMDApIHRyYW5zbGF0ZSgtNC4wMDAwMDAsIC04LjYwMDAwMCkgIiB4PSIwLjUiIHk9IjgiIHdpZHRoPSI3IiBoZWlnaHQ9IjEuMiIgcng9IjAuNiI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCBpZD0i55+p5b2i5aSH5Lu9LTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5LjI1MDAwMCwgMTUuNjAwMDAwKSByb3RhdGUoNDcuMDAwMDAwKSB0cmFuc2xhdGUoLTE5LjI1MDAwMCwgLTE1LjYwMDAwMCkgIiB4PSIxNyIgeT0iMTUiIHdpZHRoPSI0LjUiIGhlaWdodD0iMS4yIiByeD0iMC42Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9IuakreWchuW9oiIgY3g9IjEwIiBjeT0iMC41IiByPSIxIj48L2NpcmNsZT4KICAgICAgICAgICAgICAgICAgICAgICAgPGNpcmNsZSBpZD0i5qSt5ZyG5b2i5aSH5Lu9LTMiIGN4PSIwLjUiIGN5PSI1IiByPSIxIj48L2NpcmNsZT4KICAgICAgICAgICAgICAgICAgICAgICAgPGNpcmNsZSBpZD0i5qSt5ZyG5b2i5aSH5Lu9LTQiIGN4PSIxNi41IiBjeT0iMTIuNSIgcj0iMSI+PC9jaXJjbGU+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=';
 
 // export const POS_NULL_ADDRESS = '0000000000000000000000000000000000000000000000000000000000000000';
-
-let APIHost = IS_TESTNET
-  ? `evmapi-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`
-  : `evmapi${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan.net`;
-
-const domain = window.location.hostname.includes('.io') ? '.io' : '.net';
-let APIHostCore = IS_TESTNET
-  ? `api-testnet${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`
-  : `api${IS_PRE_RELEASE ? '-stage' : ''}.confluxscan${domain}`;
-if (window.location.host.startsWith('net')) {
-  APIHost = window.location.host.replace(/cfx|eth/, 'api');
-  APIHostCore = window.location.host.replace(/cfx|eth/, 'api');
-}
-
-export const OPEN_API_HOST = APIHost;
-export const OPEN_API_HOST_CORE = APIHostCore;
 
 export const OPEN_API_URLS = Object.entries({
   // charts
@@ -242,7 +180,9 @@ export const OPEN_API_URLS = Object.entries({
 })
   .map(item => ({
     [item[0]]: `https://${
-      item[1] === '/statistics/mining' ? OPEN_API_HOST_CORE : OPEN_API_HOST
+      item[1] === '/statistics/mining'
+        ? ENV_CONFIG.ENV_CORE_API_HOST
+        : ENV_CONFIG.ENV_API_HOST
     }${item[1]}`,
   }))
   .reduce((prev, curr) => ({ ...prev, ...curr }), {});
@@ -251,24 +191,78 @@ export const OPEN_API_URLS = Object.entries({
 OPEN_API_URLS.contract = '/stat/contract/stat/list';
 OPEN_API_URLS.token = '/stat/daily-token-stat';
 
-export const IS_FOREIGN_HOST = /.io$/.test(window.location.host);
-
-export const NETWORK_CONFIG = {
-  chainId: NETWORK_ID,
-  chainName: !IS_TESTNET ? 'Conflux eSpace' : 'eSpace Testnet',
-  rpcUrls: [
-    !IS_TESTNET
-      ? 'https://evm.confluxrpc.com'
-      : 'https://evmtestnet.confluxrpc.com',
-  ],
-  blockExplorerUrls: [
-    !IS_TESTNET
-      ? 'https://evm.confluxscan.io/'
-      : 'https://evmtestnet.confluxscan.io/',
-  ],
-  nativeCurrency: {
-    name: 'Conflux',
-    symbol: 'CFX',
-    decimals: 18,
+export const CORE_SPACE_CHAIN_IDS = [1029, 1];
+export const ESPACE_CHAIN_IDS = [1030, 71, 8889];
+export const BSPACE_CHAIN_IDS = [8890];
+const MAINNET_NETWORK_OPTIONS = lodash.compact([
+  // espace
+  {
+    name: 'Conflux eSpace (Hydra)',
+    id: 1030,
+    url: IS_STAGE
+      ? `//evm-stage.confluxscan${DOMAIN}`
+      : `//evm.confluxscan${DOMAIN}`,
   },
+  // core space
+  {
+    name: 'Conflux Core (Hydra)',
+    id: 1029,
+    url: IS_STAGE
+      ? `//www-stage.confluxscan${DOMAIN}`
+      : `//confluxscan${DOMAIN}`,
+  },
+  // TODO-btc
+  // {
+  //   name: 'Conflux eSpace (Hydra)',
+  //   id: 1030,
+  //   url: IS_STAGE
+  //     ? `//btc-stage.confluxscan${DOMAIN}`
+  //     : `//btc.confluxscan${DOMAIN}`,
+  // },
+]);
+const TESTNET_NETWORK_OPTIONS = lodash.compact([
+  // espace
+  {
+    name: 'Conflux eSpace (Testnet)',
+    id: 71,
+    url: IS_STAGE
+      ? `//evmtestnet-stage.confluxscan${DOMAIN}`
+      : `//evmtestnet.confluxscan${DOMAIN}`,
+  },
+  // core space
+  {
+    name: 'Conflux Core (Testnet)',
+    id: 1,
+    url: IS_STAGE
+      ? `//testnet-stage.confluxscan${DOMAIN}`
+      : `//testnet.confluxscan${DOMAIN}`,
+  },
+  // TODO-btc
+  // {
+  //   name: 'Conflux eSpace (Testnet)',
+  //   id: 71,
+  //   url: IS_STAGE
+  //     ? `//btctestnet-stage.confluxscan${DOMAIN}`
+  //     : `//btctestnet.confluxscan${DOMAIN}`,
+  // },
+]);
+const DEVNET_NETWORK_OPTIONS = lodash.compact([
+  // espace
+  IS_DEVNET && {
+    name: 'Conflux eSpace (Devnet)',
+    id: 8889,
+    url: '//net8889eth.confluxscan.net',
+  },
+  // core space
+  // bspace
+  IS_DEVNET && {
+    name: 'Conflux bSpace (Devnet)',
+    id: 8890,
+    url: '//net8890btc.confluxscan.net',
+  },
+]);
+export const NETWORK_OPTIONS = {
+  mainnet: MAINNET_NETWORK_OPTIONS,
+  testnet: TESTNET_NETWORK_OPTIONS,
+  devnet: DEVNET_NETWORK_OPTIONS,
 };

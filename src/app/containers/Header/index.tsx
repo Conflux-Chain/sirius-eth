@@ -5,6 +5,7 @@
  */
 
 import React, { memo } from 'react';
+import lodash from 'lodash';
 import styled from 'styled-components/macro';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
@@ -19,17 +20,18 @@ import { useLocation } from 'react-router';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
-import { useGlobalData, GlobalDataType } from 'utils/hooks/useGlobal';
-import { getNetwork, gotoNetwork, getDomainTLD } from 'utils';
-import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
+import {
+  useGlobalData,
+  GlobalDataType,
+  NetworksType,
+} from 'utils/hooks/useGlobal';
+import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
-import logo from 'images/logo.svg';
-import logoTest from 'images/logo-test.svg';
-import IconCore from 'images/icon-core.svg';
-import IconEvm from 'images/icon-evm.svg';
+import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
+// TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
   const { networkId, networks } = globalData as GlobalDataType;
@@ -169,7 +171,11 @@ export const Header = memo(() => {
     },
   ];
 
-  if ([NETWORK_TYPES.mainnet, NETWORK_TYPES.testnet].includes(NETWORK_TYPE)) {
+  if (
+    [NETWORK_TYPES.EVM_MAINNET, NETWORK_TYPES.EVM_TESTNET].includes(
+      ENV_CONFIG.ENV_NETWORK_TYPE,
+    )
+  ) {
     const TLD = getDomainTLD();
     supportAndHelpMenuItems.unshift({
       title: [
@@ -179,7 +185,7 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.developerAPI,
       afterClick: menuClick,
       href:
-        NETWORK_TYPE === NETWORK_TYPES.testnet
+        ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
           ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
           : `https://evmapi.confluxscan.${TLD}/doc`,
     });
@@ -192,10 +198,10 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.stakingAndGovernance,
       afterClick: menuClick,
       href: iszh
-        ? NETWORK_TYPE === NETWORK_TYPES.testnet
+        ? ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
           ? 'https://test.confluxhub.io/governance/'
           : 'https://confluxhub.io/governance/'
-        : NETWORK_TYPE === NETWORK_TYPES.testnet
+        : ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
         ? 'https://test.confluxhub.io/governance/'
         : 'https://confluxhub.io/governance/',
     });
@@ -208,7 +214,7 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.crossSpace,
       afterClick: menuClick,
       href:
-        NETWORK_TYPE === NETWORK_TYPES.testnet
+        ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
           ? 'https://test.confluxhub.io/'
           : 'https://confluxhub.io/',
     });
@@ -225,7 +231,7 @@ export const Header = memo(() => {
     // });
   }
 
-  if (NETWORK_TYPE === NETWORK_TYPES.testnet) {
+  if (ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET) {
     toolItems.unshift({
       title: [t(translations.header.faucet), <Check size={18} key="check" />],
       name: ScanEvent.menu.action.faucet,
@@ -281,7 +287,7 @@ export const Header = memo(() => {
             {
               // cfx transfers
               title: [
-                t(translations.header.cfxTransfers),
+                t(translations.header.transfers),
                 <Check size={18} key="check" />,
               ],
               name: ScanEvent.menu.action.cfxTransfers,
@@ -530,53 +536,67 @@ export const Header = memo(() => {
     // // },
   ];
 
+  const getNetworkLink = (n: NetworksType) => {
+    const isMatch = n.id === networkId;
+    return {
+      title: [
+        <NetWorkWrapper>
+          <img src={getNetworkIcon(n.id)} alt="" />
+          {n.name}
+        </NetWorkWrapper>,
+        isMatch && <Check size={18} key="check" />,
+      ],
+      onClick: () => {
+        trackEvent({
+          category: ScanEvent.preference.category,
+          action: ScanEvent.preference.action.changeNet,
+          label: n.name,
+        });
+
+        menuClick();
+
+        setGlobalData({
+          ...globalData,
+          networkId: n.id,
+        });
+
+        gotoNetwork(n.url);
+      },
+      isMatchedFn: () => isMatch,
+    };
+  };
+
   const endLinks: HeaderLinks = [
     {
       // switch network
       name: 'switch-network',
       title: (
         <NetWorkWrapper>
-          <img
-            src={[1029, 1].includes(networkId) ? IconCore : IconEvm}
-            alt="Network"
-          />
+          <img src={getNetworkIcon(networkId)} alt="Network" />
           {getNetwork(networks, networkId).name}
         </NetWorkWrapper>
       ),
       className: 'not-link',
-      children:
-        networks.length < 2
-          ? []
-          : networks.map(n => {
-              const isMatch = n.id === networkId;
-              const isCore = [1029, 1].includes(n.id);
-              return {
-                title: [
-                  <NetWorkWrapper>
-                    <img src={isCore ? IconCore : IconEvm} alt="" />
-                    {n.name}
-                  </NetWorkWrapper>,
-                  isMatch && <Check size={18} key="check" />,
-                ],
-                onClick: () => {
-                  trackEvent({
-                    category: ScanEvent.preference.category,
-                    action: ScanEvent.preference.action.changeNet,
-                    label: n.name,
-                  });
-
-                  menuClick();
-
-                  setGlobalData({
-                    ...globalData,
-                    networkId: n.id,
-                  });
-
-                  gotoNetwork(n.id);
-                },
-                isMatchedFn: () => isMatch,
-              };
-            }),
+      children: lodash.compact([
+        {
+          title: false,
+          plain: true,
+          vertical: true,
+          children: networks.mainnet.map(getNetworkLink),
+        },
+        {
+          title: false,
+          plain: true,
+          vertical: true,
+          children: networks.testnet.map(getNetworkLink),
+        },
+        networks.devnet.length > 0 && {
+          title: false,
+          plain: true,
+          vertical: true,
+          children: networks.devnet.map(getNetworkLink),
+        },
+      ]),
     },
   ];
 
@@ -639,7 +659,7 @@ export const Header = memo(() => {
         <img
           className="confi-logo"
           alt="conflux scan logo"
-          src={NETWORK_TYPE === NETWORK_TYPES.testnet ? logoTest : logo}
+          src={ENV_CONFIG.ENV_LOGO}
         />
       </RouterLink>
     </LogoWrapper>

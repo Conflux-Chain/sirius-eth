@@ -112,7 +112,7 @@ export const StatsCard = ({
     case StatsType.overviewTransactions:
       columns = [
         {
-          title: t(translations.statistics.overviewColumns.totalCFXSent),
+          title: t(translations.statistics.overviewColumns.totalSent),
           index: 'cfxAmount',
           more: '/charts/cfx-transfer',
           unit: 'CFX',

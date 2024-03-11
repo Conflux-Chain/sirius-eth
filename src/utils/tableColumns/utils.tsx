@@ -9,6 +9,7 @@ import { CountDown } from 'app/components/CountDown/Loadable';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
 import { Text } from 'app/components/Text/Loadable';
 import queryString from 'query-string';
+import ENV_CONFIG from 'env';
 
 export interface ContentWrapperProps {
   children: React.ReactNode;
@@ -133,7 +134,7 @@ export const ColumnAge = ({
 };
 
 const AgeTHeader = styled.div`
-  color: #1e3de4;
+  color: ${ENV_CONFIG.ENV_THEME.linkColor};
   cursor: pointer;
 `;
 

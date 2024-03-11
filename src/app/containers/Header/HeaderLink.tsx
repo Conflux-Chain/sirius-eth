@@ -9,8 +9,9 @@ import { useClickAway, useToggle } from 'react-use';
 import { ScanEvent } from '../../../utils/gaConstants';
 import { trackEvent } from '../../../utils/ga';
 import { Link } from '../../components/Link/Loadable';
+import ENV_CONFIG from 'env';
 
-export type HeaderLinkTitle = ReactNode | Array<ReactNode>;
+export type HeaderLinkTitle = ReactNode | Array<ReactNode> | false;
 
 export interface HeaderLink {
   title: HeaderLinkTitle;
@@ -23,6 +24,7 @@ export interface HeaderLink {
   matched?: boolean;
   afterClick?: any;
   plain?: boolean;
+  vertical?: boolean;
 }
 
 export type HeaderLinks = HeaderLink[];
@@ -40,6 +42,7 @@ export function genParseLinkFn(links: HeaderLinks, level = 0) {
       matched: customMatched,
       afterClick,
       plain,
+      vertical,
     } = link;
 
     let matched: boolean = customMatched || false;
@@ -66,15 +69,15 @@ export function genParseLinkFn(links: HeaderLinks, level = 0) {
         href={href}
         name={name}
         level={level}
-        className={`navbar-link level-${level} ${
-          plain ? 'plain' : ''
+        className={`navbar-link level-${level} ${plain ? 'plain' : ''} ${
+          vertical ? 'vertical' : ''
         } ${className}`}
         onClick={onClick}
         matched={matched}
         afterClick={afterClick}
         plain={plain}
       >
-        {plain ? <span>{title}</span> : title}
+        {title === false ? null : plain ? <span>{title}</span> : title}
         <SubLinkWrap
           className={`sub-link-wrap level-${level} ${plain ? 'plain' : ''}`}
         >
@@ -106,12 +109,7 @@ const Menu = styled.div<{ name?: string }>`
     }
     &.level-1.matched,
     &.level-2.matched {
-      color: white;
-      background-color: var(--theme-color-green0);
-
-      :hover {
-        color: white;
-      }
+      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
 
       svg {
         margin-left: 1rem;
@@ -310,13 +308,10 @@ const WrappLink = styled.span`
     cursor: pointer;
     font-weight: 500;
     &:hover {
-      color: var(--theme-color-green2) !important;
+      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
     }
     &.matched {
-      color: var(--theme-color-green2) !important;
-      &:hover {
-        color: var(--theme-color-green2) !important;
-      }
+      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
     }
     * {
       transition: none !important;
@@ -368,7 +363,7 @@ const WrappLink = styled.span`
 
     &.level-1,
     &.level-2 {
-      color: #65709a;
+      color: #424a71;
 
       ${media.m} {
         color: #eeeeee;
@@ -386,12 +381,14 @@ const WrappLink = styled.span`
       padding-top: 0.43rem;
       padding-bottom: 0.43rem;
       &.matched {
-        color: #fff !important;
-        background-color: var(--theme-color-green0);
+        color: ${ENV_CONFIG.ENV_THEME.primary} !important;
       }
-      :hover:not(.matched) {
-        color: #fff !important;
-        background-color: var(--theme-color-green0);
+      :hover {
+        &:not(.matched) {
+          color: #424a71 !important;
+        }
+        border-radius: 0.14286rem;
+        background: #f5f6fa;
       }
     }
 
@@ -425,8 +422,14 @@ const WrappLink = styled.span`
       }
     }
   }
+  &.plain-wrap.level-1.vertical:not(:first-child) {
+    display: block;
+    border-top: 1px solid #e8e9ea;
+    padding-top: 8px;
+    margin-top: 8px;
+  }
 
-  &.plain-wrap.level-1 {
+  &.plain-wrap.level-1:not(.vertical) {
     &:last-child {
       border-left: 1px solid #eee;
     }

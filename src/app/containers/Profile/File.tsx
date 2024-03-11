@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { message } from '@cfxjs/antd';
 import MD5 from 'md5.js';
+import ENV_CONFIG from 'env';
 
 interface Props {
   onLoading?: (loading: boolean) => void;
@@ -55,7 +56,7 @@ export const File = ({ onLoading = () => {} }: Props) => {
         let updateAmount = 0;
         // New imports have higher priority
         const tags = lodash
-          .unionWith(addressNameTags, oldList, (arrVal, othVal) => {
+          .unionWith<any>(addressNameTags, oldList, (arrVal, othVal) => {
             if (arrVal.a === othVal.a) {
               if (arrVal.l !== othVal.l) {
                 updateAmount += 1;
@@ -108,7 +109,7 @@ export const File = ({ onLoading = () => {} }: Props) => {
         let updateAmount = 0;
         // New imports have higher priority
         const notes = lodash
-          .unionWith(txPrivateNotes, oldList, (arrVal, othVal) => {
+          .unionWith<any>(txPrivateNotes, oldList, (arrVal, othVal) => {
             if (arrVal.h === othVal.h) {
               if (arrVal.n !== othVal.n) {
                 updateAmount += 1;
@@ -232,11 +233,11 @@ const StyledFileManagementWrapper = styled.div`
   text-align: right;
 
   .button {
-    color: #1e3de4;
+    color: ${ENV_CONFIG.ENV_THEME.linkColor};
     cursor: pointer;
 
     &:hover {
-      color: #0f23bd;
+      color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
     }
   }
 `;

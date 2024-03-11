@@ -20,6 +20,7 @@ import { formatAddress, isBlockNumber, isHash } from 'utils';
 import { appendApiPrefix } from 'utils/api';
 import verifiedIcon from 'images/nametag/verified.svg';
 import warningIcon from 'images/nametag/warning.svg';
+import ENV_CONFIG from 'env';
 
 const { Search: SearchInput } = Input;
 
@@ -322,10 +323,10 @@ const Container = styled.div`
     }
 
     .ant-input-search-button {
-      background-color: var(--theme-color-green0);
+      background-color: ${ENV_CONFIG.ENV_THEME.searchButtonBg};
 
       &:hover {
-        background-color: var(--theme-color-green2);
+        background-color: ${ENV_CONFIG.ENV_THEME.searchButtonHoverBg};
         /* opacity: 0.85; */
       }
     }
