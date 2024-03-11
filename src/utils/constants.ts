@@ -205,7 +205,7 @@ const MAINNET_NETWORK_OPTIONS = lodash.compact([
   },
   // core space
   {
-    name: 'Conflux Hydra',
+    name: 'Conflux Core (Hydra)',
     id: 1029,
     url: IS_STAGE
       ? `//www-stage.confluxscan${DOMAIN}`
