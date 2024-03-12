@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import { FileUpload } from 'app/components/FileUpload';
-import { LOCALSTORAGE_KEYS_MAP, NETWORK_ID } from 'utils/constants';
+import { NETWORK_ID } from 'utils/constants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import lodash from 'lodash';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
@@ -10,6 +10,7 @@ import { translations } from 'locales/i18n';
 import { message } from '@cfxjs/antd';
 import MD5 from 'md5.js';
 import ENV_CONFIG from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Props {
   onLoading?: (loading: boolean) => void;

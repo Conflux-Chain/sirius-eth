@@ -53,12 +53,12 @@ import _ from 'lodash';
 import imgChevronDown from 'images/chevronDown.png';
 import { renderAddress } from 'utils/tableColumns/token';
 import { NFTPreview } from '../../components/NFTPreview/Loadable';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { CreateTxNote } from '../Profile/CreateTxNote';
 import { useNametag } from 'utils/hooks/useNametag';
 
 import iconInfo from 'images/info.svg';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
