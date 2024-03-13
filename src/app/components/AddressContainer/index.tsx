@@ -12,8 +12,8 @@ import VerifiedIcon from 'images/verified.png';
 import { media, sizes } from 'styles/media';
 import { monospaceFont } from 'styles/variable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { IS_MAINNET } from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Props {
   value: string; // address value

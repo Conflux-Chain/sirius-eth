@@ -27,7 +27,7 @@ function Info(title, number: any) {
 const reqCorePlotData = async () => {
   try {
     const response = await fetch(
-      `https://${ENV_CONFIG.ENV_CORE_SCAN_HOST}/v1/plot?interval=133&limit=7`,
+      `${ENV_CONFIG.ENV_CORE_SCAN_HOST}/v1/plot?interval=133&limit=7`,
     );
 
     return await response.json();

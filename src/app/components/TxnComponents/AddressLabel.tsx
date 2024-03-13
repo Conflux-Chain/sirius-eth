@@ -1,10 +1,10 @@
 import React from 'react';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { Bookmark } from '@zeit-ui/react-icons';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Text } from '../Text/Loadable';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 export const AddressLabel = ({ address }) => {
   const [globalData = {}] = useGlobalData();

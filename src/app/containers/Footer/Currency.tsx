@@ -5,9 +5,9 @@ import { translations } from 'locales/i18n';
 import styled from 'styled-components/macro';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { useGlobal } from 'utils/hooks/useGlobal';
 import ENV_CONFIG from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 export function Currency() {
   const { t } = useTranslation();
