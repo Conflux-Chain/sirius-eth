@@ -471,7 +471,7 @@ const WrappLink = styled.span`
       color: #aab9eb;
       padding-top: 0.43rem;
       padding-bottom: 0.43rem;
-      :hover {
+      &:hover {
         color: #aab9eb;
       }
       &.level-0 {
