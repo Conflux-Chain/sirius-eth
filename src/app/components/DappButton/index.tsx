@@ -198,7 +198,7 @@ const BtnContainer = styled.div`
     background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
     border-color: ${ENV_CONFIG.ENV_THEME.linkColor};
     --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkColor};
-    :hover {
+    &:hover {
       background-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
       border-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
       --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
