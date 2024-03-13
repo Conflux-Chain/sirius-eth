@@ -3,7 +3,7 @@ import { Translation } from 'react-i18next';
 import { translations } from '../../locales/i18n';
 import styled from 'styled-components';
 import { Text } from '../../app/components/Text/Loadable';
-import { formatNumber, formatString, getNametagInfo } from '..';
+import { formatNumber, formatString, getNametagInfo } from '../';
 import { AddressContainer } from '../../app/components/AddressContainer';
 import { ContentWrapper } from './utils';
 
