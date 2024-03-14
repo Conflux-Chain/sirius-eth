@@ -17,7 +17,7 @@ import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
 import { Nametag } from 'utils/hooks/useNametag';
-import ENV_CONFIG, { IS_BSPACE, IS_ESPACE } from 'env';
+import ENV_CONFIG from 'env';
 import IconCore from 'images/core-space/icon.svg';
 import IconEvm from 'images/espace/icon.svg';
 import IconBtc from 'images/bspace/icon.svg';
@@ -880,7 +880,7 @@ export const getNetwork = (
 };
 
 export const gotoNetwork = (networkUrl: string): void => {
-  window.location.assign(networkUrl);
+  networkUrl && window.location.assign(networkUrl);
 };
 
 export const getNetworkIcon = (
@@ -899,11 +899,6 @@ export const getNetworkIcon = (
   } else if (isEvm) {
     return IconEvm;
   } else if (isBtc) {
-    return IconBtc;
-  }
-  if (IS_ESPACE) {
-    return IconEvm;
-  } else if (IS_BSPACE) {
     return IconBtc;
   }
 };

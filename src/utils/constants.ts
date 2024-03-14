@@ -170,18 +170,10 @@ export const OPEN_API_URLS = Object.entries({
 OPEN_API_URLS.contract = '/stat/contract/stat/list';
 OPEN_API_URLS.token = '/stat/daily-token-stat';
 
-export const CORE_SPACE_CHAIN_IDS = [1029, 1];
+export const CORE_SPACE_CHAIN_IDS = [1029, 1, 8888];
 export const ESPACE_CHAIN_IDS = [1030, 71, 8889];
 export const BSPACE_CHAIN_IDS = [8890];
 const MAINNET_NETWORK_OPTIONS = lodash.compact([
-  // espace
-  {
-    name: 'Conflux eSpace (Hydra)',
-    id: 1030,
-    url: IS_STAGE
-      ? `//evm-stage.confluxscan${DOMAIN}`
-      : `//evm.confluxscan${DOMAIN}`,
-  },
   // core space
   {
     name: 'Conflux Core (Hydra)',
@@ -189,6 +181,14 @@ const MAINNET_NETWORK_OPTIONS = lodash.compact([
     url: IS_STAGE
       ? `//www-stage.confluxscan${DOMAIN}`
       : `//confluxscan${DOMAIN}`,
+  },
+  // espace
+  {
+    name: 'Conflux eSpace (Hydra)',
+    id: 1030,
+    url: IS_STAGE
+      ? `//evm-stage.confluxscan${DOMAIN}`
+      : `//evm.confluxscan${DOMAIN}`,
   },
   // TODO-btc
   // {
@@ -200,14 +200,6 @@ const MAINNET_NETWORK_OPTIONS = lodash.compact([
   // },
 ]);
 const TESTNET_NETWORK_OPTIONS = lodash.compact([
-  // espace
-  {
-    name: 'Conflux eSpace (Testnet)',
-    id: 71,
-    url: IS_STAGE
-      ? `//evmtestnet-stage.confluxscan${DOMAIN}`
-      : `//evmtestnet.confluxscan${DOMAIN}`,
-  },
   // core space
   {
     name: 'Conflux Core (Testnet)',
@@ -215,6 +207,14 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
     url: IS_STAGE
       ? `//testnet-stage.confluxscan${DOMAIN}`
       : `//testnet.confluxscan${DOMAIN}`,
+  },
+  // espace
+  {
+    name: 'Conflux eSpace (Testnet)',
+    id: 71,
+    url: IS_STAGE
+      ? `//evmtestnet-stage.confluxscan${DOMAIN}`
+      : `//evmtestnet.confluxscan${DOMAIN}`,
   },
   // TODO-btc
   // {
@@ -226,13 +226,20 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
   // },
 ]);
 const DEVNET_NETWORK_OPTIONS = lodash.compact([
+  // core space
+  IS_DEVNET && {
+    name: 'Conflux Core (Devnet)',
+    id: 8888,
+    url: IS_STAGE
+      ? '//net8888cfx.confluxscan.net'
+      : `//net8888cfx.confluxscan${DOMAIN}`,
+  },
   // espace
   IS_DEVNET && {
     name: 'Conflux eSpace (Devnet)',
     id: 8889,
     url: '//net8889eth.confluxscan.net',
   },
-  // core space
   // bspace
   IS_DEVNET && {
     name: 'Conflux bSpace (Devnet)',
