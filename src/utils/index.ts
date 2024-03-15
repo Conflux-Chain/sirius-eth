@@ -26,9 +26,10 @@ import {
   getEllipsStr,
   toThousands,
   formatNumber,
+  roundToFixedPrecision,
 } from 'sirius-next/packages/common/dist/utils';
 
-export { formatNumber, toThousands };
+export { formatNumber, toThousands, roundToFixedPrecision };
 // @ts-ignore
 window.SDK = SDK;
 // @ts-ignore
@@ -309,40 +310,6 @@ export const getPercent = (
   }
 
   return `${percentageNum}%`;
-};
-
-export const roundToFixedPrecision = (
-  number: number | string,
-  precision: number,
-  method: string = 'ROUND',
-) => {
-  if (typeof number === 'string' && number.includes('<')) {
-    return number;
-  }
-
-  const regex = /^([+-]?[0-9]*\.?[0-9]+)(\D*)$/;
-  let matches = String(number).match(regex);
-  if (!matches) {
-    matches = [String(number), ''];
-  }
-  const suffix = matches[2];
-
-  const numberFormat = parseFloat(matches[1]);
-  const factor = Math.pow(10, precision);
-  let resultNum: number;
-
-  switch (method) {
-    case 'FLOOR':
-      resultNum = Math.floor(numberFormat * factor) / factor;
-      break;
-    case 'CEIL':
-      resultNum = Math.ceil(numberFormat * factor) / factor;
-      break;
-    case 'ROUND':
-    default:
-      resultNum = Math.round((numberFormat + Number.EPSILON) * factor) / factor;
-  }
-  return resultNum.toFixed(precision) + suffix;
 };
 
 export const roundToPrecision = (
