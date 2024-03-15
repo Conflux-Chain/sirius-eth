@@ -1,9 +1,7 @@
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import fetch from './request';
 import { getAccount } from './rpcRequest';
-import { Buffer } from 'buffer';
 import { GlobalDataType, NetworksType } from './hooks/useGlobal';
 import {
   NETWORK_ID,
@@ -27,9 +25,67 @@ import {
   toThousands,
   formatNumber,
   roundToFixedPrecision,
+  getPercent,
+  formatTimeStamp,
+  fromGdripToDrip,
+  fromCfxToDrip,
+  formatBalance,
+  isHash,
+  isBlockHash,
+  isTxHash,
+  validURL,
+  byteToKb,
+  isObject,
+  checkInt,
+  checkUint,
+  isHex,
+  checkBytes,
+  checkCfxType,
+  sleep,
+  getTimeByBlockInterval,
+  isSafeNumberOrNumericStringInput,
+  isZeroOrPositiveInteger,
+  parseString,
+  getInitialDate,
+  addIPFSGateway,
+  convertBigNumbersToStrings,
+  convertObjBigNumbersToStrings,
+  constprocessResultArray,
+  formatLargeNumber,
 } from 'sirius-next/packages/common/dist/utils';
 
-export { formatNumber, toThousands, roundToFixedPrecision };
+export {
+  formatNumber,
+  toThousands,
+  roundToFixedPrecision,
+  getPercent,
+  formatTimeStamp,
+  fromGdripToDrip,
+  fromCfxToDrip,
+  formatBalance,
+  isHash,
+  isBlockHash,
+  isTxHash,
+  validURL,
+  byteToKb,
+  isObject,
+  checkInt,
+  checkUint,
+  isHex,
+  checkBytes,
+  checkCfxType,
+  sleep,
+  getTimeByBlockInterval,
+  isSafeNumberOrNumericStringInput,
+  isZeroOrPositiveInteger,
+  parseString,
+  getInitialDate,
+  addIPFSGateway,
+  convertBigNumbersToStrings,
+  convertObjBigNumbersToStrings,
+  constprocessResultArray,
+  formatLargeNumber,
+};
 // @ts-ignore
 window.SDK = SDK;
 // @ts-ignore
@@ -279,361 +335,12 @@ export const fromDripToGdrip = (
   return `${result}`;
 };
 
-export const fromGdripToDrip = (num: number | string) =>
-  new BigNumber(num).multipliedBy(10 ** 9);
-
-export const fromCfxToDrip = (num: number | string) =>
-  new BigNumber(num).multipliedBy(10 ** 18);
-
-export const getPercent = (
-  divisor: number | string,
-  dividend: number | string,
-  precision?: number,
-) => {
-  if (Number(dividend) === 0) return 0 + '%';
-  const bnDivisor = new BigNumber(divisor);
-  const bnDividend = new BigNumber(dividend);
-  const percentageNum = formatNumber(
-    bnDivisor.dividedBy(bnDividend).multipliedBy(100).toNumber(),
-  );
-  if (precision || precision === 0) {
-    const percentageNumPrecision = roundToFixedPrecision(
-      percentageNum,
-      precision,
-    );
-    if (percentageNumPrecision === '100.00') {
-      return '100%';
-    } else if (percentageNumPrecision === '0.00') {
-      return '0%';
-    }
-    return roundToFixedPrecision(percentageNum, precision) + '%';
-  }
-
-  return `${percentageNum}%`;
-};
-
-export const roundToPrecision = (
-  num: string | number,
-  precision: number,
-): string => {
-  console.log(num);
-  const number = typeof num === 'string' ? parseFloat(num) : num;
-  console.log(number);
-  if (isNaN(number)) {
-    throw new Error('Provided value is not a valid number');
-  }
-  // 执行四舍五入操作
-  const factor = Math.pow(10, precision);
-  return (Math.round((number + Number.EPSILON) * factor) / factor).toFixed(
-    precision,
-  );
-};
-
-export const formatTimeStamp = (
-  time: number,
-  type?: 'standard' | 'timezone',
-) => {
-  let result: string;
-  try {
-    switch (type) {
-      case 'standard':
-        result = dayjs(time).format('YYYY-MM-DD HH:mm:ss');
-        break;
-      case 'timezone':
-        result = dayjs(time).format('YYYY-MM-DD HH:mm:ss Z');
-        break;
-      default:
-        result = dayjs(time).format('YYYY-MM-DD HH:mm:ss');
-    }
-  } catch (error) {
-    result = '';
-  }
-  return result;
-};
-
-export const formatBalance = (
-  balance,
-  decimals = 18,
-  isShowFull = false,
-  opt = {},
-  ltValue?,
-) => {
-  try {
-    const num = new BigNumber(balance).div(new BigNumber(10).pow(decimals));
-    if (num.eq(0)) {
-      return num.toFixed();
-    }
-    if (isShowFull) {
-      return toThousands(num.toFixed());
-    }
-    if (ltValue && num.lt(ltValue)) {
-      return `<${ltValue}`;
-    }
-    return formatNumber(num.toString(), opt);
-  } catch {
-    return '';
-  }
-};
-
-interface BodyElement extends HTMLBodyElement {
-  createTextRange?(): Range;
-}
-
-export const selectText = (element: HTMLElement) => {
-  var range,
-    selection,
-    body = document.body as BodyElement;
-  if (body.createTextRange) {
-    range = body.createTextRange();
-    range.moveToElementText(element);
-    range.select();
-  } else if (window.getSelection) {
-    selection = window.getSelection();
-    range = document.createRange();
-    range.selectNodeContents(element);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-};
-
-export const isHash = (str: string) => {
-  return /^0x[0-9a-fA-F]{64}$/.test(str);
-};
-
-export const isBlockHash = async (str: string) => {
-  if (!isHash(str)) return false;
-  let isBlock = true;
-  try {
-    const block = await fetch(`/v1/block/${str}`);
-    // server side will return {} when no block found
-    if (!block.hash || block.code !== undefined) isBlock = false;
-  } catch (err) {
-    isBlock = false;
-  }
-
-  return isBlock;
-};
-
-export const isTxHash = async (str: string) => {
-  if (!isHash(str)) return false;
-  return !isBlockHash(str);
-};
-
 // Is input match epoch number format
 // 0x??? need to convert to decimal int
 export function isBlockNumber(str: string) {
   var n = Math.floor(Number(str));
   return n !== Infinity && String(n) === str && n >= 0;
 }
-
-export function validURL(str: string) {
-  var pattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-    'i',
-  ); // fragment locator
-  return !!pattern.test(str);
-}
-
-export function byteToKb(bytes) {
-  return bytes / 1024;
-}
-
-export function isObject(o) {
-  return o !== null && typeof o === 'object' && Array.isArray(o) === false;
-}
-
-export function checkInt(value, type) {
-  const num = Number(type.substr(3));
-  const min = new BigNumber(2).pow(num - 1).multipliedBy(-1);
-  const max = new BigNumber(2).pow(num - 1).minus(1);
-  let isType = false;
-  if (!isNaN(value)) {
-    const valNum = new BigNumber(value);
-    if (
-      valNum.isInteger() &&
-      valNum.isGreaterThanOrEqualTo(min) &&
-      valNum.isLessThanOrEqualTo(max)
-    ) {
-      isType = true;
-    } else {
-      isType = false;
-    }
-  } else {
-    isType = false;
-  }
-  return [isType, num, min.toString(), max.toString()];
-}
-
-export function checkUint(value, type) {
-  const num = Number(type.substr(4));
-  const min = new BigNumber(0);
-  const max = new BigNumber(Math.pow(2, num)).minus(1);
-  let isType = false;
-  if (!isNaN(value)) {
-    const valNum = new BigNumber(value);
-    if (
-      valNum.isInteger() &&
-      valNum.isGreaterThanOrEqualTo(min) &&
-      valNum.isLessThanOrEqualTo(max)
-    ) {
-      isType = true;
-    } else {
-      isType = false;
-    }
-  } else {
-    isType = false;
-  }
-  return [isType, num, min.toFixed(), max.toFixed()];
-}
-
-export function isHex(num, withPrefix = true) {
-  const reg = withPrefix ? /^0x[0-9a-f]*$/i : /^(0x)?[0-9a-f]*$/i;
-  return Boolean(num.match(reg));
-}
-
-export function isEvenLength(str) {
-  const length = str.length;
-  return length > 0 && length % 2 === 0;
-}
-
-export function checkBytes(value, type) {
-  if (type === 'byte') {
-    type = 'bytes1';
-  }
-  const num = Number(type.substr(5));
-  let isBytes = false;
-  if (!value) return [isBytes, num];
-  if (isHex(value) && isEvenLength(value)) {
-    if (num > 0) {
-      const str = value.substr(2);
-      const buffer = Buffer.from(str, 'hex');
-      if (buffer.length === num) {
-        isBytes = true;
-      } else {
-        isBytes = false;
-      }
-    } else {
-      isBytes = true;
-    }
-  } else {
-    isBytes = false;
-  }
-  return [isBytes, num];
-}
-
-export function checkCfxType(value) {
-  if (isNaN(value)) {
-    return false;
-  }
-  const valNum = new BigNumber(value);
-  if (valNum.isNegative()) {
-    return false;
-  }
-  let index = value.indexOf('.');
-  if (index !== -1) {
-    if (value.substr(index + 1).length > 18) {
-      return false;
-    } else {
-      return true;
-    }
-  } else {
-    return true;
-  }
-}
-
-export const sleep = timeout =>
-  new Promise(resolve => setTimeout(resolve, timeout));
-
-// get two block interval time
-export const getTimeByBlockInterval = (minuend = 0, subtrahend = 0) => {
-  const seconds = new BigNumber(minuend)
-    .minus(subtrahend)
-    .dividedBy(2)
-    .toNumber();
-  const dayBase = 86400;
-  const hourBase = 3600;
-  const days = Math.floor(seconds / dayBase);
-  const deltaSecond = seconds - days * 86400;
-  const hours = Math.floor(deltaSecond / hourBase);
-  return { days, hours, seconds };
-};
-
-export const addDays = (date, days) => {
-  var result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-};
-
-/**
- *
- * @param {number|string} data
- * @returns {boolean}
- * @example
- * 0    -> true
- * .    -> true
- * 0.   -> true
- * .0   -> true
- * 0.0  -> true
- * 0..0 -> false
- * x    -> false
- * e    -> false
- * @todo support config, such as negative and exponential notation
- */
-
-/**
- *
- * @param {number|string} data
- * @returns {boolean}
- * @example
- * 0    -> true
- * .    -> false
- * 11   -> true
- * 011  -> false
- * -1   -> false
- */
-export const isSafeNumberOrNumericStringInput = data =>
-  /^\d+\.?\d*$|^\.\d*$/.test(data);
-
-export const isZeroOrPositiveInteger = data => /^(0|[1-9]\d*)$/.test(data);
-
-export const parseString = v => {
-  if (typeof v === 'string' && !v.startsWith('0x')) {
-    return Buffer.from(v);
-  }
-  return v;
-};
-
-// process datepicker initial value
-export const getInitialDate = (minTimestamp, maxTimestamp) => {
-  const startDate = dayjs('2020-10-29T00:00:00+08:00');
-  const endDate = dayjs();
-  const innerMinTimestamp = minTimestamp
-    ? dayjs(new Date(parseInt((minTimestamp + '000') as string)))
-    : startDate;
-  const innerMaxTimestamp = maxTimestamp
-    ? dayjs(new Date(parseInt((maxTimestamp + '000') as string)))
-    : endDate;
-  const disabledDateD1 = date =>
-    date &&
-    (date > innerMaxTimestamp.endOf('day') ||
-      date < startDate.subtract(1, 'day').endOf('day'));
-  const disabledDateD2 = date =>
-    date &&
-    (date < innerMinTimestamp.subtract(1, 'day').endOf('day') ||
-      date > endDate.endOf('day'));
-
-  return {
-    minT: innerMinTimestamp,
-    maxT: innerMaxTimestamp,
-    dMinT: disabledDateD1,
-    dMaxT: disabledDateD2,
-  };
-};
 
 export const getNetwork = (
   networks: GlobalDataType['networks'],
@@ -782,21 +489,6 @@ export const formatContractAndTokenInfoMap = m => {
 export const getDomainTLD = () =>
   (window.location.host.match(/scan\.(.*)$/) || [])[1] || 'net';
 
-export const addIPFSGateway = (
-  imgURL: string,
-  IPFSGatewayURL: string,
-): string => {
-  if (
-    typeof imgURL === 'string' &&
-    typeof IPFSGatewayURL === 'string' &&
-    imgURL.startsWith('ipfs://')
-  ) {
-    imgURL = `${IPFSGatewayURL}/${imgURL.replace('ipfs://', 'ipfs/')}`;
-  }
-
-  return imgURL;
-};
-
 const cSymbol = getCurrencySymbol();
 
 export const formatPrice = (
@@ -894,115 +586,4 @@ export const getNametagInfo = (row: {
   } catch (e) {}
 
   return result;
-};
-
-export const isLikeBigNumber = obj => {
-  if (obj === null || typeof obj !== 'object') {
-    return false;
-  }
-  return 's' in obj && 'e' in obj && 'c' in obj && Array.isArray(obj.c);
-};
-
-type NestedArray = (string | number | BigNumber | NestedArray)[];
-type NestedObject = {
-  [key: string]: BigNumber | string | NestedObject | NestedObject[];
-};
-export const convertBigNumbersToStrings = (input: NestedArray) => {
-  return input.map(item => {
-    if (item instanceof Uint8Array) {
-      return item;
-    }
-    if (Array.isArray(item)) {
-      return convertBigNumbersToStrings(item);
-    } else if (
-      item !== null &&
-      typeof item === 'object' &&
-      !isLikeBigNumber(item)
-    ) {
-      return convertObjBigNumbersToStrings(item);
-    } else if (isLikeBigNumber(item)) {
-      return item.toString(10);
-    } else {
-      return item;
-    }
-  });
-};
-export const convertObjBigNumbersToStrings = input => {
-  const newObj: NestedObject = {};
-  if (Array.isArray(input)) {
-    return convertBigNumbersToStrings(input);
-  }
-  for (let key in input) {
-    if (isLikeBigNumber(input[key])) {
-      newObj[key] = input[key].toString(10);
-    } else if (Array.isArray(input[key])) {
-      newObj[key] = convertBigNumbersToStrings(input[key]);
-    } else if (typeof input[key] === 'object') {
-      newObj[key] = convertObjBigNumbersToStrings(input[key] as NestedObject);
-    } else {
-      newObj[key] = input[key];
-    }
-  }
-  return newObj;
-};
-
-export const constprocessResultArray = resultArray => {
-  if (typeof resultArray === 'string') {
-    return resultArray;
-  }
-  const processElement = element => {
-    if (Array.isArray(element)) {
-      return element.map(processElement);
-    } else if (element.type && element.type === 'Buffer') {
-      let result = element.data
-        .map(byte => ('00' + byte.toString(16)).slice(-2))
-        .join('');
-      if (!result.startsWith('0x')) {
-        result = '0x' + result;
-      }
-      return result;
-    } else {
-      return element;
-    }
-  };
-
-  const inputArray = Array.isArray(resultArray) ? resultArray : [resultArray];
-  return inputArray.map(processElement);
-};
-
-export const formatLargeNumber = (number: string | number) => {
-  const num = new BigNumber(number);
-
-  if (num.isNaN()) {
-    return { value: null, unit: '' };
-  }
-
-  const T = new BigNumber(10).pow(12);
-  const P = new BigNumber(10).pow(15);
-  const E = new BigNumber(10).pow(18);
-
-  if (num.isGreaterThanOrEqualTo(E)) {
-    const result = num.dividedBy(E);
-    return {
-      value: result.isNaN() ? null : result.toString(),
-      unit: 'E',
-    };
-  } else if (num.isGreaterThanOrEqualTo(P)) {
-    const result = num.dividedBy(P);
-    return {
-      value: result.isNaN() ? null : result.toString(),
-      unit: 'P',
-    };
-  } else if (num.isGreaterThanOrEqualTo(T)) {
-    const result = num.dividedBy(T);
-    return {
-      value: result.isNaN() ? null : result.toString(),
-      unit: 'T',
-    };
-  } else {
-    return {
-      value: num.toString(),
-      unit: '',
-    };
-  }
 };
