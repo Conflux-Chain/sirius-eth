@@ -873,7 +873,7 @@ export const getNetwork = (
   if (matched) {
     network = matched;
   } else {
-    network = networks[0];
+    network = networks.mainnet[0];
   }
 
   return network;
