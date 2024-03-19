@@ -1,7 +1,7 @@
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
-export const DOMAIN = window.location.hostname.includes('.io') ? '.io' : '.net';
 export const IS_FOREIGN_HOST = /.io$/.test(window.location.host);
+export const DOMAIN = IS_FOREIGN_HOST ? '.io' : '.net';
 
 export const IS_ESPACE_DEVNET =
   process.env.REACT_APP_EVM_DEVNET === 'true' ||
