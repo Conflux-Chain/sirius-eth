@@ -6,9 +6,9 @@ import { useClickAway } from '@cfxjs/react-ui';
 import clsx from 'clsx';
 import { Check } from '@zeit-ui/react-icons';
 import { media } from 'styles/media';
-import { ActionButton } from '../ActionButton';
 import MoreHorizontal from '@zeit-ui/react-icons/moreHorizontal';
 import ENV_CONFIG from 'env';
+import { ActionButton } from 'sirius-next/packages/common/dist/components/ActionButton';
 
 // options example:
 // [
