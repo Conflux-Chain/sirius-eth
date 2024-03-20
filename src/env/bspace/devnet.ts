@@ -11,12 +11,12 @@ export const ENV_API_HOST =
   API_HOST_MAP.openAPIHost ||
   (IS_DEV
     ? 'https://net8890api.confluxscan.net'
-    : window.location.host.replace(/btc/, 'api'));
+    : window.location.origin.replace(/btc/, 'api'));
 export const ENV_CORE_API_HOST =
   API_HOST_MAP.secondaryOpenAPIHost ||
   (IS_DEV
     ? 'https://net8890api.confluxscan.net'
-    : window.location.host.replace(/btc/, 'api'));
+    : window.location.origin.replace(/btc/, 'api'));
 export const ENV_CORE_SCAN_HOST =
   API_HOST_MAP.secondaryBackendAPIHost || 'https://www.confluxscan.net';
 // TODO-btc
