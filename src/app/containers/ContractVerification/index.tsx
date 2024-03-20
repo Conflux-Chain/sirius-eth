@@ -24,7 +24,6 @@ import { useMessages } from '@cfxjs/react-ui';
 import { StatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useLocation } from 'react-router-dom';
 import querystring from 'query-string';
-import ENV_CONFIG from 'env';
 // import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 const { Panel } = Collapse;
@@ -655,7 +654,7 @@ const StyledContractVerificationWrapper = styled.div`
     .ant-collapse-arrow {
       float: right;
       margin-right: -1rem !important;
-      color: ${ENV_CONFIG.ENV_THEME.linkColor};
+      color: var(--theme-color-link);
       text-decoration: underline;
       font-weight: 500;
     }
