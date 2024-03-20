@@ -20,7 +20,6 @@ import { useCheckHook } from './useCheckHook';
 import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
 import iconLoading from './assets/loading.svg';
-import ENV_CONFIG from 'env';
 
 interface Modal {
   className?: string;
@@ -207,7 +206,6 @@ const rotate = keyframes`
   }
 `;
 
-const linkColor = ENV_CONFIG.ENV_THEME.linkColor;
 const redColor = '#e15c56';
 
 const ModalWrapper = styled.div`
@@ -315,7 +313,7 @@ const ModalWrapper = styled.div`
 
     .modal-portal-link {
       font-size: 18px;
-      color: ${linkColor};
+      color: var(--theme-color-link);
       text-decoration: underline;
     }
   }
@@ -324,7 +322,7 @@ const ModalWrapper = styled.div`
     margin-top: 1.7143rem;
 
     .modal-tip-link {
-      color: ${linkColor};
+      color: var(--theme-color-link);
     }
   }
 
