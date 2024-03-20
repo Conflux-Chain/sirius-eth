@@ -11,12 +11,12 @@ export const ENV_API_HOST =
   API_HOST_MAP.openAPIHost ||
   (IS_DEV
     ? 'https://net8889api.confluxscan.net'
-    : window.location.host.replace(/eth/, 'api'));
+    : window.location.origin.replace(/eth/, 'api'));
 export const ENV_CORE_API_HOST =
   API_HOST_MAP.secondaryOpenAPIHost ||
   (IS_DEV
     ? 'https://net8889api.confluxscan.net'
-    : window.location.host.replace(/eth/, 'api'));
+    : window.location.origin.replace(/eth/, 'api'));
 export const ENV_CORE_SCAN_HOST =
   API_HOST_MAP.secondaryBackendAPIHost || 'https://www.confluxscan.net';
 export const ENV_RPC_SERVER =
