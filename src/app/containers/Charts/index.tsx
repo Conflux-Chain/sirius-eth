@@ -18,7 +18,6 @@ import { CFXHolderAccounts } from './CFXHolderAccounts';
 import { AccountGrowth } from './AccountGrowth';
 import { ActiveAccounts } from './ActiveAccounts';
 import { Contracts } from './Contracts';
-import ENV_CONFIG from 'env';
 
 export function NewChart() {
   const { t, i18n } = useTranslation();
@@ -114,11 +113,11 @@ const StyledChartPreviewWrapper = styled.div`
   }
 
   .duration {
-    color: ${ENV_CONFIG.ENV_THEME.chartTitleColor};
+    color: var(--theme-color-chart-title);
   }
 
   div.ant-divider.ant-divider-horizontal {
     margin: 0;
-    color: ${ENV_CONFIG.ENV_THEME.chartTitleColor};
+    color: var(--theme-color-chart-title);
   }
 `;

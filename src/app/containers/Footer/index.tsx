@@ -508,7 +508,7 @@ const FooterContentWrapper = styled.div`
 const FooterContentTitle = styled.span`
   margin-bottom: 1.07rem;
   font-weight: 600;
-  color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+  color: var(--theme-color-foot-highlight);
   margin-right: 6rem;
   /* margin-right: 8.5714rem;
   width: 5.7143rem;
@@ -551,7 +551,7 @@ const FooterContentLink = styled.span`
     margin-right: 5.1429rem;
 
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+      color: var(--theme-color-foot-highlight);
     }
 
     ${media.m} {
@@ -576,7 +576,7 @@ const FooterContentIconLink = styled.span`
     color: var(--theme-color-gray2);
 
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+      color: var(--theme-color-foot-highlight);
     }
   }
 

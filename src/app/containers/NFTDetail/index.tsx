@@ -15,7 +15,7 @@ import { reqNFTDetail, reqToken, reqRefreshMetadata } from 'utils/httpRequest';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
-import { Button } from 'app/components/Button/Loadable';
+import Button from 'sirius-next/packages/common/dist/components/Button';
 
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
@@ -291,6 +291,7 @@ export function NFTDetail(props) {
           <Card style={{ padding: 0 }}>
             <Button
               className="button-refresh"
+              type="action"
               size="small"
               onClick={handleRefresh}
             >
