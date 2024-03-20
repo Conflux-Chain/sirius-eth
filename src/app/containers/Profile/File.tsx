@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { message } from '@cfxjs/antd';
 import MD5 from 'md5.js';
-import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Props {
@@ -234,11 +233,11 @@ const StyledFileManagementWrapper = styled.div`
   text-align: right;
 
   .button {
-    color: ${ENV_CONFIG.ENV_THEME.linkColor};
+    color: var(--theme-color-link);
     cursor: pointer;
 
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
+      color: var(--theme-color-link-hover);
     }
   }
 `;

@@ -17,7 +17,6 @@ import { media } from '../../../styles/media';
 import { trackEvent } from '../../../utils/ga';
 import { ScanEvent } from '../../../utils/gaConstants';
 import { reqTopStatistics } from '../../../utils/httpRequest';
-import ENV_CONFIG from 'env';
 
 interface RouteParams {
   statsType: string;
@@ -267,7 +266,7 @@ const SpanButtonsWrapper = styled.div`
     &:hover,
     &:focus {
       color: #fff;
-      background: ${ENV_CONFIG.ENV_THEME.buttonBg};
+      background: var(--theme-color-button-bg);
     }
   }
 

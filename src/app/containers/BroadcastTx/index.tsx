@@ -11,7 +11,6 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { sendRawTransaction } from 'utils/rpcRequest';
-import ENV_CONFIG from 'env';
 
 export function BroadcastTx() {
   const { t } = useTranslation();
@@ -124,7 +123,7 @@ const StyledInputWrapper = styled.div`
     line-height: 2.2857rem;
     margin: 24px 0 0;
     border: none;
-    background: ${ENV_CONFIG.ENV_THEME.linkColor} !important;
+    background: var(--theme-color-link) !important;
 
     & > div {
       top: 0;

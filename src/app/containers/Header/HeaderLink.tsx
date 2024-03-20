@@ -9,7 +9,6 @@ import { useClickAway, useToggle } from 'react-use';
 import { ScanEvent } from '../../../utils/gaConstants';
 import { trackEvent } from '../../../utils/ga';
 import { Link } from '../../components/Link/Loadable';
-import ENV_CONFIG from 'env';
 
 export type HeaderLinkTitle = ReactNode | Array<ReactNode> | false;
 
@@ -109,7 +108,7 @@ const Menu = styled.div<{ name?: string }>`
     }
     &.level-1.matched,
     &.level-2.matched {
-      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+      color: var(--theme-color-primary) !important;
 
       svg {
         margin-left: 1rem;
@@ -309,10 +308,10 @@ const WrappLink = styled.span`
     cursor: pointer;
     font-weight: 500;
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+      color: var(--theme-color-primary) !important;
     }
     &.matched {
-      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+      color: var(--theme-color-primary) !important;
     }
     * {
       transition: none !important;
@@ -382,7 +381,7 @@ const WrappLink = styled.span`
       padding-top: 0.43rem;
       padding-bottom: 0.43rem;
       &.matched {
-        color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+        color: var(--theme-color-primary) !important;
       }
       &:hover {
         &:not(.matched) {

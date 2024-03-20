@@ -7,8 +7,7 @@ import clsx from 'clsx';
 import { Check } from '@zeit-ui/react-icons';
 import { media } from 'styles/media';
 import MoreHorizontal from '@zeit-ui/react-icons/moreHorizontal';
-import ENV_CONFIG from 'env';
-import { ActionButton } from 'sirius-next/packages/common/dist/components/ActionButton';
+import Button from 'sirius-next/packages/common/dist/components/Button';
 
 // options example:
 // [
@@ -107,9 +106,9 @@ export const TableSearchDropdown = ({
 
   return (
     <StyledDropdownWrapper>
-      <ActionButton onClick={() => setVisible(!visible)}>
+      <Button type="icon" onClick={() => setVisible(!visible)}>
         <MoreHorizontal size={18} />
-      </ActionButton>
+      </Button>
       {visible && (
         <div className="option-container" ref={dropdownRef}>
           {options.map((o, index) => (
@@ -164,7 +163,7 @@ const Option = styled.div`
   }
 
   &.selected {
-    color: ${ENV_CONFIG.ENV_THEME.primary};
+    color: var(--theme-color-primary);
     svg {
       visibility: visible;
     }

@@ -14,7 +14,6 @@ import { ConnectButton, useCheckHook } from '../../components/ConnectWallet';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
-import ENV_CONFIG from 'env';
 
 interface DappButtonProps {
   hoverText?: string;
@@ -195,13 +194,13 @@ const BtnContainer = styled.div`
     height: 30px;
     line-height: 30px;
     min-width: initial;
-    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
-    border-color: ${ENV_CONFIG.ENV_THEME.linkColor};
-    --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkColor};
+    background-color: var(--theme-color-link);
+    border-color: var(--theme-color-link);
+    --cfx-ui-button-bg: var(--theme-color-link);
     &:hover {
-      background-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
-      border-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
-      --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
+      background-color: var(--theme-color-link-hover);
+      border-color: var(--theme-color-link-hover);
+      --cfx-ui-button-bg: var(--theme-color-link-hover);
     }
   }
   .disabled.btn {
