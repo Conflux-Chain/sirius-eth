@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { Card } from '@cfxjs/react-ui';
+import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { useBlockQuery } from 'utils/api';
 import { Text } from 'app/components/Text/Loadable';
 import { Description } from 'app/components/Description/Loadable';
@@ -296,6 +296,7 @@ export function DescriptionPanel() {
 
 const StyledCardWrapper = styled.div`
   .card.sirius-blocks-card {
+    padding: 0;
     .content {
       padding: 0 18px;
     }
