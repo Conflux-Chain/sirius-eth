@@ -11,7 +11,7 @@ import { useEffectOnce } from 'react-use';
 import { AddressDetailPage, ContractDetailPage } from './Loadable';
 import { isAccountAddress, isAddress, isZeroAddress } from '../../../utils';
 import { Spin } from '@cfxjs/antd';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { Card } from 'app/components/Card';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';

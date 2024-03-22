@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Tooltip } from '@cfxjs/react-ui';
 import { useTranslation } from 'react-i18next';
 import { usePortal } from 'utils/hooks/usePortal';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { translations } from 'locales/i18n';
 import imgSuccess from 'images/success.png';
 import { ButtonProps } from '@cfxjs/react-ui/dist/button/button';
@@ -198,7 +198,7 @@ const BtnContainer = styled.div`
     background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
     border-color: ${ENV_CONFIG.ENV_THEME.linkColor};
     --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkColor};
-    :hover {
+    &:hover {
       background-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
       border-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
       --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkHoverColor};

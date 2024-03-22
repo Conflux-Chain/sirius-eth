@@ -2,12 +2,12 @@ import React from 'react';
 import { Select } from 'app/components/Select';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { useGlobal } from 'utils/hooks/useGlobal';
 import ENV_CONFIG from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 export function Currency() {
   const { t } = useTranslation();

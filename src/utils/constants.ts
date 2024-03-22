@@ -1,6 +1,7 @@
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import lodash from 'lodash';
 import ENV_CONFIG, { DOMAIN, IS_DEVNET, IS_STAGE } from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from './enum';
 
 interface ContractsType {
   faucet: string;
@@ -18,28 +19,6 @@ interface ContractsType {
 
 interface ContractNameTagType {
   [index: string]: string;
-}
-
-/**
- * @todo
- * 1. setNFTCacheInfo cacheKey
- * 2. GlobalTip
- *
- * @export
- * @enum {number}
- */
-export enum LOCALSTORAGE_KEYS_MAP {
-  reqProjectConfigMD5 = 'CONFLUX_SCAN_REQ_PROJECT_CONFIG_MD5',
-  networkId = 'CONFLUX_SCAN_NETWORK_ID',
-  contracts = 'CONFLUX_SCAN_CONTRACTS',
-  contractNameTag = 'CONFLUX_SCAN_CONTRACT_NAME_TAG',
-  currency = 'CONFLUX_SCAN_LOCALSTORAGE_KEY_CURRENCY',
-  ageFormat = 'CONFLUX_SCAN_TABLE_AGE_FORMAT',
-  cookieAgreed = 'CONFLUXSCAN_COOKIE_AGREED',
-  txnRecords = 'CONFLUXSCAN_TXN_RECORDS',
-  fccfxNotice = 'CONFLUX_SCAN_FCCFX_NOTICE',
-  addressLabel = 'CONFLUX_SCAN_ADDRESS_LABELS',
-  txPrivateNote = 'CONFLUX_SCAN_TX_PRIVATE_NOTES',
 }
 
 export const NETWORK_ID = (() => {
@@ -179,7 +158,7 @@ export const OPEN_API_URLS = Object.entries({
   NFTBalance: '/nft/balances',
 })
   .map(item => ({
-    [item[0]]: `https://${
+    [item[0]]: `${
       item[1] === '/statistics/mining'
         ? ENV_CONFIG.ENV_CORE_API_HOST
         : ENV_CONFIG.ENV_API_HOST
@@ -191,18 +170,10 @@ export const OPEN_API_URLS = Object.entries({
 OPEN_API_URLS.contract = '/stat/contract/stat/list';
 OPEN_API_URLS.token = '/stat/daily-token-stat';
 
-export const CORE_SPACE_CHAIN_IDS = [1029, 1];
+export const CORE_SPACE_CHAIN_IDS = [1029, 1, 8888];
 export const ESPACE_CHAIN_IDS = [1030, 71, 8889];
 export const BSPACE_CHAIN_IDS = [8890];
 const MAINNET_NETWORK_OPTIONS = lodash.compact([
-  // espace
-  {
-    name: 'Conflux eSpace (Hydra)',
-    id: 1030,
-    url: IS_STAGE
-      ? `//evm-stage.confluxscan${DOMAIN}`
-      : `//evm.confluxscan${DOMAIN}`,
-  },
   // core space
   {
     name: 'Conflux Core (Hydra)',
@@ -210,6 +181,14 @@ const MAINNET_NETWORK_OPTIONS = lodash.compact([
     url: IS_STAGE
       ? `//www-stage.confluxscan${DOMAIN}`
       : `//confluxscan${DOMAIN}`,
+  },
+  // espace
+  {
+    name: 'Conflux eSpace (Hydra)',
+    id: 1030,
+    url: IS_STAGE
+      ? `//evm-stage.confluxscan${DOMAIN}`
+      : `//evm.confluxscan${DOMAIN}`,
   },
   // TODO-btc
   // {
@@ -221,14 +200,6 @@ const MAINNET_NETWORK_OPTIONS = lodash.compact([
   // },
 ]);
 const TESTNET_NETWORK_OPTIONS = lodash.compact([
-  // espace
-  {
-    name: 'Conflux eSpace (Testnet)',
-    id: 71,
-    url: IS_STAGE
-      ? `//evmtestnet-stage.confluxscan${DOMAIN}`
-      : `//evmtestnet.confluxscan${DOMAIN}`,
-  },
   // core space
   {
     name: 'Conflux Core (Testnet)',
@@ -236,6 +207,14 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
     url: IS_STAGE
       ? `//testnet-stage.confluxscan${DOMAIN}`
       : `//testnet.confluxscan${DOMAIN}`,
+  },
+  // espace
+  {
+    name: 'Conflux eSpace (Testnet)',
+    id: 71,
+    url: IS_STAGE
+      ? `//evmtestnet-stage.confluxscan${DOMAIN}`
+      : `//evmtestnet.confluxscan${DOMAIN}`,
   },
   // TODO-btc
   // {
@@ -247,13 +226,20 @@ const TESTNET_NETWORK_OPTIONS = lodash.compact([
   // },
 ]);
 const DEVNET_NETWORK_OPTIONS = lodash.compact([
+  // core space
+  IS_DEVNET && {
+    name: 'Conflux Core (Devnet)',
+    id: 8888,
+    url: IS_STAGE
+      ? '//net8888cfx.confluxscan.net'
+      : `//net8888cfx.confluxscan${DOMAIN}`,
+  },
   // espace
   IS_DEVNET && {
     name: 'Conflux eSpace (Devnet)',
     id: 8889,
     url: '//net8889eth.confluxscan.net',
   },
-  // core space
   // bspace
   IS_DEVNET && {
     name: 'Conflux bSpace (Devnet)',

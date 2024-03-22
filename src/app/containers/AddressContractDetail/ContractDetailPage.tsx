@@ -23,18 +23,18 @@ import {
   Top,
 } from './layouts';
 import ContractIcon from '../../../images/contract-icon.png';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import DownIcon from '../../../images/down.png';
 import { Menu } from '@cfxjs/antd';
 import { DropdownWrapper, MenuWrapper } from './AddressDetailPage';
 import { tokenTypeTag } from '../TokenDetail/Basic';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { Bookmark } from '@zeit-ui/react-icons';
 import { Text } from 'app/components/Text/Loadable';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface RouteParams {
   address: string;

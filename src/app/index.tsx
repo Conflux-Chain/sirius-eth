@@ -16,7 +16,7 @@ import {
   useLocation,
   withRouter,
 } from 'react-router-dom';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import BigNumber from 'bignumber.js';
 import WebFontLoader from 'webfontloader';
 import { SWRConfig } from 'swr';
@@ -28,12 +28,7 @@ import { GlobalStyle } from 'styles/global-styles';
 import { TxnHistoryProvider } from 'utils/hooks/useTxnHistory';
 import { GlobalProvider, useGlobalData } from 'utils/hooks/useGlobal';
 import { reqProjectConfig } from 'utils/httpRequest';
-import {
-  LOCALSTORAGE_KEYS_MAP,
-  NETWORK_ID,
-  CFX_TOKEN_TYPES,
-  NETWORK_OPTIONS,
-} from 'utils/constants';
+import { NETWORK_ID, CFX_TOKEN_TYPES, NETWORK_OPTIONS } from 'utils/constants';
 import { isAddress } from 'utils';
 import MD5 from 'md5.js';
 import lodash from 'lodash';
@@ -106,6 +101,7 @@ import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
 import ENV_CONFIG from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 // WebFontLoader.load({
 //   custom: {
@@ -200,6 +196,15 @@ export function App() {
                 {},
               ),
             ),
+          );
+          localStorage.setItem(
+            LOCALSTORAGE_KEYS_MAP.apis,
+            JSON.stringify({
+              rpcHost: resp?.CONFURA_URL,
+              openAPIHost: resp?.OPEN_API_URL,
+              secondaryOpenAPIHost: resp?.CORE_OPEN_API_URL,
+              secondaryBackendAPIHost: resp?.CORE_API_URL,
+            }),
           );
           // contract name tag config, hide for temp
           // localStorage.setItem(
@@ -316,6 +321,7 @@ export function App() {
               errorRetryCount: 0,
             }}
           >
+            {/* @ts-ignore */}
             <BrowserRouter>
               <CfxProvider
                 theme={{
