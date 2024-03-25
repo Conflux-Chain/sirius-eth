@@ -12,7 +12,7 @@ import { NotFound } from './NotFound';
 import { reqApprovals } from 'utils/httpRequest';
 import { transactionColunms, tokenColunms } from 'utils/tableColumns';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
-import { useAge } from 'utils/hooks/useAge';
+import { useAge } from 'sirius-next/packages/common/dist/utils/hooks/useAge';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 import { Select } from 'app/components/Select';
 import queryString from 'query-string';
