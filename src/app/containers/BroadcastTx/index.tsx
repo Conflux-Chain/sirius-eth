@@ -6,12 +6,11 @@ import styled from 'styled-components';
 import { translations } from 'locales/i18n';
 import { PageHeader } from 'app/components/PageHeader';
 import imgWarning from 'images/warning.png';
-import { Card } from 'app/components/Card/Loadable';
+import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { sendRawTransaction } from 'utils/rpcRequest';
-import ENV_CONFIG from 'env';
 
 export function BroadcastTx() {
   const { t } = useTranslation();
@@ -124,7 +123,7 @@ const StyledInputWrapper = styled.div`
     line-height: 2.2857rem;
     margin: 24px 0 0;
     border: none;
-    background: ${ENV_CONFIG.ENV_THEME.linkColor} !important;
+    background: var(--theme-color-link) !important;
 
     & > div {
       top: 0;

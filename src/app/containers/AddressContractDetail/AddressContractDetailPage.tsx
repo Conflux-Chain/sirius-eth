@@ -10,9 +10,9 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useEffectOnce } from 'react-use';
 import { AddressDetailPage, ContractDetailPage } from './Loadable';
 import { isAccountAddress, isAddress, isZeroAddress } from '../../../utils';
-import { Spin } from '@cfxjs/antd';
 import styled from 'styled-components';
-import { Card } from 'app/components/Card';
+import { Card } from 'sirius-next/packages/common/dist/components/Card';
+import { Spin } from 'sirius-next/packages/common/dist/components/Spin';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 

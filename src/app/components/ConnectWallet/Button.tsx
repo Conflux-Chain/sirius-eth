@@ -22,7 +22,6 @@ import { Text } from '../Text/Loadable';
 
 import iconLoadingWhite from './assets/loading-white.svg';
 import { Balance } from './Balance';
-import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Button {
@@ -161,7 +160,7 @@ const ButtonWrapper = styled.div`
 
     .connect-wallet-button-left {
       color: #ffffff;
-      background: ${ENV_CONFIG.ENV_THEME.primary};
+      background: var(--theme-color-primary);
     }
   }
 

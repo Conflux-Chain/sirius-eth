@@ -10,8 +10,8 @@ import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { media } from 'styles/media';
 import { toThousands, isAddress, formatAddress } from 'utils';
-import { Card } from 'app/components/Card';
-import { Col, Pagination, Row, Spin, Tag } from '@cfxjs/antd';
+import { Card } from 'sirius-next/packages/common/dist/components/Card';
+import { Col, Pagination, Row, Tag } from '@cfxjs/antd';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { NFTPreview } from 'app/components/NFTPreview';
 import { AddressContainer } from 'app/components/AddressContainer';
@@ -205,79 +205,75 @@ export function NFTAsset({
 
   return (
     <StyledResultWrapper>
-      <Card>
-        <Spin spinning={loading}>
-          {NFTBalances && NFTBalances.length > 0 ? (
-            <TagsWrapper>
-              {NFTBalances.map((n: NFTBalancesType) => {
-                return (
-                  <Tag
-                    className={
-                      selectedNFT.contract === n.contract ? 'current' : ''
-                    }
-                    onClick={() => handleNFTAddressChange(n.contract)}
-                    key={n.contract}
-                  >{`${n.name} (${toThousands(n.balance)})`}</Tag>
-                );
-              })}
-            </TagsWrapper>
-          ) : null}
-          <NFTWrapper>
-            {!loading && !NFTs.length ? (
-              <div className="nodata">
-                <Empty
-                  show={true}
-                  type="fluid"
-                  noTitle={!hasSearched}
-                  title={
-                    !hasSearched ? t(translations.nftChecker.plzSearch) : null
+      <Card loading={loading}>
+        {NFTBalances && NFTBalances.length > 0 ? (
+          <TagsWrapper>
+            {NFTBalances.map((n: NFTBalancesType) => {
+              return (
+                <Tag
+                  className={
+                    selectedNFT.contract === n.contract ? 'current' : ''
                   }
-                  description={
-                    !hasSearched
-                      ? t(translations.nftChecker.plzSearchDesc)
-                      : null
-                  }
-                />
+                  onClick={() => handleNFTAddressChange(n.contract)}
+                  key={n.contract}
+                >{`${n.name} (${toThousands(n.balance)})`}</Tag>
+              );
+            })}
+          </TagsWrapper>
+        ) : null}
+        <NFTWrapper>
+          {!loading && !NFTs.length ? (
+            <div className="nodata">
+              <Empty
+                show={true}
+                type="fluid"
+                noTitle={!hasSearched}
+                title={
+                  !hasSearched ? t(translations.nftChecker.plzSearch) : null
+                }
+                description={
+                  !hasSearched ? t(translations.nftChecker.plzSearchDesc) : null
+                }
+              />
+            </div>
+          ) : (
+            <>
+              <div className="total">
+                {t(translations.blocks.tipCountBefore)} {toThousands(total)}{' '}
+                {lang === 'zh' ? '个 ' : ''}
+                {selectedNFT.name || ''} {lang === 'zh' ? '数字藏品' : 'NFT'}{' '}
+                <span>
+                  {t(translations.contract.address)}:{' '}
+                  <AddressContainer value={selectedNFT.contract} />
+                </span>
               </div>
-            ) : (
-              <>
-                <div className="total">
-                  {t(translations.blocks.tipCountBefore)} {toThousands(total)}{' '}
-                  {lang === 'zh' ? '个 ' : ''}
-                  {selectedNFT.name || ''} {lang === 'zh' ? '数字藏品' : 'NFT'}{' '}
-                  <span>
-                    {t(translations.contract.address)}:{' '}
-                    <AddressContainer value={selectedNFT.contract} />
-                  </span>
-                </div>
-                <Row gutter={20}>
-                  {NFTs.map(({ tokenId, amount, owner }) => (
-                    <Col xs={24} sm={12} lg={6} xl={4} key={tokenId}>
-                      <NFTPreview
-                        contractAddress={selectedNFT?.contract}
-                        tokenId={tokenId}
-                        type="card"
-                        amount={amount}
-                        owner={owner}
-                      />
-                    </Col>
-                  ))}
-                </Row>
-              </>
-            )}
+              <Row gutter={20}>
+                {NFTs.map(({ tokenId, amount, owner }) => (
+                  <Col xs={24} sm={12} lg={6} xl={4} key={tokenId}>
+                    <NFTPreview
+                      contractAddress={selectedNFT?.contract}
+                      tokenId={tokenId}
+                      type="card"
+                      amount={amount}
+                      owner={owner}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </>
+          )}
 
-            <Pagination
-              hideOnSinglePage={true}
-              current={page}
-              defaultPageSize={pageSize}
-              total={total}
-              // showSizeChanger={false}
-              // showQuickJumper={false}
-              pageSizeOptions={['12', '24', '60']}
-              onChange={handlePaginationChange}
-            />
-          </NFTWrapper>
-        </Spin>
+          <Pagination
+            hideOnSinglePage={true}
+            current={page}
+            defaultPageSize={pageSize}
+            total={total}
+            // showSizeChanger={false}
+            // showQuickJumper={false}
+            pageSizeOptions={['12', '24', '60']}
+            onChange={handlePaginationChange}
+          />
+        </NFTWrapper>
       </Card>
     </StyledResultWrapper>
   );

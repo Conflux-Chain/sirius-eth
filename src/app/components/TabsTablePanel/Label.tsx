@@ -4,7 +4,6 @@ import { Tooltip } from '../Tooltip';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { toThousands } from '../../../utils';
-import ENV_CONFIG from 'env';
 
 interface LabelProps {
   left?: string;
@@ -85,7 +84,7 @@ const StyledTipLabelWrapper = styled.p`
   margin: 1.2rem 0 1.6rem;
 `;
 const StyledSpan = styled.span`
-  color: ${ENV_CONFIG.ENV_THEME.linkColor};
+  color: var(--theme-color-link);
   padding: 0 0.4286rem;
 `;
 const TipLabel: React.FC<React.PropsWithChildren<LabelProps>> = ({

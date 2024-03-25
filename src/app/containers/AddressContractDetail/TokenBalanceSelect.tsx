@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { useAccountTokenList } from 'utils/api';
 import { Description } from 'app/components/Description';
-import { Card } from '../../components/Card';
+import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { ChevronUp } from '@zeit-ui/react-icons';
 import { useClickAway, useToggle } from 'react-use';
 import { media } from 'styles/media';
