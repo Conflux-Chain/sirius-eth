@@ -3,11 +3,13 @@ import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import {
-  StockChartTemplate,
+  // StockChartTemplate,
   ChildProps,
 } from 'app/components/Charts/StockChartTemplate';
+import { StockChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/StockChartTemplate';
+import { PreviewChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/PreviewChartTemplate';
+import { scope } from 'sirius-next/packages/common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
-import { Wrapper } from './Wrapper';
 import {
   xAxisCustomLabelHour,
   tooltipCustomLabel,
@@ -17,12 +19,14 @@ export function BlockTime({ preview = false }: ChildProps) {
   const { t } = useTranslation();
 
   const props = {
-    preview: preview,
-    name: 'blocktime',
-    title: t(translations.highcharts.averageBlockTime.title),
-    subtitle: t(translations.highcharts.averageBlockTime.subtitle),
     request: {
       url: OPEN_API_URLS.mining,
+      query: preview
+        ? {
+            limit: '30',
+            intervalType: 'day',
+          }
+        : undefined,
       formatter: data => [
         data?.list?.map(s => [
           // @ts-ignore
@@ -35,6 +39,24 @@ export function BlockTime({ preview = false }: ChildProps) {
     options: {
       chart: {
         zoomType: 'x',
+      },
+      header: {
+        title: {
+          text: t(translations.highcharts.averageBlockTime.title),
+        },
+        subtitle: {
+          text: t(translations.highcharts.averageBlockTime.subtitle),
+        },
+        breadcrumb: [
+          {
+            name: t(translations.highcharts.breadcrumb.charts),
+            path: '/charts',
+          },
+          {
+            name: t(translations.highcharts.breadcrumb.blocktime),
+            path: '/charts/blocktime',
+          },
+        ],
       },
       title: {
         text: t(translations.highcharts.averageBlockTime.title),
@@ -72,12 +94,17 @@ export function BlockTime({ preview = false }: ChildProps) {
           ...xAxisCustomLabelHour,
         },
       },
+      intervalScope: {
+        min: scope.min,
+        hour: scope.hour,
+        day: scope.day,
+      },
     },
   };
 
-  return (
-    <Wrapper {...props}>
-      <StockChartTemplate {...props}></StockChartTemplate>
-    </Wrapper>
+  return preview ? (
+    <PreviewChartTemplate {...props}></PreviewChartTemplate>
+  ) : (
+    <StockChartTemplate {...props}></StockChartTemplate>
   );
 }
