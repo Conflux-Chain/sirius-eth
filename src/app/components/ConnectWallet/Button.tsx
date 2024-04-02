@@ -22,7 +22,7 @@ import { Text } from '../Text/Loadable';
 
 import iconLoadingWhite from './assets/loading-white.svg';
 import { Balance } from './Balance';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Button {

@@ -6,7 +6,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import en from './en/translation.json';
 import zh_cn from './zh_cn/translation.json';
 import { ConvertedToObjectType } from './types';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 import lodash from 'lodash';
 
 const translationsJson = {

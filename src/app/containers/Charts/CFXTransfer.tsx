@@ -9,7 +9,7 @@ import {
 import { OPEN_API_URLS } from 'utils/constants';
 import { Wrapper } from './Wrapper';
 import BigNumber from 'bignumber.js';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 export function CFXTransfer({ preview = false }: ChildProps) {
   const { t } = useTranslation();

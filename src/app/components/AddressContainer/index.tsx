@@ -12,7 +12,7 @@ import VerifiedIcon from 'images/verified.png';
 import { media, sizes } from 'styles/media';
 import { monospaceFont } from 'styles/variable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { IS_MAINNET } from 'env';
+import { IS_MAINNET } from 'sirius-next/packages/common/dist/env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Props {
