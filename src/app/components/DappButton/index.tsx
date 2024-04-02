@@ -14,7 +14,7 @@ import { ConnectButton, useCheckHook } from '../../components/ConnectWallet';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 interface DappButtonProps {
   hoverText?: string;

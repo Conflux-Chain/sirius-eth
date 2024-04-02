@@ -13,7 +13,7 @@ import InfoFill from '@zeit-ui/react-icons/infoFill';
 import styled from 'styled-components';
 import { Collapse } from '@cfxjs/antd';
 import { CaretRightOutlined } from '@ant-design/icons';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 const { Panel } = Collapse;
 
 enum Status {

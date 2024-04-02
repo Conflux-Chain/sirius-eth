@@ -14,7 +14,7 @@ import { useInterval } from 'react-use';
 
 import { Blocks } from './Blocks';
 import { Txns } from './Txns';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 export function HomePage() {
   const { t } = useTranslation();

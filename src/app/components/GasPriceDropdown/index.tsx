@@ -16,7 +16,7 @@ import GasLow from 'images/gas-low.png';
 import GasMedian from 'images/gas-median.png';
 import GasHigh from 'images/gas-high.png';
 import ArrowDown from 'images/arrowDown.svg';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 const roundNumberWithSuffix = (value: string): string => {
   if (value === '< 0.001') return value;

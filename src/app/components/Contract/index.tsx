@@ -29,7 +29,7 @@ import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
 import { Text } from 'app/components/Text/Loadable';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 interface Props {
   contractDetail: any;

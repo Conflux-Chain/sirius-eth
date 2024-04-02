@@ -20,7 +20,7 @@ import {
   orange0,
   black0,
 } from './variable';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 export const GlobalStyle = createGlobalStyle`
 

@@ -1,4 +1,4 @@
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 import {
   switchChain as _switchChain,
   addChain as _addChain,
