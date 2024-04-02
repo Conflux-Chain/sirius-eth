@@ -35,7 +35,10 @@ import {
   Youtube,
 } from './Icon';
 import { addChain } from 'utils/chainManage';
-import ENV_CONFIG, { IS_FOREIGN_HOST, NETWORK_TYPES } from 'env';
+import ENV_CONFIG, {
+  IS_FOREIGN_HOST,
+  NETWORK_TYPES,
+} from 'sirius-next/packages/common/dist/env';
 
 export function Footer() {
   const { t, i18n } = useTranslation();

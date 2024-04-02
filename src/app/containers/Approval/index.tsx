@@ -29,7 +29,7 @@ import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
 import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 // @ts-ignore
 window.aaa = aaa;

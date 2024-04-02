@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { useGlobal } from 'utils/hooks/useGlobal';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 export function Currency() {

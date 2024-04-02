@@ -20,7 +20,7 @@ import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 const IconWrapper = styled.div`
   display: flex;

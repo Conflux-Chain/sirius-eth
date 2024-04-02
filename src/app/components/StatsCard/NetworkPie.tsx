@@ -4,7 +4,7 @@ import { translations } from 'locales/i18n';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { formatNumber } from 'utils';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 export function NetworkPie({ data }) {
   const { t } = useTranslation();

@@ -6,7 +6,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import en from 'sirius-next/packages/i18n/evm/base/en/translation.json';
 import zh_cn from 'sirius-next/packages/i18n/evm/base/zh_cn/translation.json';
 import { ConvertedToObjectType } from 'sirius-next/packages/i18n/types/index';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 import lodash from 'lodash';
 import { useI18n } from 'sirius-next/packages/common/dist/store/index';
 
