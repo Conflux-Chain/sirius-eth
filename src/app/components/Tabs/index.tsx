@@ -4,7 +4,7 @@ import { TabsProps } from '@cfxjs/react-ui/dist/tabs/tabs';
 import styled from 'styled-components';
 import clsx from 'clsx';
 import { media } from '../../../styles/media';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 const Tabs = ({ children, className, ...others }: TabsProps) => {
   return (

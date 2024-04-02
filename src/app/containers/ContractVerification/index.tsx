@@ -24,7 +24,7 @@ import { useMessages } from '@cfxjs/react-ui';
 import { StatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useLocation } from 'react-router-dom';
 import querystring from 'query-string';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 // import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 const { Panel } = Collapse;

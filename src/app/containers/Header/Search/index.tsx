@@ -20,7 +20,7 @@ import { formatAddress, isBlockNumber, isHash } from 'utils';
 import { appendApiPrefix } from 'utils/api';
 import verifiedIcon from 'images/nametag/verified.svg';
 import warningIcon from 'images/nametag/warning.svg';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 const { Search: SearchInput } = Input;
 

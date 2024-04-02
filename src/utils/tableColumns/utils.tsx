@@ -9,7 +9,7 @@ import { CountDown } from 'app/components/CountDown/Loadable';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
 import { Text } from 'app/components/Text/Loadable';
 import queryString from 'query-string';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 export interface ContentWrapperProps {
   children: React.ReactNode;

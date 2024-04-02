@@ -29,7 +29,9 @@ import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
-import ENV_CONFIG, { NETWORK_TYPES } from 'env';
+import ENV_CONFIG, {
+  NETWORK_TYPES,
+} from 'sirius-next/packages/common/dist/env';
 
 // TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {

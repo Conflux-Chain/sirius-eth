@@ -12,7 +12,10 @@ import styled from 'styled-components';
 import { publishRequestError } from 'utils';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
-import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
+import ENV_CONFIG, {
+  NETWORK_TYPES,
+  STAGE_FLAG,
+} from 'sirius-next/packages/common/dist/env';
 
 const treeToFlat = tree => {
   let list: Array<any> = [];

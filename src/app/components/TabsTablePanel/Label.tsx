@@ -4,7 +4,7 @@ import { Tooltip } from '../Tooltip';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { toThousands } from '../../../utils';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 interface LabelProps {
   left?: string;

@@ -24,7 +24,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 // Initialize languages
 import './locales/i18n';
-import { IS_TESTNET, IS_MAINNET } from 'env';
+import { IS_TESTNET, IS_MAINNET } from 'sirius-next/packages/common/dist/env';
 
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 

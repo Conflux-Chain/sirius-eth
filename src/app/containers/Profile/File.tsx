@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { message } from '@cfxjs/antd';
 import MD5 from 'md5.js';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Props {

@@ -17,7 +17,7 @@ import { media } from '../../../styles/media';
 import { trackEvent } from '../../../utils/ga';
 import { ScanEvent } from '../../../utils/gaConstants';
 import { reqTopStatistics } from '../../../utils/httpRequest';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 interface RouteParams {
   statsType: string;

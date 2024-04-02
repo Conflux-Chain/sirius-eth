@@ -20,7 +20,7 @@ import { useCheckHook } from './useCheckHook';
 import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
 import iconLoading from './assets/loading.svg';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 interface Modal {
   className?: string;

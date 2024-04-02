@@ -8,7 +8,7 @@ import { Check } from '@zeit-ui/react-icons';
 import { media } from 'styles/media';
 import { ActionButton } from '../ActionButton';
 import MoreHorizontal from '@zeit-ui/react-icons/moreHorizontal';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 // options example:
 // [

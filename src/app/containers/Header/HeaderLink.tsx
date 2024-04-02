@@ -9,7 +9,7 @@ import { useClickAway, useToggle } from 'react-use';
 import { ScanEvent } from '../../../utils/gaConstants';
 import { trackEvent } from '../../../utils/ga';
 import { Link } from '../../components/Link/Loadable';
-import ENV_CONFIG from 'env';
+import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
 
 export type HeaderLinkTitle = ReactNode | Array<ReactNode> | false;
 
