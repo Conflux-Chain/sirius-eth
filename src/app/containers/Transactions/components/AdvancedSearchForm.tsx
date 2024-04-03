@@ -13,7 +13,7 @@ import {
 } from './DebounceTokenSelect';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'locales/i18n';
+import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
 
 type SearchFormItemsProps =
   | undefined
