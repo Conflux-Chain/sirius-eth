@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { List } from 'app/components/List/';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'locales/i18n';
+import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
 import { media } from 'styles/media';
 import { Modal } from '@cfxjs/react-ui';
 import BigNumber from 'bignumber.js';
