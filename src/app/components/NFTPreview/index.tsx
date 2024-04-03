@@ -9,7 +9,7 @@ import { Spin } from 'sirius-next/packages/common/dist/components/Spin';
 import tokenIdNotFound from 'images/token/tokenIdNotFound.jpg';
 import styled from 'styled-components';
 import { Text } from '../Text/Loadable';
-import { translations } from 'locales/i18n';
+import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
 import { useTranslation } from 'react-i18next';
 import nftPreviewActive from 'images/token/nftPreviewActive2.svg';
 import nftPreview from 'images/token/nftPreview2.svg';

@@ -11,7 +11,7 @@ import { Link } from 'app/components/Link/Loadable';
 import { media } from 'styles/media';
 import { Footer as FooterComp } from 'sirius-next/packages/common/dist/components/Footer';
 import { TextLogo } from 'app/components/TextLogo/Loadable';
-import { translations } from 'locales/i18n';
+import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
 import { Language } from './Language';
 // import { Currency } from './Currency';
 import { ScanEvent } from 'utils/gaConstants';
