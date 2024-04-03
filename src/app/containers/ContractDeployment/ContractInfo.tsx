@@ -6,7 +6,7 @@ import { Link, useMessages } from '@cfxjs/react-ui';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { FileUpload } from 'sirius-next/packages/common/dist/components/FileUpload';
-import { translations } from 'locales/i18n';
+import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
 import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { isHex } from 'utils';
 import imgInfo from 'images/info.svg';
