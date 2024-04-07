@@ -5,7 +5,7 @@ import { translations } from 'locales/i18n';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { Remark } from 'app/components/Remark';
 import styled from 'styled-components';
-import { Card } from 'app/components/Card/Loadable';
+import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { Form, Input, Button, Row, Col, Select, Collapse } from '@cfxjs/antd';
 import { isAddress } from 'utils';
 import {
@@ -24,7 +24,6 @@ import { useMessages } from '@cfxjs/react-ui';
 import { StatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useLocation } from 'react-router-dom';
 import querystring from 'query-string';
-import ENV_CONFIG from 'env';
 // import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 const { Panel } = Collapse;
@@ -655,7 +654,7 @@ const StyledContractVerificationWrapper = styled.div`
     .ant-collapse-arrow {
       float: right;
       margin-right: -1rem !important;
-      color: ${ENV_CONFIG.ENV_THEME.linkColor};
+      color: var(--theme-color-link);
       text-decoration: underline;
       font-weight: 500;
     }

@@ -3,11 +3,11 @@ import {
   isBlockHash,
   isHash,
   isBlockNumber,
-  tranferToLowerCase,
   formatAddress,
   isAddress,
   isZeroAddress,
 } from 'utils';
+import { tranferToLowerCase } from 'sirius-next/packages/common/dist/utils';
 import { CONTRACTS } from '../constants';
 import { trackEvent } from '../ga';
 import { ScanEvent } from '../gaConstants';

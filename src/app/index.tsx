@@ -100,7 +100,6 @@ import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
 import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
-import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 // WebFontLoader.load({
@@ -714,7 +713,7 @@ const Main = styled.div`
   }
 
   .link {
-    color: ${ENV_CONFIG.ENV_THEME.linkColor} !important;
+    color: var(--theme-color-link) !important;
   }
 `;
 
