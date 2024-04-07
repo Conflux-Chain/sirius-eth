@@ -55,6 +55,7 @@ import {
 } from 'sirius-next/packages/common/dist/utils';
 
 export {
+  getEllipsStr,
   formatNumber,
   toThousands,
   roundToFixedPrecision,
