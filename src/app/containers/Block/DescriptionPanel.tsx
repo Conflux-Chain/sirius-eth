@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { useBlockQuery } from 'utils/api';
 import { Text } from 'app/components/Text/Loadable';
-import { Description } from 'app/components/Description/Loadable';
+import { Description } from 'sirius-next/packages/common/dist/components/Description';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { Link } from 'app/components/Link/Loadable';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';

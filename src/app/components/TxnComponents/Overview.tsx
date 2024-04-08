@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from 'app/components/Link';
-import { Description } from 'app/components/Description/Loadable';
+import { Description } from 'sirius-next/packages/common/dist/components/Description';
 import { formatAddress } from 'utils';
 import { TransactionAction } from 'app/components/TransactionAction';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
@@ -122,7 +122,7 @@ export const Overview = ({ data }) => {
         )}
       </div>
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.status)}
       >
@@ -137,9 +137,9 @@ export const Overview = ({ data }) => {
       </Description>
       {status === 0 && transactionAction && transactionAction.show && (
         <Description
-          verticle
+          vertical
           size="tiny"
-          title={t(translations.transaction.action.title)}
+          title={'t(translations.transaction.action.title)'}
         >
           <SkeletonContainer shown={loading}>
             {transactionAction.content}
@@ -147,14 +147,14 @@ export const Overview = ({ data }) => {
         </Description>
       )}
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.gasFee)}
       >
         <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
       </Description>
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.nonce)}
         noBorder
