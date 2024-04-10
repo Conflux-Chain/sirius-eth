@@ -294,10 +294,8 @@ export function App() {
       setGlobalData(_globalData);
       setGlobalDataNext(_globalData);
     }
-
-    SET_ENV_CONFIG(ENV_CONFIG_LOCAL);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalData, SET_ENV_CONFIG]);
+  }, [globalData]);
 
   // @todo, add loading for request frontend config info
   return (
