@@ -3,11 +3,12 @@ import { initReactI18next } from 'react-i18next';
 
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import en from 'sirius-next/packages/i18n//base/en/translation.json';
-import zh_cn from 'sirius-next/packages/i18n/base/zh_cn/translation.json';
+import en from 'sirius-next/packages/i18n/evm/base/en/translation.json';
+import zh_cn from 'sirius-next/packages/i18n/evm/base/zh_cn/translation.json';
 import { ConvertedToObjectType } from 'sirius-next/packages/i18n/types/index';
 import ENV_CONFIG from 'env';
 import lodash from 'lodash';
+import { useI18n } from 'sirius-next/packages/common/dist/store/index';
 
 const translationsJson = {
   en: {
@@ -66,5 +67,6 @@ export const i18n = i18next
         lodash.merge(en, ENV_CONFIG.ENV_LOCALES_EN),
         translations,
       );
+      useI18n.setState({ translations });
     },
   );
