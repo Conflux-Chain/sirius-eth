@@ -103,7 +103,7 @@ import 'moment/locale/zh-cn';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 import ENV_CONFIG_LOCAL from 'env';
-import { useEnv, useI18n } from 'sirius-next/packages/common/dist/store/index';
+import { useEnv } from 'sirius-next/packages/common/dist/store/index';
 
 // WebFontLoader.load({
 //   custom: {
@@ -134,7 +134,6 @@ export function App() {
   const lang = i18n.language.includes('zh') ? 'zh-cn' : 'en';
   const [loading, setLoading] = useState(true);
   const { SET_ENV_CONFIG } = useEnv();
-  const { setTranslations } = useI18n();
 
   moment.locale(lang);
   dayjs.locale(lang);
@@ -244,10 +243,11 @@ export function App() {
   }, []);
 
   useEffect(() => {
+    SET_ENV_CONFIG(ENV_CONFIG_LOCAL);
     getClientVersion().then(v => {
       console.log('conflux-network-version:', v);
     });
-  }, [SET_ENV_CONFIG, setTranslations]);
+  }, [SET_ENV_CONFIG]);
 
   useEffect(() => {
     const key = LOCALSTORAGE_KEYS_MAP.addressLabel;
@@ -293,11 +293,8 @@ export function App() {
         [keyTx]: dTx,
       });
     }
-
-    SET_ENV_CONFIG(ENV_CONFIG_LOCAL);
-    setTranslations(translations);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalData, SET_ENV_CONFIG, setTranslations]);
+  }, [globalData]);
 
   // @todo, add loading for request frontend config info
   return (
