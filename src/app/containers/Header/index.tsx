@@ -15,7 +15,7 @@ import { media, useBreakpoint } from 'styles/media';
 import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
 import { Check } from '@zeit-ui/react-icons';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { useLocation } from 'react-router';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';

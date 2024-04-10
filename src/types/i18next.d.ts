@@ -1,4 +1,4 @@
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 
 declare module 'i18next' {
   interface CustomTypeOptions {

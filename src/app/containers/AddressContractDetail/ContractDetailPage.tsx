@@ -8,7 +8,7 @@ import React, { memo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { Copy, Qrcode } from './HeadLineButtons';
 import { BalanceCard, NonceCard, TokensCard } from './AddressInfoCards';
 import { ContractMetadata, Table } from './Loadable';
