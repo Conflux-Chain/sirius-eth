@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { StockChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/StockChartTemplate';
 import { PreviewChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/PreviewChartTemplate';
 import { ChildProps } from 'sirius-next/packages/common/dist/components/Charts/config';
