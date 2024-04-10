@@ -158,7 +158,7 @@ export const OPEN_API_URLS = Object.entries({
   NFTBalance: '/nft/balances',
 })
   .map(item => ({
-    [item[0]]: `https://${
+    [item[0]]: `${
       item[1] === '/statistics/mining'
         ? ENV_CONFIG.ENV_CORE_API_HOST
         : ENV_CONFIG.ENV_API_HOST
