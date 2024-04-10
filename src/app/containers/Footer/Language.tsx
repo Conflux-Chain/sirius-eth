@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Globe from '@zeit-ui/react-icons/globe';
 import { trackEvent } from '../../../utils/ga';
 import { ScanEvent } from '../../../utils/gaConstants';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 export function Language() {
   const { i18n } = useTranslation();

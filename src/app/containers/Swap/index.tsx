@@ -14,7 +14,7 @@ import { Select } from 'app/components/Select';
 import { Input, Button } from '@cfxjs/react-ui';
 import { Tooltip } from 'app/components/Tooltip';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { media } from 'styles/media';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { getBalance } from 'utils/rpcRequest';

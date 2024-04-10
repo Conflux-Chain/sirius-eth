@@ -15,7 +15,7 @@ import { media, useBreakpoint } from 'styles/media';
 import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
 import { Check } from '@zeit-ui/react-icons';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { useLocation } from 'react-router';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
@@ -29,9 +29,7 @@ import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
-import ENV_CONFIG, {
-  NETWORK_TYPES,
-} from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 // TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {

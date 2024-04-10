@@ -5,7 +5,7 @@
  */
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import styled, { keyframes } from 'styled-components';
 import clsx from 'clsx';
 import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
@@ -20,7 +20,7 @@ import { useCheckHook } from './useCheckHook';
 import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
 import iconLoading from './assets/loading.svg';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 interface Modal {
   className?: string;

@@ -3,7 +3,7 @@ import { Button, Tooltip } from '@cfxjs/react-ui';
 import { useTranslation } from 'react-i18next';
 import { usePortal } from 'utils/hooks/usePortal';
 import styled from 'styled-components';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import imgSuccess from 'images/success.png';
 import { ButtonProps } from '@cfxjs/react-ui/dist/button/button';
 import { formatAddress } from 'utils';
@@ -14,7 +14,7 @@ import { ConnectButton, useCheckHook } from '../../components/ConnectWallet';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 interface DappButtonProps {
   hoverText?: string;
