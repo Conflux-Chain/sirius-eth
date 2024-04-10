@@ -2,7 +2,7 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { DatePicker as UIDatePicker } from '@cfxjs/react-ui';
 import { useBreakpoint } from 'styles/media';
 import { ActionButton } from '../../components/ActionButton';

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from '@cfxjs/react-ui';
 import clsx from 'clsx';
 import { media } from 'styles/media';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 interface Props {
   tabs: Array<{

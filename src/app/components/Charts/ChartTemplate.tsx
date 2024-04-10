@@ -8,7 +8,7 @@ import lodash from 'lodash';
 import { reqChartData } from 'utils/httpRequest';
 import { useBreakpoint } from 'styles/media';
 import { useHighcharts } from 'utils/hooks/useHighcharts';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 // @ts-ignore
 window.dayjs = dayjs;

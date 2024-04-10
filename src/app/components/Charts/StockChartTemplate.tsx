@@ -12,8 +12,8 @@ import { useBreakpoint } from 'styles/media';
 import { useHighcharts } from 'utils/hooks/useHighcharts';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import { translations } from 'locales/i18n';
+import ENV_CONFIG from 'env';
 
 // @ts-ignore
 window.dayjs = dayjs;

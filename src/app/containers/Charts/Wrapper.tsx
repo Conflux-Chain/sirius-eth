@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'app/components/Link/Loadable';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { Breadcrumb } from '@cfxjs/antd';
 import { useHistory } from 'react-router-dom';
 import { media } from 'styles/media';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 export const Wrapper = ({
   children,

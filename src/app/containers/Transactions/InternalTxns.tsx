@@ -4,7 +4,7 @@ import { fetchWithPrefix } from 'utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link } from '@cfxjs/react-ui';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { AddressContainer } from 'app/components/AddressContainer';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
@@ -12,10 +12,7 @@ import styled from 'styled-components';
 import { publishRequestError } from 'utils';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from 'app/components/Tooltip/Loadable';
-import ENV_CONFIG, {
-  NETWORK_TYPES,
-  STAGE_FLAG,
-} from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
 
 const treeToFlat = tree => {
   let list: Array<any> = [];

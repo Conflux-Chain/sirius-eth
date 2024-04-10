@@ -7,7 +7,7 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 import { Divider } from '@cfxjs/react-ui';
 import { media } from 'styles/media';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 interface Props {
   rightTop: JSX.Element[];
