@@ -13,7 +13,7 @@ import {
 import { Link } from 'react-router-dom';
 import lodash from 'lodash';
 import { Tx, AccountGrowth } from '../Charts/Loadable';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 function Info(title, number: any) {
   return (

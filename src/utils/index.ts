@@ -13,7 +13,7 @@ import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
 import { Nametag } from 'utils/hooks/useNametag';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 import IconCore from 'images/core-space/icon.svg';
 import IconEvm from 'images/espace/icon.svg';
 import IconBtc from 'images/bspace/icon.svg';

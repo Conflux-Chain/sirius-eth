@@ -22,7 +22,7 @@ import WebFontLoader from 'webfontloader';
 import { SWRConfig } from 'swr';
 import { CfxProvider, CssBaseline } from '@cfxjs/react-ui';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { media } from 'styles/media';
 import { GlobalStyle } from 'styles/global-styles';
 import { TxnHistoryProvider } from 'utils/hooks/useTxnHistory';
@@ -294,8 +294,10 @@ export function App() {
       setGlobalData(_globalData);
       setGlobalDataNext(_globalData);
     }
+
+    SET_ENV_CONFIG(ENV_CONFIG_LOCAL);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalData]);
+  }, [globalData, SET_ENV_CONFIG]);
 
   // @todo, add loading for request frontend config info
   return (

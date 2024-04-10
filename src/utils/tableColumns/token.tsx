@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { Link } from 'app/components/Link/Loadable';
 import { Text } from 'app/components/Text/Loadable';
@@ -35,7 +35,7 @@ import { ProjectInfo } from 'app/components/ProjectInfo';
 import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 import { Tag } from '@cfxjs/antd';
 import { Price } from '../../app/components/Price/Loadable';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 const fromTypeInfo = {
   arrow: {

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { getCurrency, NETWORK_OPTIONS } from 'utils/constants';
 import { createGlobalState } from 'react-use';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 const defatultGlobalData = {
   currency: getCurrency(),
