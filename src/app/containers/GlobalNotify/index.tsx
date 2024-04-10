@@ -3,7 +3,7 @@
  */
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import pubsubLib from 'utils/pubsub';
 import { useNotifications } from '@cfxjs/react-ui';
 import { Notification } from '@cfxjs/react-ui/dist/use-notifications/use-notifications';
@@ -13,7 +13,7 @@ import InfoFill from '@zeit-ui/react-icons/infoFill';
 import styled from 'styled-components';
 import { Collapse } from '@cfxjs/antd';
 import { CaretRightOutlined } from '@ant-design/icons';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 const { Panel } = Collapse;
 
 enum Status {

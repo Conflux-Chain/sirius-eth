@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { Text } from 'app/components/Text/Loadable';
 import { Link } from 'app/components/Link/Loadable';
@@ -20,7 +20,7 @@ import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 const IconWrapper = styled.div`
   display: flex;

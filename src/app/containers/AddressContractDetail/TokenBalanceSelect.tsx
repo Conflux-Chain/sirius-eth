@@ -14,7 +14,7 @@ import { formatAddress, formatBalance, formatNumber } from 'utils/index';
 import { CFX_TOKEN_TYPES } from '../../../utils/constants';
 import BigNumber from 'bignumber.js';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { Price } from 'app/components/Price/Loadable';
 
 const skeletonStyle = { width: '7rem', height: '2.5rem' };

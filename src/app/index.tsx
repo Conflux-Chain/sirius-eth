@@ -22,7 +22,7 @@ import WebFontLoader from 'webfontloader';
 import { SWRConfig } from 'swr';
 import { CfxProvider, CssBaseline } from '@cfxjs/react-ui';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { media } from 'styles/media';
 import { GlobalStyle } from 'styles/global-styles';
 import { TxnHistoryProvider } from 'utils/hooks/useTxnHistory';
@@ -99,9 +99,11 @@ import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
 import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
-// import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+
+import ENV_CONFIG_LOCAL from 'env';
+import { useEnv, useI18n } from 'sirius-next/packages/common/dist/store/index';
 
 // WebFontLoader.load({
 //   custom: {
@@ -131,6 +133,8 @@ export function App() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.includes('zh') ? 'zh-cn' : 'en';
   const [loading, setLoading] = useState(true);
+  const { SET_ENV_CONFIG } = useEnv();
+  const { setTranslations } = useI18n();
 
   moment.locale(lang);
   dayjs.locale(lang);
@@ -242,7 +246,7 @@ export function App() {
     getClientVersion().then(v => {
       console.log('conflux-network-version:', v);
     });
-  }, []);
+  }, [SET_ENV_CONFIG, setTranslations]);
 
   useEffect(() => {
     const key = LOCALSTORAGE_KEYS_MAP.addressLabel;
@@ -288,8 +292,11 @@ export function App() {
         [keyTx]: dTx,
       });
     }
+
+    SET_ENV_CONFIG(ENV_CONFIG_LOCAL);
+    setTranslations(translations);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalData]);
+  }, [globalData, SET_ENV_CONFIG, setTranslations]);
 
   // @todo, add loading for request frontend config info
   return (
@@ -713,7 +720,7 @@ const Main = styled.div`
   }
 
   .link {
-    color: ${ENV_CONFIG.ENV_THEME.linkColor} !important;
+    color: ${ENV_CONFIG_LOCAL.ENV_THEME.linkColor} !important;
   }
 `;
 

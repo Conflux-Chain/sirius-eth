@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '../Text/Loadable';
 import { Link } from '../Link/Loadable';
 import { WithTranslation, withTranslation, Translation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { formatAddress, isZeroAddress, isAddress, formatString } from 'utils';
 import { AlertTriangle, Bookmark, Hash } from '@zeit-ui/react-icons';
@@ -12,7 +12,7 @@ import VerifiedIcon from 'images/verified.png';
 import { media, sizes } from 'styles/media';
 import { monospaceFont } from 'styles/variable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { IS_MAINNET } from 'sirius-next/packages/common/dist/env';
+import { IS_MAINNET } from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Props {

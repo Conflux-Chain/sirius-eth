@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import clsx from 'clsx';
 
 import iconArrow from './assets/arrow.svg';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 export const Link = ({
   children,

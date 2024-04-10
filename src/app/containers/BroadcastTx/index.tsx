@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { Button, Textarea } from '@cfxjs/react-ui';
 import styled from 'styled-components';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { PageHeader } from 'app/components/PageHeader';
 import imgWarning from 'images/warning.png';
 import { Card } from 'app/components/Card/Loadable';
@@ -11,7 +11,7 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { sendRawTransaction } from 'utils/rpcRequest';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 
 export function BroadcastTx() {
   const { t } = useTranslation();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { Remark } from 'app/components/Remark';
 import styled from 'styled-components';
@@ -24,7 +24,7 @@ import { useMessages } from '@cfxjs/react-ui';
 import { StatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useLocation } from 'react-router-dom';
 import querystring from 'query-string';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 // import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 const { Panel } = Collapse;

@@ -8,7 +8,7 @@ import React, { memo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'sirius-next/packages/common/dist/locales/i18n';
+import { translations } from 'locales/i18n';
 import { Copy, Qrcode, Debank } from './HeadLineButtons';
 import { BalanceCard, TokensCard, NonceCard } from './AddressInfoCards';
 import { Main, Title, Bottom, HeadAddressLine, Top, Head } from './layouts';
@@ -24,7 +24,7 @@ import { Bookmark } from '@zeit-ui/react-icons';
 import { Text } from 'app/components/Text/Loadable';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
-import ENV_CONFIG from 'sirius-next/packages/common/dist/env';
+import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface RouteParams {
