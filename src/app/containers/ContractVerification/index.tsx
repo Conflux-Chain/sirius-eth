@@ -1,11 +1,11 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { Remark } from 'app/components/Remark';
 import styled from 'styled-components';
-import { Card } from 'app/components/Card/Loadable';
+import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { Form, Input, Button, Row, Col, Select, Collapse } from '@cfxjs/antd';
 import { isAddress } from 'utils';
 import {
@@ -19,12 +19,11 @@ import 'ace-builds/webpack-resolver';
 import 'ace-mode-solidity/build/remix-ide/mode-solidity';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-tomorrow';
-import { FileUpload } from 'app/components/FileUpload';
+import { FileUpload } from 'sirius-next/packages/common/dist/components/FileUpload';
 import { useMessages } from '@cfxjs/react-ui';
 import { StatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useLocation } from 'react-router-dom';
 import querystring from 'query-string';
-import ENV_CONFIG from 'env';
 // import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 const { Panel } = Collapse;
@@ -45,7 +44,7 @@ export const ContractVerification = () => {
   const [compilers, setCompilers] = useState<Array<any>>([]);
   const [versions, setVersions] = useState<Array<any>>([]);
   const [optimizationValue, setOptimizationValue] = useState<string>('no');
-  const inputRef = createRef<any>();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [sourceCode, setSourceCode] = useState('');
   const [modalStatus, setModalStatus] = useState('loading');
   const [modalShow, setModalShow] = useState(false);
@@ -167,7 +166,7 @@ export const ContractVerification = () => {
   };
 
   const handleImport = () => {
-    inputRef.current.click();
+    inputRef.current?.click();
   };
 
   const handleFileChange = data => {
@@ -655,7 +654,7 @@ const StyledContractVerificationWrapper = styled.div`
     .ant-collapse-arrow {
       float: right;
       margin-right: -1rem !important;
-      color: ${ENV_CONFIG.ENV_THEME.linkColor};
+      color: var(--theme-color-link);
       text-decoration: underline;
       font-weight: 500;
     }

@@ -100,7 +100,6 @@ import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
 import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
-
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 import ENV_CONFIG_LOCAL from 'env';
@@ -719,7 +718,11 @@ const Main = styled.div`
   }
 
   .link {
+<<<<<<< HEAD
     color: ${ENV_CONFIG_LOCAL.ENV_THEME.linkColor} !important;
+=======
+    color: var(--theme-color-link) !important;
+>>>>>>> micro-refactoring
   }
 `;
 

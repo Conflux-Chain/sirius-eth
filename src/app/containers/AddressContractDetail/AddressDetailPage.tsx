@@ -24,7 +24,6 @@ import { Bookmark } from '@zeit-ui/react-icons';
 import { Text } from 'app/components/Text/Loadable';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
-import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface RouteParams {
@@ -187,7 +186,7 @@ export const MenuWrapper = styled(Menu)`
 
     &:hover {
       a {
-        color: ${ENV_CONFIG.ENV_THEME.primary};
+        color: var(--theme-color-primary);
       }
     }
   }

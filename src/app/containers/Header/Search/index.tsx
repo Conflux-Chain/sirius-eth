@@ -11,7 +11,7 @@ import { translations } from 'locales/i18n';
 import { useBreakpoint } from 'styles/media';
 import { useSearch } from 'utils/hooks/useSearch';
 import { AutoComplete, Input, SelectProps, Image } from '@cfxjs/antd';
-import { SearchIcon } from 'app/components/SearchIcon/Loadable';
+import { SearchIcon } from 'sirius-next/packages/common/dist/components/SearchIcon';
 import ClearIcon from 'images/clear.png';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import _ from 'lodash';
@@ -20,7 +20,6 @@ import { formatAddress, isBlockNumber, isHash } from 'utils';
 import { appendApiPrefix } from 'utils/api';
 import verifiedIcon from 'images/nametag/verified.svg';
 import warningIcon from 'images/nametag/warning.svg';
-import ENV_CONFIG from 'env';
 
 const { Search: SearchInput } = Input;
 
@@ -323,10 +322,10 @@ const Container = styled.div`
     }
 
     .ant-input-search-button {
-      background-color: ${ENV_CONFIG.ENV_THEME.searchButtonBg};
+      background-color: var(--theme-color-search-button-bg);
 
       &:hover {
-        background-color: ${ENV_CONFIG.ENV_THEME.searchButtonHoverBg};
+        background-color: var(--theme-color-search-button-hover-bg);
         /* opacity: 0.85; */
       }
     }

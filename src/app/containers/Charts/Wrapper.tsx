@@ -6,7 +6,6 @@ import { translations } from 'locales/i18n';
 import { Breadcrumb } from '@cfxjs/antd';
 import { useHistory } from 'react-router-dom';
 import { media } from 'styles/media';
-import ENV_CONFIG from 'env';
 
 export const Wrapper = ({
   children,
@@ -84,7 +83,7 @@ const StyledPreviewWrapper = styled.div`
   transition: border-color 0.25s;
 
   &:hover {
-    border: 1px solid ${ENV_CONFIG.ENV_THEME.outlineColor};
+    border: 1px solid var(--theme-color-outline);
   }
 
   .header {
@@ -106,7 +105,7 @@ const StyledPreviewWrapper = styled.div`
 
   .view-detail {
     flex-shrink: 0;
-    color: ${ENV_CONFIG.ENV_THEME.chartDetailLinkColor} !important;
+    color: var(--theme-color-chart-link) !important;
   }
 `;
 

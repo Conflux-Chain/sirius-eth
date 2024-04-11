@@ -16,7 +16,6 @@ import GasLow from 'images/gas-low.png';
 import GasMedian from 'images/gas-median.png';
 import GasHigh from 'images/gas-high.png';
 import ArrowDown from 'images/arrowDown.svg';
-import ENV_CONFIG from 'env';
 
 const roundNumberWithSuffix = (value: string): string => {
   if (value === '< 0.001') return value;
@@ -295,7 +294,7 @@ const GasMarketWrapper = styled.div`
     div {
       width: 25%;
       height: 8px;
-      background: ${ENV_CONFIG.ENV_THEME.gasPriceLineBg};
+      background: var(--theme-color-gas-price-line-bg);
     }
     div:nth-child(1) {
       border-radius: 4px 0 0 4px;
@@ -305,7 +304,7 @@ const GasMarketWrapper = styled.div`
     }
     .active {
       width: 50%;
-      background: ${ENV_CONFIG.ENV_THEME.primary};
+      background: var(--theme-color-primary);
     }
   }
   .gasPriceMarketMid {
@@ -320,7 +319,7 @@ const GasMarketWrapper = styled.div`
     .activeLine {
       width: 1px;
       height: 12px;
-      background: ${ENV_CONFIG.ENV_THEME.primary};
+      background: var(--theme-color-primary);
       position: absolute;
       margin-top: -10px;
       left: 50%;
@@ -336,7 +335,7 @@ const GasMarketWrapper = styled.div`
       color: #424a71;
     }
     .active {
-      color: ${ENV_CONFIG.ENV_THEME.primary};
+      color: var(--theme-color-primary);
     }
     .left {
       text-align: left;
@@ -416,7 +415,7 @@ const Trigger = styled.div`
   cursor: pointer;
   font-weight: 500;
   .value {
-    color: ${ENV_CONFIG.ENV_THEME.primary};
+    color: var(--theme-color-primary);
   }
 `;
 

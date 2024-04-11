@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Link } from 'app/components/Link/Loadable';
 import { media } from 'styles/media';
-import { Footer as FooterComp } from 'app/components/Footer/Loadable';
+import { Footer as FooterComp } from 'sirius-next/packages/common/dist/components/Footer';
 import { TextLogo } from 'app/components/TextLogo/Loadable';
 import { translations } from 'locales/i18n';
 import { Language } from './Language';
@@ -522,7 +522,7 @@ const FooterContentWrapper = styled.div`
 const FooterContentTitle = styled.span`
   margin-bottom: 1.07rem;
   font-weight: 600;
-  color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+  color: var(--theme-color-foot-highlight);
   margin-right: 6rem;
   /* margin-right: 8.5714rem;
   width: 5.7143rem;
@@ -565,7 +565,7 @@ const FooterContentLink = styled.span`
     margin-right: 5.1429rem;
 
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+      color: var(--theme-color-foot-highlight);
     }
 
     ${media.m} {
@@ -590,7 +590,7 @@ const FooterContentIconLink = styled.span`
     color: var(--theme-color-gray2);
 
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+      color: var(--theme-color-foot-highlight);
     }
   }
 
