@@ -313,7 +313,6 @@ export const ProjectInfo = React.memo(
               <Trans
                 i18nKey="general.table.token.projectInfo.modal.uncmc"
                 components={[
-                  null,
                   <Link
                     href={
                       lang === 'en'

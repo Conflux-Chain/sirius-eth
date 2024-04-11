@@ -102,6 +102,9 @@ import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
+import ENV_CONFIG_LOCAL from 'env';
+import { useEnv } from 'sirius-next/packages/common/dist/store/index';
+
 // WebFontLoader.load({
 //   custom: {
 //     families: ['Circular Std:n4,i4,n7,i7,n8,i8'],
@@ -130,6 +133,7 @@ export function App() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.includes('zh') ? 'zh-cn' : 'en';
   const [loading, setLoading] = useState(false);
+  const { SET_ENV_CONFIG } = useEnv();
 
   moment.locale(lang);
   dayjs.locale(lang);
@@ -238,10 +242,11 @@ export function App() {
   }, []);
 
   useEffect(() => {
+    SET_ENV_CONFIG(ENV_CONFIG_LOCAL);
     getClientVersion().then(v => {
       console.log('conflux-network-version:', v);
     });
-  }, []);
+  }, [SET_ENV_CONFIG]);
 
   useEffect(() => {
     const key = LOCALSTORAGE_KEYS_MAP.addressLabel;
@@ -713,7 +718,11 @@ const Main = styled.div`
   }
 
   .link {
+<<<<<<< HEAD
+    color: ${ENV_CONFIG_LOCAL.ENV_THEME.linkColor} !important;
+=======
     color: var(--theme-color-link) !important;
+>>>>>>> micro-refactoring
   }
 `;
 

@@ -92,10 +92,13 @@ module.exports = function (config, mode) {
       alias: {
         ...config.resolve.alias,
         react: path.resolve(__dirname, './node_modules/react'),
-        highcharts: path.resolve(__dirname, './node_modules/highcharts'),
         'react-router-dom': path.resolve(
           __dirname,
           './node_modules/react-router-dom',
+        ),
+        'react-i18next': path.resolve(
+          __dirname,
+          './node_modules/react-i18next',
         ),
       },
     },
