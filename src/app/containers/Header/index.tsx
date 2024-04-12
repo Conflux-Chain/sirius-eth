@@ -20,11 +20,7 @@ import { useLocation } from 'react-router';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
-import {
-  useGlobalData,
-  GlobalDataType,
-  NetworksType,
-} from 'utils/hooks/useGlobal';
+import { useGlobalData, NetworksType } from 'utils/hooks/useGlobal';
 import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
@@ -34,7 +30,7 @@ import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 // TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
-  const { networkId, networks } = globalData as GlobalDataType;
+  const { networkId, networks } = globalData;
 
   const { t, i18n } = useTranslation();
   const zh = '中文';

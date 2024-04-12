@@ -251,7 +251,7 @@ export function App() {
   useEffect(() => {
     const key = LOCALSTORAGE_KEYS_MAP.addressLabel;
     const keyTx = LOCALSTORAGE_KEYS_MAP.txPrivateNote;
-    const data = globalData || {};
+    const data = globalData;
 
     // address label
     if (!data[key]) {
@@ -718,11 +718,7 @@ const Main = styled.div`
   }
 
   .link {
-<<<<<<< HEAD
-    color: ${ENV_CONFIG_LOCAL.ENV_THEME.linkColor} !important;
-=======
     color: var(--theme-color-link) !important;
->>>>>>> micro-refactoring
   }
 `;
 
