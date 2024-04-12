@@ -7,10 +7,11 @@ import { Text } from '../Text/Loadable';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 export const AddressLabel = ({ address }) => {
-  const [globalData = {}] = useGlobalData();
+  const [globalData] = useGlobalData();
   const { t } = useTranslation();
 
-  const addressLabel = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][address];
+  const addressLabel =
+    globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[address];
   const addressLabelIcon = (
     <Text span hoverValue={t(translations.profile.tip.label)}>
       <Bookmark color="var(--theme-color-gray2)" size={16} />
