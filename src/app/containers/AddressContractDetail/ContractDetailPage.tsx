@@ -41,7 +41,7 @@ interface RouteParams {
 }
 
 export const ContractDetailPage = memo(() => {
-  const [globalData = {}] = useGlobalData();
+  const [globalData] = useGlobalData();
   const { t } = useTranslation();
   const { address } = useParams<RouteParams>();
   const [visible, setVisible] = useState(false);
@@ -73,7 +73,7 @@ export const ContractDetailPage = memo(() => {
     websiteUrl !== 'http://' &&
     websiteUrl !== t(translations.general.loading);
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
-  const addressLabel = addressLabelMap[address];
+  const addressLabel = addressLabelMap?.[address];
 
   const menu = (
     <MenuWrapper>

@@ -211,7 +211,7 @@ export const AddressContainer = withTranslation()(
       showNametag = true,
       nametagInfo,
     }: Props & WithTranslation) => {
-      const [globalData = {}] = useGlobalData();
+      const [globalData] = useGlobalData();
 
       const suffixSize =
         suffixAddressSize ||
@@ -234,7 +234,7 @@ export const AddressContainer = withTranslation()(
 
           if (showLabeled) {
             const { label } = getLabelInfo(
-              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
+              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[
                 fContractCreated.toLocaleLowerCase()
               ],
               'tag',
@@ -337,7 +337,7 @@ export const AddressContainer = withTranslation()(
 
       if (showLabeled) {
         const { label } = getLabelInfo(
-          globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
+          globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[
             formatAddress(cfxAddress.toLocaleLowerCase())
           ],
           'tag',
