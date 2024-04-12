@@ -2,12 +2,11 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import {
-  StockChartTemplate,
-  ChildProps,
-} from 'app/components/Charts/StockChartTemplate';
+import { StockChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/StockChartTemplate';
+import { PreviewChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/PreviewChartTemplate';
+import { ChildProps } from 'sirius-next/packages/common/dist/components/Charts/config';
+import { scope } from 'sirius-next/packages/common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
-import { Wrapper } from './Wrapper';
 import {
   xAxisCustomLabelHour,
   tooltipCustomLabel,
@@ -23,6 +22,12 @@ export function HashRate({ preview = false }: ChildProps) {
     subtitle: t(translations.highcharts.hashRate.subtitle),
     request: {
       url: OPEN_API_URLS.mining,
+      query: preview
+        ? {
+            limit: '30',
+            intervalType: 'day',
+          }
+        : undefined,
       formatter: data => [
         data?.list?.map(s => [
           // @ts-ignore
@@ -35,6 +40,24 @@ export function HashRate({ preview = false }: ChildProps) {
     options: {
       chart: {
         zoomType: 'x',
+      },
+      header: {
+        title: {
+          text: t(translations.highcharts.hashRate.title),
+        },
+        subtitle: {
+          text: t(translations.highcharts.hashRate.subtitle),
+        },
+        breadcrumb: [
+          {
+            name: t(translations.highcharts.breadcrumb.charts),
+            path: '/charts',
+          },
+          {
+            name: t(translations.highcharts.breadcrumb.hashrate),
+            path: '/charts/hashRate',
+          },
+        ],
       },
       title: {
         text: t(translations.highcharts.hashRate.title),
@@ -68,12 +91,17 @@ export function HashRate({ preview = false }: ChildProps) {
           ...xAxisCustomLabelHour,
         },
       },
+      intervalScope: {
+        min: scope.min,
+        hour: scope.hour,
+        day: scope.day,
+      },
     },
   };
 
-  return (
-    <Wrapper {...props}>
-      <StockChartTemplate {...props}></StockChartTemplate>
-    </Wrapper>
+  return preview ? (
+    <PreviewChartTemplate {...props}></PreviewChartTemplate>
+  ) : (
+    <StockChartTemplate {...props}></StockChartTemplate>
   );
 }

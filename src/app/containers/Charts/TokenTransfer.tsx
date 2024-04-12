@@ -2,23 +2,23 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import {
-  StockChartTemplate,
-  ChildProps,
-} from 'app/components/Charts/StockChartTemplate';
+import { StockChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/StockChartTemplate';
+import { PreviewChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/PreviewChartTemplate';
+import { ChildProps } from 'sirius-next/packages/common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
-import { Wrapper } from './Wrapper';
 
 export function TokenTransfer({ preview = false }: ChildProps) {
   const { t } = useTranslation();
 
   const props = {
-    preview: preview,
-    name: 'token-transfer',
-    title: t(translations.highcharts.tokenTransfer.title),
-    subtitle: t(translations.highcharts.tokenTransfer.subtitle),
     request: {
       url: OPEN_API_URLS.tokenTransfer,
+      query: preview
+        ? {
+            limit: '30',
+            intervalType: 'day',
+          }
+        : undefined,
       formatter: data => {
         const data1: any = [];
         const data2: any = [];
@@ -35,6 +35,24 @@ export function TokenTransfer({ preview = false }: ChildProps) {
     options: {
       chart: {
         zoomType: 'x',
+      },
+      header: {
+        title: {
+          text: t(translations.highcharts.tokenTransfer.title),
+        },
+        subtitle: {
+          text: t(translations.highcharts.tokenTransfer.subtitle),
+        },
+        breadcrumb: [
+          {
+            name: t(translations.highcharts.breadcrumb.charts),
+            path: '/charts',
+          },
+          {
+            name: t(translations.highcharts.breadcrumb['token-transfer']),
+            path: '/charts/token-transfer',
+          },
+        ],
       },
       title: {
         text: t(translations.highcharts.tokenTransfer.title),
@@ -73,9 +91,9 @@ export function TokenTransfer({ preview = false }: ChildProps) {
     },
   };
 
-  return (
-    <Wrapper {...props}>
-      <StockChartTemplate {...props}></StockChartTemplate>
-    </Wrapper>
+  return preview ? (
+    <PreviewChartTemplate {...props}></PreviewChartTemplate>
+  ) : (
+    <StockChartTemplate {...props}></StockChartTemplate>
   );
 }
