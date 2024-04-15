@@ -11,10 +11,6 @@ export function CFXHolderAccounts({ preview = false }: ChildProps) {
   const { t } = useTranslation();
 
   const props = {
-    preview: preview,
-    name: 'cfx-holder-accounts',
-    title: t(translations.highcharts.holderAccounts.title),
-    subtitle: t(translations.highcharts.holderAccounts.subtitle),
     request: {
       url: OPEN_API_URLS.cfxHolderAccounts,
       query: preview
