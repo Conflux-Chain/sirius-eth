@@ -16,10 +16,6 @@ export function HashRate({ preview = false }: ChildProps) {
   const { t } = useTranslation();
 
   const props = {
-    name: 'hashrate',
-    preview: preview,
-    title: t(translations.highcharts.hashRate.title),
-    subtitle: t(translations.highcharts.hashRate.subtitle),
     request: {
       url: OPEN_API_URLS.core_mining,
       query: preview
