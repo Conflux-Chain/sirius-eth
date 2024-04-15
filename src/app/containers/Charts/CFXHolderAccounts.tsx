@@ -51,7 +51,7 @@ export function CFXHolderAccounts({ preview = false }: ChildProps) {
             path: '/charts',
           },
           {
-            name: t(translations.highcharts.breadcrumb['cfx-holder-accounts']),
+            name: t(translations.highcharts.breadcrumb['holder-accounts']),
             path: '/charts/cfx-holder-accounts',
           },
         ],
