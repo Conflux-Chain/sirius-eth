@@ -1,22 +1,25 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { ChartTemplate, ChildProps } from 'app/components/Charts/ChartTemplate';
+import { StockChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/StockChartTemplate';
+import { PreviewChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/PreviewChartTemplate';
+import { ChildProps } from 'sirius-next/packages/common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
 import SDK from 'js-conflux-sdk';
-import { Wrapper } from './Wrapper';
 import BigNumber from 'bignumber.js';
 
 export function CirculatingSupply({ preview = false }: ChildProps) {
   const { t } = useTranslation();
 
   const props = {
-    name: 'circulating',
-    preview,
-    title: t(translations.highcharts.circulatingSupply.title),
-    subtitle: t(translations.highcharts.circulatingSupply.subtitle),
     request: {
       url: OPEN_API_URLS.supply,
+      query: preview
+        ? {
+            limit: '30',
+            intervalType: 'day',
+          }
+        : undefined,
       formatter: data => {
         if (data) {
           return [
@@ -42,6 +45,28 @@ export function CirculatingSupply({ preview = false }: ChildProps) {
       },
     },
     options: {
+      chart: {
+        type: 'pie',
+      },
+      header: {
+        optionShow: false,
+        title: {
+          text: t(translations.highcharts.circulatingSupply.title),
+        },
+        subtitle: {
+          text: t(translations.highcharts.circulatingSupply.subtitle),
+        },
+        breadcrumb: [
+          {
+            name: t(translations.highcharts.breadcrumb.charts),
+            path: '/charts',
+          },
+          {
+            name: t(translations.highcharts.breadcrumb.circulating),
+            path: '/charts/circulating',
+          },
+        ],
+      },
       title: {
         text: t(translations.highcharts.circulatingSupply.title),
       },
@@ -57,9 +82,9 @@ export function CirculatingSupply({ preview = false }: ChildProps) {
     },
   };
 
-  return (
-    <Wrapper {...props}>
-      <ChartTemplate {...props}></ChartTemplate>
-    </Wrapper>
+  return preview ? (
+    <PreviewChartTemplate {...props}></PreviewChartTemplate>
+  ) : (
+    <StockChartTemplate {...props}></StockChartTemplate>
   );
 }
