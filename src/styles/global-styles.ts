@@ -390,15 +390,6 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  .sirius-next-tooltip {
-    a {
-      color: var(--theme-color-blue0);
-
-      &:hover {
-        color: var(--theme-color-blue2);
-      }
-    }
-  }
   .ant-tooltip {
     a {
       color: var(--theme-color-blue0);
