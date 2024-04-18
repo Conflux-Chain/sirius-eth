@@ -6,7 +6,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Link } from '@cfxjs/react-ui';
 import { translations } from 'locales/i18n';
 import { AddressContainer } from 'app/components/AddressContainer';
-import { CopyButton } from 'app/components/CopyButton/Loadable';
+import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
 import { formatAddress } from 'utils';
 import styled from 'styled-components';
 import { publishRequestError } from 'utils';
