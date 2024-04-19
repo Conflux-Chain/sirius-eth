@@ -10,7 +10,7 @@ import { Basic } from './Basic';
 import { Transfers } from './Transfers';
 import { useTokenQuery } from '../../../utils/api';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
-import { Tooltip } from '../../components/Tooltip/Loadable';
+import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { formatAddress } from '../../../utils';
 import { media } from '../../../styles/media';
 import DownIcon from '../../../images/down.png';
@@ -115,8 +115,7 @@ export function TokenDetail() {
               />
             ) : (
               <Tooltip
-                hoverable
-                text={
+                title={
                   <span>
                     {t(translations.token.shuttleflow)}
                     <Link href="https://shuttleflow.io" target="_blank">
