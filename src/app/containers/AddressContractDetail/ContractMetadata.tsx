@@ -14,7 +14,7 @@ import { translations } from 'locales/i18n';
 import { useToken } from 'utils/api';
 import { media } from 'styles/media';
 import { Text } from 'app/components/Text';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { formatString } from 'utils';
@@ -53,10 +53,7 @@ export function ContractMetadata({ address, contractInfo }) {
   const list = [
     {
       title: (
-        <Tooltip
-          text={t(translations.toolTip.contract.nameTag)}
-          placement="top"
-        >
+        <Tooltip title={t(translations.toolTip.contract.nameTag)}>
           {t(translations.contract.nameTag)}
         </Tooltip>
       ),
@@ -86,10 +83,7 @@ export function ContractMetadata({ address, contractInfo }) {
     },
     {
       title: (
-        <Tooltip
-          text={t(translations.toolTip.contract.tokenTracker)}
-          placement="top"
-        >
+        <Tooltip title={t(translations.toolTip.contract.tokenTracker)}>
           {t(translations.contract.tokenTracker)}
         </Tooltip>
       ),
@@ -116,10 +110,7 @@ export function ContractMetadata({ address, contractInfo }) {
     },
     {
       title: (
-        <Tooltip
-          text={t(translations.toolTip.contract.contractCreator)}
-          placement="top"
-        >
+        <Tooltip title={t(translations.toolTip.contract.contractCreator)}>
           {t(translations.contract.creator)}
         </Tooltip>
       ),

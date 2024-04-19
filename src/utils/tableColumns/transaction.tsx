@@ -23,7 +23,7 @@ import { Overview } from 'app/components/TxnComponents';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
 import { PendingReason } from './PendingReason';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 
 import iconViewTxn from 'images/view-txn.png';
@@ -127,14 +127,15 @@ export const TxnHashRenderComponent = ({
       </Link>
       {row && row.gasFee === '0' && (
         <Tooltip
-          text={
+          title={
             <Translation>
               {t => t(translations.general.table.tooltip.crossSpaceCall)}
             </Translation>
           }
-          placement="top"
         >
-          <img className="iconCross" src={iconCross} alt="?" />
+          <ImageWrap>
+            <img className="iconCross" src={iconCross} alt="?" />
+          </ImageWrap>
         </Tooltip>
       )}
     </StyledTransactionHashWrapper>
@@ -409,6 +410,10 @@ const SpanWrap = styled.span`
   max-width: 85px;
   overflow: hidden;
   vertical-align: bottom;
+`;
+
+const ImageWrap = styled.span`
+  display: inline-block;
 `;
 
 const StyledMethodContainerWrapper = styled.span`
