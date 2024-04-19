@@ -139,7 +139,7 @@ export const Overview = ({ data }) => {
         <Description
           vertical
           size="tiny"
-          title={'t(translations.transaction.action.title)'}
+          title={t(translations.transaction.action.title)}
         >
           <SkeletonContainer shown={loading}>
             {transactionAction.content}
