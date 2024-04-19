@@ -31,7 +31,6 @@ import { Popover } from '@cfxjs/react-ui';
 import { useBreakpoint } from 'styles/media';
 import { useTranslation } from 'react-i18next';
 import { monospaceFont } from 'styles/variable';
-import { ProjectInfo } from 'app/components/ProjectInfo';
 import { InfoIconWithTooltip } from 'sirius-next/packages/common/dist/components/InfoIconWithTooltip';
 import { Tag } from '@cfxjs/antd';
 import { Price } from '../../app/components/Price/Loadable';
@@ -847,27 +846,6 @@ export const traceResult = {
     }
 
     return body;
-  },
-};
-
-export const projectInfo = {
-  width: 1,
-  title: (
-    <ContentWrapper right>
-      <Translation>
-        {t => t(translations.general.table.token.projectInfo.projectInfo)}
-      </Translation>
-    </ContentWrapper>
-  ),
-  dataIndex: 'securityCredits',
-  key: 'securityCredits',
-  render: (value, row) => {
-    const { securityAudit, name } = row;
-    return (
-      <ContentWrapper monospace>
-        <ProjectInfo securityAudit={securityAudit} tokenName={name} />
-      </ContentWrapper>
-    );
   },
 };
 
