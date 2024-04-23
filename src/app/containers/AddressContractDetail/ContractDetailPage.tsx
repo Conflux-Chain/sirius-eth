@@ -6,7 +6,8 @@
 
 import React, { memo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { Link } from 'sirius-next/packages/common/dist/components/Link';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Copy, Qrcode } from './HeadLineButtons';
@@ -79,13 +80,13 @@ export const ContractDetailPage = memo(() => {
     <MenuWrapper>
       {!contractInfo?.verify?.exactMatch ? (
         <Menu.Item>
-          <RouterLink
-            to={`/contract-verification?address=${SDK.format.hexAddress(
+          <Link
+            href={`/contract-verification?address=${SDK.format.hexAddress(
               address,
             )}`}
           >
             {t(translations.general.address.more.verifyContract)}
-          </RouterLink>
+          </Link>
         </Menu.Item>
       ) : null}
       {/* <Menu.Item>
@@ -94,9 +95,9 @@ export const ContractDetailPage = memo(() => {
         </RouterLink>
       </Menu.Item> */}
       <Menu.Item>
-        <RouterLink to={`/contract-info/${address}`}>
+        <Link href={`/contract-info/${address}`}>
           {t(translations.general.address.more.editContract)}
-        </RouterLink>
+        </Link>
       </Menu.Item>
       <Menu.Item>
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -117,7 +118,7 @@ export const ContractDetailPage = memo(() => {
       </Menu.Item>
       {hasWebsite && (
         <Menu.Item>
-          <RouterLink
+          <Link
             onClick={e => {
               e.preventDefault();
               e.stopPropagation();
@@ -128,10 +129,9 @@ export const ContractDetailPage = memo(() => {
 
               window.open(link);
             }}
-            to=""
           >
             {t(translations.general.address.more.website)}
-          </RouterLink>
+          </Link>
         </Menu.Item>
       )}
     </MenuWrapper>

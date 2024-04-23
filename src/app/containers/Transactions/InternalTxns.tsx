@@ -3,7 +3,7 @@ import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { fetchWithPrefix } from 'utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation, Trans } from 'react-i18next';
-import { Link } from '@cfxjs/react-ui';
+import { Link } from 'sirius-next/packages/common/dist/components/Link';
 import { translations } from 'locales/i18n';
 import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';

@@ -10,7 +10,7 @@ import {
   reqHomeDashboard /*, reqTransferTPS */,
   reqTransferPlot,
 } from '../../../utils/httpRequest';
-import { Link } from 'react-router-dom';
+import { Link } from 'sirius-next/packages/common/dist/components/Link';
 import lodash from 'lodash';
 import { Tx, AccountGrowth } from '../Charts/Loadable';
 import ENV_CONFIG from 'env';
@@ -111,7 +111,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           <Grid xs={24} sm={24} md={3}>
             {Info(
               // t(translations.statistics.home.transactions),
-              <Link to={'/charts/tx'} className="info-link">
+              <Link href={'/charts/tx'} className="info-link">
                 {t(translations.statistics.home.transactions)}
               </Link>,
               `${
@@ -127,7 +127,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           <Grid xs={24} sm={24} md={3}>
             {Info(
               // t(translations.charts.tps.title),
-              <Link to="/charts/tps" className="info-link">
+              <Link href="/charts/tps" className="info-link">
                 {t(translations.charts.tps.title)}
               </Link>,
               lodash.isNil(tps) ? '--' : tps,
@@ -149,7 +149,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           <Grid xs={24} sm={24} md={3}>
             {Info(
               // t(translations.charts.blockTime.title),
-              <Link to="/charts/blocktime" className="info-link">
+              <Link href="/charts/blocktime" className="info-link">
                 {t(translations.charts.blockTime.title)}
               </Link>,
               lodash.isNil(blockTime) ? '--' : blockTime + 's',
@@ -158,7 +158,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           <Grid xs={24} sm={24} md={3}>
             {Info(
               // t(translations.charts.hashRate.title),
-              <Link to="/charts/hashrate" className="info-link">
+              <Link href="/charts/hashrate" className="info-link">
                 {t(translations.charts.hashRate.title)}
               </Link>,
               lodash.isNil(hashRate) ? '--' : hashRate,
