@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { GlobalDataType, NetworksType } from './hooks/useGlobal';
 import {
-  NETWORK_ID,
   CFX,
   getCurrencySymbol,
   CORE_SPACE_CHAIN_IDS,

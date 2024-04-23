@@ -14,6 +14,8 @@ import { monospaceFont } from 'styles/variable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { IS_MAINNET } from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { getLabelInfo } from 'sirius-next/packages/common/dist/components/AddressContainer/label';
+import { RenderAddress } from 'sirius-next/packages/common/dist/components/AddressContainer';
 
 interface Props {
   value: string; // address value
@@ -44,150 +46,152 @@ const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
 
-export const getLabelInfo = (label, type) => {
-  if (label) {
-    let trans: string = '';
-    let icon: React.ReactNode = null;
+export { getLabelInfo };
 
-    if (type === 'tag') {
-      trans = translations.profile.tip.label;
-      icon = <Bookmark color="var(--theme-color-gray2)" size={16} />;
-    } else if (type === 'nametag') {
-      trans = translations.nametag.label;
-      icon = <Hash color="var(--theme-color-gray2)" size={16} />;
-    }
+// export const getLabelInfo = (label, type) => {
+//   if (label) {
+//     let trans: string = '';
+//     let icon: React.ReactNode = null;
 
-    return {
-      label,
-      icon: (
-        <IconWrapper>
-          <Text span hoverValue={<Translation>{t => t(trans)}</Translation>}>
-            {icon}
-          </Text>
-        </IconWrapper>
-      ),
-    };
-  }
-  return {
-    label: '',
-    icon: null,
-  };
-};
+//     if (type === 'tag') {
+//       trans = translations.profile.tip.label;
+//       icon = <Bookmark color="var(--theme-color-gray2)" size={16} />;
+//     } else if (type === 'nametag') {
+//       trans = translations.nametag.label;
+//       icon = <Hash color="var(--theme-color-gray2)" size={16} />;
+//     }
+
+//     return {
+//       label,
+//       icon: (
+//         <IconWrapper>
+//           <Text span hoverValue={<Translation>{t => t(trans)}</Translation>}>
+//             {icon}
+//           </Text>
+//         </IconWrapper>
+//       ),
+//     };
+//   }
+//   return {
+//     label: '',
+//     icon: null,
+//   };
+// };
 
 // ≈ 2.5 ms
-const RenderAddress = ({
-  cfxAddress,
-  alias,
-  hoverValue,
-  hrefAddress,
-  content,
-  isLink = true,
-  isFull = false,
-  isFullNameTag = false,
-  style = {},
-  maxWidth,
-  suffixSize = defaultPCSuffixAddressSize,
-  prefix = null,
-  suffix = null,
-  type = 'pow',
-  addressLabel = '',
-  nametag = '',
-}: any) => {
-  const href = `/${type === 'pow' ? 'address' : 'pos/accounts'}/${
-    hrefAddress || cfxAddress
-  }`;
-  const aftercontent =
-    type === 'pow'
-      ? cfxAddress &&
-        typeof cfxAddress == 'string' &&
-        !isFull &&
-        !addressLabel &&
-        !nametag &&
-        !alias
-        ? cfxAddress.substr(-suffixSize)
-        : ''
-      : '';
+// const RenderAddress = ({
+//   cfxAddress,
+//   alias,
+//   hoverValue,
+//   hrefAddress,
+//   content,
+//   isLink = true,
+//   isFull = false,
+//   isFullNameTag = false,
+//   style = {},
+//   maxWidth,
+//   suffixSize = defaultPCSuffixAddressSize,
+//   prefix = null,
+//   suffix = null,
+//   type = 'pow',
+//   addressLabel = '',
+//   nametag = '',
+// }: any) => {
+//   const href = `/${type === 'pow' ? 'address' : 'pos/accounts'}/${
+//     hrefAddress || cfxAddress
+//   }`;
+//   const aftercontent =
+//     type === 'pow'
+//       ? cfxAddress &&
+//         typeof cfxAddress == 'string' &&
+//         !isFull &&
+//         !addressLabel &&
+//         !nametag &&
+//         !alias
+//         ? cfxAddress.substr(-suffixSize)
+//         : ''
+//       : '';
 
-  return (
-    <AddressWrapper>
-      {prefix}
-      <Text
-        span
-        hoverValue={
-          <>
-            {nametag ? (
-              <div>
-                <span>
-                  <Translation>{t => t(translations.nametag.tip)}</Translation>
-                </span>
-                {nametag}
-              </div>
-            ) : null}
-            {addressLabel ? (
-              <>
-                <span>
-                  <Translation>
-                    {t => t(translations.profile.address.myNameTag)}
-                  </Translation>
-                </span>
-                {addressLabel}
-              </>
-            ) : null}
-            {alias ? (
-              <>
-                <span>
-                  <Translation>
-                    {t => t(translations.profile.address.publicNameTag)}
-                  </Translation>
-                </span>
-                {alias}
-              </>
-            ) : null}
-            <div>{hoverValue || cfxAddress}</div>
-          </>
-        }
-      >
-        {isLink ? (
-          <LinkWrapper
-            style={style}
-            href={href}
-            maxwidth={
-              (content || nametag || addressLabel || alias) && isFullNameTag
-                ? 1000
-                : isFull
-                ? 430
-                : maxWidth
-            }
-            alias={alias}
-            aftercontent={aftercontent}
-          >
-            <span>
-              {content || nametag || addressLabel || alias || cfxAddress}
-            </span>
-          </LinkWrapper>
-        ) : (
-          <PlainWrapper
-            style={style}
-            maxwidth={
-              (content || nametag || addressLabel || alias) && isFullNameTag
-                ? 1000
-                : isFull
-                ? 430
-                : maxWidth
-            }
-            alias={alias}
-            aftercontent={aftercontent}
-          >
-            <span>
-              {content || nametag || addressLabel || alias || cfxAddress}
-            </span>
-          </PlainWrapper>
-        )}
-      </Text>
-      {suffix}
-    </AddressWrapper>
-  );
-};
+//   return (
+//     <AddressWrapper>
+//       {prefix}
+//       <Text
+//         span
+//         hoverValue={
+//           <>
+//             {nametag ? (
+//               <div>
+//                 <span>
+//                   <Translation>{t => t(translations.nametag.tip)}</Translation>
+//                 </span>
+//                 {nametag}
+//               </div>
+//             ) : null}
+//             {addressLabel ? (
+//               <>
+//                 <span>
+//                   <Translation>
+//                     {t => t(translations.profile.address.myNameTag)}
+//                   </Translation>
+//                 </span>
+//                 {addressLabel}
+//               </>
+//             ) : null}
+//             {alias ? (
+//               <>
+//                 <span>
+//                   <Translation>
+//                     {t => t(translations.profile.address.publicNameTag)}
+//                   </Translation>
+//                 </span>
+//                 {alias}
+//               </>
+//             ) : null}
+//             <div>{hoverValue || cfxAddress}</div>
+//           </>
+//         }
+//       >
+//         {isLink ? (
+//           <LinkWrapper
+//             style={style}
+//             href={href}
+//             maxwidth={
+//               (content || nametag || addressLabel || alias) && isFullNameTag
+//                 ? 1000
+//                 : isFull
+//                 ? 430
+//                 : maxWidth
+//             }
+//             alias={alias}
+//             aftercontent={aftercontent}
+//           >
+//             <span>
+//               {content || nametag || addressLabel || alias || cfxAddress}
+//             </span>
+//           </LinkWrapper>
+//         ) : (
+//           <PlainWrapper
+//             style={style}
+//             maxwidth={
+//               (content || nametag || addressLabel || alias) && isFullNameTag
+//                 ? 1000
+//                 : isFull
+//                 ? 430
+//                 : maxWidth
+//             }
+//             alias={alias}
+//             aftercontent={aftercontent}
+//           >
+//             <span>
+//               {content || nametag || addressLabel || alias || cfxAddress}
+//             </span>
+//           </PlainWrapper>
+//         )}
+//       </Text>
+//       {suffix}
+//     </AddressWrapper>
+//   );
+// };
 
 // TODO code simplify
 // TODO new address display format
@@ -211,6 +215,7 @@ export const AddressContainer = withTranslation()(
       showNametag = true,
       nametagInfo,
     }: Props & WithTranslation) => {
+      const link = isLink;
       const [globalData = {}] = useGlobalData();
 
       const suffixSize =
@@ -256,13 +261,14 @@ export const AddressContainer = withTranslation()(
           }
 
           return RenderAddress({
+            translations,
             cfxAddress: '',
             alias: alias || txtContractCreation,
             addressLabel,
             nametag: officalNametag,
             hoverValue: fContractCreated,
             hrefAddress: fContractCreated,
-            isLink,
+            link,
             isFull,
             isFullNameTag,
             maxWidth: 160,
@@ -298,11 +304,12 @@ export const AddressContainer = withTranslation()(
       if (!isAddress(value)) {
         const tip = t(translations.general.invalidAddress);
         return RenderAddress({
+          translations,
           cfxAddress: value,
           alias,
           hoverValue: `${tip}: ${value}`,
           content: alias ? formatString(alias, 'tag') : value,
-          isLink: false,
+          link: false,
           isFull,
           isFullNameTag,
           maxWidth,
@@ -365,11 +372,12 @@ export const AddressContainer = withTranslation()(
             : translations.general.unverifiedContract,
         );
         return RenderAddress({
+          translations,
           cfxAddress,
           alias,
           addressLabel,
           nametag: officalNametag,
-          isLink,
+          link,
           isFull,
           isFullNameTag,
           maxWidth,
@@ -400,11 +408,12 @@ export const AddressContainer = withTranslation()(
 
       if (isMe) {
         return RenderAddress({
+          translations,
           cfxAddress,
           alias,
           addressLabel,
           nametag: officalNametag,
-          isLink,
+          link,
           isFull,
           isFullNameTag,
           maxWidth,
@@ -426,11 +435,12 @@ export const AddressContainer = withTranslation()(
       }
 
       return RenderAddress({
+        translations,
         cfxAddress,
         alias,
         addressLabel,
         nametag: officalNametag,
-        isLink,
+        link,
         isFull,
         isFullNameTag,
         maxWidth,
