@@ -76,12 +76,6 @@ export const Header = memo(() => {
       href: 'https://github.com/Conflux-Chain/sirius-eth/issues',
     },
     // {
-    //   title: [t(translations.header.report), <Check size={18} key="check" />],
-    //   name: ScanEvent.menu.action.report,
-    //   afterClick: menuClick,
-    //   href: '/report',
-    // },
-    // {
     //   title: [
     //     t(translations.header.supportCenter),
     //     <Check size={18} key="check" />,

@@ -54,7 +54,6 @@ import { Search } from './containers/Search';
 // import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
 // import { AddressConverter } from './containers/AddressConverter';
 // import { NetworkError } from './containers/NetworkError/Loadable';
-// import { Report } from './containers/Report';
 import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
@@ -657,7 +656,6 @@ export function App() {
                             ]}
                             component={BlocknumberCalc}
                           />
-                          <Route exact path="/report" component={Report} />
                           <Route
                             exact
                             path="/balance-checker"

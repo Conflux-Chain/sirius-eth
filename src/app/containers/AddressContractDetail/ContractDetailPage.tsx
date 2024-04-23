@@ -115,11 +115,6 @@ export const ContractDetailPage = memo(() => {
           )}
         </a>
       </Menu.Item>
-      {/* <Menu.Item>
-        <RouterLink to={`/report?address=${address}`}>
-          {t(translations.general.address.more.report)}
-        </RouterLink>
-      </Menu.Item> */}
       {hasWebsite && (
         <Menu.Item>
           <RouterLink
