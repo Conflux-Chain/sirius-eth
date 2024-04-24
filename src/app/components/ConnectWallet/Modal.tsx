@@ -87,6 +87,7 @@ export const Modal = ({
       </a>
     </div>
   );
+  let handleClick: VoidFunction | undefined = undefined;
 
   if (installed) {
     if (authConnectStatus === AuthConnectStatus.NotConnected) {
@@ -98,6 +99,7 @@ export const Modal = ({
           {logo}
         </>
       );
+      handleClick = handleLogin;
     } else if (authConnectStatus === AuthConnectStatus.Connected) {
       if (isValid) {
         title = t(translations.connectWallet.modal.account);
@@ -180,7 +182,7 @@ export const Modal = ({
       <div className="modal-and-history-container">
         <div className="modal-body">
           <div className="modal-title">{title}</div>
-          <div className={clsx('modal-portal')} onClick={handleLogin}>
+          <div className={clsx('modal-portal')} onClick={handleClick}>
             {portal}
           </div>
           {tip}
