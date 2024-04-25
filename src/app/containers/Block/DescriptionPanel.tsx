@@ -8,7 +8,7 @@ import { Text } from 'app/components/Text/Loadable';
 import { Description } from 'sirius-next/packages/common/dist/components/Description';
 import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
 import { Link } from 'sirius-next/packages/common/dist/components/Link';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';

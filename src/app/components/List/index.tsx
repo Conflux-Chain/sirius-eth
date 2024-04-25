@@ -5,8 +5,8 @@
  */
 import React from 'react';
 import styled from 'styled-components';
-import { Skeleton } from '@cfxjs/react-ui';
 import { useBreakpoint, media } from 'styles/media';
+import { Skeleton } from 'sirius-next/packages/common/dist/components/Skeleton';
 import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import {
   Description,
