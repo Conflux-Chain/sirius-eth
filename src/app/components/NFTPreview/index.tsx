@@ -4,7 +4,7 @@
  *
  */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { Image, Popover, Skeleton } from '@cfxjs/antd';
+import { Image, Popover } from '@cfxjs/antd';
 import { Spin } from 'sirius-next/packages/common/dist/components/Spin';
 import tokenIdNotFound from 'images/token/tokenIdNotFound.jpg';
 import styled from 'styled-components';
@@ -15,6 +15,7 @@ import nftPreviewActive from 'images/token/nftPreviewActive2.svg';
 import nftPreview from 'images/token/nftPreview2.svg';
 import { reqNFTInfo } from 'utils/httpRequest';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
+import { ImageSkeleton } from 'sirius-next/packages/common/dist/components/ImageSkeleton';
 import NotFoundIcon from 'images/token/tokenIdNotFound.jpg';
 import fetch from 'utils/request';
 import audioDesign from './audio-design.svg';
@@ -298,7 +299,7 @@ export const NFTPreview = React.memo(
                     />
                   )
                 ) : isFirstTime ? (
-                  <Skeleton.Image />
+                  <ImageSkeleton />
                 ) : (
                   <Image
                     width={500}
@@ -426,7 +427,7 @@ export const NFTPreview = React.memo(
                   />
                 )
               ) : isFirstTime ? (
-                <Skeleton.Image />
+                <ImageSkeleton />
               ) : (
                 <Image
                   width={500}
