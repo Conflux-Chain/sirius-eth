@@ -8,7 +8,7 @@ import React from 'react';
 import clsx from 'clsx';
 import styled from 'styled-components';
 import { Link } from 'sirius-next/packages/common/dist/components/Link';
-import { List } from 'app/components/List/';
+import { List } from 'sirius-next/packages/common/dist/components/List';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useToken } from 'utils/api';
