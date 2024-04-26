@@ -5,7 +5,7 @@ import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { Link } from 'sirius-next/packages/common/dist/components/Link';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { media } from 'styles/media';
+import { media } from 'sirius-next/packages/common/dist/utils/media';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { DecodedParams } from 'app/components/TxnComponents/util';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';

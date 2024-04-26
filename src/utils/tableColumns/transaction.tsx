@@ -21,7 +21,7 @@ import { reqTransactionDetail } from 'utils/httpRequest';
 import { Popover } from '@cfxjs/antd';
 import { Overview } from 'app/components/TxnComponents';
 import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
-import { useBreakpoint } from 'styles/media';
+import { useBreakpoint } from 'sirius-next/packages/common/dist/utils/media';
 import { PendingReason } from './PendingReason';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
