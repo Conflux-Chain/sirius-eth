@@ -57,7 +57,7 @@ import { Search } from './containers/Search';
 import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
-import Loading from 'app/components/Loading';
+import { Loading } from 'sirius-next/packages/common/dist/components/Loading';
 // import { CookieTip } from './components/CookieTip';
 // import { GlobalTip } from './components/GlobalTip';
 
