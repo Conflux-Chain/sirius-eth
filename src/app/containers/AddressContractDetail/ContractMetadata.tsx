@@ -12,7 +12,7 @@ import { List } from 'app/components/List/';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useToken } from 'utils/api';
-import { media } from 'styles/media';
+import { media } from 'sirius-next/packages/common/dist/utils/media';
 import { Text } from 'app/components/Text';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';

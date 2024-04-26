@@ -12,7 +12,7 @@ import { useTokenQuery } from '../../../utils/api';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { formatAddress } from '../../../utils';
-import { media } from '../../../styles/media';
+import { media } from 'sirius-next/packages/common/dist/utils/media';
 import DownIcon from '../../../images/down.png';
 import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
 import { Dropdown, Menu } from '@cfxjs/antd';
