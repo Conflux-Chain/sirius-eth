@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useToken } from 'utils/api';
 import { media } from 'sirius-next/packages/common/dist/utils/media';
-import { Text } from 'app/components/Text';
+import { Text } from 'sirius-next/packages/common/dist/components/Text';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
 import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
@@ -142,7 +142,10 @@ export function ContractMetadata({ address, contractInfo }) {
                       translations.contractDetail.txOnlyEn,
                     )} `}
                     <LinkWrap href={`/tx/${contractInfo.transactionHash}`}>
-                      <Text span hoverValue={contractInfo.transactionHash}>
+                      <Text
+                        tag="span"
+                        hoverValue={contractInfo.transactionHash}
+                      >
                         {formatString(contractInfo.transactionHash, 'address')}
                       </Text>
                     </LinkWrap>

@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import { media } from 'sirius-next/packages/common/dist/utils/media';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from 'app/components/Text/Loadable';
+import { Text } from 'sirius-next/packages/common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
@@ -107,7 +107,10 @@ export const AddressDetailPage = memo(() => {
                 <>
                   {' '}
                   (
-                  <Text span hoverValue={t(translations.profile.tip.label)}>
+                  <Text
+                    tag="span"
+                    hoverValue={t(translations.profile.tip.label)}
+                  >
                     <Bookmark color="var(--theme-color-gray2)" size={16} />
                   </Text>
                   {addressLabel})
