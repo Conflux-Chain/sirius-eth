@@ -80,7 +80,7 @@ export const QrcodeButton = ({
             {t(translations.general.qrcodeButton.address)}:
           </AddressType>
           <AddressWrapper onClick={handleClose}>
-            <AddressContainer value={value} showIcon={false} isLink={false} />
+            <AddressContainer value={value} showIcon={false} link={false} />
           </AddressWrapper>
         </Modal.Content>
       </Modal>
