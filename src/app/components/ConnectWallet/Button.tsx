@@ -17,7 +17,7 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from '../Text/Loadable';
+import { Text } from 'sirius-next/packages/common/dist/components/Text';
 // import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 import iconLoadingWhite from './assets/loading-white.svg';
@@ -64,7 +64,7 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
           const addressLabel =
             globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[accounts[0]];
           const addressLabelIcon = (
-            <Text span hoverValue={t(translations.profile.tip.label)}>
+            <Text tag="span" hoverValue={t(translations.profile.tip.label)}>
               <Bookmark color="var(--theme-color-gray2)" size={16} />
             </Text>
           );
