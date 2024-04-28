@@ -151,7 +151,7 @@ export const renderAddress = (
       <AddressContainer
         value={value}
         alias={alias}
-        isLink={formatAddress(filter) !== formatAddress(value)}
+        link={formatAddress(filter) !== formatAddress(value)}
         contractCreated={row.contractCreated}
         verify={verify}
         isContract={isContract}
@@ -458,7 +458,7 @@ export const contract = (isFull = false) => ({
         isFull={isFull}
         verify={verify}
         isContract={true}
-        showLabeled={false}
+        showAddressLabel={false}
       />
     );
   },

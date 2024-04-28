@@ -15,7 +15,10 @@ import { useGlobalData } from 'utils/hooks/useGlobal';
 import { IS_MAINNET } from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 import { getLabelInfo } from 'sirius-next/packages/common/dist/components/AddressContainer/label';
-import { RenderAddress } from 'sirius-next/packages/common/dist/components/AddressContainer';
+import {
+  RenderAddress,
+  AddressContainer,
+} from 'sirius-next/packages/common/dist/components/AddressContainer';
 
 interface Props {
   value: string; // address value
@@ -46,7 +49,7 @@ const defaultPCSuffixAddressSize = 4;
 // const defaultPCSuffixPosAddressSize = 10;
 const defaultMobileSuffixAddressSize = 4;
 
-export { getLabelInfo };
+export { getLabelInfo, AddressContainer };
 
 // export const getLabelInfo = (label, type) => {
 //   if (label) {
@@ -195,261 +198,256 @@ export { getLabelInfo };
 
 // TODO code simplify
 // TODO new address display format
-export const AddressContainer = withTranslation()(
-  React.memo(
-    ({
-      value,
-      alias,
-      contractCreated,
-      maxWidth,
-      isFull = false,
-      isFullNameTag = false,
-      isLink = true,
-      isMe = false,
-      suffixAddressSize,
-      showIcon = true,
-      t,
-      verify = false,
-      isContract = false,
-      showLabeled = true,
-      showNametag = true,
-      nametagInfo,
-    }: Props & WithTranslation) => {
-      const link = isLink;
-      const [globalData = {}] = useGlobalData();
+// export const AddressContainer = withTranslation()(
+//   React.memo(
+//     ({
+//       value,
+//       alias,
+//       contractCreated,
+//       maxWidth,
+//       isFull = false,
+//       isFullNameTag = false,
+//       isLink = true,
+//       isMe = false,
+//       suffixAddressSize,
+//       showIcon = true,
+//       t,
+//       verify = false,
+//       isContract = false,
+//       showLabeled = true,
+//       showNametag = true,
+//       nametagInfo,
+//     }: Props & WithTranslation) => {
+//       const link = isLink;
+//       const [globalData = {}] = useGlobalData();
 
-      const suffixSize =
-        suffixAddressSize ||
-        (window.innerWidth <= sizes.m
-          ? defaultMobileSuffixAddressSize
-          : defaultPCSuffixAddressSize);
+//       const suffixSize =
+//         suffixAddressSize ||
+//         (window.innerWidth <= sizes.m
+//           ? defaultMobileSuffixAddressSize
+//           : defaultPCSuffixAddressSize);
 
-      // check if the address is a contract create address
-      if (!value) {
-        const txtContractCreation = t(
-          translations.transaction.contractCreation,
-        );
+//       // check if the address is a contract create address
+//       if (!value) {
+//         const txtContractCreation = t(
+//           translations.transaction.contractCreation,
+//         );
 
-        if (contractCreated) {
-          const fContractCreated = formatAddress(contractCreated);
+//         if (contractCreated) {
+//           const fContractCreated = formatAddress(contractCreated);
 
-          let addressLabel: React.ReactNode = null;
-          // official name tag
-          let officalNametag: React.ReactNode = null;
+//           let addressLabel: React.ReactNode = null;
+//           // official name tag
+//           let officalNametag: React.ReactNode = null;
 
-          if (showLabeled) {
-            const { label } = getLabelInfo(
-              globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
-                fContractCreated.toLocaleLowerCase()
-              ],
-              'tag',
-            );
+//           if (showLabeled) {
+//             const { label } = getLabelInfo(
+//               globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
+//                 fContractCreated.toLocaleLowerCase()
+//               ],
+//               'tag',
+//             );
 
-            addressLabel = label;
-          }
+//             addressLabel = label;
+//           }
 
-          if (
-            showNametag &&
-            nametagInfo?.[fContractCreated.toLocaleLowerCase()]?.nametag
-          ) {
-            const { label } = getLabelInfo(
-              nametagInfo[fContractCreated.toLocaleLowerCase()].nametag,
-              'nametag',
-            );
+//           if (
+//             showNametag &&
+//             nametagInfo?.[fContractCreated.toLocaleLowerCase()]?.nametag
+//           ) {
+//             const { label } = getLabelInfo(
+//               nametagInfo[fContractCreated.toLocaleLowerCase()].nametag,
+//               'nametag',
+//             );
 
-            officalNametag = label;
-          }
+//             officalNametag = label;
+//           }
 
-          return RenderAddress({
-            translations,
-            cfxAddress: '',
-            alias: alias || txtContractCreation,
-            addressLabel,
-            nametag: officalNametag,
-            hoverValue: fContractCreated,
-            hrefAddress: fContractCreated,
-            link,
-            isFull,
-            isFullNameTag,
-            maxWidth: 160,
-            suffixSize,
-            prefix: (
-              <IconWrapper>
-                <Text span hoverValue={txtContractCreation}>
-                  <img src={ContractIcon} alt={txtContractCreation} />
-                </Text>
-              </IconWrapper>
-            ),
-          });
-        }
+//           return RenderAddress({
+//             cfxAddress: '',
+//             alias: alias || txtContractCreation,
+//             addressLabel,
+//             nametag: officalNametag,
+//             hoverValue: fContractCreated,
+//             hrefAddress: fContractCreated,
+//             link,
+//             isFull,
+//             isFullNameTag,
+//             maxWidth: 160,
+//             suffixSize,
+//             prefix: (
+//               <IconWrapper>
+//                 <Text span hoverValue={txtContractCreation}>
+//                   <img src={ContractIcon} alt={txtContractCreation} />
+//                 </Text>
+//               </IconWrapper>
+//             ),
+//           });
+//         }
 
-        // If a txn receipt has no 'to' address or 'contractCreated', show -- for temp
-        return <>--</>;
+//         // If a txn receipt has no 'to' address or 'contractCreated', show -- for temp
+//         return <>--</>;
 
-        // Contract create fail, no link
-        // TODO deal with zero address value
-        // return (
-        //   <AddressWrapper>
-        //     <IconWrapper>
-        //       <Text span hoverValue={txtContractCreation}>
-        //         <img src={ContractIcon} alt={txtContractCreation} />
-        //       </Text>
-        //     </IconWrapper>
-        //     <Text span>{txtContractCreation}</Text>
-        //   </AddressWrapper>
-        // );
-      }
+//         // Contract create fail, no link
+//         // TODO deal with zero address value
+//         // return (
+//         //   <AddressWrapper>
+//         //     <IconWrapper>
+//         //       <Text span hoverValue={txtContractCreation}>
+//         //         <img src={ContractIcon} alt={txtContractCreation} />
+//         //       </Text>
+//         //     </IconWrapper>
+//         //     <Text span>{txtContractCreation}</Text>
+//         //   </AddressWrapper>
+//         // );
+//       }
 
-      // check if the address is a valid conflux address
-      if (!isAddress(value)) {
-        const tip = t(translations.general.invalidAddress);
-        return RenderAddress({
-          translations,
-          cfxAddress: value,
-          alias,
-          hoverValue: `${tip}: ${value}`,
-          content: alias ? formatString(alias, 'tag') : value,
-          link: false,
-          isFull,
-          isFullNameTag,
-          maxWidth,
-          suffixSize,
-          style: { color: '#e00909' },
-          prefix: (
-            <IconWrapper>
-              <Text span hoverValue={tip}>
-                <AlertTriangle size={16} color="#e00909" />
-              </Text>
-            </IconWrapper>
-          ),
-        });
-      }
+//       // check if the address is a valid conflux address
+//       if (!isAddress(value)) {
+//         const tip = t(translations.general.invalidAddress);
+//         return RenderAddress({
+//           cfxAddress: value,
+//           alias,
+//           hoverValue: `${tip}: ${value}`,
+//           content: alias ? formatString(alias, 'tag') : value,
+//           link: false,
+//           isFull,
+//           isFullNameTag,
+//           maxWidth,
+//           suffixSize,
+//           style: { color: '#e00909' },
+//           prefix: (
+//             <IconWrapper>
+//               <Text span hoverValue={tip}>
+//                 <AlertTriangle size={16} color="#e00909" />
+//               </Text>
+//             </IconWrapper>
+//           ),
+//         });
+//       }
 
-      const cfxAddress = formatAddress(value);
+//       const cfxAddress = formatAddress(value);
 
-      // if (!alias) {
-      //   alias = CONTRACTS_NAME_LABEL[cfxAddress]; // may use later
-      // }
+//       // if (!alias) {
+//       //   alias = CONTRACTS_NAME_LABEL[cfxAddress]; // may use later
+//       // }
 
-      // zero address auto set alias
-      if (!alias && isZeroAddress(cfxAddress)) {
-        alias = t(translations.general.zeroAddress);
-      }
+//       // zero address auto set alias
+//       if (!alias && isZeroAddress(cfxAddress)) {
+//         alias = t(translations.general.zeroAddress);
+//       }
 
-      // official name tag
-      let officalNametag: React.ReactNode = null;
-      let prefixIcon: React.ReactNode = null;
+//       // official name tag
+//       let officalNametag: React.ReactNode = null;
+//       let prefixIcon: React.ReactNode = null;
 
-      let addressLabel: React.ReactNode = null;
+//       let addressLabel: React.ReactNode = null;
 
-      if (showLabeled) {
-        const { label } = getLabelInfo(
-          globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
-            formatAddress(cfxAddress.toLocaleLowerCase())
-          ],
-          'tag',
-        );
+//       if (showLabeled) {
+//         const { label } = getLabelInfo(
+//           globalData[LOCALSTORAGE_KEYS_MAP.addressLabel][
+//             formatAddress(cfxAddress.toLocaleLowerCase())
+//           ],
+//           'tag',
+//         );
 
-        addressLabel = label;
-      }
+//         addressLabel = label;
+//       }
 
-      if (
-        showNametag &&
-        nametagInfo?.[cfxAddress.toLocaleLowerCase()]?.nametag
-      ) {
-        const { label } = getLabelInfo(
-          nametagInfo[cfxAddress.toLocaleLowerCase()].nametag,
-          'nametag',
-        );
+//       if (
+//         showNametag &&
+//         nametagInfo?.[cfxAddress.toLocaleLowerCase()]?.nametag
+//       ) {
+//         const { label } = getLabelInfo(
+//           nametagInfo[cfxAddress.toLocaleLowerCase()].nametag,
+//           'nametag',
+//         );
 
-        officalNametag = label;
-      }
+//         officalNametag = label;
+//       }
 
-      if (isContract) {
-        const typeText = t(
-          verify
-            ? translations.general.verifiedContract
-            : translations.general.unverifiedContract,
-        );
-        return RenderAddress({
-          translations,
-          cfxAddress,
-          alias,
-          addressLabel,
-          nametag: officalNametag,
-          link,
-          isFull,
-          isFullNameTag,
-          maxWidth,
-          suffixSize,
-          prefix: showIcon ? (
-            <IconWrapper className={`${isFull ? 'icon' : ''}`}>
-              {prefixIcon}
-              <Text span hoverValue={typeText}>
-                <ImgWrapper>
-                  {
-                    <>
-                      <img src={ContractIcon} alt={typeText} />
-                      {verify ? (
-                        <img
-                          className={'verified'}
-                          src={VerifiedIcon}
-                          alt={''}
-                        />
-                      ) : null}
-                    </>
-                  }
-                </ImgWrapper>
-              </Text>
-            </IconWrapper>
-          ) : null,
-        });
-      }
+//       if (isContract) {
+//         const typeText = t(
+//           verify
+//             ? translations.general.verifiedContract
+//             : translations.general.unverifiedContract,
+//         );
+//         return RenderAddress({
+//           cfxAddress,
+//           alias,
+//           addressLabel,
+//           nametag: officalNametag,
+//           link,
+//           isFull,
+//           isFullNameTag,
+//           maxWidth,
+//           suffixSize,
+//           prefix: showIcon ? (
+//             <IconWrapper className={`${isFull ? 'icon' : ''}`}>
+//               {prefixIcon}
+//               <Text span hoverValue={typeText}>
+//                 <ImgWrapper>
+//                   {
+//                     <>
+//                       <img src={ContractIcon} alt={typeText} />
+//                       {verify ? (
+//                         <img
+//                           className={'verified'}
+//                           src={VerifiedIcon}
+//                           alt={''}
+//                         />
+//                       ) : null}
+//                     </>
+//                   }
+//                 </ImgWrapper>
+//               </Text>
+//             </IconWrapper>
+//           ) : null,
+//         });
+//       }
 
-      if (isMe) {
-        return RenderAddress({
-          translations,
-          cfxAddress,
-          alias,
-          addressLabel,
-          nametag: officalNametag,
-          link,
-          isFull,
-          isFullNameTag,
-          maxWidth,
-          suffixSize,
-          suffix: (
-            <IconWrapper>
-              <img
-                src={isMeIcon}
-                alt="is me"
-                style={{
-                  width: 38.5,
-                  marginLeft: 3,
-                  marginBottom: isFull ? 6 : 4,
-                }}
-              />
-            </IconWrapper>
-          ),
-        });
-      }
+//       if (isMe) {
+//         return RenderAddress({
+//           cfxAddress,
+//           alias,
+//           addressLabel,
+//           nametag: officalNametag,
+//           link,
+//           isFull,
+//           isFullNameTag,
+//           maxWidth,
+//           suffixSize,
+//           suffix: (
+//             <IconWrapper>
+//               <img
+//                 src={isMeIcon}
+//                 alt="is me"
+//                 style={{
+//                   width: 38.5,
+//                   marginLeft: 3,
+//                   marginBottom: isFull ? 6 : 4,
+//                 }}
+//               />
+//             </IconWrapper>
+//           ),
+//         });
+//       }
 
-      return RenderAddress({
-        translations,
-        cfxAddress,
-        alias,
-        addressLabel,
-        nametag: officalNametag,
-        link,
-        isFull,
-        isFullNameTag,
-        maxWidth,
-        suffixSize,
-        prefix: prefixIcon,
-      });
-    },
-  ),
-);
+//       return RenderAddress({
+//         cfxAddress,
+//         alias,
+//         addressLabel,
+//         nametag: officalNametag,
+//         link,
+//         isFull,
+//         isFullNameTag,
+//         maxWidth,
+//         suffixSize,
+//         prefix: prefixIcon,
+//       });
+//     },
+//   ),
+// );
 
 const ImgWrapper = styled.span`
   position: relative;
