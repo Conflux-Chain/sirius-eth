@@ -22,7 +22,7 @@ export function Difficulty({ preview = false }: ChildProps) {
     title: t(translations.highcharts.difficulty.title),
     subtitle: t(translations.highcharts.difficulty.subtitle),
     request: {
-      url: OPEN_API_URLS.mining,
+      url: OPEN_API_URLS.core_mining,
       formatter: data => [
         data?.list?.map(s => [
           // @ts-ignore
