@@ -538,6 +538,9 @@ const FooterContent = styled.div`
 `;
 
 const FooterContentRow = styled.div`
+  .link {
+    display: inline-flex;
+  }
   display: flex;
   flex-direction: column;
 `;
@@ -545,6 +548,9 @@ const FooterContentRow = styled.div`
 const FooterContentLink = styled.span`
   margin-bottom: 0.5rem;
 
+  .link {
+    display: inline-flex;
+  }
   .link.footer-link {
     color: var(--theme-color-gray0);
     font-size: 0.86rem;
