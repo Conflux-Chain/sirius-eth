@@ -22,7 +22,7 @@ export function HashRate({ preview = false }: ChildProps) {
     title: t(translations.highcharts.hashRate.title),
     subtitle: t(translations.highcharts.hashRate.subtitle),
     request: {
-      url: OPEN_API_URLS.mining,
+      url: OPEN_API_URLS.core_mining,
       formatter: data => [
         data?.list?.map(s => [
           // @ts-ignore

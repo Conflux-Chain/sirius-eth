@@ -141,6 +141,7 @@ export const ICON_DEFAULT_TOKEN =
 
 export const OPEN_API_URLS = Object.entries({
   // charts
+  core_mining: '/statistics/mining',
   mining: '/statistics/mining',
   supply: '/statistics/supply',
   tps: '/statistics/tps',
@@ -159,7 +160,7 @@ export const OPEN_API_URLS = Object.entries({
 })
   .map(item => ({
     [item[0]]: `${
-      item[1] === '/statistics/mining'
+      item[0].startsWith('core_')
         ? ENV_CONFIG.ENV_CORE_API_HOST
         : ENV_CONFIG.ENV_API_HOST
     }${item[1]}`,
