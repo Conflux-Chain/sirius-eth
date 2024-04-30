@@ -68,11 +68,14 @@ module.exports = function (config, mode) {
           ...config.module.rules,
           {
             test: /\.js?$/,
-            include: /(node_modules\/@cfxjs\/use-wallet-react)/,
+            include: /(node_modules\/(@cfxjs\/use-wallet-react)|(ethers))/,
             use: {
               loader: 'babel-loader',
               options: {
-                plugins: ['@babel/plugin-transform-class-properties'],
+                plugins: [
+                  '@babel/plugin-transform-class-properties',
+                  '@babel/plugin-transform-private-methods',
+                ],
               },
             },
           },
@@ -108,11 +111,14 @@ module.exports = function (config, mode) {
         ...config.module.rules,
         {
           test: /\.js?$/,
-          include: /(node_modules\/@cfxjs\/use-wallet-react)/,
+          include: /(node_modules\/(@cfxjs\/use-wallet-react)|(ethers))/,
           use: {
             loader: 'babel-loader',
             options: {
-              plugins: ['@babel/plugin-transform-class-properties'],
+              plugins: [
+                '@babel/plugin-transform-class-properties',
+                '@babel/plugin-transform-private-methods',
+              ],
             },
           },
         },

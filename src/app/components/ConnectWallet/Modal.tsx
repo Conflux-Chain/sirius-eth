@@ -13,7 +13,8 @@ import { Link as ScanLink } from './Link';
 import { RotateImg } from './RotateImg';
 import { History } from './History';
 // @todo extract an independent component, do not use outside one
-import { CopyButton } from './../CopyButton';
+import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
+// import { AddressContainer } from './../../components/AddressContainer';
 import { useCheckHook } from './useCheckHook';
 
 import iconLogo from './assets/metamask.svg';
@@ -85,6 +86,7 @@ export const Modal = ({
       </a>
     </div>
   );
+  let handleClick: VoidFunction | undefined = undefined;
 
   if (installed) {
     if (authConnectStatus === AuthConnectStatus.NotConnected) {
@@ -96,6 +98,7 @@ export const Modal = ({
           {logo}
         </>
       );
+      handleClick = handleLogin;
     } else if (authConnectStatus === AuthConnectStatus.Connected) {
       if (isValid) {
         title = t(translations.connectWallet.modal.account);
@@ -178,7 +181,7 @@ export const Modal = ({
       <div className="modal-and-history-container">
         <div className="modal-body">
           <div className="modal-title">{title}</div>
-          <div className={clsx('modal-portal')} onClick={handleLogin}>
+          <div className={clsx('modal-portal')} onClick={handleClick}>
             {portal}
           </div>
           {tip}

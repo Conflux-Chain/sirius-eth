@@ -54,7 +54,6 @@ import { Search } from './containers/Search';
 // import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
 // import { AddressConverter } from './containers/AddressConverter';
 // import { NetworkError } from './containers/NetworkError/Loadable';
-// import { Report } from './containers/Report';
 import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
@@ -255,7 +254,7 @@ export function App() {
   useEffect(() => {
     const key = LOCALSTORAGE_KEYS_MAP.addressLabel;
     const keyTx = LOCALSTORAGE_KEYS_MAP.txPrivateNote;
-    const data = globalData || {};
+    const data = globalData;
 
     // address label
     if (!data[key]) {
@@ -663,7 +662,6 @@ export function App() {
                             ]}
                             component={BlocknumberCalc}
                           />
-                          <Route exact path="/report" component={Report} />
                           <Route
                             exact
                             path="/balance-checker"
@@ -721,7 +719,11 @@ const Main = styled.div`
 
   .link {
 <<<<<<< HEAD
+<<<<<<< HEAD
     color: ${ENV_CONFIG_LOCAL.ENV_THEME.linkColor} !important;
+=======
+    color: var(--theme-color-link) !important;
+>>>>>>> micro-refactoring
 =======
     color: var(--theme-color-link) !important;
 >>>>>>> micro-refactoring

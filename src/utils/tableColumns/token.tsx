@@ -23,7 +23,7 @@ import { formatAddress } from 'utils';
 import { ColumnAge, ContentWrapper } from './utils';
 import BigNumber from 'bignumber.js';
 import { CFX_TOKEN_TYPES } from '../constants';
-import { Tooltip } from '../../app/components/Tooltip/Loadable';
+import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { TxnHashRenderComponent } from './transaction';
 import { NFTPreview } from 'app/components/NFTPreview/Loadable';
 import clsx from 'clsx';
@@ -31,8 +31,7 @@ import { Popover } from '@cfxjs/react-ui';
 import { useBreakpoint } from 'styles/media';
 import { useTranslation } from 'react-i18next';
 import { monospaceFont } from 'styles/variable';
-import { ProjectInfo } from 'app/components/ProjectInfo';
-import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
+import { InfoIconWithTooltip } from 'sirius-next/packages/common/dist/components/InfoIconWithTooltip';
 import { Tag } from '@cfxjs/antd';
 import { Price } from '../../app/components/Price/Loadable';
 import ENV_CONFIG from 'env';
@@ -294,11 +293,8 @@ const IconWrapper = styled.div`
     display: inline-flex !important;
   }
 
-  .tooltip {
-    margin-right: 5px;
-  }
-
   img {
+    margin-right: 5px;
     display: block;
     width: 14px;
     height: 14px;
@@ -340,8 +336,7 @@ export const marketCap = {
     <ContentWrapper right>
       <IconWrapper>
         <Tooltip
-          hoverable
-          text={
+          title={
             <Translation>
               {t => (
                 <div
@@ -352,7 +347,6 @@ export const marketCap = {
               )}
             </Translation>
           }
-          placement="top"
         >
           <img src={imgInfo} alt="?" />
         </Tooltip>
@@ -847,27 +841,6 @@ export const traceResult = {
     }
 
     return body;
-  },
-};
-
-export const projectInfo = {
-  width: 1,
-  title: (
-    <ContentWrapper right>
-      <Translation>
-        {t => t(translations.general.table.token.projectInfo.projectInfo)}
-      </Translation>
-    </ContentWrapper>
-  ),
-  dataIndex: 'securityCredits',
-  key: 'securityCredits',
-  render: (value, row) => {
-    const { securityAudit, name } = row;
-    return (
-      <ContentWrapper monospace>
-        <ProjectInfo securityAudit={securityAudit} tokenName={name} />
-      </ContentWrapper>
-    );
   },
 };
 

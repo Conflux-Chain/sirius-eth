@@ -10,7 +10,7 @@ import { Basic } from './Basic';
 import { Transfers } from './Transfers';
 import { useTokenQuery } from '../../../utils/api';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
-import { Tooltip } from '../../components/Tooltip/Loadable';
+import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { formatAddress } from '../../../utils';
 import { media } from '../../../styles/media';
 import DownIcon from '../../../images/down.png';
@@ -90,11 +90,6 @@ export function TokenDetail() {
           {t(translations.general.address.more.balanceChecker)}
         </RouterLink>
       </Menu.Item> */}
-      {/* <Menu.Item>
-        <RouterLink to={`/report?address=${tokenAddress}`}>
-          {t(translations.general.address.more.report)}
-        </RouterLink>
-      </Menu.Item> */}
     </MenuWrapper>
   );
 
@@ -115,8 +110,7 @@ export function TokenDetail() {
               />
             ) : (
               <Tooltip
-                hoverable
-                text={
+                title={
                   <span>
                     {t(translations.token.shuttleflow)}
                     <Link href="https://shuttleflow.io" target="_blank">

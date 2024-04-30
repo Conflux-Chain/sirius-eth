@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { getCurrency, NETWORK_OPTIONS } from 'utils/constants';
 import { createGlobalState } from 'react-use';
 import ENV_CONFIG from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 const defatultGlobalData = {
   currency: getCurrency(),
@@ -44,13 +45,13 @@ export const useGlobal = () => {
 };
 
 // react-use version, to solve useContext can not update global value in App.ts
-export interface ContractsType {
-  [index: string]: string;
-  announcement: string;
-  faucet: string;
-  faucetLast: string;
-  wcfx: string;
-  governance: string;
+interface ContractsType {
+  [index: string]: string | undefined;
+  announcement?: string;
+  faucet?: string;
+  faucetLast?: string;
+  wcfx?: string;
+  governance?: string;
 }
 
 export interface NetworksType {
@@ -58,7 +59,6 @@ export interface NetworksType {
   name: string;
   id: number;
 }
-
 export interface GlobalDataType {
   networks: {
     mainnet: NetworksType[];
@@ -67,14 +67,21 @@ export interface GlobalDataType {
   };
   networkId: number;
   contracts: ContractsType;
+  random?: number;
+  [LOCALSTORAGE_KEYS_MAP.addressLabel]?: Record<string, string>;
+  [LOCALSTORAGE_KEYS_MAP.txPrivateNote]?: Record<string, string>;
 }
 
-// @todo, if no default global data, homepage should loading until getProjectConfig return resp
-export const useGlobalData = createGlobalState<object>({
+const defaultGlobalData: GlobalDataType = {
   networks: NETWORK_OPTIONS,
   networkId: ENV_CONFIG.ENV_NETWORK_ID,
   contracts: {},
-});
+};
+const _useGlobalData = createGlobalState(defaultGlobalData);
+export const useGlobalData = () => {
+  const [globalData, setGlobalData] = _useGlobalData();
+  return [globalData || defaultGlobalData, setGlobalData] as const;
+};
 
 export interface GasPriceBundle {
   gasPriceInfo: {

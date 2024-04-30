@@ -8,15 +8,14 @@ import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { Link } from 'app/components/Link/Loadable';
 import { NFTPreview } from 'app/components/NFTPreview';
 import styled from 'styled-components';
-import { Row, Col, Collapse, Tooltip, message, Typography } from '@cfxjs/antd';
+import { Row, Col, Collapse, message, Typography } from '@cfxjs/antd';
+import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { Description } from 'sirius-next/packages/common/dist/components/Description';
-import { CopyButton } from 'app/components/CopyButton/Loadable';
+import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
 import { reqNFTDetail, reqToken, reqRefreshMetadata } from 'utils/httpRequest';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { useBreakpoint } from 'styles/media';
-import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
-import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
-import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
+import { InfoIconWithTooltip } from 'sirius-next/packages/common/dist/components/InfoIconWithTooltip';
 import Button from 'sirius-next/packages/common/dist/components/Button';
 
 import AceEditor from 'react-ace';
@@ -25,13 +24,13 @@ import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 
 import { formatTimeStamp, formatAddress, addIPFSGateway } from 'utils';
-import { CFX } from 'utils/constants';
 
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
 
 import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import dayjs from 'dayjs';
+import _ from 'lodash';
 
 const { Text } = Typography;
 
@@ -175,49 +174,26 @@ export function NFTDetail(props) {
     symbol: '',
   });
 
-  const contract721 = useMemo(() => {
-    return CFX.Contract({
-      address: address,
-      abi: ERC721ABI,
-    });
-  }, [address]);
-
-  const contract1155 = useMemo(() => {
-    return CFX.Contract({
-      address: address,
-      abi: ERC1155ABI,
-    });
-  }, [address]);
-
-  const reqNFTContract = useCallback(async () => {
-    try {
-      const tokenURI = await contract721.tokenURI(id);
-      const result = await fetch(tokenURI).then(res => res.json());
-      if (result) {
-        setData({ detail: { metadata: result } });
-      }
-    } catch (error) {}
-    try {
-      const tokenURI = await contract1155.uri(id);
-      const result = await fetch(tokenURI).then(res => res.json());
-      if (result) {
-        setData({ detail: { metadata: result } });
-      }
-    } catch (error) {}
-  }, [id, contract721, contract1155]);
-
   useEffect(() => {
     setLoading(true);
 
     reqNFTDetail({
-      query: { contractAddress: address, tokenId: id },
+      address,
+      tokenId: id,
+      formatServerError: (e: any, metadata) => {
+        const data = e?.response?.result || {};
+        if (metadata) {
+          _.merge(data, {
+            detail: {
+              metadata,
+            },
+          });
+        }
+        return data;
+      },
     })
       .then(data => {
         setData(data);
-      })
-      .catch(e => {
-        setData(e.response?.result || {});
-        reqNFTContract();
       })
       .finally(() => {
         setLoading(false);
@@ -229,7 +205,7 @@ export function NFTDetail(props) {
         symbol,
       });
     });
-  }, [address, id, reqNFTContract]);
+  }, [address, id]);
 
   const handleRefresh = useCallback(
     e => {

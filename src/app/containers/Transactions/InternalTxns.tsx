@@ -5,13 +5,13 @@ import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link } from '@cfxjs/react-ui';
 import { translations } from 'locales/i18n';
-import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
-import { CopyButton } from 'app/components/CopyButton/Loadable';
+import { AddressContainer } from 'app/components/AddressContainer';
+import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
 import { formatAddress } from 'utils';
 import styled from 'styled-components';
 import { publishRequestError } from 'utils';
 import IconQuestion from 'images/icon-question.svg';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
 
 const treeToFlat = tree => {
@@ -170,10 +170,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
           ></Trans>
         </div>
         <StyledAdvancedWrapper>
-          <Tooltip
-            text={t(translations.transaction.advancedViewTips)}
-            placement="top"
-          >
+          <Tooltip title={t(translations.transaction.advancedViewTips)}>
             <img src={IconQuestion} alt="tips" />
           </Tooltip>
 
