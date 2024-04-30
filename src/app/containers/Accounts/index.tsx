@@ -8,7 +8,7 @@ import { accountColunms, utils as tableColumnsUtils } from 'utils/tableColumns';
 import styled from 'styled-components';
 import { Select } from 'app/components/Select';
 import { usePortal } from 'utils/hooks/usePortal';
-import { AddressContainer } from 'app/components/AddressContainer/Loadable';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { formatAddress, checkIfContractByInfo } from 'utils';
 import { monospaceFont } from 'styles/variable';
 import { AccountWrapper } from 'utils/tableColumns/token';

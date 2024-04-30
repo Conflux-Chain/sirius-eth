@@ -10,7 +10,7 @@ import { Modal } from '@cfxjs/react-ui';
 import { Tooltip } from 'app/components/Tooltip';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { AddressContainer } from 'app/components/AddressContainer/Loadable';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 
 interface QrcodeButtonProps {
   value: string;
