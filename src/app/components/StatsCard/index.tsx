@@ -10,7 +10,7 @@ import {
   toThousands,
   checkIfContractByInfo,
 } from '../../../utils';
-import { AddressContainer } from '../AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
 import { Text } from '../Text/Loadable';

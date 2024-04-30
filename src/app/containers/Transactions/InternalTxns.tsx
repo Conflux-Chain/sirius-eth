@@ -5,7 +5,7 @@ import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link } from '@cfxjs/react-ui';
 import { translations } from 'locales/i18n';
-import { AddressContainer } from 'app/components/AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { formatAddress } from 'utils';
 import styled from 'styled-components';

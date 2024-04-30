@@ -25,7 +25,7 @@ import Link from '@zeit-ui/react-icons/link';
 import { Link as ALink } from 'app/components/Link/Loadable';
 import { formatAddress } from 'utils';
 import { Tag } from '@cfxjs/antd';
-import { AddressContainer } from '../AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { ThreeD } from './3D';
 import { addIPFSGateway } from 'utils';
 
