@@ -102,10 +102,7 @@ import 'moment/locale/zh-cn';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 import ENV_CONFIG_LOCAL from 'env';
-import {
-  useEnv,
-  useGlobalData as useGlobalDataNext,
-} from 'sirius-next/packages/common/dist/store/index';
+import { useEnv } from 'sirius-next/packages/common/dist/store/index';
 
 // WebFontLoader.load({
 //   custom: {
@@ -132,7 +129,6 @@ window.recaptchaOptions = {
 
 export function App() {
   const [globalData, setGlobalData] = useGlobalData();
-  const { setGlobalData: setGlobalDataNext } = useGlobalDataNext();
   const { t, i18n } = useTranslation();
   const lang = i18n.language.includes('zh') ? 'zh-cn' : 'en';
   const [loading, setLoading] = useState(true);
@@ -273,7 +269,6 @@ export function App() {
 
       const _globalData = { ...globalData, [key]: d };
       setGlobalData(_globalData);
-      setGlobalDataNext(_globalData);
     }
 
     // private tx note
@@ -292,7 +287,6 @@ export function App() {
 
       const _globalData = { ...globalData, [keyTx]: dTx };
       setGlobalData(_globalData);
-      setGlobalDataNext(_globalData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalData]);

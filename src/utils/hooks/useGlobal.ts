@@ -3,6 +3,7 @@ import { getCurrency, NETWORK_OPTIONS } from 'utils/constants';
 import { createGlobalState } from 'react-use';
 import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { useGlobalData as useGlobalDataNext } from 'sirius-next/packages/common/dist/store/index';
 
 const defatultGlobalData = {
   currency: getCurrency(),
@@ -79,7 +80,12 @@ const defaultGlobalData: GlobalDataType = {
 };
 const _useGlobalData = createGlobalState(defaultGlobalData);
 export const useGlobalData = () => {
-  const [globalData, setGlobalData] = _useGlobalData();
+  const [globalData, setGlobalDataOriginal] = _useGlobalData();
+  const { setGlobalData: setGlobalDataNext } = useGlobalDataNext();
+  const setGlobalData = newData => {
+    setGlobalDataOriginal(newData);
+    setGlobalDataNext(newData);
+  };
   return [globalData || defaultGlobalData, setGlobalData] as const;
 };
 
