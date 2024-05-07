@@ -1,7 +1,8 @@
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { GlobalDataType, NetworksType } from './hooks/useGlobal';
+import { NetworksType } from 'sirius-next/packages/common/dist/store/types';
+import { ExtendedGlobalDataType } from 'utils/hooks/useGlobal';
 import {
   CFX,
   getCurrencySymbol,
@@ -304,7 +305,7 @@ export function isBlockNumber(str: string) {
 }
 
 export const getNetwork = (
-  networks: GlobalDataType['networks'],
+  networks: ExtendedGlobalDataType['networks'],
   id: number,
 ) => {
   const matched = [
