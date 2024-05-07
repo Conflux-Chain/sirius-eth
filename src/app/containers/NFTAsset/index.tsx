@@ -14,7 +14,7 @@ import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { Col, Pagination, Row, Tag } from '@cfxjs/antd';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { NFTPreview } from 'app/components/NFTPreview';
-import { AddressContainer } from 'app/components/AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { Empty } from 'app/components/Empty';
 import {
   reqNFTBalance,

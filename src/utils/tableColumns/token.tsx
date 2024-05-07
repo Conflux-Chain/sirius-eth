@@ -18,7 +18,7 @@ import {
 import imgOut from 'images/token/out.svg';
 import imgIn from 'images/token/in.svg';
 import imgInfo from 'images/info.svg';
-import { AddressContainer } from '../../app/components/AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { formatAddress } from 'utils';
 import { ColumnAge, ContentWrapper } from './utils';
 import BigNumber from 'bignumber.js';
@@ -150,7 +150,7 @@ export const renderAddress = (
       <AddressContainer
         value={value}
         alias={alias}
-        isLink={formatAddress(filter) !== formatAddress(value)}
+        link={formatAddress(filter) !== formatAddress(value)}
         contractCreated={row.contractCreated}
         verify={verify}
         isContract={isContract}
@@ -452,7 +452,7 @@ export const contract = (isFull = false) => ({
         isFull={isFull}
         verify={verify}
         isContract={true}
-        showLabeled={false}
+        showAddressLabel={false}
       />
     );
   },

@@ -17,7 +17,7 @@ import {
   /*fromDripToCfx,*/ formatTimeStamp,
   toThousands,
 } from 'utils';
-// import { AddressContainer } from 'app/components/AddressContainer';
+// import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 // import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';

@@ -111,7 +111,7 @@ export const Modal = ({
               {accounts[0]}
               {/* <AddressContainer
                 value={accounts[0]}
-                isLink={false}
+                link={false}
                 maxWidth={350}
               /> */}
             </span>

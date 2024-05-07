@@ -14,7 +14,7 @@ import {
   getNetworkIcon,
 } from 'utils/';
 // import imgPivot from 'images/pivot.svg';
-import { AddressContainer } from 'app/components/AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';

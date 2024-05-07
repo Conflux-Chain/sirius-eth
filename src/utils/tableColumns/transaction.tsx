@@ -15,7 +15,7 @@ import {
   formatNumber,
   roundToFixedPrecision,
 } from 'utils';
-import { AddressContainer } from 'app/components/AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { reqTransactionDetail } from 'utils/httpRequest';
 import { Popover } from '@cfxjs/antd';

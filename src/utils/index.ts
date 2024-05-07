@@ -1,10 +1,9 @@
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { getAccount } from './rpcRequest';
-import { GlobalDataType, NetworksType } from './hooks/useGlobal';
+import { NetworksType } from 'sirius-next/packages/common/dist/store/types';
+import { ExtendedGlobalDataType } from 'utils/hooks/useGlobal';
 import {
-  NETWORK_ID,
   CFX,
   getCurrencySymbol,
   CORE_SPACE_CHAIN_IDS,
@@ -54,6 +53,15 @@ import {
   formatLargeNumber,
 } from 'sirius-next/packages/common/dist/utils';
 
+import {
+  isZeroAddress,
+  isContractCodeHashEmpty,
+  getAddressType,
+  isContractAddress,
+  isBase32Address,
+  isAddress,
+  formatAddress as formatAddressEvm,
+} from 'sirius-next/packages/common/dist/utils/address';
 export {
   getEllipsStr,
   formatNumber,
@@ -87,6 +95,15 @@ export {
   constprocessResultArray,
   formatLargeNumber,
 };
+
+export {
+  isZeroAddress,
+  isContractCodeHashEmpty,
+  getAddressType,
+  isContractAddress,
+  isBase32Address,
+  isAddress,
+};
 // @ts-ignore
 window.SDK = SDK;
 // @ts-ignore
@@ -95,115 +112,59 @@ window.CFX = CFX;
 
 dayjs.extend(relativeTime);
 
-export const isBase32Address = (address: string): boolean => {
-  try {
-    return SDK.address.isValidCfxAddress(address);
-  } catch (e) {
-    return false;
-  }
+export const formatAddress = (address: string, outputType = 'hex') => {
+  return formatAddressEvm(address, outputType);
 };
 
-export const formatAddress = (
-  address: string,
-  outputType = 'hex', // base32 or hex
-): string => {
-  // TODO, eth space, remove base32 address condition
-  // return input address as default value if it can not convert to conflux chain base32/hex format
-  // if necessary, check for errors at the call site
-  const invalidAddressReturnValue = address;
+// export const formatAddress = (
+//   address: string,
+//   outputType = 'hex', // base32 or hex
+// ): string => {
+//   // TODO, eth space, remove base32 address condition
+//   // return input address as default value if it can not convert to conflux chain base32/hex format
+//   // if necessary, check for errors at the call site
+//   const invalidAddressReturnValue = address;
 
-  try {
-    if (isAddress(address)) {
-      if (outputType === 'hex') {
-        if (isBase32Address(address)) {
-          return SDK.format.hexAddress(address);
-        } else {
-          return address;
-        }
-      } else if (outputType === 'base32') {
-        return SDK.format.address(address, NETWORK_ID);
-      } else {
-        return invalidAddressReturnValue;
-      }
-    } else if (isBase32Address(address)) {
-      if (outputType === 'hex') {
-        return SDK.format.hexAddress(address);
-      } else if (outputType === 'base32') {
-        const reg = /(.*):(.*):(.*)/;
-        let lowercaseAddress = address;
+//   try {
+//     if (isAddress(address)) {
+//       if (outputType === 'hex') {
+//         if (isBase32Address(address)) {
+//           return SDK.format.hexAddress(address);
+//         } else {
+//           return address;
+//         }
+//       } else if (outputType === 'base32') {
+//         return SDK.format.address(address, NETWORK_ID);
+//       } else {
+//         return invalidAddressReturnValue;
+//       }
+//     } else if (isBase32Address(address)) {
+//       if (outputType === 'hex') {
+//         return SDK.format.hexAddress(address);
+//       } else if (outputType === 'base32') {
+//         const reg = /(.*):(.*):(.*)/;
+//         let lowercaseAddress = address;
 
-        // compatibility with verbose address, will replace with simply address later
-        if (typeof address === 'string' && reg.test(address)) {
-          lowercaseAddress = address.replace(reg, '$1:$3').toLowerCase();
-        }
-        return lowercaseAddress;
-      } else {
-        return invalidAddressReturnValue;
-      }
-    } else {
-      return invalidAddressReturnValue;
-    }
-  } catch (e) {
-    return invalidAddressReturnValue;
-  }
-};
+//         // compatibility with verbose address, will replace with simply address later
+//         if (typeof address === 'string' && reg.test(address)) {
+//           lowercaseAddress = address.replace(reg, '$1:$3').toLowerCase();
+//         }
+//         return lowercaseAddress;
+//       } else {
+//         return invalidAddressReturnValue;
+//       }
+//     } else {
+//       return invalidAddressReturnValue;
+//     }
+//   } catch (e) {
+//     return invalidAddressReturnValue;
+//   }
+// };
 
-// support hex and base32
-export const isAddress = (address: string): boolean => {
-  try {
-    if (address.startsWith('0x')) {
-      // return isCfxHexAddress(address);
-      return SDK.address.isValidHexAddress(address) || isZeroAddress(address);
-    } else {
-      // TODO, eth space, remove base32 address condition
-      return isBase32Address(address);
-    }
-  } catch (e) {
-    return false;
-  }
-};
-
-export function isZeroAddress(address: string): boolean {
-  try {
-    return address === SDK.CONST.ZERO_ADDRESS_HEX || address === '0x0';
-  } catch (e) {
-    return false;
-  }
-}
-
-export function isContractCodeHashEmpty(codeHash) {
-  return (
-    codeHash ===
-      '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470' ||
-    codeHash === '0x' ||
-    codeHash === ''
-  );
-}
-
-export async function getAddressType(address: string): Promise<string> {
-  try {
-    const account = await getAccount(address);
-    if (isContractCodeHashEmpty(account.codeHash)) {
-      return 'account';
-    }
-    return 'contract';
-  } catch (e) {
-    console.log('getAddressType error: ', e);
-    throw e;
-  }
-}
-
+// Todo: Distinguish between core and evm
 export async function isAccountAddress(address: string): Promise<boolean> {
   try {
     return (await getAddressType(address)) === 'account';
-  } catch (e) {
-    throw e;
-  }
-}
-
-export async function isContractAddress(address: string): Promise<boolean> {
-  try {
-    return (await getAddressType(address)) === 'contract';
   } catch (e) {
     throw e;
   }
@@ -344,7 +305,7 @@ export function isBlockNumber(str: string) {
 }
 
 export const getNetwork = (
-  networks: GlobalDataType['networks'],
+  networks: ExtendedGlobalDataType['networks'],
   id: number,
 ) => {
   const matched = [

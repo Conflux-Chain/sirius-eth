@@ -16,7 +16,7 @@ import { media } from 'styles/media';
 import { Text } from 'app/components/Text';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { AddressContainer } from 'app/components/AddressContainer';
+import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
 import { formatString } from 'utils';
 import { ICON_DEFAULT_TOKEN, ICON_DEFAULT_CONTRACT } from 'utils/constants';
 // import Edit3 from '@zeit-ui/react-icons/edit3';
