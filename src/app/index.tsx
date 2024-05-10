@@ -227,11 +227,12 @@ export function App() {
           ...(resp as object),
           networks,
         });
-
-        setLoading(false);
       })
       .catch(e => {
         console.log('request frontend config error: ', e);
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
