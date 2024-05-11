@@ -4,11 +4,11 @@ import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { Card } from 'sirius-next/packages/common/dist/components/Card';
 import { useBlockQuery } from 'utils/api';
-import { Text } from 'app/components/Text/Loadable';
+import { Text } from 'sirius-next/packages/common/dist/components/Text';
 import { Description } from 'sirius-next/packages/common/dist/components/Description';
 import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
-import { Link } from 'app/components/Link/Loadable';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { Link } from 'sirius-next/packages/common/dist/components/Link';
+import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';
@@ -215,7 +215,7 @@ export function DescriptionPanel() {
             <StyledCross>
               {transactionCount - crossSpaceTransactionCount}
               <Text
-                span
+                tag="span"
                 hoverValue={t(
                   translations.general.table.tooltip.crossSpaceCall,
                 )}

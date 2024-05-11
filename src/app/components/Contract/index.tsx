@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useRouteMatch } from 'react-router-dom';
-import { media } from 'styles/media';
+import { media } from 'sirius-next/packages/common/dist/utils/media';
 import { Input, useMessages } from '@cfxjs/react-ui';
 import {
   ICON_DEFAULT_CONTRACT,
@@ -18,16 +18,16 @@ import {
 } from 'utils/constants';
 import { byteToKb, validURL, isAddress, formatAddress } from 'utils';
 import { reqContract, reqContractNameTag, reqToken } from 'utils/httpRequest';
-import SkelontonContainer from '../SkeletonContainer';
+import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
 import { ReactComponent as UploadIcon } from 'images/contract/upload.svg';
 import imgWarning from 'images/warning.png';
 import { usePortal } from 'utils/hooks/usePortal';
 import { DappButton } from '../DappButton/Loadable';
 import { packContractAndToken } from 'utils/contractManagerTool';
 import { TXN_ACTION } from 'utils/constants';
-import { PageHeader } from 'app/components/PageHeader/Loadable';
+import { PageHeader } from 'sirius-next/packages/common/dist/components/PageHeader';
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
-import { Text } from 'app/components/Text/Loadable';
+import { Text } from 'sirius-next/packages/common/dist/components/Text';
 import { InfoIconWithTooltip } from 'sirius-next/packages/common/dist/components/InfoIconWithTooltip';
 
 interface Props {
@@ -443,7 +443,7 @@ export const ContractOrTokenInfo = ({
                 <span className="labelIcon">*</span>
                 {t(translations.contract.address)}
               </LabelWithIcon>
-              <SkelontonContainer shown={loading}>
+              <SkeletonContainer shown={loading}>
                 <Input
                   className="inputComp"
                   style={inputStyle}
@@ -462,7 +462,7 @@ export const ContractOrTokenInfo = ({
                     </Text>
                   </div>
                 ) : null}
-              </SkelontonContainer>
+              </SkeletonContainer>
             </div>
             <div>
               <span className="blankSpan"></span>
@@ -477,7 +477,7 @@ export const ContractOrTokenInfo = ({
                     <span className="labelIcon">*</span>
                     {t(translations.contract.nameTag)}
                   </LabelWithIcon>
-                  <SkelontonContainer shown={loading}>
+                  <SkeletonContainer shown={loading}>
                     <Input
                       className="inputComp"
                       defaultValue={contractName}
@@ -486,7 +486,7 @@ export const ContractOrTokenInfo = ({
                       placeholder={t(translations.contract.namePlaceholder)}
                       onBlur={nameOnBlur}
                     />
-                  </SkelontonContainer>
+                  </SkeletonContainer>
                 </div>
                 <div>
                   <span className="blankSpan"></span>
@@ -504,7 +504,7 @@ export const ContractOrTokenInfo = ({
               <div className="lineContainer">
                 <div className="firstLine">
                   <LabelWithIcon>{t(translations.contract.site)}</LabelWithIcon>
-                  <SkelontonContainer shown={loading}>
+                  <SkeletonContainer shown={loading}>
                     <Input
                       className="inputComp"
                       defaultValue={site}
@@ -513,7 +513,7 @@ export const ContractOrTokenInfo = ({
                       placeholder={t(translations.contract.sitePlaceholder)}
                       onBlur={siteOnBlur}
                     />
-                  </SkelontonContainer>
+                  </SkeletonContainer>
                 </div>
                 <div>
                   <span className="blankSpan"></span>
@@ -529,7 +529,7 @@ export const ContractOrTokenInfo = ({
                   <LabelWithIcon>
                     {t(translations.contract.tokenSite)}
                   </LabelWithIcon>
-                  <SkelontonContainer shown={loading}>
+                  <SkeletonContainer shown={loading}>
                     <Input
                       className="inputComp"
                       defaultValue={tokenSite}
@@ -538,7 +538,7 @@ export const ContractOrTokenInfo = ({
                       placeholder={t(translations.contract.sitePlaceholder)}
                       onBlur={tokenSiteOnBlur}
                     />
-                  </SkelontonContainer>
+                  </SkeletonContainer>
                 </div>
                 <div>
                   <span className="blankSpan"></span>
@@ -561,7 +561,7 @@ export const ContractOrTokenInfo = ({
                         {t(translations.contract.gateway)}
                       </InfoIconWithTooltip>
                     </LabelWithIcon>
-                    <SkelontonContainer shown={loading}>
+                    <SkeletonContainer shown={loading}>
                       <Input
                         className="inputComp"
                         defaultValue={gateway}
@@ -570,7 +570,7 @@ export const ContractOrTokenInfo = ({
                         placeholder={t(translations.contract.sitePlaceholder)}
                         onBlur={gatewayOnBlur}
                       />
-                    </SkelontonContainer>
+                    </SkeletonContainer>
                   </div>
                   <div>
                     <span className="blankSpan"></span>
@@ -618,7 +618,7 @@ export const ContractOrTokenInfo = ({
                   </div> */}
                 </div>
                 <div className="item right">
-                  <SkelontonContainer shown={loading}>
+                  <SkeletonContainer shown={loading}>
                     <div className="iconContainer">
                       <img
                         src={contractImgSrc || ICON_DEFAULT_CONTRACT}
@@ -626,7 +626,7 @@ export const ContractOrTokenInfo = ({
                         alt="contract icon"
                       ></img>
                     </div>
-                  </SkelontonContainer>
+                  </SkeletonContainer>
                 </div>
               </div>
             </div>
@@ -655,7 +655,7 @@ export const ContractOrTokenInfo = ({
                   </div>
                 </div>
                 <div className="item right">
-                  <SkelontonContainer shown={loading}>
+                  <SkeletonContainer shown={loading}>
                     <div className="iconContainer">
                       <img
                         src={tokenImgSrc || ICON_DEFAULT_TOKEN}
@@ -663,7 +663,7 @@ export const ContractOrTokenInfo = ({
                         alt="token icon"
                       ></img>
                     </div>
-                  </SkelontonContainer>
+                  </SkeletonContainer>
                 </div>
               </div>
             </div>

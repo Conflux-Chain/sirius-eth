@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Skeleton } from '@cfxjs/react-ui';
-import { Link } from '../../components/Link/Loadable';
+import { Skeleton } from 'sirius-next/packages/common/dist/components/Skeleton';
+import { Link } from 'sirius-next/packages/common/dist/components/Link';
 import { translations } from 'locales/i18n';
 import { Basic } from './Basic';
 import { Transfers } from './Transfers';
@@ -12,7 +12,7 @@ import { useTokenQuery } from '../../../utils/api';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
 import { formatAddress } from '../../../utils';
-import { media } from '../../../styles/media';
+import { media } from 'sirius-next/packages/common/dist/utils/media';
 import DownIcon from '../../../images/down.png';
 import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
 import { Dropdown, Menu } from '@cfxjs/antd';
@@ -81,9 +81,9 @@ export function TokenDetail() {
   const menu = (
     <MenuWrapper>
       <Menu.Item>
-        <RouterLink to={`/token-info/${tokenAddress}`}>
+        <Link href={`/token-info/${tokenAddress}`}>
           {t(translations.general.address.more.editToken)}
-        </RouterLink>
+        </Link>
       </Menu.Item>
       {/* <Menu.Item>
         <RouterLink to={`/balance-checker?address=${tokenAddress}`}>
