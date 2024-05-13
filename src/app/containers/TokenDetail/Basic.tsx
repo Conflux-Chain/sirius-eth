@@ -21,7 +21,7 @@ import FlatIcon from 'images/token/flat.svg';
 import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
 import { formatAddress } from 'utils';
 import { Tag } from '@cfxjs/antd';
-import { Price } from 'app/components/Price/Loadable';
+import { Price } from 'sirius-next/packages/common/dist/components/Price';
 // import { ProjectInfo } from '../../components/ProjectInfo';
 
 interface SecurityAudit {
