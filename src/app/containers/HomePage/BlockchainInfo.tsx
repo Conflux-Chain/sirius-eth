@@ -27,7 +27,7 @@ function Info(title, number: any) {
 const reqCorePlotData = async () => {
   try {
     const response = await fetch(
-      `https://${ENV_CONFIG.ENV_CORE_SCAN_HOST}/v1/plot?interval=133&limit=7`,
+      `${ENV_CONFIG.ENV_CORE_SCAN_HOST}/v1/plot?interval=133&limit=7`,
     );
 
     return await response.json();
@@ -56,7 +56,6 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
 
     reqCorePlotData().then(res => {
       if (res && res.data && res.data.list) {
-        setBlockTime(formatNumber(res.data.list[6].blockTime));
         setHashRate(formatNumber(res.data.list[6].hashRate));
       }
     });
@@ -74,6 +73,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
       .then(res => {
         if (res.list?.length) {
           setTps(formatNumber(res.list[6].tps));
+          setBlockTime(formatNumber(res.list[6].blockTime));
         }
       })
       .catch(e => {

@@ -6,7 +6,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import clsx from 'clsx';
 import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
 import { TxnHistoryContext } from 'utils/hooks/useTxnHistory';
@@ -16,7 +16,6 @@ import { useCheckHook } from './useCheckHook';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/constants';
 import { Bookmark } from '@zeit-ui/react-icons';
 import { Text } from '../Text/Loadable';
 // import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
@@ -24,6 +23,7 @@ import { Text } from '../Text/Loadable';
 import iconLoadingWhite from './assets/loading-white.svg';
 import { Balance } from './Balance';
 import ENV_CONFIG from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Button {
   className?: string;

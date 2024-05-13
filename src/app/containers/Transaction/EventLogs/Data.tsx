@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Select } from 'app/components/Select';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { Link } from 'app/components/Link/Loadable';
 import { useTranslation } from 'react-i18next';
@@ -277,7 +277,7 @@ const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
 
   .data-item {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
 
     .data-item-title {
       margin-right: 0.3571rem;

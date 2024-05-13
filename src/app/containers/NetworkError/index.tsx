@@ -6,14 +6,14 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { media } from 'styles/media';
 import { translations } from 'locales/i18n';
 import imgNetworkError from 'images/changeNetwork.png';
 import { useParams } from 'react-router-dom';
 import { getNetwork, gotoNetwork } from 'utils';
-import { NETWORK_ID, NETWORK_OPTIONS } from 'utils/constants';
 import ENV_CONFIG, { NETWORK_TYPES } from 'env';
+import { GlobalDataType, useGlobalData } from 'utils/hooks/useGlobal';
 
 interface RouteParams {
   network: string;
@@ -24,6 +24,8 @@ interface RouteParams {
 export function NetworkError() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t } = useTranslation();
+  const [globalData = {}] = useGlobalData();
+  const { networks } = globalData as GlobalDataType;
   const {
     network = ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
       ? 'Tethys'
@@ -45,7 +47,11 @@ export function NetworkError() {
           href="#"
           onClick={e => {
             e.preventDefault();
-            const network = getNetwork(NETWORK_OPTIONS, NETWORK_ID);
+            const networkId =
+              ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+                ? 1030
+                : 71;
+            const network = getNetwork(networks, networkId);
             gotoNetwork(network.url);
           }}
         >

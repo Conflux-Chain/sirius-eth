@@ -6,7 +6,7 @@
 
 import React, { memo } from 'react';
 import lodash from 'lodash';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Search } from './Search';
@@ -75,12 +75,6 @@ export const Header = memo(() => {
       afterClick: menuClick,
       href: 'https://github.com/Conflux-Chain/sirius-eth/issues',
     },
-    // {
-    //   title: [t(translations.header.report), <Check size={18} key="check" />],
-    //   name: ScanEvent.menu.action.report,
-    //   afterClick: menuClick,
-    //   href: '/report',
-    // },
     // {
     //   title: [
     //     t(translations.header.supportCenter),

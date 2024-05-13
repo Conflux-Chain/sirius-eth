@@ -16,7 +16,7 @@ import {
   useLocation,
   withRouter,
 } from 'react-router-dom';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import BigNumber from 'bignumber.js';
 import WebFontLoader from 'webfontloader';
 import { SWRConfig } from 'swr';
@@ -28,12 +28,7 @@ import { GlobalStyle } from 'styles/global-styles';
 import { TxnHistoryProvider } from 'utils/hooks/useTxnHistory';
 import { GlobalProvider, useGlobalData } from 'utils/hooks/useGlobal';
 import { reqProjectConfig } from 'utils/httpRequest';
-import {
-  LOCALSTORAGE_KEYS_MAP,
-  NETWORK_ID,
-  CFX_TOKEN_TYPES,
-  NETWORK_OPTIONS,
-} from 'utils/constants';
+import { NETWORK_ID, CFX_TOKEN_TYPES, NETWORK_OPTIONS } from 'utils/constants';
 import { isAddress } from 'utils';
 import MD5 from 'md5.js';
 import lodash from 'lodash';
@@ -59,7 +54,6 @@ import { Search } from './containers/Search';
 // import { BlocknumberCalc } from './containers/BlocknumberCalc/Loadable';
 // import { AddressConverter } from './containers/AddressConverter';
 // import { NetworkError } from './containers/NetworkError/Loadable';
-// import { Report } from './containers/Report';
 import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
@@ -106,6 +100,7 @@ import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
 import ENV_CONFIG from 'env';
+import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 // WebFontLoader.load({
 //   custom: {
@@ -134,7 +129,7 @@ export function App() {
   const [globalData, setGlobalData] = useGlobalData();
   const { t, i18n } = useTranslation();
   const lang = i18n.language.includes('zh') ? 'zh-cn' : 'en';
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   moment.locale(lang);
   dayjs.locale(lang);
@@ -201,6 +196,15 @@ export function App() {
               ),
             ),
           );
+          localStorage.setItem(
+            LOCALSTORAGE_KEYS_MAP.apis,
+            JSON.stringify({
+              rpcHost: resp?.CONFURA_URL,
+              openAPIHost: resp?.OPEN_API_URL,
+              secondaryOpenAPIHost: resp?.CORE_OPEN_API_URL,
+              secondaryBackendAPIHost: resp?.CORE_API_URL,
+            }),
+          );
           // contract name tag config, hide for temp
           // localStorage.setItem(
           //   LOCALSTORAGE_KEYS_MAP.contractNameTag,
@@ -223,11 +227,12 @@ export function App() {
           ...(resp as object),
           networks,
         });
-
-        setLoading(false);
       })
       .catch(e => {
         console.log('request frontend config error: ', e);
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -316,6 +321,7 @@ export function App() {
               errorRetryCount: 0,
             }}
           >
+            {/* @ts-ignore */}
             <BrowserRouter>
               <CfxProvider
                 theme={{
@@ -667,7 +673,6 @@ export function App() {
                             ]}
                             component={BlocknumberCalc}
                           />
-                          <Route exact path="/report" component={Report} />
                           <Route
                             exact
                             path="/balance-checker"
