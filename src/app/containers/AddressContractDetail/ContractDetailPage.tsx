@@ -163,7 +163,7 @@ export const ContractDetailPage = memo(() => {
       <Main key="main">
         <Head key="head">
           <Title>
-            {contractInfo.name || t(translations.general.contract)}{' '}
+            {t(translations.general.contract)}{' '}
             <Nametag address={address}></Nametag>
           </Title>
           <HeadAddressLine>
