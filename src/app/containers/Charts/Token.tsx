@@ -3,13 +3,11 @@ import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { StockChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/StockChartTemplate';
-import { PreviewChartTemplate } from 'sirius-next/packages/common/dist/components/Charts/PreviewChartTemplate';
 import { ChildProps } from 'sirius-next/packages/common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
 import BigNumber from 'bignumber.js';
 
 export function Token({
-  preview = false,
   address,
   type,
 }: ChildProps & { address: string; type: string }) {
@@ -107,9 +105,5 @@ export function Token({
     });
   }
 
-  return preview ? (
-    <PreviewChartTemplate {...props}></PreviewChartTemplate>
-  ) : (
-    <StockChartTemplate {...props}></StockChartTemplate>
-  );
+  return <StockChartTemplate {...props}></StockChartTemplate>;
 }

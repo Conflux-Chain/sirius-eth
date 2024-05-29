@@ -93,11 +93,6 @@ export function TPS({ preview = false }: ChildProps) {
         day: scope.day,
       },
     },
-    intervalScope: {
-      min: scope.min,
-      hour: scope.hour,
-      day: scope.day,
-    },
   };
 
   return preview ? (
