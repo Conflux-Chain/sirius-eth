@@ -17,7 +17,7 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from 'sirius-next/packages/common/dist/components/Text';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 // import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 import iconLoadingWhite from './assets/loading-white.svg';

@@ -7,7 +7,7 @@
 import React, { memo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { Link } from 'sirius-next/packages/common/dist/components/Link';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Copy, Qrcode } from './HeadLineButtons';
@@ -32,7 +32,7 @@ import { tokenTypeTag } from '../TokenDetail/Basic';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from 'sirius-next/packages/common/dist/components/Text';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
@@ -163,7 +163,7 @@ export const ContractDetailPage = memo(() => {
       <Main key="main">
         <Head key="head">
           <Title>
-            {contractInfo.name || t(translations.general.contract)}{' '}
+            {t(translations.general.contract)}{' '}
             <Nametag address={address}></Nametag>
           </Title>
           <HeadAddressLine>

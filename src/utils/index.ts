@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { NetworksType } from 'sirius-next/packages/common/dist/store/types';
+import { NetworksType } from '@cfxjs/sirius-next-common/dist/store/types';
 import { ExtendedGlobalDataType } from 'utils/hooks/useGlobal';
 import {
   CFX,
@@ -51,7 +51,7 @@ import {
   convertObjBigNumbersToStrings,
   constprocessResultArray,
   formatLargeNumber,
-} from 'sirius-next/packages/common/dist/utils';
+} from '@cfxjs/sirius-next-common/dist/utils';
 
 import {
   isZeroAddress,
@@ -61,7 +61,7 @@ import {
   isBase32Address,
   isAddress,
   formatAddress as formatAddressEvm,
-} from 'sirius-next/packages/common/dist/utils/address';
+} from '@cfxjs/sirius-next-common/dist/utils/address';
 export {
   getEllipsStr,
   formatNumber,

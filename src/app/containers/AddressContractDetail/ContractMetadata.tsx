@@ -7,16 +7,16 @@
 import React from 'react';
 import clsx from 'clsx';
 import styled from 'styled-components';
-import { Link } from 'sirius-next/packages/common/dist/components/Link';
-import { List } from 'sirius-next/packages/common/dist/components/List';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { List } from '@cfxjs/sirius-next-common/dist/components/List';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useToken } from 'utils/api';
-import { media } from 'sirius-next/packages/common/dist/utils/media';
-import { Text } from 'sirius-next/packages/common/dist/components/Text';
-import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
-import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
-import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 import { formatString } from 'utils';
 import { ICON_DEFAULT_TOKEN, ICON_DEFAULT_CONTRACT } from 'utils/constants';
 // import Edit3 from '@zeit-ui/react-icons/edit3';
@@ -131,7 +131,9 @@ export function ContractMetadata({ address, contractInfo }) {
                   !contractInfo.transactionHash && 'not-available',
                 )}
               >
-                {contractInfo.from ? (
+                {/* TODO: tmp skip loading */}
+                {contractInfo.from &&
+                contractInfo.from !== t(translations.general.loading) ? (
                   <AddressContainer value={contractInfo.from} />
                 ) : (
                   notAvailableText

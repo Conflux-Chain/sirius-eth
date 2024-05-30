@@ -3,15 +3,15 @@ import { tokenColunms, transactionColunms } from 'utils/tableColumns';
 import { fetchWithPrefix } from 'utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation, Trans } from 'react-i18next';
-import { Link } from 'sirius-next/packages/common/dist/components/Link';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { translations } from 'locales/i18n';
-import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
-import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
+import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
 import { formatAddress } from 'utils';
 import styled from 'styled-components';
 import { publishRequestError } from 'utils';
 import IconQuestion from 'images/icon-question.svg';
-import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
 
 const treeToFlat = tree => {

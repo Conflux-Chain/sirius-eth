@@ -3,7 +3,7 @@ import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Text } from 'sirius-next/packages/common/dist/components/Text';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 export const AddressLabel = ({ address }) => {

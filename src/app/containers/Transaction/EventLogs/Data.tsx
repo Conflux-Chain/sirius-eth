@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Select } from 'sirius-next/packages/common/dist/components/Select';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import styled from 'styled-components';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
-import { Link } from 'sirius-next/packages/common/dist/components/Link';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { media } from 'sirius-next/packages/common/dist/utils/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { DecodedParams } from 'app/components/TxnComponents/util';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
@@ -287,7 +287,7 @@ const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
 
   .data-item {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
 
     .data-item-title {
       margin-right: 0.3571rem;

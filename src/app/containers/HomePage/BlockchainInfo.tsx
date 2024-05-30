@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Grid } from '@cfxjs/react-ui';
 import { useTranslation } from 'react-i18next';
-import { Card } from 'sirius-next/packages/common/dist/components/Card';
+import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { translations } from 'locales/i18n';
-import { media } from 'sirius-next/packages/common/dist/utils/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { formatNumber } from '../../../utils';
 import {
   reqHomeDashboard /*, reqTransferTPS */,
   reqTransferPlot,
 } from '../../../utils/httpRequest';
-import { Link } from 'sirius-next/packages/common/dist/components/Link';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import lodash from 'lodash';
 import { Tx, AccountGrowth } from '../Charts/Loadable';
 import ENV_CONFIG from 'env';
@@ -56,7 +56,6 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
 
     reqCorePlotData().then(res => {
       if (res && res.data && res.data.list) {
-        setBlockTime(formatNumber(res.data.list[6].blockTime));
         setHashRate(formatNumber(res.data.list[6].hashRate));
       }
     });
@@ -74,6 +73,7 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
       .then(res => {
         if (res.list?.length) {
           setTps(formatNumber(res.list[6].tps));
+          setBlockTime(formatNumber(res.list[6].blockTime));
         }
       })
       .catch(e => {

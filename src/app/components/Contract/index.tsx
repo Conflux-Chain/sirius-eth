@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useRouteMatch } from 'react-router-dom';
-import { media } from 'sirius-next/packages/common/dist/utils/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { Input, useMessages } from '@cfxjs/react-ui';
 import {
   ICON_DEFAULT_CONTRACT,
@@ -18,17 +18,17 @@ import {
 } from 'utils/constants';
 import { byteToKb, validURL, isAddress, formatAddress } from 'utils';
 import { reqContract, reqContractNameTag, reqToken } from 'utils/httpRequest';
-import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { ReactComponent as UploadIcon } from 'images/contract/upload.svg';
 import imgWarning from 'images/warning.png';
 import { usePortal } from 'utils/hooks/usePortal';
 import { DappButton } from '../DappButton/Loadable';
 import { packContractAndToken } from 'utils/contractManagerTool';
 import { TXN_ACTION } from 'utils/constants';
-import { PageHeader } from 'sirius-next/packages/common/dist/components/PageHeader';
+import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
-import { Text } from 'sirius-next/packages/common/dist/components/Text';
-import { InfoIconWithTooltip } from 'sirius-next/packages/common/dist/components/InfoIconWithTooltip';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
 
 interface Props {
   contractDetail: any;
