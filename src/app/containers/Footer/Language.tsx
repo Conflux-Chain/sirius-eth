@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select } from '../../components/Select';
+import { Select } from 'sirius-next/packages/common/dist/components/Select';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Globe from '@zeit-ui/react-icons/globe';
@@ -50,7 +50,11 @@ export function Language() {
       >
         {options.map(o => {
           return (
-            <Select.Option key={o.value} value={o.value}>
+            <Select.Option
+              className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+              key={o.value}
+              value={o.value}
+            >
               {o.name}
             </Select.Option>
           );
@@ -62,7 +66,8 @@ export function Language() {
 
 const StyledWrapper = styled.span`
   position: relative;
-  display: inline-flex;
+  display: flex;
+  align-items: center;
   color: var(--theme-color-gray0);
 
   &:hover {

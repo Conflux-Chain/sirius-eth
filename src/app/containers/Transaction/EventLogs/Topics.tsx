@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Select } from 'app/components/Select';
+import { Select } from 'sirius-next/packages/common/dist/components/Select';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from 'sirius-next/packages/common/dist/components/Link';
@@ -81,7 +81,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
 
           select = (
             <Select
-              className="select"
+              className="select hover:bg-blue-08 text-[#444] bg-[#FFF] border border-[#444] rounded"
               disableMatchWidth={true}
               size="small"
               value={valueMap.hex === valueMap.decode ? 'hex' : name}
@@ -92,7 +92,11 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
               disabled={valueMap.hex === valueMap.decode}
             >
               {availableOptions.map(o => (
-                <Select.Option key={o.key} value={o.value}>
+                <Select.Option
+                  className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+                  key={o.key}
+                  value={o.value}
+                >
                   {o.content}
                 </Select.Option>
               ))}

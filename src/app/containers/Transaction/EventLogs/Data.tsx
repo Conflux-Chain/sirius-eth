@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Select } from 'app/components/Select';
+import { Select } from 'sirius-next/packages/common/dist/components/Select';
 import styled from 'styled-components';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { Link } from 'sirius-next/packages/common/dist/components/Link';
@@ -51,7 +51,7 @@ const SelectedLine = ({
       {index === undefined ? null : <span className="index">{index + 1}</span>}
       {select ? (
         <Select
-          className="select"
+          className="select hover:bg-blue-08 text-[#444] bg-[#FFF] border border-[#444] rounded"
           disableMatchWidth={true}
           size="small"
           value={selected}
@@ -59,7 +59,11 @@ const SelectedLine = ({
           width="7rem"
         >
           {options.map(o => (
-            <Select.Option key={o.key} value={o.value}>
+            <Select.Option
+              className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+              key={o.key}
+              value={o.value}
+            >
               {o.content}
             </Select.Option>
           ))}
@@ -190,17 +194,23 @@ export const Data = ({
       body = (
         <>
           <Select
-            className="select-with-abi"
+            className="select-with-abi hover:bg-blue-08 text-[#444] bg-[#FFF] border border-[#444] rounded"
             value={value}
             onChange={handleChange}
             size="small"
             disableMatchWidth={true}
             width="7rem"
           >
-            <Select.Option value="hex">
+            <Select.Option
+              className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+              value="hex"
+            >
               {t(translations.transaction.logs.hex)}
             </Select.Option>
-            <Select.Option value="decode">
+            <Select.Option
+              className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+              value="decode"
+            >
               {t(translations.transaction.logs.decode)}
             </Select.Option>
           </Select>

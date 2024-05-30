@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { isContractAddress, isZeroAddress, formatAddress } from 'utils';
 import { reqContract } from 'utils/httpRequest';
 import { CFXToDecode } from 'utils/constants';
-import { Select } from 'app/components/Select';
+import { Select } from 'sirius-next/packages/common/dist/components/Select';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 
@@ -194,6 +194,7 @@ export const InputData = ({
         size="small"
         className="input-data-select"
         disabled={dataTypeList.length === 1}
+        width="150px"
       >
         {dataTypeList.map(dataTypeItem => {
           return (
