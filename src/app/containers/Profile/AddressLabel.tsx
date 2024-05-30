@@ -6,13 +6,13 @@ import { formatTimeStamp } from 'utils';
 import { ContentWrapper } from 'utils/tableColumns/utils';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { Link } from 'sirius-next/packages/common/dist/components/Link';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import qs from 'query-string';
 import { CreateAddressLabel } from './CreateAddressLabel';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
-import Button from 'sirius-next/packages/common/dist/components/Button';
+import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 
 const { confirm, warning } = Modal;
 const { Search } = Input;

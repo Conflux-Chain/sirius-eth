@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { Card } from 'sirius-next/packages/common/dist/components/Card';
+import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { useBlockQuery } from 'utils/api';
-import { Text } from 'sirius-next/packages/common/dist/components/Text';
-import { Description } from 'sirius-next/packages/common/dist/components/Description';
-import { CopyButton } from 'sirius-next/packages/common/dist/components/CopyButton';
-import { Link } from 'sirius-next/packages/common/dist/components/Link';
-import { SkeletonContainer } from 'sirius-next/packages/common/dist/components/SkeletonContainer';
-import { Tooltip } from 'sirius-next/packages/common/dist/components/Tooltip';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
+import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';
 import {
@@ -17,7 +17,7 @@ import {
   /*fromDripToCfx,*/ formatTimeStamp,
   toThousands,
 } from 'utils';
-// import { AddressContainer } from 'sirius-next/packages/common/dist/components/AddressContainer';
+// import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 // import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';

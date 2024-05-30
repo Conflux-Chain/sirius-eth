@@ -3,12 +3,12 @@ import { initReactI18next } from 'react-i18next';
 
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import en from 'sirius-next/packages/i18n/evm/base/en/translation.json';
-import zh_cn from 'sirius-next/packages/i18n/evm/base/zh_cn/translation.json';
-import { ConvertedToObjectType } from 'sirius-next/packages/i18n/types/index';
+import en from '@cfxjs/sirius-next-i18n/evm/base/en/translation.json';
+import zh_cn from '@cfxjs/sirius-next-i18n/evm/base/zh_cn/translation.json';
+import { ConvertedToObjectType } from '@cfxjs/sirius-next-i18n/types/index';
 import ENV_CONFIG from 'env';
 import lodash from 'lodash';
-import { useI18n } from 'sirius-next/packages/common/dist/store/index';
+import { useI18n } from '@cfxjs/sirius-next-common/dist/store/index';
 
 const translationsJson = {
   en: {
