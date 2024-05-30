@@ -2,8 +2,8 @@ import { API_HOST_MAP, DOMAIN, IS_STAGE } from 'env/env-constants';
 import { NETWORK_TYPES } from 'env/types';
 import logo from 'images/bspace/logo-testnet.svg';
 export * from './base';
-export { default as ENV_LOCALES_EN } from './locales/en/translation.json';
-export { default as ENV_LOCALES_CN } from './locales/zh_cn/translation.json';
+export { default as ENV_LOCALES_EN } from '@cfxjs/sirius-next-i18n/evm/bspace/en/translation.json';
+export { default as ENV_LOCALES_CN } from '@cfxjs/sirius-next-i18n/evm/bspace/zh_cn/translation.json';
 
 // TODO-btc
 export const ENV_NETWORK_ID = 71;
@@ -40,3 +40,4 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
+export const ENV_ADDRESS = 'hex';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Divider } from '@cfxjs/antd';
-import { PageHeader } from 'app/components/PageHeader/Loadable';
+import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
@@ -18,7 +18,6 @@ import { CFXHolderAccounts } from './CFXHolderAccounts';
 import { AccountGrowth } from './AccountGrowth';
 import { ActiveAccounts } from './ActiveAccounts';
 import { Contracts } from './Contracts';
-import ENV_CONFIG from 'env';
 
 export function NewChart() {
   const { t, i18n } = useTranslation();
@@ -114,11 +113,11 @@ const StyledChartPreviewWrapper = styled.div`
   }
 
   .duration {
-    color: ${ENV_CONFIG.ENV_THEME.chartTitleColor};
+    color: var(--theme-color-chart-title);
   }
 
   div.ant-divider.ant-divider-horizontal {
     margin: 0;
-    color: ${ENV_CONFIG.ENV_THEME.chartTitleColor};
+    color: var(--theme-color-chart-title);
   }
 `;

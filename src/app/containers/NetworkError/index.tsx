@@ -7,13 +7,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { media } from 'styles/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { translations } from 'locales/i18n';
 import imgNetworkError from 'images/changeNetwork.png';
 import { useParams } from 'react-router-dom';
 import { getNetwork, gotoNetwork } from 'utils';
 import ENV_CONFIG, { NETWORK_TYPES } from 'env';
-import { GlobalDataType, useGlobalData } from 'utils/hooks/useGlobal';
+import { useGlobalData } from 'utils/hooks/useGlobal';
 
 interface RouteParams {
   network: string;
@@ -24,8 +24,8 @@ interface RouteParams {
 export function NetworkError() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { t } = useTranslation();
-  const [globalData = {}] = useGlobalData();
-  const { networks } = globalData as GlobalDataType;
+  const [globalData] = useGlobalData();
+  const { networks } = globalData;
   const {
     network = ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
       ? 'Tethys'
