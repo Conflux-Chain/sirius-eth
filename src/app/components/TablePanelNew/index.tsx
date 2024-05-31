@@ -4,7 +4,6 @@ import qs from 'query-string';
 import { useState } from 'react';
 import { Table } from '@cfxjs/antd';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
-import queryString from 'query-string';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -49,8 +48,6 @@ export const TitleTotal = ({
   outerUrl?: string;
 }) => {
   const { t } = useTranslation();
-  const location = useLocation();
-  const history = useHistory();
 
   const { url, query } = useMemo(() => {
     if (outerUrl) {
@@ -76,12 +73,6 @@ export const TitleTotal = ({
 
   const handleDownloadItemClick = count => {
     if (query && query.address) {
-      history.push(
-        queryString.stringifyUrl({
-          url: location.pathname,
-          query: {},
-        }),
-      );
       const address = query.address;
       window.open(
         `/stat/top-token-holder-csv?address=${address}&limit=${count}`,
