@@ -51,7 +51,7 @@ const SelectedLine = ({
       {index === undefined ? null : <span className="index">{index + 1}</span>}
       {select ? (
         <Select
-          className="select hover:bg-blue-08 text-[#444] bg-[#FFF] border border-[#444] rounded"
+          className="select"
           disableMatchWidth={true}
           size="small"
           value={selected}
@@ -60,7 +60,7 @@ const SelectedLine = ({
         >
           {options.map(o => (
             <Select.Option
-              className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+              className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
               key={o.key}
               value={o.value}
             >
@@ -132,13 +132,27 @@ const StyledSelectItemWrapper = styled.div`
     align-items: center;
   }
 
-  .select.select {
-    height: 22px;
+  .select {
+    position: absolute;
+    right: 0;
     margin-right: 12px;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
 
     .value {
       padding-left: 0;
     }
+    ${media.s} {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin-bottom: 10px;
+    }
+  }
+  .select:hover {
+    background-color: rgba(30, 61, 228, 0.08);
   }
 `;
 
@@ -194,7 +208,7 @@ export const Data = ({
       body = (
         <>
           <Select
-            className="select-with-abi hover:bg-blue-08 text-[#444] bg-[#FFF] border border-[#444] rounded"
+            className="select"
             value={value}
             onChange={handleChange}
             size="small"
@@ -202,13 +216,13 @@ export const Data = ({
             width="7rem"
           >
             <Select.Option
-              className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+              className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
               value="hex"
             >
               {t(translations.transaction.logs.hex)}
             </Select.Option>
             <Select.Option
-              className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+              className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
               value="decode"
             >
               {t(translations.transaction.logs.decode)}
@@ -270,19 +284,27 @@ const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
     padding-right: 100px;
   }
 
-  .select.select-with-abi {
+  .select {
     position: absolute;
-    top: 11px;
-    right: 16px;
-    height: 30px;
-    padding: 0 10px;
+    right: 0;
+    margin-right: 12px;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
 
+    .value {
+      padding-left: 0;
+    }
     ${media.s} {
       position: relative;
       top: auto;
       right: auto;
       margin-bottom: 10px;
     }
+  }
+  .select:hover {
+    background-color: rgba(30, 61, 228, 0.08);
   }
 
   .data-item {

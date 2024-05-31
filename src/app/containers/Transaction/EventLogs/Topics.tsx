@@ -81,7 +81,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
 
           select = (
             <Select
-              className="select hover:bg-blue-08 text-[#444] bg-[#FFF] border border-[#444] rounded"
+              className="select"
               disableMatchWidth={true}
               size="small"
               value={valueMap.hex === valueMap.decode ? 'hex' : name}
@@ -93,7 +93,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
             >
               {availableOptions.map(o => (
                 <Select.Option
-                  className="text-[#000] data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
+                  className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
                   key={o.key}
                   value={o.value}
                 >
@@ -149,15 +149,22 @@ const StyledTopicsWrapper = styled.div`
       align-items: center;
     }
 
-    .select.select {
-      padding-left: 0;
+    .select {
       height: 1.5714rem;
       padding: 0 0.7143rem;
       margin-right: 0.8571rem;
+      color: #444;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.25rem;
 
       .value {
         padding-left: 0;
       }
+    }
+
+    .select:hover {
+      background-color: rgba(30, 61, 228, 0.08);
     }
   }
 `;
