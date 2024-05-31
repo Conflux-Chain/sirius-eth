@@ -74,15 +74,6 @@ export const TitleTotal = ({
       </Trans>
     );
 
-  const handleTypeChange = () => {
-    history.push(
-      queryString.stringifyUrl({
-        url: location.pathname,
-        query: {},
-      }),
-    );
-  };
-
   const handleDownloadItemClick = count => {
     if (query && query.address) {
       history.push(
