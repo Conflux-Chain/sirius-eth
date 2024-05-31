@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import {
   TabLabel,
   TabsTablePanel,
 } from 'app/components/TabsTablePanel/Loadable';
 import { useParams } from 'react-router-dom';
-import { PageHeader } from 'app/components/PageHeader/Loadable';
+import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Helmet } from 'react-helmet-async';
 import { DescriptionPanel } from './DescriptionPanel';
 import styled from 'styled-components';
 import { reqBlockDetail } from 'utils/httpRequest';
-import { useBreakpoint } from 'styles/media';
+import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 
 import { Txns } from './Txns';
 // import { ReferenceBlocks } from './ReferenceBlocks';
@@ -58,10 +58,7 @@ export function Block() {
             {bp === 's' ? (
               t(translations.block.tabs.transactions)
             ) : (
-              <Tooltip
-                text={t(translations.toolTip.block.transactions)}
-                placement="top"
-              >
+              <Tooltip title={t(translations.toolTip.block.transactions)}>
                 {t(translations.block.tabs.transactions)}
               </Tooltip>
             )}

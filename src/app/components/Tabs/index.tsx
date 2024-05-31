@@ -3,8 +3,7 @@ import { Tabs as UITabs } from '@cfxjs/react-ui';
 import { TabsProps } from '@cfxjs/react-ui/dist/tabs/tabs';
 import styled from 'styled-components';
 import clsx from 'clsx';
-import { media } from '../../../styles/media';
-import ENV_CONFIG from 'env';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 
 const Tabs = ({ children, className, ...others }: TabsProps) => {
   return (
@@ -40,7 +39,7 @@ const StyledTabsWrapper = styled.div`
         }
       }
       .bottom {
-        background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
+        background-color: var(--theme-color-link);
         height: 0.4286rem;
         border-top-left-radius: 0.5714rem;
         border-top-right-radius: 0.5714rem;

@@ -3,8 +3,8 @@ import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import clsx from 'clsx';
-import { Link } from 'app/components/Link/Loadable';
-import { Text } from 'app/components/Text/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Status } from 'app/components/TxnComponents';
 import {
   fromDripToCfx,
@@ -15,15 +15,15 @@ import {
   formatNumber,
   roundToFixedPrecision,
 } from 'utils';
-import { AddressContainer } from 'app/components/AddressContainer';
+import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { reqTransactionDetail } from 'utils/httpRequest';
 import { Popover } from '@cfxjs/antd';
 import { Overview } from 'app/components/TxnComponents';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { useBreakpoint } from 'styles/media';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { PendingReason } from './PendingReason';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 
 import iconViewTxn from 'images/view-txn.png';
@@ -121,20 +121,21 @@ export const TxnHashRenderComponent = ({
       ) : null}
 
       <Link href={`/tx/${hash}`}>
-        <Text span hoverValue={hash}>
+        <Text tag="span" hoverValue={hash}>
           <SpanWrap>{hash}</SpanWrap>
         </Text>
       </Link>
       {row && row.gasFee === '0' && (
         <Tooltip
-          text={
+          title={
             <Translation>
               {t => t(translations.general.table.tooltip.crossSpaceCall)}
             </Translation>
           }
-          placement="top"
         >
-          <img className="iconCross" src={iconCross} alt="?" />
+          <ImageWrap>
+            <img className="iconCross" src={iconCross} alt="?" />
+          </ImageWrap>
         </Tooltip>
       )}
     </StyledTransactionHashWrapper>
@@ -242,7 +243,7 @@ export const value = {
   width: 1,
   render: value =>
     value ? (
-      <Text span hoverValue={`${fromDripToCfx(value, true)} CFX`}>
+      <Text tag="span" hoverValue={`${fromDripToCfx(value, true)} CFX`}>
         {`${fromDripToCfx(value)} CFX`}
       </Text>
     ) : (
@@ -262,7 +263,7 @@ export const gasPrice = {
   render: value =>
     value && value !== '0' ? (
       <Text
-        span
+        tag="span"
         hoverValue={`${formatNumber(value, {
           keepDecimal: false,
           withUnit: false,
@@ -293,7 +294,7 @@ export const gasFee = {
   width: 1,
   render: value =>
     value && value !== '0' ? (
-      <Text span hoverValue={`${toThousands(value)} drip`}>
+      <Text tag="span" hoverValue={`${toThousands(value)} drip`}>
         {`${fromDripToCfx(value, false, {
           precision: 6,
           minNum: 1e-6,
@@ -330,7 +331,7 @@ export const method = {
     }
 
     return (
-      <Text span hoverValue={text}>
+      <Text tag="span" hoverValue={text}>
         <StyledMethodContainerWrapper>
           <StyledMethodWrapper>{text}</StyledMethodWrapper>
         </StyledMethodContainerWrapper>
@@ -410,6 +411,10 @@ const SpanWrap = styled.span`
   max-width: 85px;
   overflow: hidden;
   vertical-align: bottom;
+`;
+
+const ImageWrap = styled.span`
+  display: inline-block;
 `;
 
 const StyledMethodContainerWrapper = styled.span`

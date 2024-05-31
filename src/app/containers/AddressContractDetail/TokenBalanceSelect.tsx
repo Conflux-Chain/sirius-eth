@@ -1,21 +1,21 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { useAccountTokenList } from 'utils/api';
-import { Description } from 'app/components/Description';
-import { Card } from '../../components/Card';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
+import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { ChevronUp } from '@zeit-ui/react-icons';
 import { useClickAway, useToggle } from 'react-use';
-import { media } from 'styles/media';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { ICON_DEFAULT_TOKEN, getCurrencySymbol } from 'utils/constants';
-import { Link } from 'react-router-dom';
-import { Text } from '../../components/Text';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { formatAddress, formatBalance, formatNumber } from 'utils/index';
 import { CFX_TOKEN_TYPES } from '../../../utils/constants';
 import BigNumber from 'bignumber.js';
 import { useTranslation } from 'react-i18next';
-import { translations } from '../../../locales/i18n';
-import { Price } from 'app/components/Price/Loadable';
+import { translations } from 'locales/i18n';
+import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
 
 const skeletonStyle = { width: '7rem', height: '2.5rem' };
 
@@ -104,7 +104,7 @@ function SelectItem({
         alt={`${name} icon`}
       />
       <SelectItemTextTitle>
-        <Link to={`/token/${formatAddress(address)}`}>{name}</Link>
+        <Link href={`/token/${formatAddress(address)}`}>{name}</Link>
       </SelectItemTextTitle>
     </SelectItemTitle>
   );
@@ -118,10 +118,7 @@ function SelectItem({
   const content = (
     <SelectItemContent key="content">
       <SelectItemContentBalance key="balance">
-        <Text
-          hoverValue={formatBalance(balance, decimal, true) + ' ' + symbol}
-          getPopupContainer={triggerNode => triggerNode}
-        >
+        <Text hoverValue={formatBalance(balance, decimal, true) + ' ' + symbol}>
           {formatBalance(balance, decimal) + ' ' + symbol}
         </Text>
       </SelectItemContentBalance>
@@ -137,7 +134,6 @@ function SelectItem({
                   })
                 : '--'
             }`}
-            getPopupContainer={triggerNode => triggerNode}
           >
             <Price showTooltip={false}>
               {new BigNumber(price)
