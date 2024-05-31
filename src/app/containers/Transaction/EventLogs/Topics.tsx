@@ -92,13 +92,9 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
               disabled={valueMap.hex === valueMap.decode}
             >
               {availableOptions.map(o => (
-                <Select.Option
-                  className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
-                  key={o.key}
-                  value={o.value}
-                >
+                <Option key={o.key} value={o.value}>
                   {o.content}
-                </Select.Option>
+                </Option>
               ))}
             </Select>
           );
@@ -119,7 +115,12 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
 Topics.defaultProps = {
   contractAndTokenInfo: {},
 };
-
+const Option = styled(Select.Option)`
+  &[data-highlighted] {
+    background-color: #f1f3f5;
+    color: #afe9d2;
+  }
+`;
 const StyledTopicsWrapper = styled.div`
   .topic-item {
     margin-bottom: 0.3571rem;

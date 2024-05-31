@@ -59,13 +59,9 @@ const SelectedLine = ({
           width="7rem"
         >
           {options.map(o => (
-            <Select.Option
-              className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
-              key={o.key}
-              value={o.value}
-            >
+            <Option key={o.key} value={o.value}>
               {o.content}
-            </Select.Option>
+            </Option>
           ))}
         </Select>
       ) : null}
@@ -215,18 +211,10 @@ export const Data = ({
             disableMatchWidth={true}
             width="7rem"
           >
-            <Select.Option
-              className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
-              value="hex"
-            >
-              {t(translations.transaction.logs.hex)}
-            </Select.Option>
-            <Select.Option
-              className="data-[highlighted]:bg-[#f1f3f5] data-[highlighted]:text-[#AFE9D2]"
-              value="decode"
-            >
+            <Option value="hex">{t(translations.transaction.logs.hex)}</Option>
+            <Option value="decode">
               {t(translations.transaction.logs.decode)}
-            </Select.Option>
+            </Option>
           </Select>
           {content}
         </>
@@ -270,7 +258,12 @@ export const Data = ({
     return <StyledDataWrapper withAbi={withAbi}>{body}</StyledDataWrapper>;
   }
 };
-
+const Option = styled(Select.Option)`
+  &[data-highlighted] {
+    background-color: #f1f3f5;
+    color: #afe9d2;
+  }
+`;
 const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
   padding: 16px ${props => (props.withAbi ? '124px' : '24px')} 16px 16px;
   background-color: #fafbfc;
