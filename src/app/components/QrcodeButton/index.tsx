@@ -7,10 +7,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import QRCode from 'qrcode.react';
 import { Modal } from '@cfxjs/react-ui';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tooltip } from 'app/components/Tooltip';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { AddressContainer } from 'app/components/AddressContainer/Loadable';
 
 interface QrcodeButtonProps {
   value: string;
@@ -39,13 +39,12 @@ export const QrcodeButton = ({
   return (
     <>
       <Tooltip
-        title={tooltipText || t(translations.general.qrcodeButton.clickToShow)}
+        text={tooltipText || t(translations.general.qrcodeButton.clickToShow)}
       >
         <div
           onClick={handleClick}
           style={{
             cursor: 'pointer',
-            display: 'flex',
           }}
         >
           <svg
@@ -81,7 +80,7 @@ export const QrcodeButton = ({
             {t(translations.general.qrcodeButton.address)}:
           </AddressType>
           <AddressWrapper onClick={handleClose}>
-            <AddressContainer value={value} showIcon={false} link={false} />
+            <AddressContainer value={value} showIcon={false} isLink={false} />
           </AddressWrapper>
         </Modal.Content>
       </Modal>

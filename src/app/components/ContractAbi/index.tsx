@@ -10,9 +10,9 @@ import { formatType } from 'js-conflux-sdk/src/contract/abi';
 import { reqContract } from 'utils/httpRequest';
 import styled from 'styled-components';
 import { useTranslation, Trans } from 'react-i18next';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { AddressContainer } from 'app/components/AddressContainer/Loadable';
 import { translations } from 'locales/i18n';
-import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
+import { Spin } from '@cfxjs/antd';
 import { publishRequestError } from 'utils';
 
 interface ContractAbiProps {
@@ -166,7 +166,7 @@ export const ContractAbi = ({
       {pattern ? (
         <StyledContractAbiWrapper>
           <Trans i18nKey="contract.pattern">
-            <AddressContainer link={true} value={address} isContract={true} />
+            <AddressContainer isLink={true} value={address} isContract={true} />
             {pattern}
           </Trans>
         </StyledContractAbiWrapper>

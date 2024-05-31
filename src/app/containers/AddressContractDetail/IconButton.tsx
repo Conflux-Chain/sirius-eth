@@ -1,12 +1,12 @@
 /**
  *
- * IconButton
+ * CopyButton
  *
  */
 import React from 'react';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tooltip } from '../../components/Tooltip';
 
 interface IconButtonProps {
   size?: number;
@@ -14,6 +14,7 @@ interface IconButtonProps {
   url?: string;
   className?: string;
   blank?: boolean;
+  tooltipContentClassName?: string;
   viewBox?: string;
   onClick?: (e: any) => void;
   style?: any;
@@ -23,6 +24,7 @@ export const IconButton = ({
   size,
   tooltipText,
   className,
+  tooltipContentClassName = '',
   children,
   url,
   blank,
@@ -45,18 +47,23 @@ export const IconButton = ({
 
   return (
     <IconButtonWrap>
-      <Tooltip title={tooltipText}>
+      <Tooltip
+        hoverable
+        placement="top"
+        text={tooltipText}
+        contentClassName={tooltipContentClassName}
+      >
         {url && (
-          <Link
+          <RouterLink
             target={blank ? '_blank' : '_self'}
-            href={url || ''}
+            to={url || ''}
             className={className}
             style={{
               cursor: 'pointer',
             }}
           >
             {svg}
-          </Link>
+          </RouterLink>
         )}
         {!url && svg}
       </Tooltip>

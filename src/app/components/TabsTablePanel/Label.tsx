@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tooltip } from '../Tooltip';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { toThousands } from '../../../utils';
+import ENV_CONFIG from 'env';
 
 interface LabelProps {
   left?: string;
@@ -51,7 +52,7 @@ const TabLabel: React.FC<React.PropsWithChildren<LabelProps>> = ({
       {total ? (
         showTooltip ? (
           <Tooltip
-            title={
+            text={
               <StyledTextWrapper>
                 <Text
                   left={left}
@@ -84,7 +85,7 @@ const StyledTipLabelWrapper = styled.p`
   margin: 1.2rem 0 1.6rem;
 `;
 const StyledSpan = styled.span`
-  color: var(--theme-color-link);
+  color: ${ENV_CONFIG.ENV_THEME.linkColor};
   padding: 0 0.4286rem;
 `;
 const TipLabel: React.FC<React.PropsWithChildren<LabelProps>> = ({

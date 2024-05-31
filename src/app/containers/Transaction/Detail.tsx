@@ -9,14 +9,13 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { useHistory, useParams } from 'react-router-dom';
-import { Spinner } from '@cfxjs/react-ui';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
-import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import { CountDown } from '@cfxjs/sirius-next-common/dist/components/CountDown';
+import { Card, Spinner } from '@cfxjs/react-ui';
+import { Description } from 'app/components/Description/Loadable';
+import { CopyButton } from 'app/components/CopyButton/Loadable';
+import { Link } from 'app/components/Link';
+import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { CountDown } from 'app/components/CountDown/Loadable';
 import {
   reqContract,
   reqTokenList,
@@ -37,7 +36,7 @@ import {
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { AddressContainer } from 'app/components/AddressContainer';
 import clsx from 'clsx';
 // import BigNumber from 'bignumber.js';
 import { Security } from 'app/components/Security/Loadable';
@@ -67,7 +66,7 @@ import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 // Transaction Detail Page
 export const Detail = () => {
   const [visible, setVisible] = useState(false);
-  const [globalData] = useGlobalData();
+  const [globalData = {}] = useGlobalData();
   const { t, i18n } = useTranslation();
   const [isContract, setIsContract] = useState(false);
   const [transactionDetail, setTransactionDetail] = useState<any>({});
@@ -282,7 +281,7 @@ export const Detail = () => {
         return (
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.to)}>
+              <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
                 {t(translations.transaction.to)}
               </Tooltip>
             }
@@ -317,7 +316,7 @@ export const Detail = () => {
         return (
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.to)}>
+              <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
                 {t(translations.transaction.to)}
               </Tooltip>
             }
@@ -332,7 +331,7 @@ export const Detail = () => {
       return (
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.to)}>
+            <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
               {t(translations.transaction.to)}
             </Tooltip>
           }
@@ -357,7 +356,7 @@ export const Detail = () => {
       return (
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.to)}>
+            <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
               {t(translations.transaction.to)}
             </Tooltip>
           }
@@ -669,7 +668,10 @@ export const Detail = () => {
       <Description
         title={
           <>
-            <Tooltip title={t(translations.toolTip.tx.tokenTransferred)}>
+            <Tooltip
+              text={t(translations.toolTip.tx.tokenTransferred)}
+              placement="top"
+            >
               {`${t(translations.transaction.tokenTransferred)} ${
                 transferListContainer.length > 1
                   ? `(${transferListContainer.length})`
@@ -678,7 +680,9 @@ export const Detail = () => {
             </Tooltip>
             {transferListContainer.length > 1 ? (
               <Tooltip
-                title={t(translations.transaction.tipOfTokenTransferCount)}
+                className="download-csv-tooltip"
+                text={t(translations.transaction.tipOfTokenTransferCount)}
+                placement="top"
               >
                 <IconWrapper>
                   <img
@@ -717,7 +721,7 @@ export const Detail = () => {
   //   : 0;
 
   const txNoteMap = globalData[LOCALSTORAGE_KEYS_MAP.txPrivateNote];
-  const txNote = txNoteMap?.[routeHash];
+  const txNote = txNoteMap[routeHash];
 
   const txNoteProps = {
     stage: txNote ? 'edit' : 'create',
@@ -748,7 +752,10 @@ export const Detail = () => {
       <Card className="sirius-Transactions-card">
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.transactionHash)}>
+            <Tooltip
+              text={t(translations.toolTip.tx.transactionHash)}
+              placement="top"
+            >
               {t(translations.transaction.hash)}
             </Tooltip>
           }
@@ -760,7 +767,8 @@ export const Detail = () => {
         {/* <Description
           title={
             <Tooltip
-              title={t(translations.toolTip.tx.executedEpoch)}
+              text={t(translations.toolTip.tx.executedEpoch)}
+              placement="top"
             >
               {t(translations.transaction.executedEpoch)}
             </Tooltip>
@@ -782,7 +790,8 @@ export const Detail = () => {
         {/* <Description
           title={
             <Tooltip
-              title={t(translations.toolTip.tx.proposedEpoch)}
+              text={t(translations.toolTip.tx.proposedEpoch)}
+              placement="top"
             >
               {t(translations.transaction.proposedEpoch)}
             </Tooltip>
@@ -797,7 +806,10 @@ export const Detail = () => {
         </Description> */}
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.block.blockHeight)}>
+            <Tooltip
+              text={t(translations.toolTip.block.blockHeight)}
+              placement="top"
+            >
               {t(translations.general.table.block.height)}
             </Tooltip>
           }
@@ -809,7 +821,10 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.blockHash)}>
+            <Tooltip
+              text={t(translations.toolTip.tx.blockHash)}
+              placement="top"
+            >
               {t(translations.transaction.blockHash)}
             </Tooltip>
           }
@@ -827,7 +842,10 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.timestamp)}>
+            <Tooltip
+              text={t(translations.toolTip.tx.timestamp)}
+              placement="top"
+            >
               {t(translations.transaction.timestamp)}
             </Tooltip>
           }
@@ -846,7 +864,10 @@ export const Detail = () => {
         {status === 0 && transactionActionElement.show && (
           <Description
             title={
-              <Tooltip title={t(translations.transaction.action.tooltip)}>
+              <Tooltip
+                text={t(translations.transaction.action.tooltip)}
+                placement="top"
+              >
                 {t(translations.transaction.action.title)}
               </Tooltip>
             }
@@ -860,7 +881,7 @@ export const Detail = () => {
         )}
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.status)}>
+            <Tooltip text={t(translations.toolTip.tx.status)} placement="top">
               {t(translations.transaction.status)}
             </Tooltip>
           }
@@ -878,7 +899,7 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.security)}>
+            <Tooltip text={t(translations.toolTip.tx.security)} placement="top">
               {t(translations.block.security)}
             </Tooltip>
           }
@@ -908,7 +929,7 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.from)}>
+            <Tooltip text={t(translations.toolTip.tx.from)} placement="top">
               {t(translations.transaction.from)}
             </Tooltip>
           }
@@ -927,7 +948,7 @@ export const Detail = () => {
 
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.value)}>
+            <Tooltip text={t(translations.toolTip.tx.value)} placement="top">
               {t(translations.transaction.value)}
             </Tooltip>
           }
@@ -938,7 +959,7 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.gasFee)}>
+            <Tooltip text={t(translations.toolTip.tx.gasFee)} placement="top">
               {t(translations.transaction.gasFee)}
             </Tooltip>
           }
@@ -954,7 +975,10 @@ export const Detail = () => {
         >
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.gasPrice)}>
+              <Tooltip
+                text={t(translations.toolTip.tx.gasPrice)}
+                placement="top"
+              >
                 {t(translations.transaction.gasPrice)}
               </Tooltip>
             }
@@ -971,7 +995,7 @@ export const Detail = () => {
           <Description
             title={
               <Tooltip
-                title={
+                text={
                   <StyleToolTipText>
                     {t(translations.toolTip.tx.gasLimitTip)}
                     <br />
@@ -982,6 +1006,7 @@ export const Detail = () => {
                     {t(translations.toolTip.tx.gasChargedip)}
                   </StyleToolTipText>
                 }
+                placement="top"
               >
                 {t(translations.transaction.gasUsed)}
               </Tooltip>
@@ -1003,7 +1028,8 @@ export const Detail = () => {
           {/* <Description
             title={
               <Tooltip
-                title={t(translations.toolTip.tx.storageCollateralized)}
+                text={t(translations.toolTip.tx.storageCollateralized)}
+                placement="top"
               >
                 {t(translations.transaction.storageCollateralized)}
               </Tooltip>
@@ -1019,7 +1045,8 @@ export const Detail = () => {
           <Description
             title={
               <Tooltip
-                title={t(translations.toolTip.tx.storageLimit)}
+                text={t(translations.toolTip.tx.storageLimit)}
+                placement="top"
               >
                 {t(translations.transaction.storageLimit)}
               </Tooltip>
@@ -1035,7 +1062,8 @@ export const Detail = () => {
           <Description
             title={
               <Tooltip
-                title={t(translations.toolTip.tx.storageReleased)}
+                text={t(translations.toolTip.tx.storageReleased)}
+                placement="top"
               >
                 {t(translations.transaction.storageReleased)}
               </Tooltip>
@@ -1047,7 +1075,7 @@ export const Detail = () => {
           </Description> */}
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.nonce)}>
+              <Tooltip text={t(translations.toolTip.tx.nonce)} placement="top">
                 {t(translations.transaction.nonce)}
               </Tooltip>
             }
@@ -1058,7 +1086,10 @@ export const Detail = () => {
           </Description>
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.position)}>
+              <Tooltip
+                text={t(translations.toolTip.tx.position)}
+                placement="top"
+              >
                 {t(translations.transaction.position)}
               </Tooltip>
             }
@@ -1070,7 +1101,8 @@ export const Detail = () => {
           {/* <Description
             title={
               <Tooltip
-                title={t(translations.toolTip.tx.chainID)}
+                text={t(translations.toolTip.tx.chainID)}
+                placement="top"
               >
                 {t(translations.transaction.chainID)}
               </Tooltip>
@@ -1082,7 +1114,10 @@ export const Detail = () => {
           {!data || data === '0x' ? null : (
             <Description
               title={
-                <Tooltip title={t(translations.transaction.inputTips)}>
+                <Tooltip
+                  text={t(translations.transaction.inputTips)}
+                  placement="top"
+                >
                   {t(translations.transaction.inputData)}
                 </Tooltip>
               }
@@ -1118,7 +1153,7 @@ export const Detail = () => {
         <Description
           noBorder
           title={
-            <Tooltip title={t(translations.profile.tip.note)}>
+            <Tooltip text={t(translations.profile.tip.note)} placement="top">
               {t(translations.transaction.note)}
             </Tooltip>
           }
@@ -1301,6 +1336,7 @@ const IconWrapper = styled.div`
 `;
 
 const StyleToolTipText = styled.div`
+  width: 316px;
   font-size: 12px;
   font-weight: 500;
   font-family: PingFang SC;

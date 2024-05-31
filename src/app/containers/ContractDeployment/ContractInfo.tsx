@@ -1,17 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, createRef, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/theme-github';
-import { useMessages } from '@cfxjs/react-ui';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Link, useMessages } from '@cfxjs/react-ui';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { FileUpload } from '@cfxjs/sirius-next-common/dist/components/FileUpload';
+import { FileUpload } from 'app/components/FileUpload';
 import { translations } from 'locales/i18n';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { Card } from 'app/components/Card';
 import { isHex } from 'utils';
 import imgInfo from 'images/info.svg';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tooltip } from 'app/components/Tooltip/Loadable';
 
 const AceEditorStyle = {
   width: '100%',
@@ -37,7 +36,7 @@ const addOx = bytecode => {
 export const ContractInfo = ({ onChange }) => {
   const [bytecode, setBytecode] = useState('');
   const [constructorArguments, setConstructorArguments] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = createRef<any>();
   const [, setMessage] = useMessages();
   const { t } = useTranslation();
 
@@ -72,7 +71,7 @@ export const ContractInfo = ({ onChange }) => {
   };
 
   const handleImport = () => {
-    inputRef.current?.click();
+    inputRef.current.click();
   };
 
   const handleFileChange = file => {
@@ -161,7 +160,11 @@ export const ContractInfo = ({ onChange }) => {
           <StyledLabelWrapper>
             <div>
               constructor arguments{' '}
-              <Tooltip title={t(translations.contractDeployment.tip)}>
+              <Tooltip
+                hoverable
+                text={t(translations.contractDeployment.tip)}
+                placement="top"
+              >
                 <img src={imgInfo} alt="?" width="14px" />
               </Tooltip>
             </div>

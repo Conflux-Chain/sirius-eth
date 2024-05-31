@@ -18,12 +18,13 @@ import { useAccount } from '../../../utils/api';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media } from '../../../styles/media';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Text } from 'app/components/Text/Loadable';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
+import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface RouteParams {
@@ -31,7 +32,7 @@ interface RouteParams {
 }
 
 export const AddressDetailPage = memo(() => {
-  const [globalData] = useGlobalData();
+  const [globalData = {}] = useGlobalData();
   const { t } = useTranslation();
   const { address } = useParams<RouteParams>();
   const { data: accountInfo } = useAccount(address, [
@@ -44,7 +45,7 @@ export const AddressDetailPage = memo(() => {
   const [visible, setVisible] = useState(false);
 
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
-  const addressLabel = addressLabelMap?.[address];
+  const addressLabel = addressLabelMap[address];
 
   const menu = (
     <MenuWrapper>
@@ -107,10 +108,7 @@ export const AddressDetailPage = memo(() => {
                 <>
                   {' '}
                   (
-                  <Text
-                    tag="span"
-                    hoverValue={t(translations.profile.tip.label)}
-                  >
+                  <Text span hoverValue={t(translations.profile.tip.label)}>
                     <Bookmark color="var(--theme-color-gray2)" size={16} />
                   </Text>
                   {addressLabel})
@@ -189,7 +187,7 @@ export const MenuWrapper = styled(Menu)`
 
     &:hover {
       a {
-        color: var(--theme-color-primary);
+        color: ${ENV_CONFIG.ENV_THEME.primary};
       }
     }
   }

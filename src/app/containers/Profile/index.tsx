@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
-import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
+import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { AddressLabel } from './AddressLabel';
 import { TxNote } from './TxNote';
 import { File } from './File';
 import { Row, Col } from '@cfxjs/antd';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { Card } from 'app/components/Card/Loadable';
 import { useLocation, useHistory } from 'react-router-dom';
 import qs from 'query-string';
 

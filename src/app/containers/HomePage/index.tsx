@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import {
-  useBreakpoint,
-  media,
-} from '@cfxjs/sirius-next-common/dist/utils/media';
+import { Link } from 'app/components/Link/Loadable';
+import { media, useBreakpoint } from 'styles/media';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
@@ -17,6 +14,7 @@ import { useInterval } from 'react-use';
 
 import { Blocks } from './Blocks';
 import { Txns } from './Txns';
+import ENV_CONFIG from 'env';
 
 export function HomePage() {
   const { t } = useTranslation();
@@ -113,14 +111,14 @@ const ViewAllLinkWrapper = styled.div`
   position: absolute;
   top: 1rem;
   right: 0;
-  border-bottom: 2px solid var(--theme-color-link);
+  border-bottom: 2px solid ${ENV_CONFIG.ENV_THEME.linkColor};
   ${media.s} {
     top: 0.6429rem;
   }
   .viewall-link.link {
-    color: var(--theme-color-link);
+    color: ${ENV_CONFIG.ENV_THEME.linkColor};
     &:hover {
-      color: var(--theme-color-link-hover);
+      color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
     }
   }
 `;

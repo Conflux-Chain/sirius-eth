@@ -8,10 +8,10 @@ import styled from 'styled-components';
 
 import { Translation, useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { useBreakpoint } from 'styles/media';
 import { useSearch } from 'utils/hooks/useSearch';
 import { AutoComplete, Input, SelectProps, Image } from '@cfxjs/antd';
-import { SearchIcon } from '@cfxjs/sirius-next-common/dist/components/SearchIcon';
+import { SearchIcon } from 'app/components/SearchIcon/Loadable';
 import ClearIcon from 'images/clear.png';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import _ from 'lodash';
@@ -20,6 +20,7 @@ import { formatAddress, isBlockNumber, isHash } from 'utils';
 import { appendApiPrefix } from 'utils/api';
 import verifiedIcon from 'images/nametag/verified.svg';
 import warningIcon from 'images/nametag/warning.svg';
+import ENV_CONFIG from 'env';
 
 const { Search: SearchInput } = Input;
 
@@ -322,10 +323,10 @@ const Container = styled.div`
     }
 
     .ant-input-search-button {
-      background-color: var(--theme-color-search-button-bg);
+      background-color: ${ENV_CONFIG.ENV_THEME.searchButtonBg};
 
       &:hover {
-        background-color: var(--theme-color-search-button-hover-bg);
+        background-color: ${ENV_CONFIG.ENV_THEME.searchButtonHoverBg};
         /* opacity: 0.85; */
       }
     }

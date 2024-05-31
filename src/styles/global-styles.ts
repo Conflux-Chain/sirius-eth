@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media } from './media';
 import {
   sansSerifFont,
   monospaceFont,
@@ -41,20 +41,6 @@ export const GlobalStyle = createGlobalStyle`
     --theme-color-green3: ${green3};
     --theme-color-orange0: ${orange0};
     --theme-color-black0: ${black0};
-    --theme-color-primary: ${ENV_CONFIG.ENV_THEME.primary};
-    --theme-color-primary-button-bg: ${ENV_CONFIG.ENV_THEME.antdPrimaryButtonBg};
-    --theme-color-button-bg: ${ENV_CONFIG.ENV_THEME.buttonBg};
-    --theme-color-outline: ${ENV_CONFIG.ENV_THEME.outlineColor};
-    --theme-color-shadow: ${ENV_CONFIG.ENV_THEME.shadowColor};
-    --theme-color-search-button-bg: ${ENV_CONFIG.ENV_THEME.searchButtonBg};
-    --theme-color-search-button-hover-bg: ${ENV_CONFIG.ENV_THEME.searchButtonHoverBg};
-    --theme-color-gas-price-line-bg: ${ENV_CONFIG.ENV_THEME.gasPriceLineBg};
-    --theme-color-foot-bg: ${ENV_CONFIG.ENV_THEME.footerBg};
-    --theme-color-foot-highlight: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
-    --theme-color-link: ${ENV_CONFIG.ENV_THEME.linkColor};
-    --theme-color-link-hover: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
-    --theme-color-chart-title: ${ENV_CONFIG.ENV_THEME.chartTitleColor};
-    --theme-color-chart-link: ${ENV_CONFIG.ENV_THEME.chartDetailLinkColor};
   }
 
   html,
@@ -70,10 +56,10 @@ export const GlobalStyle = createGlobalStyle`
     letter-spacing: 0;
 
     a {
-      color: var(--theme-color-link);
+      color: ${ENV_CONFIG.ENV_THEME.linkColor};
 
       &:hover, &:active {
-        color: var(--theme-color-link-hover);
+        color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
       }
     }
 
@@ -109,13 +95,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   // override @cfxjs/antd styles
-  .ant-tag > .sirius-next-tooltip + .anticon {
-    margin-left: 7px;
-  }
-  .ant-tag-rtl.ant-tag > .sirius-next-tooltip + .anticon {
-    margin-right: 7px;
-    margin-left: 0;
-  }
   .ant-select-item-option-grouped {
     padding-left: 12px;
     margin-left: 12px;
@@ -162,8 +141,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-pagination-item-active, .ant-pagination-item-active:hover {
-    border-color: var(--theme-color-link);
-    background-color: var(--theme-color-link);
+    border-color: ${ENV_CONFIG.ENV_THEME.linkColor};
+    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
 
     a {
       color: #ffffff;
@@ -346,24 +325,24 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .ant-switch-checked {
-    background-color: var(--theme-color-link);
+    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
   }
 
   .ant-btn.ant-btn-primary {
-    background-color: var(--theme-color-primary-button-bg);
+    background-color: ${ENV_CONFIG.ENV_THEME.antdPrimaryButtonBg};
     color: #ffffff;
   }
   .ant-input:focus, .ant-input-focused, .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    border-color: var(--theme-color-outline);
-    box-shadow: 0 0 0 2px var(--theme-color-shadow);
+    border-color: ${ENV_CONFIG.ENV_THEME.outlineColor};
+    box-shadow: 0 0 0 2px ${ENV_CONFIG.ENV_THEME.shadowColor};
   }
   .ant-input:hover, .ant-select:hover, .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
-    border-color: var(--theme-color-outline);
+    border-color: ${ENV_CONFIG.ENV_THEME.outlineColor};
   }
 
   .ant-btn {
     &:hover {
-      background: var(--theme-color-button-bg);
+      background: ${ENV_CONFIG.ENV_THEME.buttonBg};
       color: #ffffff;
     }
 
@@ -433,7 +412,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .option.selected {
-      color: var(--theme-color-foot-highlight);
+      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
       border: none;
     }
 

@@ -3,20 +3,19 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { PageHeader } from 'app/components/PageHeader/Loadable';
+import { Card } from 'app/components/Card/Loadable';
+import { Link } from 'app/components/Link/Loadable';
 import { NFTPreview } from 'app/components/NFTPreview';
 import styled from 'styled-components';
-import { Row, Col, Collapse, message, Typography } from '@cfxjs/antd';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
-import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
+import { Row, Col, Collapse, Tooltip, message, Typography } from '@cfxjs/antd';
+import { Description } from 'app/components/Description/Loadable';
+import { CopyButton } from 'app/components/CopyButton/Loadable';
 import { reqNFTDetail, reqToken, reqRefreshMetadata } from 'utils/httpRequest';
-import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
-import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
-import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
-import Button from '@cfxjs/sirius-next-common/dist/components/Button';
+import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { useBreakpoint } from 'styles/media';
+import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
+import { Button } from 'app/components/Button/Loadable';
 
 import AceEditor from 'react-ace';
 import 'ace-builds/webpack-resolver';
@@ -28,7 +27,7 @@ import { formatTimeStamp, formatAddress, addIPFSGateway } from 'utils';
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
 
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { AddressContainer } from 'app/components/AddressContainer';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
@@ -292,7 +291,6 @@ export function NFTDetail(props) {
           <Card style={{ padding: 0 }}>
             <Button
               className="button-refresh"
-              type="action"
               size="small"
               onClick={handleRefresh}
             >

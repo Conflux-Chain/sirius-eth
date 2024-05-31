@@ -5,10 +5,11 @@ import dayjs from 'dayjs';
 import { monospaceFont } from 'styles/variable';
 import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { CountDown } from '@cfxjs/sirius-next-common/dist/components/CountDown';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { CountDown } from 'app/components/CountDown/Loadable';
+import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Text } from 'app/components/Text/Loadable';
 import queryString from 'query-string';
+import ENV_CONFIG from 'env';
 
 export interface ContentWrapperProps {
   children: React.ReactNode;
@@ -83,7 +84,7 @@ export const ColumnAge = ({
         }
       >
         <Tooltip
-          title={
+          text={
             <Translation>
               {t =>
                 t(translations.general.table.switchAgeTip, {
@@ -95,20 +96,19 @@ export const ColumnAge = ({
               }
             </Translation>
           }
+          placement="top"
         >
-          <span>
-            {ageFormat === 'age' ? (
-              title || (
-                <Translation>
-                  {t => t(translations.general.table.block.age)}
-                </Translation>
-              )
-            ) : (
+          {ageFormat === 'age' ? (
+            title || (
               <Translation>
-                {t => t(translations.general.table.dateTime)}
+                {t => t(translations.general.table.block.age)}
               </Translation>
-            )}
-          </span>
+            )
+          ) : (
+            <Translation>
+              {t => t(translations.general.table.dateTime)}
+            </Translation>
+          )}
         </Tooltip>
       </AgeTHeader>
     ),
@@ -134,7 +134,7 @@ export const ColumnAge = ({
 };
 
 const AgeTHeader = styled.div`
-  color: var(--theme-color-link);
+  color: ${ENV_CONFIG.ENV_THEME.linkColor};
   cursor: pointer;
 `;
 

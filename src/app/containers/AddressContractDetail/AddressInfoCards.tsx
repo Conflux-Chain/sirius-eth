@@ -1,14 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { useBreakpoint } from 'styles/media';
 import { translations } from 'locales/i18n';
 import { DetailPageCard } from './DetailPageCard';
 import { InfoImage } from './InfoImage';
 import { TokenBalanceSelect } from './TokenBalanceSelect';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
-import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { Text } from 'app/components/Text/Loadable';
+import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
 import { fromDripToCfx } from 'utils';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tooltip } from 'app/components/Tooltip/Loadable';
 import imgBalance from 'images/contract-address/balance.svg';
 import imgToken from 'images/contract-address/token.svg';
 import imgStorage from 'images/contract-address/storage.svg';
@@ -25,7 +25,7 @@ export function BalanceCard({ accountInfo }) {
   return (
     <DetailPageCard
       title={
-        <Tooltip title={t(translations.toolTip.address.balance)}>
+        <Tooltip text={t(translations.toolTip.address.balance)} placement="top">
           {t(translations.general.balance)}
         </Tooltip>
       }
@@ -53,7 +53,7 @@ export function TokensCard({ address }) {
   return (
     <DetailPageCard
       title={
-        <Tooltip title={t(translations.toolTip.address.token)}>
+        <Tooltip text={t(translations.toolTip.address.token)} placement="top">
           {t(translations.general.token)}
         </Tooltip>
       }
@@ -116,7 +116,7 @@ export function NonceCard({ accountInfo }) {
   return (
     <DetailPageCard
       title={
-        <Tooltip title={t(translations.toolTip.address.nonce)}>
+        <Tooltip text={t(translations.toolTip.address.nonce)} placement="top">
           {t(translations.general.nonce)}
         </Tooltip>
       }

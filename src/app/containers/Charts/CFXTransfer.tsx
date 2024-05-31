@@ -2,10 +2,12 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { StockChartTemplate } from '@cfxjs/sirius-next-common/dist/components/Charts/StockChartTemplate';
-import { PreviewChartTemplate } from '@cfxjs/sirius-next-common/dist/components/Charts/PreviewChartTemplate';
-import { ChildProps } from '@cfxjs/sirius-next-common/dist/components/Charts/config';
+import {
+  StockChartTemplate,
+  ChildProps,
+} from 'app/components/Charts/StockChartTemplate';
 import { OPEN_API_URLS } from 'utils/constants';
+import { Wrapper } from './Wrapper';
 import BigNumber from 'bignumber.js';
 import ENV_CONFIG from 'env';
 
@@ -15,14 +17,12 @@ export function CFXTransfer({ preview = false }: ChildProps) {
   const tickAmount = preview ? 4 : 6;
 
   const props = {
+    preview: preview,
+    name: 'cfx-transfer',
+    title: t(translations.highcharts.transfer.title),
+    subtitle: t(translations.highcharts.transfer.subtitle),
     request: {
       url: OPEN_API_URLS.cfxTransfer,
-      query: preview
-        ? {
-            limit: '30',
-            intervalType: 'day',
-          }
-        : undefined,
       formatter: data => {
         const data1: any = [];
         const data2: any = [];
@@ -41,24 +41,6 @@ export function CFXTransfer({ preview = false }: ChildProps) {
     options: {
       chart: {
         zoomType: 'x',
-      },
-      header: {
-        title: {
-          text: t(translations.highcharts.transfer.title),
-        },
-        subtitle: {
-          text: t(translations.highcharts.transfer.subtitle),
-        },
-        breadcrumb: [
-          {
-            name: t(translations.highcharts.breadcrumb.charts),
-            path: '/charts',
-          },
-          {
-            name: t(translations.highcharts.breadcrumb.transfer),
-            path: '/charts/cfx-transfer',
-          },
-        ],
       },
       title: {
         text: t(translations.highcharts.transfer.title),
@@ -119,9 +101,9 @@ export function CFXTransfer({ preview = false }: ChildProps) {
     },
   };
 
-  return preview ? (
-    <PreviewChartTemplate {...props}></PreviewChartTemplate>
-  ) : (
-    <StockChartTemplate {...props}></StockChartTemplate>
+  return (
+    <Wrapper {...props}>
+      <StockChartTemplate {...props}></StockChartTemplate>
+    </Wrapper>
   );
 }
