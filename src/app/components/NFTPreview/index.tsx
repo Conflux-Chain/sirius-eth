@@ -4,18 +4,16 @@
  *
  */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { Image, Popover } from '@cfxjs/antd';
-import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
+import { Image, Popover, Skeleton, Spin } from '@cfxjs/antd';
 import tokenIdNotFound from 'images/token/tokenIdNotFound.jpg';
 import styled from 'styled-components';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Text } from '../Text/Loadable';
 import { translations } from 'locales/i18n';
 import { useTranslation } from 'react-i18next';
 import nftPreviewActive from 'images/token/nftPreviewActive2.svg';
 import nftPreview from 'images/token/nftPreview2.svg';
 import { reqNFTInfo } from 'utils/httpRequest';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import { ImageSkeleton } from '@cfxjs/sirius-next-common/dist/components/ImageSkeleton';
+import { Tooltip } from '@cfxjs/antd';
 import NotFoundIcon from 'images/token/tokenIdNotFound.jpg';
 import fetch from 'utils/request';
 import audioDesign from './audio-design.svg';
@@ -23,10 +21,10 @@ import audioBg from './audio-bg.svg';
 import audioPause from './audio-pause.svg';
 import audioPlay from './audio-play.svg';
 import Link from '@zeit-ui/react-icons/link';
-import { Link as ALink } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Link as ALink } from 'app/components/Link/Loadable';
 import { formatAddress } from 'utils';
 import { Tag } from '@cfxjs/antd';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { AddressContainer } from '../AddressContainer';
 import { ThreeD } from './3D';
 import { addIPFSGateway } from 'utils';
 
@@ -299,7 +297,7 @@ export const NFTPreview = React.memo(
                     />
                   )
                 ) : isFirstTime ? (
-                  <ImageSkeleton />
+                  <Skeleton.Image />
                 ) : (
                   <Image
                     width={500}
@@ -395,7 +393,7 @@ export const NFTPreview = React.memo(
               setPreviewIcon(visible ? nftPreviewActive : nftPreview);
             }}
           >
-            <Text tag="span" hoverValue={t(translations.general.preview)}>
+            <Text span hoverValue={t(translations.general.preview)}>
               <img
                 src={previewIcon}
                 alt="Preview"
@@ -427,7 +425,7 @@ export const NFTPreview = React.memo(
                   />
                 )
               ) : isFirstTime ? (
-                <ImageSkeleton />
+                <Skeleton.Image />
               ) : (
                 <Image
                   width={500}

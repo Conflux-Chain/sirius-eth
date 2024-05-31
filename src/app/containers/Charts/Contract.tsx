@@ -2,10 +2,12 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { StockChartTemplate } from '@cfxjs/sirius-next-common/dist/components/Charts/StockChartTemplate';
-import { PreviewChartTemplate } from '@cfxjs/sirius-next-common/dist/components/Charts/PreviewChartTemplate';
-import { ChildProps } from '@cfxjs/sirius-next-common/dist/components/Charts/config';
+import {
+  StockChartTemplate,
+  ChildProps,
+} from 'app/components/Charts/StockChartTemplate';
 import { OPEN_API_URLS } from 'utils/constants';
+import { Wrapper } from './Wrapper';
 
 export function Contract({
   preview = false,
@@ -14,11 +16,14 @@ export function Contract({
   const { t } = useTranslation();
 
   const props = {
+    plain: true,
+    preview: preview,
+    name: '',
+    title: t(translations.highcharts.contract.title),
+    subtitle: t(translations.highcharts.contract.subtitle),
     request: {
       url: OPEN_API_URLS.contract,
       query: {
-        limit: '30',
-        intervalType: 'day',
         address,
       },
       formatter: data => {
@@ -40,26 +45,6 @@ export function Contract({
       chart: {
         zoomType: 'x',
         type: 'line',
-      },
-      header: {
-        breadcrumbShow: false,
-        titleShow: false,
-        title: {
-          text: t(translations.highcharts.contract.title),
-        },
-        subtitle: {
-          text: t(translations.highcharts.contract.subtitle),
-        },
-        breadcrumb: [
-          {
-            name: t(translations.highcharts.breadcrumb.charts),
-            path: '/charts',
-          },
-          {
-            name: t(translations.highcharts.breadcrumb.contracts),
-            path: '/charts/contracts',
-          },
-        ],
       },
       title: {
         text: t(translations.highcharts.contract.title),
@@ -95,9 +80,9 @@ export function Contract({
     },
   };
 
-  return preview ? (
-    <PreviewChartTemplate {...props}></PreviewChartTemplate>
-  ) : (
-    <StockChartTemplate {...props}></StockChartTemplate>
+  return (
+    <Wrapper {...props}>
+      <StockChartTemplate {...props}></StockChartTemplate>
+    </Wrapper>
   );
 }

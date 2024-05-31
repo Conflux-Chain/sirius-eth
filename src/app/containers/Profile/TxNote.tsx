@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Space, Modal, Input } from '@cfxjs/antd';
-import Button from '@cfxjs/sirius-next-common/dist/components/Button';
+import { Button } from 'app/components/Button/Loadable';
 import { formatTimeStamp } from 'utils';
 import { ContentWrapper } from 'utils/tableColumns/utils';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Link } from 'app/components/Link/Loadable';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import qs from 'query-string';
@@ -206,15 +206,13 @@ export function TxNote() {
         <Space>
           <Button
             onClick={handleClickC}
-            type="action"
-            color="primary"
+            type="primary"
             disabled={selectedRowKeys.length > 0}
           >
             {text.create}
           </Button>
           <Button
             onClick={handleClickE}
-            type="action"
             disabled={
               selectedRowKeys.length > 1 || selectedRowKeys.length === 0
             }
@@ -223,7 +221,6 @@ export function TxNote() {
           </Button>
           <Button
             onClick={handleClickD}
-            type="action"
             disabled={selectedRowKeys.length === 0}
           >
             {text.delete}

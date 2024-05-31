@@ -1,14 +1,15 @@
-import React, { useRef } from 'react';
-import { FileUpload } from '@cfxjs/sirius-next-common/dist/components/FileUpload';
+import React, { createRef } from 'react';
+import { FileUpload } from 'app/components/FileUpload';
 import { NETWORK_ID } from 'utils/constants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import lodash from 'lodash';
-import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
+import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { message } from '@cfxjs/antd';
 import MD5 from 'md5.js';
+import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Props {
@@ -16,11 +17,11 @@ interface Props {
 }
 export const File = ({ onLoading = () => {} }: Props) => {
   const [globalData, setGlobalData] = useGlobalData();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = createRef<any>();
   const { t } = useTranslation();
 
   const handleImport = () => {
-    inputRef.current?.click();
+    inputRef.current.click();
   };
 
   const handleFileChange = file => {
@@ -233,11 +234,11 @@ const StyledFileManagementWrapper = styled.div`
   text-align: right;
 
   .button {
-    color: var(--theme-color-link);
+    color: ${ENV_CONFIG.ENV_THEME.linkColor};
     cursor: pointer;
 
     &:hover {
-      color: var(--theme-color-link-hover);
+      color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
     }
   }
 `;

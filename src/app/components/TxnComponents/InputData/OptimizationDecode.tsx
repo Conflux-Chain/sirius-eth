@@ -5,11 +5,11 @@ import { reqContractAndToken } from 'utils/httpRequest';
 import { formatContractAndTokenInfoMap } from 'utils';
 import _ from 'lodash';
 import { ContractDetail } from '../ContractDetail';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Link } from 'app/components/Link/Loadable';
+import { Text } from 'app/components/Text/Loadable';
 import { Event } from '../Event';
 // import Info from '@zeit-ui/react-icons/info';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media } from 'styles/media';
 import { AddressLabel } from '../AddressLabel';
 
 export const OptimizationDecode = ({

@@ -3,17 +3,17 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { translations } from 'locales/i18n';
-import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
+import { PageHeader } from 'app/components/PageHeader/Loadable';
 import { tokenColunms, utils } from 'utils/tableColumns';
 import styled from 'styled-components';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tooltip } from 'app/components/Tooltip/Loadable';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { formatNumber, formatLargeNumber } from 'utils';
 import queryString from 'query-string';
 // import { useGlobal } from 'utils/hooks/useGlobal';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useLocation } from 'react-router-dom';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Text } from 'app/components/Text/Loadable';
 import { monospaceFont } from 'styles/variable';
 
 import imgInfo from 'images/info.svg';
@@ -209,9 +209,11 @@ export function Tokens() {
       <PageHeader>
         {title}
         <Tooltip
-          title={t(translations.tokens.ercTip, {
+          hoverable
+          text={t(translations.tokens.ercTip, {
             erc: tokenType.replace('ERC', 'ERC-'),
           })}
+          placement="top"
         >
           <IconWrapper>
             <img src={imgInfo} alt="?" />
@@ -233,7 +235,6 @@ export function Tokens() {
 }
 
 const IconWrapper = styled.div`
-  display: inline-block;
   padding-left: 0.2857rem;
   width: 1.2857rem;
   cursor: pointer;

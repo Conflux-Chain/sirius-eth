@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { Card } from '../../components/Card';
 import { Tabs } from '../../components/Tabs';
 import { Col, Row } from '@cfxjs/antd';
 import { StatsCard } from '../../components/StatsCard/Loadable';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
-import { translations } from 'locales/i18n';
+import { translations } from '../../../locales/i18n';
 import { Helmet } from 'react-helmet-async';
-import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
+import { PageHeader } from '../../components/PageHeader/Loadable';
 import styled from 'styled-components';
 import queryString from 'query-string';
 import { StatsType } from '../../components/StatsCard';
 // TODO antd slimming
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media } from '../../../styles/media';
 import { trackEvent } from '../../../utils/ga';
 import { ScanEvent } from '../../../utils/gaConstants';
 import { reqTopStatistics } from '../../../utils/httpRequest';
+import ENV_CONFIG from 'env';
 
 interface RouteParams {
   statsType: string;
@@ -266,7 +267,7 @@ const SpanButtonsWrapper = styled.div`
     &:hover,
     &:focus {
       color: #fff;
-      background: var(--theme-color-button-bg);
+      background: ${ENV_CONFIG.ENV_THEME.buttonBg};
     }
   }
 

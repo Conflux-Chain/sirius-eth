@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media } from 'styles/media';
 
 export function InfoImage({ color = 'blue', icon, alt }) {
   return (

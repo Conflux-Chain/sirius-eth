@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@cfxjs/react-ui';
 import clsx from 'clsx';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media } from 'styles/media';
+import ENV_CONFIG from 'env';
 
 interface Props {
   tabs: Array<{
@@ -65,7 +66,7 @@ const StyledSubTabsWrapper = styled.div`
     &:hover,
     &:active {
       color: #ffffff;
-      background-color: var(--theme-color-button-bg);
+      background-color: ${ENV_CONFIG.ENV_THEME.buttonBg};
     }
 
     .text {
@@ -75,7 +76,7 @@ const StyledSubTabsWrapper = styled.div`
 
   .subtabs-tabItem-active.btn {
     color: #ffffff;
-    background-color: var(--theme-color-button-bg);
+    background-color: ${ENV_CONFIG.ENV_THEME.buttonBg};
   }
 
   .subtabs-tabItem-extra {

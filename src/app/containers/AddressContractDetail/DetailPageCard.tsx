@@ -6,8 +6,8 @@
 
 import React, { memo, ReactNode } from 'react';
 import styled from 'styled-components';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { Card } from '../../components/Card';
+import { media } from 'styles/media';
 
 interface Props {
   title: string | ReactNode;

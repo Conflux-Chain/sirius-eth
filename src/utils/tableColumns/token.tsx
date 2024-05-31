@@ -2,9 +2,10 @@ import React from 'react';
 import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Link } from 'app/components/Link/Loadable';
+import { Text } from 'app/components/Text/Loadable';
 import queryString from 'query-string';
+import { media } from 'styles/media';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import {
   formatBalance,
@@ -17,25 +18,23 @@ import {
 import imgOut from 'images/token/out.svg';
 import imgIn from 'images/token/in.svg';
 import imgInfo from 'images/info.svg';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { AddressContainer } from '../../app/components/AddressContainer';
 import { formatAddress } from 'utils';
 import { ColumnAge, ContentWrapper } from './utils';
 import BigNumber from 'bignumber.js';
 import { CFX_TOKEN_TYPES } from '../constants';
-import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tooltip } from '../../app/components/Tooltip/Loadable';
 import { TxnHashRenderComponent } from './transaction';
 import { NFTPreview } from 'app/components/NFTPreview/Loadable';
 import clsx from 'clsx';
 import { Popover } from '@cfxjs/react-ui';
-import {
-  useBreakpoint,
-  media,
-} from '@cfxjs/sirius-next-common/dist/utils/media';
+import { useBreakpoint } from 'styles/media';
 import { useTranslation } from 'react-i18next';
 import { monospaceFont } from 'styles/variable';
-import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
+import { ProjectInfo } from 'app/components/ProjectInfo';
+import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
 import { Tag } from '@cfxjs/antd';
-import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
+import { Price } from '../../app/components/Price/Loadable';
 import ENV_CONFIG from 'env';
 
 const fromTypeInfo = {
@@ -152,7 +151,7 @@ export const renderAddress = (
       <AddressContainer
         value={value}
         alias={alias}
-        link={formatAddress(filter) !== formatAddress(value)}
+        isLink={formatAddress(filter) !== formatAddress(value)}
         contractCreated={row.contractCreated}
         verify={verify}
         isContract={isContract}
@@ -181,7 +180,7 @@ export const token = {
           <Translation>
             {t => (
               <Text
-                tag="span"
+                span
                 hoverValue={
                   row.name || row.symbol
                     ? `${row?.name || t(translations.general.notAvailable)} (${
@@ -238,7 +237,7 @@ export const Token2 = ({ row }) => {
               >
                 {
                   <Text
-                    tag="span"
+                    span
                     hoverValue={
                       row?.transferTokenInfo?.name
                         ? `${row?.transferTokenInfo?.name} (${row?.transferTokenInfo?.symbol})`
@@ -295,8 +294,11 @@ const IconWrapper = styled.div`
     display: inline-flex !important;
   }
 
-  img {
+  .tooltip {
     margin-right: 5px;
+  }
+
+  img {
     display: block;
     width: 14px;
     height: 14px;
@@ -338,7 +340,8 @@ export const marketCap = {
     <ContentWrapper right>
       <IconWrapper>
         <Tooltip
-          title={
+          hoverable
+          text={
             <Translation>
               {t => (
                 <div
@@ -349,6 +352,7 @@ export const marketCap = {
               )}
             </Translation>
           }
+          placement="top"
         >
           <img src={imgInfo} alt="?" />
         </Tooltip>
@@ -454,7 +458,7 @@ export const contract = (isFull = false) => ({
         isFull={isFull}
         verify={verify}
         isContract={true}
-        showAddressLabel={false}
+        showLabeled={false}
       />
     );
   },
@@ -490,7 +494,7 @@ export const quantity = {
       ? opt.decimals
       : row.transferTokenInfo?.decimals || row.transferTokenInfo?.decimal || 0;
     return value ? (
-      <Text tag="span" hoverValue={formatBalance(value, decimals, true)}>
+      <Text span hoverValue={formatBalance(value, decimals, true)}>
         {formatBalance(value, decimals)}
       </Text>
     ) : (
@@ -574,7 +578,7 @@ export const balance = (decimal, price, transferType) => ({
       {transferType === CFX_TOKEN_TYPES.erc1155 ? (
         <ThTipWrap>
           <Text
-            tag="span"
+            span
             hoverValue={
               <Translation>
                 {t => t(translations.general.table.token.erc1155QuantityTip)}
@@ -606,17 +610,11 @@ export const balance = (decimal, price, transferType) => ({
                 keepDecimals: true,
               }) || 0
             ) < +tinyBalanceThreshold ? (
-              <Text
-                tag="span"
-                hoverValue={formatBalance(value, decimals, true)}
-              >
+              <Text span hoverValue={formatBalance(value, decimals, true)}>
                 {`< ${tinyBalanceThreshold}`}
               </Text>
             ) : (
-              <Text
-                tag="span"
-                hoverValue={formatBalance(value, decimals, true)}
-              >
+              <Text span hoverValue={formatBalance(value, decimals, true)}>
                 {formatBalance(value, decimals, false, {
                   precision: decimalPlace,
                   keepZero: true,
@@ -625,7 +623,7 @@ export const balance = (decimal, price, transferType) => ({
               </Text>
             )
           ) : (
-            <Text tag="span" hoverValue={formatBalance(value, decimals, true)}>
+            <Text span hoverValue={formatBalance(value, decimals, true)}>
               {formatBalance(value, decimals, false, {
                 withUnit: false,
               })}
@@ -662,7 +660,7 @@ export const percentage = total => ({
         : null;
     return (
       <ContentWrapper right>
-        <Text tag="span" hoverValue={`${percentage}%`}>
+        <Text span hoverValue={`${percentage}%`}>
           {percentage === null
             ? '-'
             : percentage < 0.001
@@ -690,7 +688,7 @@ export const tokenId = (contractAddress?: string) => ({
   render: (value, row) => {
     return (
       <>
-        <Text tag="span" hoverValue={value}>
+        <Text span hoverValue={value}>
           <SpanWrap>{value || '-'}</SpanWrap>
         </Text>
         {!isZeroAddress(formatAddress(row.to)) && (
@@ -837,7 +835,7 @@ export const traceResult = {
           </span>
         );
         body = (
-          <Text tag="span" hoverValue={hoverValue} maxWidth="17.1429rem">
+          <Text span hoverValue={hoverValue} maxWidth="17.1429rem">
             {returnData}
           </Text>
         );
@@ -849,6 +847,27 @@ export const traceResult = {
     }
 
     return body;
+  },
+};
+
+export const projectInfo = {
+  width: 1,
+  title: (
+    <ContentWrapper right>
+      <Translation>
+        {t => t(translations.general.table.token.projectInfo.projectInfo)}
+      </Translation>
+    </ContentWrapper>
+  ),
+  dataIndex: 'securityCredits',
+  key: 'securityCredits',
+  render: (value, row) => {
+    const { securityAudit, name } = row;
+    return (
+      <ContentWrapper monospace>
+        <ProjectInfo securityAudit={securityAudit} tokenName={name} />
+      </ContentWrapper>
+    );
   },
 };
 

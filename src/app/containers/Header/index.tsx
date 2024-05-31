@@ -8,13 +8,10 @@ import React, { memo } from 'react';
 import lodash from 'lodash';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Link as RouterLink } from 'react-router-dom';
 import { Search } from './Search';
 import { ConnectWallet } from 'app/components/ConnectWallet';
-import {
-  useBreakpoint,
-  media,
-} from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media, useBreakpoint } from 'styles/media';
 import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
 import { Check } from '@zeit-ui/react-icons';
@@ -23,18 +20,21 @@ import { useLocation } from 'react-router';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
-import { useGlobalData } from 'utils/hooks/useGlobal';
-import { NetworksType } from '@cfxjs/sirius-next-common/dist/store/types';
+import {
+  useGlobalData,
+  GlobalDataType,
+  NetworksType,
+} from 'utils/hooks/useGlobal';
 import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
-import { GasPriceDropdown } from '@cfxjs/sirius-next-common/dist/components/GasPriceDropdown';
+import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
 
 import ENV_CONFIG, { NETWORK_TYPES } from 'env';
 
 // TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
-  const { networkId, networks } = globalData;
+  const { networkId, networks } = globalData as GlobalDataType;
 
   const { t, i18n } = useTranslation();
   const zh = '中文';
@@ -649,13 +649,13 @@ export const Header = memo(() => {
 
   const brand = (
     <LogoWrapper>
-      <Link href="/">
+      <RouterLink to="/">
         <img
           className="confi-logo"
           alt="conflux scan logo"
           src={ENV_CONFIG.ENV_LOGO}
         />
-      </Link>
+      </RouterLink>
     </LogoWrapper>
   );
   const mainMenu = [...startLinksJSX];

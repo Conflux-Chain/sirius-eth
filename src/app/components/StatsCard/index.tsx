@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { translations } from 'locales/i18n';
-import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { translations } from '../../../locales/i18n';
+import SkelontonContainer from '../SkeletonContainer';
 import { reqTokenList, reqTopStatistics } from '../../../utils/httpRequest';
 import {
   formatNumber,
@@ -10,16 +10,16 @@ import {
   toThousands,
   checkIfContractByInfo,
 } from '../../../utils';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { AddressContainer } from '../AddressContainer';
 import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
-import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Text } from '../Text/Loadable';
 import BigNumber from 'bignumber.js';
 import { usePortal } from '../../../utils/hooks/usePortal';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { media } from '../../../styles/media';
 import { monospaceFont } from '../../../styles/variable';
-import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
+import { Link } from '../Link';
+import { Description } from '../Description/Loadable';
 import lodash from 'lodash';
 import { NetworkPie } from './NetworkPie';
 
@@ -686,7 +686,7 @@ export const StatsCard = ({
         ) : null}
         {category === 'transaction' ? total : null}
       </HeaderWrapper>
-      <SkeletonContainer
+      <SkelontonContainer
         shown={loading || (category === 'token' && loadingTokenInfo)}
       >
         <div
@@ -711,7 +711,7 @@ export const StatsCard = ({
                   }
                   key={c['title']}
                 >
-                  <SkeletonContainer
+                  <SkelontonContainer
                     shown={lodash.isNil(statsData[c['index']])}
                   >
                     {lodash.isNil(statsData[c['index']])
@@ -721,7 +721,7 @@ export const StatsCard = ({
                       : formatNumber(statsData[c['index']], {
                           withUnit: false,
                         })}
-                  </SkeletonContainer>
+                  </SkelontonContainer>
                 </Description>
               ))}
             </>
@@ -737,7 +737,7 @@ export const StatsCard = ({
             </table>
           )}
         </div>
-      </SkeletonContainer>
+      </SkelontonContainer>
     </CardWrapper>
   );
 };
