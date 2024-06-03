@@ -70,14 +70,6 @@ const StyledWrapper = styled.span`
   align-items: center;
   color: var(--theme-color-gray0);
 
-  &:hover {
-    color: var(--theme-color-foot-highlight);
-
-    .select.sirius-select.btnSelectContainer .value .option {
-      color: var(--theme-color-foot-highlight) !important;
-    }
-  }
-
   .btnSelectContainer {
     background-color: var(--theme-color-foot-bg);
   }
