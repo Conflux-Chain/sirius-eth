@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { Card } from '@cfxjs/react-ui';
+import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { useBlockQuery } from 'utils/api';
-import { Text } from 'app/components/Text/Loadable';
-import { Description } from 'app/components/Description/Loadable';
-import { CopyButton } from 'app/components/CopyButton/Loadable';
-import { Link } from 'app/components/Link/Loadable';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
+import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';
 import {
@@ -17,7 +17,7 @@ import {
   /*fromDripToCfx,*/ formatTimeStamp,
   toThousands,
 } from 'utils';
-// import { AddressContainer } from 'app/components/AddressContainer';
+// import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 // import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
@@ -82,10 +82,7 @@ export function DescriptionPanel() {
       <Card className="sirius-blocks-card">
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.blockHeight)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.blockHeight)}>
               {t(translations.block.blockHeight)}
             </Tooltip>
           }
@@ -110,10 +107,7 @@ export function DescriptionPanel() {
         </Description> */}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.difficulty)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.difficulty)}>
               {t(translations.block.difficulty)}
             </Tooltip>
           }
@@ -154,10 +148,7 @@ export function DescriptionPanel() {
         </Description> */}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.security)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.security)}>
               {t(translations.block.security)}
             </Tooltip>
           }
@@ -177,10 +168,7 @@ export function DescriptionPanel() {
         </Description> */}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.blockHash)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.blockHash)}>
               {t(translations.block.blockHash)}
             </Tooltip>
           }
@@ -191,10 +179,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.parentHash)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.parentHash)}>
               {t(translations.block.parentHash)}
             </Tooltip>
           }
@@ -210,7 +195,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.block.nonce)} placement="top">
+            <Tooltip title={t(translations.toolTip.block.nonce)}>
               {t(translations.block.nonce)}
             </Tooltip>
           }
@@ -221,10 +206,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.transactions)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.transactions)}>
               {t(translations.block.transactions)}
             </Tooltip>
           }
@@ -233,7 +215,7 @@ export function DescriptionPanel() {
             <StyledCross>
               {transactionCount - crossSpaceTransactionCount}
               <Text
-                span
+                tag="span"
                 hoverValue={t(
                   translations.general.table.tooltip.crossSpaceCall,
                 )}
@@ -249,10 +231,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.gasUsedLimit)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.gasUsedLimit)}>
               {t(translations.block.gasUsed)}
             </Tooltip>
           }
@@ -267,10 +246,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.timestamp)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.timestamp)}>
               {t(translations.block.timestamp)}
             </Tooltip>
           }
@@ -281,7 +257,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.block.size)} placement="top">
+            <Tooltip title={t(translations.toolTip.block.size)}>
               {t(translations.block.size)}
             </Tooltip>
           }
@@ -296,6 +272,7 @@ export function DescriptionPanel() {
 
 const StyledCardWrapper = styled.div`
   .card.sirius-blocks-card {
+    padding: 0;
     .content {
       padding: 0 18px;
     }

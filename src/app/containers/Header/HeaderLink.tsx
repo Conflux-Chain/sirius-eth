@@ -1,15 +1,15 @@
 import React, { MouseEventHandler, ReactNode, useRef } from 'react';
 import styled from 'styled-components';
 import clsx from 'clsx';
-import { Link as UILink } from '@cfxjs/react-ui';
-import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
-import { media, useBreakpoint } from 'styles/media';
+import { useRouteMatch } from 'react-router-dom';
+import {
+  useBreakpoint,
+  media,
+} from '@cfxjs/sirius-next-common/dist/utils/media';
 import { ChevronDown } from '@zeit-ui/react-icons';
 import { useClickAway, useToggle } from 'react-use';
 import { ScanEvent } from '../../../utils/gaConstants';
-import { trackEvent } from '../../../utils/ga';
-import { Link } from '../../components/Link/Loadable';
-import ENV_CONFIG from 'env';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 
 export type HeaderLinkTitle = ReactNode | Array<ReactNode> | false;
 
@@ -22,7 +22,7 @@ export interface HeaderLink {
   children?: HeaderLink[];
   isMatchedFn?: (link: Partial<HeaderLink>) => boolean;
   matched?: boolean;
-  afterClick?: any;
+  afterClick?: VoidFunction;
   plain?: boolean;
   vertical?: boolean;
 }
@@ -109,7 +109,7 @@ const Menu = styled.div<{ name?: string }>`
     }
     &.level-1.matched,
     &.level-2.matched {
-      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+      color: var(--theme-color-primary) !important;
 
       svg {
         margin-left: 1rem;
@@ -150,7 +150,7 @@ export const HeaderLink: React.FC<{
   name?: string;
   matched?: boolean;
   onClick?: MouseEventHandler;
-  afterClick?: any;
+  afterClick?: VoidFunction;
   level: number;
   plain?: boolean;
   children: React.ReactNode;
@@ -178,47 +178,21 @@ export const HeaderLink: React.FC<{
   if (href) {
     return (
       <WrappLink className={`link-wrap level-${level} ${className}`}>
-        {href.startsWith('http') ? (
-          <Link
-            className={clsx('link', className, matched && 'matched')}
-            href={href}
-            target="_blank"
-            ga={{
-              category: ScanEvent.menu.category,
-              action: name,
-            }}
-          >
-            {children}
-          </Link>
-        ) : (
-          <RouterLink
-            className={clsx('link', className, matched && 'matched')}
-            onClick={() => {
-              if (name) {
-                // ga
-                trackEvent({
+        <Link
+          className={clsx('link', className, matched && 'matched')}
+          href={href}
+          ga={
+            name
+              ? {
                   category: ScanEvent.menu.category,
                   action: name,
-                });
-              }
-              if (afterClick && typeof afterClick === 'function') {
-                afterClick();
-              }
-              if (href.startsWith('http')) {
-                // @ts-ignore
-                window.location = href;
-              }
-            }}
-            to={
-              href.startsWith('http')
-                ? // @ts-ignore
-                  window.location.pathname + window.location.search
-                : href
-            }
-          >
-            {children}
-          </RouterLink>
-        )}
+                }
+              : undefined
+          }
+          afterClick={afterClick}
+        >
+          {children}
+        </Link>
       </WrappLink>
     );
   } else if (onClick) {
@@ -238,9 +212,7 @@ export const HeaderLink: React.FC<{
             isMenu && expanded && 'expanded',
           )}
         >
-          <UILink
-            // eslint-disable-next-line no-script-url
-            href="javascript:void(0)"
+          <Link
             className={clsx(
               className,
               expanded && 'expanded',
@@ -249,7 +221,7 @@ export const HeaderLink: React.FC<{
           >
             {(bp === 'm' || bp === 's') && isMenu && <ChevronDown size={18} />}
             {children}
-          </UILink>
+          </Link>
         </div>
       </WrappLink>
     );
@@ -279,17 +251,13 @@ export const HeaderLink: React.FC<{
           ])}
         >
           <WrappLink>
-            <UILink
-              // eslint-disable-next-line no-script-url
-              href="javascript:void(0)"
-              className={clsx(className, matched && 'matched')}
-            >
+            <Link className={clsx(className, matched && 'matched')}>
               {(bp === 'm' || bp === 's') && isMenu && (
                 <ChevronDown size={18} />
               )}
               {text}
               {bp !== 's' && bp !== 'm' && isMenu && <ChevronDown size={18} />}
-            </UILink>
+            </Link>
           </WrappLink>
           {expanded && (
             <Menu className="header-link-menu" name={name}>
@@ -309,10 +277,10 @@ const WrappLink = styled.span`
     cursor: pointer;
     font-weight: 500;
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+      color: var(--theme-color-primary) !important;
     }
     &.matched {
-      color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+      color: var(--theme-color-primary) !important;
     }
     * {
       transition: none !important;
@@ -382,7 +350,7 @@ const WrappLink = styled.span`
       padding-top: 0.43rem;
       padding-bottom: 0.43rem;
       &.matched {
-        color: ${ENV_CONFIG.ENV_THEME.primary} !important;
+        color: var(--theme-color-primary) !important;
       }
       &:hover {
         &:not(.matched) {

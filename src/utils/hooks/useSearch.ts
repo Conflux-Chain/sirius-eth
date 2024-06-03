@@ -3,11 +3,11 @@ import {
   isBlockHash,
   isHash,
   isBlockNumber,
-  tranferToLowerCase,
   formatAddress,
   isAddress,
   isZeroAddress,
 } from 'utils';
+import { tranferToLowerCase } from '@cfxjs/sirius-next-common/dist/utils';
 import { CONTRACTS } from '../constants';
 import { trackEvent } from '../ga';
 import { ScanEvent } from '../gaConstants';

@@ -2,11 +2,11 @@ import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Link } from 'app/components/Link';
-import { Description } from 'app/components/Description/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
 import { formatAddress } from 'utils';
 import { TransactionAction } from 'app/components/TransactionAction';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { reqContract, reqTransactionEventlogs } from 'utils/httpRequest';
 import _ from 'lodash';
 
@@ -122,7 +122,7 @@ export const Overview = ({ data }) => {
         )}
       </div>
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.status)}
       >
@@ -137,7 +137,7 @@ export const Overview = ({ data }) => {
       </Description>
       {status === 0 && transactionAction && transactionAction.show && (
         <Description
-          verticle
+          vertical
           size="tiny"
           title={t(translations.transaction.action.title)}
         >
@@ -147,14 +147,14 @@ export const Overview = ({ data }) => {
         </Description>
       )}
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.gasFee)}
       >
         <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
       </Description>
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.nonce)}
         noBorder
