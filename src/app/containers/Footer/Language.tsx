@@ -60,8 +60,8 @@ export function Language() {
 }
 const Option = styled(Select.Option)`
   &[data-highlighted] {
-    background-color: #f1f3f5;
-    color: #afe9d2;
+    background-color: var(--theme-color-green2);
+    color: #fff;
   }
 `;
 const StyledWrapper = styled.span`
@@ -69,8 +69,10 @@ const StyledWrapper = styled.span`
   display: flex;
   align-items: center;
   color: var(--theme-color-gray0);
+  margin-top: -0.33rem;
 
   .btnSelectContainer {
     background-color: var(--theme-color-foot-bg);
+    font-size: 0.8571rem;
   }
 `;
