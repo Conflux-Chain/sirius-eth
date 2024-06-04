@@ -468,8 +468,10 @@ export function Footer() {
   ];
   const rightBottom = [
     <div key="copryRight&ICP">
-      <CopyRight>{t(translations.footer.copryRight)}</CopyRight>
-      {ICP}
+      <CopyRight>
+        {t(translations.footer.copryRight)}
+        <span key="ICP">{ICP}</span>
+      </CopyRight>
     </div>,
     <AddNetwork key="addNetwork" onClick={handleAddChain}>
       <img src={IconAdd} alt="add network" />

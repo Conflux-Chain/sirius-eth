@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Select } from 'app/components/Select';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import styled from 'styled-components';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -59,9 +59,9 @@ const SelectedLine = ({
           width="7rem"
         >
           {options.map(o => (
-            <Select.Option key={o.key} value={o.value}>
+            <Option key={o.key} value={o.value}>
               {o.content}
-            </Select.Option>
+            </Option>
           ))}
         </Select>
       ) : null}
@@ -128,13 +128,27 @@ const StyledSelectItemWrapper = styled.div`
     align-items: center;
   }
 
-  .select.select {
-    height: 22px;
+  .select {
+    position: absolute;
+    right: 0;
     margin-right: 12px;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
 
     .value {
       padding-left: 0;
     }
+    ${media.s} {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin-bottom: 10px;
+    }
+  }
+  .select:hover {
+    background-color: rgba(30, 61, 228, 0.08);
   }
 `;
 
@@ -190,19 +204,17 @@ export const Data = ({
       body = (
         <>
           <Select
-            className="select-with-abi"
+            className="select"
             value={value}
             onChange={handleChange}
             size="small"
             disableMatchWidth={true}
             width="7rem"
           >
-            <Select.Option value="hex">
-              {t(translations.transaction.logs.hex)}
-            </Select.Option>
-            <Select.Option value="decode">
+            <Option value="hex">{t(translations.transaction.logs.hex)}</Option>
+            <Option value="decode">
               {t(translations.transaction.logs.decode)}
-            </Select.Option>
+            </Option>
           </Select>
           {content}
         </>
@@ -246,7 +258,12 @@ export const Data = ({
     return <StyledDataWrapper withAbi={withAbi}>{body}</StyledDataWrapper>;
   }
 };
-
+const Option = styled(Select.Option)`
+  &[data-highlighted] {
+    background-color: #f1f3f5;
+    color: #afe9d2;
+  }
+`;
 const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
   padding: 16px ${props => (props.withAbi ? '124px' : '24px')} 16px 16px;
   background-color: #fafbfc;
@@ -260,19 +277,27 @@ const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
     padding-right: 100px;
   }
 
-  .select.select-with-abi {
+  .select {
     position: absolute;
-    top: 11px;
-    right: 16px;
-    height: 30px;
-    padding: 0 10px;
+    right: 0;
+    margin-right: 12px;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
 
+    .value {
+      padding-left: 0;
+    }
     ${media.s} {
       position: relative;
       top: auto;
       right: auto;
       margin-bottom: 10px;
     }
+  }
+  .select:hover {
+    background-color: rgba(30, 61, 228, 0.08);
   }
 
   .data-item {

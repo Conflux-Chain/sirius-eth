@@ -6,7 +6,7 @@ import { TipLabel } from 'app/components/TabsTablePanel/Loadable';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { accountColunms, utils as tableColumnsUtils } from 'utils/tableColumns';
 import styled from 'styled-components';
-import { Select } from 'app/components/Select';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import { usePortal } from 'utils/hooks/usePortal';
 import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 import { formatAddress, checkIfContractByInfo } from 'utils';
@@ -63,16 +63,11 @@ export function Accounts() {
   const title = t(translations.header.accounts);
   const url = `/stat/top-cfx-holder?type=rank_address_by_cfx&limit=100`;
 
-  const handleDownloadItemClick = (e, index, count) => {
-    if (index !== 0) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      window.open(
-        `/stat/top-cfx-holder-csv?limit=${count}&skip=0&type=rank_address_by_cfx`,
-        '_blank',
-      );
-    }
+  const handleDownloadItemClick = (count: string) => {
+    window.open(
+      `/stat/top-cfx-holder-csv?limit=${count}&skip=0&type=rank_address_by_cfx`,
+      '_blank',
+    );
   };
 
   const tableTitle = useMemo(
@@ -81,32 +76,21 @@ export function Accounts() {
         <StyledSelectWrapper isEn={isEn} className="download">
           {/* not good, should be replace with real dropdown or refactor Select Component to support */}
           <Select
-            value={'0'}
-            onChange={() => {}}
+            onChange={handleDownloadItemClick}
             disableMatchWidth
             size="small"
             className="btnSelectContainer"
-            variant="text"
-            dropdownClassName="dropdown"
+            lable={t(translations.accounts.downloadButtonText)}
           >
-            {[
-              t(translations.accounts.downloadButtonText),
-              '100',
-              '500',
-              '1000',
-              '3000',
-              '5000',
-            ].map((o, index) => {
-              return (
-                <Select.Option
-                  key={o}
-                  value={String(index)}
-                  onClick={e => handleDownloadItemClick(e, index, o)}
-                >
-                  {o}
-                </Select.Option>
-              );
-            })}
+            {['100', '500', '1000', '3000', '5000'].map(
+              (o: string, index: number) => {
+                return (
+                  <Select.Option key={index} value={String(o)}>
+                    {o}
+                  </Select.Option>
+                );
+              },
+            )}
           </Select>
         </StyledSelectWrapper>
       );
