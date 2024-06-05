@@ -16,6 +16,7 @@ import { History } from './History';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
 // import { AddressContainer } from './../../components/AddressContainer';
 import { useCheckHook } from './useCheckHook';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
@@ -108,7 +109,7 @@ export const Modal = ({
               {t(translations.connectWallet.modal.connectedWithFluentWallet)}
             </span>
             <span className="modal-portal-name">
-              {accounts[0]}
+              {convertCheckSum(accounts[0])}
               {/* <AddressContainer
                 value={accounts[0]}
                 link={false}
@@ -118,9 +119,12 @@ export const Modal = ({
             <span className="modal-portal-connected-tip">
               <span className="modal-portal-connected-copy">
                 {t(translations.connectWallet.modal.copyAddress)}{' '}
-                <CopyButton copyText={accounts[0]} size={10}></CopyButton>
+                <CopyButton
+                  copyText={convertCheckSum(accounts[0])}
+                  size={10}
+                ></CopyButton>
               </span>
-              <ScanLink href={`/address/${accounts[0]}`}>
+              <ScanLink href={`/address/${convertCheckSum(accounts[0])}`}>
                 {t(translations.connectWallet.modal.viewOnConfluxScan)}
               </ScanLink>
             </span>

@@ -25,6 +25,7 @@ import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface RouteParams {
   address: string;
@@ -44,7 +45,9 @@ export const AddressDetailPage = memo(() => {
   const [visible, setVisible] = useState(false);
 
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
-  const addressLabel = addressLabelMap?.[address];
+  const addressLabel =
+    addressLabelMap?.[convertCheckSum(address)] ||
+    addressLabelMap?.[address.toLowerCase()];
 
   const menu = (
     <MenuWrapper>
@@ -102,7 +105,7 @@ export const AddressDetailPage = memo(() => {
           </Title>
           <HeadAddressLine>
             <span className="address">
-              {address}
+              {convertCheckSum(address)}
               {addressLabel ? (
                 <>
                   {' '}
