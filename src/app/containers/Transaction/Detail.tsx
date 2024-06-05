@@ -30,7 +30,7 @@ import {
   fromDripToCfx,
   getPercent,
   toThousands,
-  isContractAddress,
+  isEvmContractAddress,
   fromDripToGdrip,
   isZeroAddress,
 } from 'utils';
@@ -119,7 +119,7 @@ export const Detail = () => {
       const proArr: Promise<any>[] = [];
       if (
         toCheckAddress !== null &&
-        (await isContractAddress(toCheckAddress))
+        (await isEvmContractAddress(toCheckAddress))
       ) {
         setIsContract(true);
 
@@ -165,7 +165,7 @@ export const Detail = () => {
 
       if (
         toCheckAddress !== null &&
-        (await isContractAddress(toCheckAddress))
+        (await isEvmContractAddress(toCheckAddress))
       ) {
         const contractResponse = proRes.shift();
         setContractInfo(contractResponse);

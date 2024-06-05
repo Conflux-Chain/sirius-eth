@@ -57,7 +57,7 @@ import {
   isZeroAddress,
   isContractCodeHashEmpty,
   getAddressType,
-  isContractAddress,
+  isEvmContractAddress,
   isBase32Address,
   isAddress,
   formatAddress as formatAddressEvm,
@@ -100,7 +100,7 @@ export {
   isZeroAddress,
   isContractCodeHashEmpty,
   getAddressType,
-  isContractAddress,
+  isEvmContractAddress,
   isBase32Address,
   isAddress,
 };

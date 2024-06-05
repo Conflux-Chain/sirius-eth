@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAddressType, isZeroAddress, formatAddress } from 'utils';
+import { isEvmContractAddress, isZeroAddress, formatAddress } from 'utils';
 import { reqContract } from 'utils/httpRequest';
 import { CFXToDecode } from 'utils/constants';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
@@ -63,7 +63,7 @@ export const InputData = ({
           setDataType('original');
           setTip('');
         } else {
-          const isContract = (await getAddressType(toHash)) === 'contract';
+          const isContract = await isEvmContractAddress(toHash);
           if (isContract) {
             let isAbiError = false;
             let abi = '';
