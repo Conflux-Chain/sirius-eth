@@ -15,6 +15,7 @@ import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface RouteParams {
   address: string;
@@ -22,7 +23,8 @@ interface RouteParams {
 
 export const AddressContractDetailPage = () => {
   const { t } = useTranslation();
-  const { address } = useParams<RouteParams>();
+  const { address: addressParams } = useParams<RouteParams>();
+  const address = convertCheckSum(addressParams);
   const history = useHistory();
   const [isAccount, setIsAccount] = useState<null | boolean>(() => {
     return isZeroAddress(address) ? true : null;

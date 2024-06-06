@@ -36,6 +36,7 @@ import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface RouteParams {
   address: string;
@@ -44,8 +45,9 @@ interface RouteParams {
 export const ContractDetailPage = memo(() => {
   const [globalData] = useGlobalData();
   const { t } = useTranslation();
-  const { address } = useParams<RouteParams>();
+  const { address: addressParams } = useParams<RouteParams>();
   const [visible, setVisible] = useState(false);
+  const address = convertCheckSum(addressParams);
 
   const { data: contractInfo } = useContract(address, [
     'name',
