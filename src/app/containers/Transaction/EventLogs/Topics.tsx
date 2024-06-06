@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -80,7 +81,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
           }
 
           select = (
-            <Select
+            <TextSelect
               className="select"
               disableMatchWidth={true}
               size="small"
@@ -88,7 +89,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
               onChange={value => {
                 handleChange(value, d.argName);
               }}
-              width="7rem"
+              width="7.8rem"
               disabled={valueMap.hex === valueMap.decode}
             >
               {availableOptions.map(o => (
@@ -96,7 +97,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
                   {o.content}
                 </Option>
               ))}
-            </Select>
+            </TextSelect>
           );
         }
 
@@ -115,11 +116,9 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
 Topics.defaultProps = {
   contractAndTokenInfo: {},
 };
-const Option = styled(Select.Option)`
-  &[data-highlighted] {
-    background-color: #f1f3f5;
-    color: #afe9d2;
-  }
+const TextSelect = styled(Select)`
+  background-color: #fff;
+  border: 1px solid #ccc;
 `;
 const StyledTopicsWrapper = styled.div`
   .topic-item {

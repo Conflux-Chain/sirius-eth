@@ -1,4 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import {
   sansSerifFont,
@@ -575,5 +576,11 @@ export const GlobalStyle = createGlobalStyle`
     li.highcharts-menu-item {
       margin-bottom: 0;
     }
+  }
+`;
+export const Option = styled(Select.Option)`
+  &[data-highlighted] {
+    background-color: var(--theme-color-green2);
+    color: #fff;
   }
 `;

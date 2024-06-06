@@ -1,5 +1,6 @@
 import React from 'react';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
@@ -78,9 +79,9 @@ export function Currency() {
       >
         {options.map(o => {
           return (
-            <Select.Option key={o.value} value={o.value}>
+            <Option key={o.value} value={o.value}>
               {o.name}
-            </Select.Option>
+            </Option>
           );
         })}
       </Select>

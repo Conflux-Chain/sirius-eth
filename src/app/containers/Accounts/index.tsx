@@ -7,6 +7,7 @@ import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader
 import { accountColunms, utils as tableColumnsUtils } from 'utils/tableColumns';
 import styled from 'styled-components';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { usePortal } from 'utils/hooks/usePortal';
 import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 import { formatAddress, checkIfContractByInfo } from 'utils';
@@ -85,9 +86,9 @@ export function Accounts() {
             {['100', '500', '1000', '3000', '5000'].map(
               (o: string, index: number) => {
                 return (
-                  <Select.Option key={index} value={String(o)}>
+                  <Option key={index} value={String(o)}>
                     {o}
-                  </Select.Option>
+                  </Option>
                 );
               },
             )}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Globe from '@zeit-ui/react-icons/globe';
@@ -58,12 +59,7 @@ export function Language() {
     </StyledWrapper>
   );
 }
-const Option = styled(Select.Option)`
-  &[data-highlighted] {
-    background-color: var(--theme-color-green2);
-    color: #fff;
-  }
-`;
+
 const StyledWrapper = styled.span`
   position: relative;
   display: flex;
