@@ -317,7 +317,7 @@ export function NFTDetail(props) {
                   <SkeletonContainer shown={loading}>
                     {imgURL ? (
                       <div className="image-uri-container">
-                        <Tooltip title={imgURL}>
+                        <Tooltip title={imgURL} className="image-uri-tooltip">
                           <Link href={imgURL} className="image-uri">
                             {imgURL}
                           </Link>
@@ -487,6 +487,10 @@ const StyledWrapper = styled.div`
   .image-uri-container {
     display: flex;
     align-items: center;
+    .image-uri-tooltip {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .link.image-uri {
