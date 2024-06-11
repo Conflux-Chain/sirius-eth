@@ -56,7 +56,7 @@ import {
 import {
   isZeroAddress,
   isContractCodeHashEmpty,
-  getAddressType,
+  getEvmAddressType,
   isEvmContractAddress,
   isBase32Address,
   isAddress,
@@ -99,7 +99,7 @@ export {
 export {
   isZeroAddress,
   isContractCodeHashEmpty,
-  getAddressType,
+  getEvmAddressType,
   isEvmContractAddress,
   isBase32Address,
   isAddress,
@@ -164,7 +164,7 @@ export const formatAddress = (address: string, outputType = 'hex') => {
 // Todo: Distinguish between core and evm
 export async function isAccountAddress(address: string): Promise<boolean> {
   try {
-    return (await getAddressType(address)) === 'account';
+    return (await getEvmAddressType(address)) === 'account';
   } catch (e) {
     throw e;
   }
