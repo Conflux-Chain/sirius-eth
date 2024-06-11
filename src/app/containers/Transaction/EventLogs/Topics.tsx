@@ -8,6 +8,7 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export const Topics = ({ data, signature, contractAndTokenInfo }) => {
   const { t } = useTranslation();
@@ -73,7 +74,9 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
 
             value = (
               <>
-                <Link href={`/address/${value}`}>{value} </Link>
+                <Link href={`/address/${value}`}>
+                  {typeof value === 'string' ? convertCheckSum(value) : value}
+                </Link>
                 <ContractDetail info={contractInfo}></ContractDetail>
                 <AddressLabel address={value} />
               </>
