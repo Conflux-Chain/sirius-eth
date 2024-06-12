@@ -59,7 +59,7 @@ import {
   getEvmAddressType,
   isEvmContractAddress,
   isBase32Address,
-  isAddress,
+  isEvmAddress as isAddress,
   formatAddress as formatAddressEvm,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
 export {
