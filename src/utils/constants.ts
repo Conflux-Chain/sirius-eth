@@ -141,7 +141,6 @@ export const ICON_DEFAULT_TOKEN =
 
 export const OPEN_API_URLS = Object.entries({
   // charts
-  core_mining: '/statistics/mining',
   mining: '/statistics/mining',
   supply: '/statistics/supply',
   tps: '/statistics/tps',
@@ -159,11 +158,7 @@ export const OPEN_API_URLS = Object.entries({
   NFTBalance: '/nft/balances',
 })
   .map(item => ({
-    [item[0]]: `${
-      item[0].startsWith('core_')
-        ? ENV_CONFIG.ENV_CORE_API_HOST
-        : ENV_CONFIG.ENV_API_HOST
-    }${item[1]}`,
+    [item[0]]: `${ENV_CONFIG.ENV_API_HOST}${item[1]}`,
   }))
   .reduce((prev, curr) => ({ ...prev, ...curr }), {});
 
@@ -174,6 +169,7 @@ OPEN_API_URLS.token = '/stat/daily-token-stat';
 export const CORE_SPACE_CHAIN_IDS = [1029, 1, 8888];
 export const ESPACE_CHAIN_IDS = [1030, 71, 8889];
 export const BSPACE_CHAIN_IDS = [8890];
+export const ZSPACE_CHAIN_IDS = [16600];
 const MAINNET_NETWORK_OPTIONS = lodash.compact([
   // core space
   {
@@ -241,11 +237,10 @@ const DEVNET_NETWORK_OPTIONS = lodash.compact([
     id: 8889,
     url: '//net8889eth.confluxscan.net',
   },
-  // bspace
   IS_DEVNET && {
-    name: 'Conflux bSpace (Devnet)',
-    id: 8890,
-    url: '//net8890btc.confluxscan.net',
+    name: 'zg scan (Devnet)',
+    id: 16600,
+    url: '//54.183.138.255/',
   },
 ]);
 export const NETWORK_OPTIONS = {

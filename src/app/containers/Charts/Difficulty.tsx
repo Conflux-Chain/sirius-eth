@@ -17,7 +17,7 @@ export function Difficulty({ preview = false }: ChildProps) {
 
   const props = {
     request: {
-      url: OPEN_API_URLS.core_mining,
+      url: OPEN_API_URLS.mining,
       query: preview
         ? {
             limit: '30',

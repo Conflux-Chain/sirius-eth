@@ -4,6 +4,9 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 // http-proxy-middleware doc https://www.npmjs.com/package/http-proxy-middleware#example
 
 const configs = {
+  zg_mainnet_url: 'https://zg.confluxscan.net/',
+  zg_testnet_url: 'https://zgtestnet-stage.confluxscan.net/',
+  zg_devnet_url: 'http://54.183.138.255/',
   evm_mainnet_url: 'https://evm.confluxscan.net/',
   evm_testnet_url: 'https://evmtestnet-stage.confluxscan.net/',
   evm_devnet_url: 'https://net8889eth.confluxscan.net/',
@@ -25,6 +28,12 @@ if (process.env.REACT_APP_EVM_TESTNET === 'true') {
   url = configs.btc_testnet_url;
 } else if (process.env.REACT_APP_BTC_DEVNET === 'true') {
   url = configs.btc_devnet_url;
+} else if (process.env.REACT_APP_ZG_MAINNET === 'true') {
+  url = configs.zg_mainnet_url;
+} else if (process.env.REACT_APP_ZG_TESTNET === 'true') {
+  url = configs.zg_testnet_url;
+} else if (process.env.REACT_APP_ZG_DEVNET === 'true') {
+  url = configs.zg_devnet_url;
 }
 
 module.exports = app => {
