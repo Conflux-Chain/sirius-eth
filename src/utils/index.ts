@@ -112,7 +112,10 @@ window.CFX = CFX;
 
 dayjs.extend(relativeTime);
 
-export const formatAddress = (address: string, outputType = 'hex') => {
+export const formatAddress = (
+  address: string,
+  outputType: 'hex' | 'base32' = 'hex',
+) => {
   return formatAddressEvm(address, outputType);
 };
 
@@ -164,7 +167,7 @@ export const formatAddress = (address: string, outputType = 'hex') => {
 // Todo: Distinguish between core and evm
 export async function isAccountAddress(address: string): Promise<boolean> {
   try {
-    return (await getEvmAddressType(address)) === 'account';
+    return (await getEvmAddressType(address)) === 'user';
   } catch (e) {
     throw e;
   }
