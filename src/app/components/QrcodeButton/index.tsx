@@ -10,7 +10,7 @@ import { Modal } from '@cfxjs/react-ui';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 
 interface QrcodeButtonProps {
   value: string;
@@ -81,7 +81,7 @@ export const QrcodeButton = ({
             {t(translations.general.qrcodeButton.address)}:
           </AddressType>
           <AddressWrapper onClick={handleClose}>
-            <AddressContainer value={value} showIcon={false} link={false} />
+            <EVMAddressContainer value={value} showIcon={false} link={false} />
           </AddressWrapper>
         </Modal.Content>
       </Modal>
