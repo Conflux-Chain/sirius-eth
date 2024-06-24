@@ -58,10 +58,10 @@ import {
   isContractCodeHashEmpty,
   getEvmAddressType,
   isEvmContractAddress,
-  isBase32Address,
   isEvmAddress as isAddress,
-  formatAddress as formatAddressEvm,
+  formatAddress as _formatAddress,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { isBase32Address } from '@cfx-kit/dapp-utils/dist/address';
 export {
   getEllipsStr,
   formatNumber,
@@ -116,7 +116,7 @@ export const formatAddress = (
   address: string,
   outputType: 'hex' | 'base32' = 'hex',
 ) => {
-  return formatAddressEvm(address, outputType);
+  return _formatAddress(address, outputType);
 };
 
 // export const formatAddress = (

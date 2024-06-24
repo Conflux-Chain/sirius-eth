@@ -37,7 +37,7 @@ import {
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import clsx from 'clsx';
 // import BigNumber from 'bignumber.js';
 import { Security } from 'app/components/Security/Loadable';
@@ -268,7 +268,7 @@ export const Detail = () => {
       const addr = formatAddress(address);
       return (
         <span>
-          <AddressContainer value={addr} isFull={isFull} />{' '}
+          <EVMAddressContainer value={addr} isFull={isFull} />{' '}
           {nametags[addr]?.nameTag ? `(${nametags[addr]?.nameTag})` : null}{' '}
           <CopyButton copyText={addr} />
         </span>
@@ -342,7 +342,7 @@ export const Detail = () => {
             <span className="label">
               {t(translations.transaction.contract)}
             </span>
-            <AddressContainer
+            <EVMAddressContainer
               value={transactionDetail['contractCreated']}
               isFull={true}
               isContract={true}
@@ -516,7 +516,7 @@ export const Detail = () => {
             >
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)}</span>
-              {/*<AddressContainer value={transferItem['from']} />*/}
+              {/*<EVMAddressContainer value={transferItem['from']} />*/}
               <InlineWrapper>
                 {renderAddress(
                   transferItem['from'],
@@ -526,7 +526,7 @@ export const Detail = () => {
                 )}
               </InlineWrapper>
               <span className="to">{t(translations.transaction.to)}</span>
-              {/*<AddressContainer value={transferItem['to']} />*/}
+              {/*<EVMAddressContainer value={transferItem['to']} />*/}
               <InlineWrapper>
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>
@@ -567,7 +567,7 @@ export const Detail = () => {
             >
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)}</span>
-              {/*<AddressContainer value={transferItem['from']} />*/}
+              {/*<EVMAddressContainer value={transferItem['from']} />*/}
               <InlineWrapper>
                 {renderAddress(
                   transferItem['from'],
@@ -577,7 +577,7 @@ export const Detail = () => {
                 )}
               </InlineWrapper>
               <span className="to">{t(translations.transaction.to)}</span>
-              {/*<AddressContainer value={transferItem['to']} />*/}
+              {/*<EVMAddressContainer value={transferItem['to']} />*/}
               <InlineWrapper>
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>
@@ -627,7 +627,7 @@ export const Detail = () => {
             >
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)}</span>
-              {/*<AddressContainer value={transferItem['from']} />*/}
+              {/*<EVMAddressContainer value={transferItem['from']} />*/}
               <InlineWrapper>
                 {renderAddress(
                   transferItem['from'],
@@ -637,7 +637,7 @@ export const Detail = () => {
                 )}
               </InlineWrapper>
               <span className="to">{t(translations.transaction.to)}</span>
-              {/*<AddressContainer value={transferItem['to']} />*/}
+              {/*<EVMAddressContainer value={transferItem['to']} />*/}
               <InlineWrapper>
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>

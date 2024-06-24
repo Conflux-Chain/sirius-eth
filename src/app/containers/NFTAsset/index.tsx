@@ -14,7 +14,7 @@ import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Col, Pagination, Row, Tag } from '@cfxjs/antd';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { NFTPreview } from 'app/components/NFTPreview';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { Empty } from '@cfxjs/sirius-next-common/dist/components/Empty';
 import {
   reqNFTBalance,
@@ -244,7 +244,7 @@ export function NFTAsset({
                 {selectedNFT.name || ''} {lang === 'zh' ? '数字藏品' : 'NFT'}{' '}
                 <span>
                   {t(translations.contract.address)}:{' '}
-                  <AddressContainer value={selectedNFT.contract} />
+                  <EVMAddressContainer value={selectedNFT.contract} />
                 </span>
               </div>
               <Row gutter={20}>

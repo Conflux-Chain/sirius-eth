@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@cfx-kit/dapp-utils": "0.1.6",
+    "@cfx-kit/dapp-utils": "0.1.9",
     "@cfxjs/antd": "1.0.6",
     "@cfxjs/react-ui": "2.0.0-alpha.15",
     "@cfxjs/sirius-next-common": "^0.0.5",
