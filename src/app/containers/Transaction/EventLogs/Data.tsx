@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import styled from 'styled-components';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -50,20 +51,20 @@ const SelectedLine = ({
     <StyledSelectItemWrapper>
       {index === undefined ? null : <span className="index">{index + 1}</span>}
       {select ? (
-        <Select
+        <TextSelect
           className="select"
           disableMatchWidth={true}
           size="small"
           value={selected}
           onChange={handleChange}
-          width="7rem"
+          width="7.8rem"
         >
           {options.map(o => (
             <Option key={o.key} value={o.value}>
               {o.content}
             </Option>
           ))}
-        </Select>
+        </TextSelect>
       ) : null}
       <span className="value">{decodeData(data.hexValue, selected)}</span>
     </StyledSelectItemWrapper>
@@ -101,7 +102,10 @@ const decodeData = (value, type) => {
 
   return result;
 };
-
+const TextSelect = styled(Select)`
+  background-color: #fff;
+  border: 1px solid #ccc;
+`;
 const StyledSelectItemWrapper = styled.div`
   margin-bottom: 5px;
   display: flex;
@@ -203,19 +207,19 @@ export const Data = ({
 
       body = (
         <>
-          <Select
+          <TextSelect
             className="select"
             value={value}
             onChange={handleChange}
             size="small"
             disableMatchWidth={true}
-            width="7rem"
+            width="7.8rem"
           >
             <Option value="hex">{t(translations.transaction.logs.hex)}</Option>
             <Option value="decode">
               {t(translations.transaction.logs.decode)}
             </Option>
-          </Select>
+          </TextSelect>
           {content}
         </>
       );
@@ -258,12 +262,6 @@ export const Data = ({
     return <StyledDataWrapper withAbi={withAbi}>{body}</StyledDataWrapper>;
   }
 };
-const Option = styled(Select.Option)`
-  &[data-highlighted] {
-    background-color: #f1f3f5;
-    color: #afe9d2;
-  }
-`;
 const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
   padding: 16px ${props => (props.withAbi ? '124px' : '24px')} 16px 16px;
   background-color: #fafbfc;

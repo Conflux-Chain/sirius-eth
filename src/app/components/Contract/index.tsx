@@ -29,6 +29,7 @@ import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface Props {
   contractDetail: any;
@@ -447,7 +448,7 @@ export const ContractOrTokenInfo = ({
                 <Input
                   className="inputComp"
                   style={inputStyle}
-                  defaultValue={addressVal}
+                  defaultValue={convertCheckSum(addressVal)}
                   onChange={addressInputChanger}
                   readOnly={true}
                   placeholder=""

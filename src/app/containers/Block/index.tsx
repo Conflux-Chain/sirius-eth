@@ -15,7 +15,6 @@ import { reqBlockDetail } from 'utils/httpRequest';
 import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 
 import { Txns } from './Txns';
-// import { ReferenceBlocks } from './ReferenceBlocks';
 
 export function Block() {
   const bp = useBreakpoint();
@@ -70,31 +69,6 @@ export function Block() {
       ),
       hidden: !transactionCount,
     },
-    // {
-    //   value: 'reference-blocks',
-    //   action: 'blockTransactions',
-    //   label: () => {
-    //     return (
-    //       <TabLabel
-    //         // total={refereeHashes?.length}
-    //         showTooltip={bp !== 's'}
-    //       >
-    //         {bp === 's' ? (
-    //           t(translations.block.tabs.referenceBlocks)
-    //         ) : (
-    //           <Tooltip
-    //             text={t(translations.toolTip.block.referenceBlocks)}
-    //             placement="top"
-    //           >
-    //             {t(translations.block.tabs.referenceBlocks)}
-    //           </Tooltip>
-    //         )}
-    //       </TabLabel>
-    //     );
-    //   },
-    //   content: <ReferenceBlocks url={`/block?referredBy=${hash}`} />,
-    //   hidden: !refereeHashes?.length,
-    // },
   ];
 
   return (

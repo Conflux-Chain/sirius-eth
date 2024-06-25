@@ -8,7 +8,7 @@ import {
   getNametagInfo,
 } from '../../utils/';
 import { ContentWrapper } from './utils';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 
 export const rank = {
   title: (
@@ -27,7 +27,7 @@ export const address = {
   render: (value, row: any) => {
     const isContract = checkIfContractByInfo(value, row);
     return (
-      <AddressContainer
+      <EVMAddressContainer
         value={value}
         alias={row.name}
         isFull={isContract}

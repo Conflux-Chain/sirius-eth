@@ -11,6 +11,7 @@ import { Event } from '../Event';
 // import Info from '@zeit-ui/react-icons/info';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from '../AddressLabel';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export const OptimizationDecode = ({
   data = '',
@@ -75,7 +76,7 @@ export const OptimizationDecode = ({
                 value = (
                   <>
                     <Link href={`/address/${a.hexAddress}`}>
-                      {a.hexAddress}{' '}
+                      {convertCheckSum(a.hexAddress)}{' '}
                     </Link>
                     <ContractDetail info={contractInfo} />
                     <AddressLabel address={a.hexAddress} />

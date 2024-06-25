@@ -15,6 +15,7 @@ import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
 import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import queryString from 'query-string';
 import { usePortal } from 'utils/hooks/usePortal';
 import { abi as ERC20ABI } from 'utils/contract/ERC20.json';
@@ -440,9 +441,9 @@ export function Approval() {
             >
               {options.map((o, index) => {
                 return (
-                  <Select.Option key={o.key} value={String(index)}>
+                  <Option key={o.key} value={String(index)}>
                     {o.name}
-                  </Select.Option>
+                  </Option>
                 );
               })}
             </Select>

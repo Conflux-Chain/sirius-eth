@@ -26,7 +26,7 @@ import Link from '@zeit-ui/react-icons/link';
 import { Link as ALink } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { formatAddress } from 'utils';
 import { Tag } from '@cfxjs/antd';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { ThreeD } from './3D';
 import { addIPFSGateway } from 'utils';
 
@@ -341,10 +341,10 @@ export const NFTPreview = React.memo(
                       <span className="title">
                         {t(translations.nftChecker.owner)}:{' '}
                       </span>
-                      <AddressContainer
+                      <EVMAddressContainer
                         value={owner}
                         maxWidth={120}
-                      ></AddressContainer>
+                      ></EVMAddressContainer>
                     </div>
                   )}
                 </div>
