@@ -681,11 +681,7 @@ export const Detail = () => {
               <Tooltip
                 title={t(translations.transaction.tipOfTokenTransferCount)}
               >
-                <IconImg
-                  src={iconInfo}
-                  alt="warning-icon"
-                  className="download-svg-img"
-                />
+                <IconImg src={iconInfo} alt="warning-icon" />
               </Tooltip>
             ) : null}
           </>
