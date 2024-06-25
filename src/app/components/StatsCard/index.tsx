@@ -10,7 +10,7 @@ import {
   toThousands,
   checkIfContractByInfo,
 } from '../../../utils';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
@@ -420,7 +420,7 @@ export const StatsCard = ({
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
-                <AddressContainer
+                <EVMAddressContainer
                   value={formatAddress(d.base32)}
                   alias={
                     d.contractInfo && d.contractInfo.name
@@ -458,7 +458,7 @@ export const StatsCard = ({
                 {d.token ? (
                   token.render(d.token)
                 ) : (
-                  <AddressContainer
+                  <EVMAddressContainer
                     value={formatAddress(d.base32address)}
                     isMe={
                       accounts && accounts.length > 0
@@ -482,7 +482,7 @@ export const StatsCard = ({
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
-                <AddressContainer
+                <EVMAddressContainer
                   value={formatAddress(d.base32)}
                   isMe={
                     accounts && accounts.length > 0
@@ -553,7 +553,7 @@ export const StatsCard = ({
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
-                <AddressContainer
+                <EVMAddressContainer
                   value={formatAddress(d.base32)}
                   isMe={
                     accounts && accounts.length > 0

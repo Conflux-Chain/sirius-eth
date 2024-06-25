@@ -96,19 +96,17 @@ export const ColumnAge = ({
             </Translation>
           }
         >
-          <span>
-            {ageFormat === 'age' ? (
-              title || (
-                <Translation>
-                  {t => t(translations.general.table.block.age)}
-                </Translation>
-              )
-            ) : (
+          {ageFormat === 'age' ? (
+            title || (
               <Translation>
-                {t => t(translations.general.table.dateTime)}
+                {t => t(translations.general.table.block.age)}
               </Translation>
-            )}
-          </span>
+            )
+          ) : (
+            <Translation>
+              {t => t(translations.general.table.dateTime)}
+            </Translation>
+          )}
         </Tooltip>
       </AgeTHeader>
     ),

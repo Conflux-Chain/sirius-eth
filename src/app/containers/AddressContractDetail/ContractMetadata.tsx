@@ -16,7 +16,7 @@ import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { formatString } from 'utils';
 import { ICON_DEFAULT_TOKEN, ICON_DEFAULT_CONTRACT } from 'utils/constants';
 // import Edit3 from '@zeit-ui/react-icons/edit3';
@@ -132,7 +132,7 @@ export function ContractMetadata({ address, contractInfo }) {
                 )}
               >
                 {contractInfo.from ? (
-                  <AddressContainer value={contractInfo.from} />
+                  <EVMAddressContainer value={contractInfo.from} />
                 ) : (
                   notAvailableText
                 )}

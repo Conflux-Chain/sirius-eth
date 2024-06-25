@@ -34,7 +34,8 @@ interface RouteParams {
 export const AddressDetailPage = memo(() => {
   const [globalData] = useGlobalData();
   const { t } = useTranslation();
-  const { address } = useParams<RouteParams>();
+  const { address: addressParams } = useParams<RouteParams>();
+  const address = convertCheckSum(addressParams);
   const { data: accountInfo } = useAccount(address, [
     'cfxTransferCount',
     'erc20TransferCount',

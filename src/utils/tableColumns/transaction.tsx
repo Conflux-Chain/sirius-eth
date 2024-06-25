@@ -15,7 +15,7 @@ import {
   formatNumber,
   roundToFixedPrecision,
 } from 'utils';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { ColumnAge } from './utils';
 import { reqTransactionDetail } from 'utils/httpRequest';
 import { Popover } from '@cfxjs/antd';
@@ -180,7 +180,7 @@ export const from = {
   render: (value, row) => {
     const isContract = checkIfContractByInfo(value, row);
     return (
-      <AddressContainer
+      <EVMAddressContainer
         value={value}
         alias={row.fromContractInfo ? row.fromContractInfo.name : ''}
         contractCreated={row.contractCreated}
@@ -220,7 +220,7 @@ export const to = {
     }
 
     return (
-      <AddressContainer
+      <EVMAddressContainer
         value={value}
         alias={alias}
         contractCreated={row.contractCreated}
