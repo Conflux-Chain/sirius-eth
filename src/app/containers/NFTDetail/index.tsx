@@ -28,7 +28,7 @@ import { formatTimeStamp, formatAddress, addIPFSGateway } from 'utils';
 import { TransferAndHolders } from './TransferAndHolders';
 import { TransferModal } from './TransferModal';
 
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 
@@ -317,7 +317,7 @@ export function NFTDetail(props) {
                   <SkeletonContainer shown={loading}>
                     {imgURL ? (
                       <div className="image-uri-container">
-                        <Tooltip title={imgURL}>
+                        <Tooltip title={imgURL} className="image-uri-tooltip">
                           <Link href={imgURL} className="image-uri">
                             {imgURL}
                           </Link>
@@ -334,10 +334,10 @@ export function NFTDetail(props) {
                     <SkeletonContainer shown={loading}>
                       {owner ? (
                         <>
-                          <AddressContainer
+                          <EVMAddressContainer
                             value={owner}
                             isFull={true}
-                          ></AddressContainer>{' '}
+                          ></EVMAddressContainer>{' '}
                           <CopyButton copyText={owner} />
                         </>
                       ) : (
@@ -355,10 +355,10 @@ export function NFTDetail(props) {
                   <SkeletonContainer shown={loading}>
                     {contractAddress ? (
                       <>
-                        <AddressContainer
+                        <EVMAddressContainer
                           value={contractAddress}
                           isFull={true}
-                        ></AddressContainer>{' '}
+                        ></EVMAddressContainer>{' '}
                         <CopyButton copyText={contractAddress} />
                       </>
                     ) : (
@@ -385,10 +385,10 @@ export function NFTDetail(props) {
                   <SkeletonContainer shown={loading}>
                     {creator ? (
                       <>
-                        <AddressContainer
+                        <EVMAddressContainer
                           value={creator}
                           isFull={true}
-                        ></AddressContainer>{' '}
+                        ></EVMAddressContainer>{' '}
                         <CopyButton copyText={creator} />
                       </>
                     ) : (
@@ -487,6 +487,10 @@ const StyledWrapper = styled.div`
   .image-uri-container {
     display: flex;
     align-items: center;
+    .image-uri-tooltip {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .link.image-uri {

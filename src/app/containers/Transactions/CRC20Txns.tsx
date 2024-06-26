@@ -65,6 +65,9 @@ export const CRC20Txns = ({ address }: Props) => {
       columns={columns}
       footer={footer}
       title={title}
+      rowKey={record =>
+        `${record.transactionHash}-${record.transactionLogIndex}`
+      }
     ></TablePanel>
   );
 };

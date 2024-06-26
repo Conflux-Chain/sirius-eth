@@ -4,6 +4,7 @@ import qs from 'query-string';
 import { useState } from 'react';
 import { Table } from '@cfxjs/antd';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation, Trans } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -92,9 +93,9 @@ export const TitleTotal = ({
       >
         {['100', '500', '1000', '3000', '5000'].map((o, index) => {
           return (
-            <Select.Option key={index} value={String(index)}>
+            <Option key={index} value={String(index)}>
               {o}
-            </Select.Option>
+            </Option>
           );
         })}
       </Select>
@@ -321,7 +322,6 @@ TablePanel.defaultProps = {
   url: '',
   scroll: { x: 1200 },
   tableLayout: 'fixed',
-  rowKey: () => Math.random().toString().substr(2),
   title: undefined,
   footer: undefined,
   hideDefaultTitle: false,

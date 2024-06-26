@@ -3,6 +3,7 @@ import { isEvmContractAddress, isZeroAddress, formatAddress } from 'utils';
 import { reqContract } from 'utils/httpRequest';
 import { CFXToDecode } from 'utils/constants';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 
@@ -186,22 +187,23 @@ export const InputData = ({
 
   return (
     <StyledInputDataWrapper>
-      <Select
+      <TextSelect
         value={dataType}
         onChange={handleDataTypeChange}
         disableMatchWidth
-        size="small"
+        size="medium"
         className="input-data-select"
         disabled={dataTypeList.length === 1}
+        width={180}
       >
         {dataTypeList.map(dataTypeItem => {
           return (
-            <Select.Option key={dataTypeItem} value={dataTypeItem}>
+            <Option key={dataTypeItem} value={dataTypeItem}>
               {`${t(translations.transaction.select[dataTypeItem])}`}
-            </Select.Option>
+            </Option>
           );
         })}
-      </Select>
+      </TextSelect>
 
       {getBody(dataType)}
 
@@ -214,7 +216,10 @@ export const InputData = ({
     </StyledInputDataWrapper>
   );
 };
-
+const TextSelect = styled(Select)`
+  background-color: #fff;
+  border: 1px solid #ccc;
+`;
 const StyledInputDataWrapper = styled.div`
   .input-data-select {
     margin-bottom: 16px;

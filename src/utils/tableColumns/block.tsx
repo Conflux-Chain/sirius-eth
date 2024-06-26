@@ -14,7 +14,6 @@ import {
   getNetworkIcon,
 } from 'utils/';
 // import imgPivot from 'images/pivot.svg';
-import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
@@ -187,16 +186,6 @@ export const hashWithPivot = {
   //     </StyledHashWrapper>
   //   );
   // },
-};
-
-export const miner = {
-  title: (
-    <Translation>{t => t(translations.general.table.block.miner)}</Translation>
-  ),
-  dataIndex: 'miner',
-  key: 'miner',
-  width: 1,
-  render: value => <AddressContainer value={value} />,
 };
 
 export const avgGasPrice = {

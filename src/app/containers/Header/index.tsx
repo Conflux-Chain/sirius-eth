@@ -534,7 +534,7 @@ export const Header = memo(() => {
     const isMatch = n.id === networkId;
     return {
       title: [
-        <NetWorkWrapper>
+        <NetWorkWrapper key="network">
           <img src={getNetworkIcon(n.id)} alt="" />
           {n.name}
         </NetWorkWrapper>,

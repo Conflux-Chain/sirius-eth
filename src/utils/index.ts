@@ -56,12 +56,12 @@ import {
 import {
   isZeroAddress,
   isContractCodeHashEmpty,
-  getAddressType,
+  getEvmAddressType,
   isEvmContractAddress,
-  isBase32Address,
-  isAddress,
-  formatAddress as formatAddressEvm,
+  isEvmAddress as isAddress,
+  formatAddress as _formatAddress,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { isBase32Address } from '@cfx-kit/dapp-utils/dist/address';
 export {
   getEllipsStr,
   formatNumber,
@@ -99,7 +99,7 @@ export {
 export {
   isZeroAddress,
   isContractCodeHashEmpty,
-  getAddressType,
+  getEvmAddressType,
   isEvmContractAddress,
   isBase32Address,
   isAddress,
@@ -112,8 +112,11 @@ window.CFX = CFX;
 
 dayjs.extend(relativeTime);
 
-export const formatAddress = (address: string, outputType = 'hex') => {
-  return formatAddressEvm(address, outputType);
+export const formatAddress = (
+  address: string,
+  outputType: 'hex' | 'base32' = 'hex',
+) => {
+  return _formatAddress(address, outputType);
 };
 
 // export const formatAddress = (
@@ -164,7 +167,7 @@ export const formatAddress = (address: string, outputType = 'hex') => {
 // Todo: Distinguish between core and evm
 export async function isAccountAddress(address: string): Promise<boolean> {
   try {
-    return (await getAddressType(address)) === 'account';
+    return (await getEvmAddressType(address)) === 'user';
   } catch (e) {
     throw e;
   }
