@@ -13,6 +13,7 @@ import { publishRequestError } from 'utils';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
+import { uniqueId } from 'lodash';
 
 const treeToFlat = tree => {
   let list: Array<any> = [];
@@ -82,6 +83,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
                   toContractInfo: contractInfo[l.to] || {},
                   fromTokenInfo: tokenInfo[l.from] || {},
                   toTokenInfo: tokenInfo[l.to] || {},
+                  id: uniqueId('InternalTxns-'),
                 };
               });
               setState({
@@ -189,6 +191,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
       dataSource={data}
       loading={loading}
       title={tableHeader}
+      rowKey="id"
     ></TablePanelNew>
   );
 };
