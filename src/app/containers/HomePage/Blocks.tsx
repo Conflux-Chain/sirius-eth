@@ -19,7 +19,7 @@ export const Blocks = ({ url }: Props) => {
     blockColunms.avgGasPrice,
     blockColunms.gasUsedPercentWithProgress,
     blockColunms.gasLimit,
-    blockColunms.burntFee,
+    blockColunms.burntFees,
     blockColunms.age(ageFormat, toggleAgeFormat),
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 

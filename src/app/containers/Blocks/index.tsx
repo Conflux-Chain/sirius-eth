@@ -21,7 +21,7 @@ export function Blocks() {
     blockColunms.avgGasPrice,
     blockColunms.gasUsedPercentWithProgress,
     blockColunms.gasLimit,
-    blockColunms.burntFee,
+    blockColunms.burntFees,
     blockColunms.age(ageFormat, toggleAgeFormat),
   ].map((item, i) => ({
     ...item,

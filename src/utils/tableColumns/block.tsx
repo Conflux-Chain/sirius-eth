@@ -7,9 +7,7 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import {
   formatNumber,
   getPercent,
-  fromDripToCfx,
   toThousands,
-  fromDripToGdrip,
   roundToFixedPrecision,
   getNetworkIcon,
 } from 'utils/';
@@ -20,6 +18,10 @@ import BigNumber from 'bignumber.js';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 import ENV_CONFIG from 'env';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
 
 const IconWrapper = styled.div`
   display: flex;
@@ -358,11 +360,11 @@ export const gasLimit = {
   },
 };
 
-export const burntFee = {
+export const burntFees = {
   title: (
     <StyleToolTip>
       <Translation>
-        {t => t(translations.general.table.block.burntFee)}
+        {t => t(translations.general.table.block.burntFees)}
       </Translation>
     </StyleToolTip>
   ),
