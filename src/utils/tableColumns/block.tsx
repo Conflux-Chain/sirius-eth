@@ -358,6 +358,27 @@ export const gasLimit = {
   },
 };
 
+export const burntFee = {
+  title: (
+    <StyleToolTip>
+      <Translation>
+        {t => t(translations.general.table.block.burntFee)}
+      </Translation>
+    </StyleToolTip>
+  ),
+  dataIndex: 'burntGasFee',
+  key: 'burntGasFee',
+  width: 1,
+  render: value =>
+    value ? (
+      <Text tag="span" hoverValue={`${fromDripToCfx(value, true)} CFX`}>
+        {`${fromDripToCfx(value)} CFX`}
+      </Text>
+    ) : (
+      '--'
+    ),
+};
+
 const StyledHashWrapper = styled.span`
   display: flex;
   align-items: center;
