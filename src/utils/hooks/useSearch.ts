@@ -7,7 +7,7 @@ import {
   isAddress,
   isZeroAddress,
 } from 'utils';
-import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { tranferToLowerCase } from '@cfxjs/sirius-next-common/dist/utils';
 import { CONTRACTS } from '../constants';
 import { trackEvent } from '../ga';
 import { ScanEvent } from '../gaConstants';
@@ -26,7 +26,7 @@ export const useSearch = (value?: string) => {
     if (typeof innerValue !== 'string' || innerValue.trim() === '') return;
 
     // cip-37
-    innerValue = convertCheckSum(innerValue.trim());
+    innerValue = tranferToLowerCase(innerValue.trim());
 
     // zero address support
     if (isZeroAddress(innerValue)) {
@@ -42,7 +42,7 @@ export const useSearch = (value?: string) => {
     }
 
     if (isAddress(innerValue)) {
-      history.push(`/address/${convertCheckSum(formatAddress(innerValue))}`);
+      history.push(`/address/${formatAddress(innerValue)}`);
       return;
     }
 

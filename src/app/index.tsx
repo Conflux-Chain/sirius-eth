@@ -103,7 +103,6 @@ import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 import ENV_CONFIG_LOCAL from 'env';
 import { useEnv } from '@cfxjs/sirius-next-common/dist/store/index';
-import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 // WebFontLoader.load({
 //   custom: {
@@ -404,16 +403,16 @@ export function App() {
                             path="/address/:address"
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
+
                               if (isAddress(address)) {
-                                if (/^0x[0-9a-f]{40}$/.test(address)) {
+                                if (/[A-Z]/.test(address)) {
                                   return (
                                     <Redirect
-                                      to={`/address/${convertCheckSum(
-                                        address,
-                                      )}`}
+                                      to={`/address/${address.toLowerCase()}`}
                                     />
                                   );
                                 }
+
                                 return (
                                   <AddressContractDetailPage {...routeProps} />
                                 );
@@ -434,11 +433,12 @@ export function App() {
                             render={(routeProps: any) => {
                               const address =
                                 routeProps.match.params.tokenAddress;
+
                               if (isAddress(address)) {
-                                if (/^0x[0-9a-f]{40}$/.test(address)) {
+                                if (/[A-Z]/.test(address)) {
                                   return (
                                     <Redirect
-                                      to={`/token/${convertCheckSum(address)}`}
+                                      to={`/token/${address.toLowerCase()}`}
                                     />
                                   );
                                 }
@@ -482,14 +482,16 @@ export function App() {
                               const path = routeProps.match.path.match(
                                 /(\/.*\/)/,
                               )[1];
+
                               if (isAddress(address)) {
-                                if (/^0x[0-9a-f]{40}$/.test(address)) {
+                                if (/[A-Z]/.test(address)) {
                                   return (
                                     <Redirect
-                                      to={`${path}${convertCheckSum(address)}`}
+                                      to={`${path}${address.toLowerCase()}`}
                                     />
                                   );
                                 }
+
                                 return <Contract {...routeProps} />;
                               } else {
                                 return <Redirect to={`/notfound/${address}`} />;
@@ -505,13 +507,11 @@ export function App() {
                               if (isAddress(address) || lodash.isNil(address)) {
                                 if (
                                   !lodash.isNil(address) &&
-                                  /^0x[0-9a-f]{40}$/.test(address)
+                                  /[A-Z]/.test(address)
                                 ) {
                                   return (
                                     <Redirect
-                                      to={`/nft-checker/${convertCheckSum(
-                                        address,
-                                      )}`}
+                                      to={`/nft-checker/${address.toLowerCase()}`}
                                     />
                                   );
                                 }
