@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { Translation, useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { useSearch } from 'utils/hooks/useSearch';
 import { AutoComplete, Input, SelectProps, Image } from '@cfxjs/antd';
 import { SearchIcon } from '@cfxjs/sirius-next-common/dist/components/SearchIcon';
@@ -260,10 +261,13 @@ export const Search = () => {
     if (option && option.type) {
       const address = value.replace(option.type + '-', '');
       setAutoCompleteValue('');
+
       // @ts-ignore
       window.location =
         window.location.origin +
-        `/${option.type === 'token' ? 'token' : 'address'}/${address}`;
+        `/${option.type === 'token' ? 'token' : 'address'}/${convertCheckSum(
+          address,
+        )}`;
     } else {
       setSearch(value);
       setAutoCompleteValue('');
