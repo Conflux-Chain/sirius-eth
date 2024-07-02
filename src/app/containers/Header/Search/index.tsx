@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { Translation, useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { useSearch } from 'utils/hooks/useSearch';
 import { AutoComplete, Input, SelectProps, Image } from '@cfxjs/antd';
 import { SearchIcon } from '@cfxjs/sirius-next-common/dist/components/SearchIcon';
@@ -146,7 +147,9 @@ const searchResult = (list: any[], notAvailable = '-', type = 'token') => {
                       )}
                     </div>
                     {token?.address ? (
-                      <div className="address">{token?.address}</div>
+                      <div className="address">
+                        {convertCheckSum(token?.address)}
+                      </div>
                     ) : null}
                     {/*{token?.website ? (*/}
                     {/*  <div className="website">{token?.website}</div>*/}

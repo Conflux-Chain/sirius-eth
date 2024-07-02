@@ -504,7 +504,7 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (isAddress(address) || lodash.isNil(address)) {
+                              if (lodash.isNil(address) || isAddress(address)) {
                                 if (
                                   !lodash.isNil(address) &&
                                   /[A-Z]/.test(address)
