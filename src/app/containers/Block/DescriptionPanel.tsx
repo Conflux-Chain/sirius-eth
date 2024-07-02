@@ -10,18 +10,24 @@ import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { IncreasePercent } from '@cfxjs/sirius-next-common/dist/components/IncreasePercent';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';
 import {
   getPercent,
-  /*fromDripToCfx,*/ formatTimeStamp,
+  formatTimeStamp,
   toThousands,
+  getEvmGasTargetUsage,
 } from 'utils';
 // import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 // import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import iconCross from 'images/icon-crossSpace.svg';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
 
 export function DescriptionPanel() {
   const { hash: blockHash } = useParams<{
@@ -61,6 +67,9 @@ export function DescriptionPanel() {
     pivotHash,
     transactionCount,
     crossSpaceTransactionCount,
+    baseFeePerGas,
+    baseFeePerGasRef,
+    burntGasFee,
   } = data || {};
 
   useEffect(() => {
@@ -242,6 +251,62 @@ export function DescriptionPanel() {
               gasLimit,
               2,
             )})`}
+          </SkeletonContainer>
+        </Description>
+        <Description
+          title={
+            <Tooltip title={t(translations.toolTip.block.gasTargetUsage)}>
+              {t(translations.block.gasTargetUsage)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            <Tooltip
+              title={
+                baseFeePerGasRef?.prePivot?.height &&
+                t(translations.toolTip.block.referencetoPivotBlock, {
+                  block: baseFeePerGasRef.prePivot.height,
+                })
+              }
+            >
+              <IncreasePercent value={getEvmGasTargetUsage(gasUsed)} />
+            </Tooltip>
+          </SkeletonContainer>
+        </Description>
+        <Description
+          title={
+            <Tooltip title={t(translations.toolTip.block.baseFeePerGas)}>
+              {t(translations.block.baseFeePerGas)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            {baseFeePerGas
+              ? `${fromDripToGdrip(baseFeePerGas, true)} Gdrip `
+              : '--'}
+            {baseFeePerGas && baseFeePerGasRef?.prePivot?.baseFeePerGas && (
+              <Tooltip
+                title={t(translations.toolTip.block.compareToPivotBlock, {
+                  block: baseFeePerGasRef.prePivot.height,
+                })}
+              >
+                <IncreasePercent
+                  base={baseFeePerGas}
+                  prev={baseFeePerGasRef.prePivot.baseFeePerGas}
+                />
+              </Tooltip>
+            )}
+          </SkeletonContainer>
+        </Description>
+        <Description
+          title={
+            <Tooltip title={t(translations.toolTip.block.burntFeesLabel)}>
+              {t(translations.block.burntFeesLabel)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            {burntGasFee ? `${fromDripToCfx(burntGasFee, true)} CFX` : '--'}
           </SkeletonContainer>
         </Description>
         <Description

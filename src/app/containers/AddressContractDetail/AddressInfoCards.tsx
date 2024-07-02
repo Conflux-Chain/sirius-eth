@@ -7,12 +7,12 @@ import { InfoImage } from './InfoImage';
 import { TokenBalanceSelect } from './TokenBalanceSelect';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
-import { fromDripToCfx } from 'utils';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import imgBalance from 'images/contract-address/balance.svg';
 import imgToken from 'images/contract-address/token.svg';
 import imgStorage from 'images/contract-address/storage.svg';
 import imgNonce from 'images/contract-address/nonce.svg';
+import { fromDripToCfx } from '@cfxjs/sirius-next-common/dist/utils';
 
 // todo, need to refactor the request, and rewrite skeleton style
 const skeletonStyle = { width: '7rem', height: '2.4rem' };
