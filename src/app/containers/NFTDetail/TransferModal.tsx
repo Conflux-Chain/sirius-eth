@@ -12,6 +12,7 @@ import { useGlobalData } from 'utils/hooks/useGlobal';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { formatAddress } from 'utils';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export const TransferModal = ({
   id = '',
@@ -217,7 +218,7 @@ export const TransferModal = ({
             name="basic"
             labelCol={{ span: 4 }}
             initialValues={{
-              fromAddress: account,
+              fromAddress: convertCheckSum(account),
               tokenId: id,
             }}
             autoComplete="off"

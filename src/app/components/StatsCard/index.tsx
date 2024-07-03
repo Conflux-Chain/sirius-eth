@@ -10,6 +10,7 @@ import {
   toThousands,
   checkIfContractByInfo,
 } from '../../../utils';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
@@ -616,11 +617,12 @@ export const StatsCard = ({
   const chartContent = (category, data: any = []) => {
     switch (category) {
       case 'network': {
+        console.log(data);
         const chartData = data
           .sort((a, b) => b.gas - a.gas >= 0)
           .map((d, i) => ({
             name: i + 1,
-            address: formatAddress(d.base32),
+            address: convertCheckSum(d.hex),
             value: +d.gas,
           }));
         return <NetworkPie data={chartData} />;
