@@ -31,6 +31,7 @@ import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
 import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
 import ENV_CONFIG from 'env';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 // @ts-ignore
 window.aaa = aaa;
@@ -44,7 +45,9 @@ export function Approval() {
   const history = useHistory();
   const location = useLocation();
   const { type: queryType, viewAll, text } = queryString.parse(location.search);
-  const [inputValue, setInputValue] = useState<string>(text as string);
+  const [inputValue, setInputValue] = useState<string>(
+    convertCheckSum(text as string),
+  );
   const [msg, setMsg] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [ageFormat, toggleAgeFormat] = useAge();
