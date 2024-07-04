@@ -10,7 +10,6 @@ import {
   toThousands,
   checkIfContractByInfo,
 } from '../../../utils';
-import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
@@ -286,8 +285,7 @@ export const StatsCard = ({
               let sourceList = res.list;
 
               tokenAddress = sourceList.reduce((acc, item) => {
-                if (item.base32address && !acc.includes(item.base32address))
-                  acc.push(item.base32address);
+                if (item.hex && !acc.includes(item.hex)) acc.push(item.hex);
                 return acc;
               }, []);
 
@@ -299,11 +297,11 @@ export const StatsCard = ({
                   .then(tokens => {
                     if (tokens && tokens.list) {
                       const listWithTokenInfo = sourceList.map(item => {
-                        if (tokenAddress.includes(item.base32address)) {
+                        if (tokenAddress.includes(item.hex)) {
                           const tokenInfo = tokens.list.find(
                             t =>
                               formatAddress(t.address) ===
-                              formatAddress(item.base32address),
+                              formatAddress(item.hex),
                           );
                           if (tokenInfo)
                             return { ...item, token: { ...tokenInfo } };
@@ -450,7 +448,7 @@ export const StatsCard = ({
         });
       case 'token':
         return data.map((d, i) => {
-          const isContract = checkIfContractByInfo(d.base32address, d);
+          const isContract = checkIfContractByInfo(d.hex, d);
 
           return (
             <tr key={i}>
@@ -460,11 +458,10 @@ export const StatsCard = ({
                   token.render(d.token)
                 ) : (
                   <EVMAddressContainer
-                    value={formatAddress(d.base32address)}
+                    value={formatAddress(d.hex)}
                     isMe={
                       accounts && accounts.length > 0
-                        ? formatAddress(accounts[0]) ===
-                          formatAddress(d.base32address)
+                        ? formatAddress(accounts[0]) === formatAddress(d.hex)
                         : false
                     }
                     isContract={isContract}
@@ -617,12 +614,11 @@ export const StatsCard = ({
   const chartContent = (category, data: any = []) => {
     switch (category) {
       case 'network': {
-        console.log(data);
         const chartData = data
           .sort((a, b) => b.gas - a.gas >= 0)
           .map((d, i) => ({
             name: i + 1,
-            address: convertCheckSum(d.hex),
+            address: formatAddress(d.base32),
             value: +d.gas,
           }));
         return <NetworkPie data={chartData} />;

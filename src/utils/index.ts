@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { NetworksType } from '@cfxjs/sirius-next-common/dist/store/types';
 import { ExtendedGlobalDataType } from 'utils/hooks/useGlobal';
+import { NETWORK_ID } from 'utils/constants';
 import {
   CFX,
   getCurrencySymbol,
@@ -61,7 +62,12 @@ import {
   isEvmAddress as isAddress,
   formatAddress as _formatAddress,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
-import { isBase32Address } from '@cfx-kit/dapp-utils/dist/address';
+import {
+  isBase32Address,
+  convertHexToBase32,
+  isHexAddress,
+} from '@cfx-kit/dapp-utils/dist/address';
+
 export {
   getEllipsStr,
   formatNumber,
@@ -117,6 +123,14 @@ export const formatAddress = (
   outputType: 'hex' | 'base32' = 'hex',
 ) => {
   return _formatAddress(address, outputType);
+};
+
+// Convert hex to base32 for the bridge interface.
+export const formatAddressHexToBase32 = (address: string) => {
+  if (isHexAddress(address)) {
+    return convertHexToBase32(address, NETWORK_ID.toString());
+  }
+  return address;
 };
 
 // export const formatAddress = (
