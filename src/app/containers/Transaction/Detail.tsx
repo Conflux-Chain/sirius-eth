@@ -1019,27 +1019,28 @@ export const Detail = () => {
                 '--'
               ) : (
                 <>
-                  {isPending
-                    ? '--'
-                    : t(translations.transaction.baseFee, {
-                        amount: `${fromDripToGdrip(
-                          baseFeePerGas,
-                          true,
-                        )} Gdrip `,
-                      })}
+                  {isPending ? (
+                    '--'
+                  ) : (
+                    <>
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.baseFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(baseFeePerGas, true)} Gdrip
+                    </>
+                  )}
                   {type !== 0 && type !== 1 && (
                     <>
                       {' | '}
-                      {t(translations.transaction.maxFee, {
-                        amount: `${fromDripToGdrip(maxFeePerGas, true)} Gdrip `,
-                      })}
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.maxFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(maxFeePerGas, true)} Gdrip
                       {' | '}
-                      {t(translations.transaction.maxPriorityFee, {
-                        amount: `${fromDripToGdrip(
-                          maxPriorityFeePerGas,
-                          true,
-                        )} Gdrip `,
-                      })}
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.maxPriorityFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(maxPriorityFeePerGas, true)} Gdrip
                     </>
                   )}
                 </>
@@ -1056,7 +1057,7 @@ export const Detail = () => {
             <SkeletonContainer shown={loading}>
               {isCorssSpaceCall || !burntGasFee
                 ? '--'
-                : `${fromDripToCfx(burntGasFee, true)} CFX`}
+                : `🔥 ${fromDripToCfx(burntGasFee, true)} CFX`}
             </SkeletonContainer>
           </Description>
 
@@ -1170,6 +1171,10 @@ export const Detail = () => {
     </StyledCardWrapper>
   );
 };
+
+const GasFeeLabelWrapper = styled.span`
+  color: #74798c;
+`;
 
 const AttributeWrapper = styled.div`
   display: flex;

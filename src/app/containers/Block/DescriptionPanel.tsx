@@ -28,6 +28,32 @@ import {
   fromDripToCfx,
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
+import { Progress } from '@cfxjs/antd';
+
+const GasTargetUsage: React.FC<{
+  gasUsed: string;
+  tooltip: React.ReactNode;
+}> = ({ gasUsed, tooltip }) => {
+  const { isNegative, percent, value } = getEvmGasTargetUsage(gasUsed);
+  return (
+    <GasTargetUsageWrapper>
+      <Progress
+        type="dashboard"
+        size="small"
+        gapDegree={180}
+        showInfo={false}
+        strokeWidth={8}
+        strokeColor={isNegative ? '#FA5D5D' : '#4AC2AB'}
+        trailColor="#eeeeee"
+        percent={Math.abs(value)}
+        width={40}
+      />
+      <Tooltip title={tooltip}>
+        <IncreasePercent value={percent} showPlus />
+      </Tooltip>
+    </GasTargetUsageWrapper>
+  );
+};
 
 export function DescriptionPanel() {
   const { hash: blockHash } = useParams<{
@@ -261,16 +287,23 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            <Tooltip
-              title={
-                baseFeePerGasRef?.prePivot?.height &&
-                t(translations.toolTip.block.referencetoPivotBlock, {
-                  block: baseFeePerGasRef.prePivot.height,
-                })
+            <GasTargetUsage
+              gasUsed={gasUsed}
+              tooltip={
+                baseFeePerGasRef?.prePivot?.height && (
+                  <div>
+                    {t(translations.toolTip.block.referencetoPivotBlock, {
+                      block: baseFeePerGasRef.prePivot.height,
+                    })}
+                    <CopyButton
+                      copyText={baseFeePerGasRef.prePivot.height}
+                      color="#ECECEC"
+                      className="copy-button-in-tooltip"
+                    />
+                  </div>
+                )
               }
-            >
-              <IncreasePercent value={getEvmGasTargetUsage(gasUsed)} />
-            </Tooltip>
+            />
           </SkeletonContainer>
         </Description>
         <Description
@@ -286,14 +319,28 @@ export function DescriptionPanel() {
               : '--'}
             {baseFeePerGas && baseFeePerGasRef?.prePivot?.baseFeePerGas && (
               <Tooltip
-                title={t(translations.toolTip.block.compareToPivotBlock, {
-                  block: baseFeePerGasRef.prePivot.height,
-                })}
+                title={
+                  baseFeePerGasRef?.prePivot?.height && (
+                    <div>
+                      {t(translations.toolTip.block.compareToPivotBlock, {
+                        block: baseFeePerGasRef.prePivot.height,
+                      })}
+                      <CopyButton
+                        copyText={baseFeePerGasRef.prePivot.height}
+                        color="#ECECEC"
+                        className="copy-button-in-tooltip"
+                      />
+                    </div>
+                  )
+                }
               >
-                <IncreasePercent
-                  base={baseFeePerGas}
-                  prev={baseFeePerGasRef.prePivot.baseFeePerGas}
-                />
+                <BaseFeeIncreaseWrapper>
+                  <IncreasePercent
+                    base={baseFeePerGas}
+                    prev={baseFeePerGasRef.prePivot.baseFeePerGas}
+                    showArrow
+                  />
+                </BaseFeeIncreaseWrapper>
               </Tooltip>
             )}
           </SkeletonContainer>
@@ -306,7 +353,7 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {burntGasFee ? `${fromDripToCfx(burntGasFee, true)} CFX` : '--'}
+            {burntGasFee ? `🔥 ${fromDripToCfx(burntGasFee, true)} CFX` : '--'}
           </SkeletonContainer>
         </Description>
         <Description
@@ -335,12 +382,28 @@ export function DescriptionPanel() {
   );
 }
 
+const BaseFeeIncreaseWrapper = styled.div`
+  display: inline-block;
+  padding: 4px 16px;
+  border: 1px solid #ebeced;
+  margin-left: 16px;
+`;
+
+const GasTargetUsageWrapper = styled.div`
+  display: inline-flex;
+  gap: 16px;
+  height: 22px;
+`;
+
 const StyledCardWrapper = styled.div`
   .card.sirius-blocks-card {
     padding: 0;
     .content {
       padding: 0 18px;
     }
+  }
+  .copy-button-in-tooltip {
+    margin-left: 8px;
   }
 `;
 
