@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { NetworksType } from '@cfxjs/sirius-next-common/dist/store/types';
 import { ExtendedGlobalDataType } from 'utils/hooks/useGlobal';
+import { NETWORK_ID } from 'utils/constants';
 import {
   CFX,
   getCurrencySymbol,
@@ -116,6 +117,56 @@ export const formatAddress = (
 ) => {
   return _formatAddress(address, outputType);
 };
+
+// Convert hex to base32 for the bridge interface.
+export const formatAddressHexToBase32 = (address: string) => {
+  return address;
+};
+
+// export const formatAddress = (
+//   address: string,
+//   outputType = 'hex', // base32 or hex
+// ): string => {
+//   // TODO, eth space, remove base32 address condition
+//   // return input address as default value if it can not convert to conflux chain base32/hex format
+//   // if necessary, check for errors at the call site
+//   const invalidAddressReturnValue = address;
+
+//   try {
+//     if (isAddress(address)) {
+//       if (outputType === 'hex') {
+//         if (isBase32Address(address)) {
+//           return SDK.format.hexAddress(address);
+//         } else {
+//           return address;
+//         }
+//       } else if (outputType === 'base32') {
+//         return SDK.format.address(address, NETWORK_ID);
+//       } else {
+//         return invalidAddressReturnValue;
+//       }
+//     } else if (isBase32Address(address)) {
+//       if (outputType === 'hex') {
+//         return SDK.format.hexAddress(address);
+//       } else if (outputType === 'base32') {
+//         const reg = /(.*):(.*):(.*)/;
+//         let lowercaseAddress = address;
+
+//         // compatibility with verbose address, will replace with simply address later
+//         if (typeof address === 'string' && reg.test(address)) {
+//           lowercaseAddress = address.replace(reg, '$1:$3').toLowerCase();
+//         }
+//         return lowercaseAddress;
+//       } else {
+//         return invalidAddressReturnValue;
+//       }
+//     } else {
+//       return invalidAddressReturnValue;
+//     }
+//   } catch (e) {
+//     return invalidAddressReturnValue;
+//   }
+// };
 
 // Todo: Distinguish between core and evm
 export async function isAccountAddress(address: string): Promise<boolean> {

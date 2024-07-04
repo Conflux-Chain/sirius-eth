@@ -2092,9 +2092,9 @@
     jsbi "^3.1.4"
 
 "@conflux-dev/conflux-address-js@^1.3.10":
-  version "1.3.13"
-  resolved "https://registry.yarnpkg.com/@conflux-dev/conflux-address-js/-/conflux-address-js-1.3.13.tgz#055909fe15e0eaa9ab890061a4845f323923a6ae"
-  integrity sha512-gFmo1goyt3wTauyRSfIooymaJSj+e7Lv4gRXpUQA+DZnJWsdPTuoPTKWLrQ6e661RTSFpcusmDrq6j6FWP9njw==
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/@conflux-dev/conflux-address-js/-/conflux-address-js-1.4.0.tgz#01bc5dd70fdd961fb0ae9ef274751576a26b2e16"
+  integrity sha512-EXa8SlCgybY0SWpskk39Ar00EiNPLvhnOlOvEXRvx06PlpqnGh9qpUuUXc4waWroCqJaTHWC7BRZRM1LFdYizw==
   dependencies:
     jsbi "^3.1.4"
 
@@ -8910,6 +8910,19 @@ etag@~1.8.1:
   resolved "https://registry.npmjs.org/etag/-/etag-1.8.1.tgz"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
+ethers@6.13.1:
+  version "6.13.1"
+  resolved "https://registry.npmjs.org/ethers/-/ethers-6.13.1.tgz#2b9f9c7455cde9d38b30fe6589972eb083652961"
+  integrity sha512-hdJ2HOxg/xx97Lm9HdCWk949BfYqYWpyw4//78SiwOLgASyfrNszfMUNB2joKjvGUdwhHfaiMMFFwacVVoLR9A==
+  dependencies:
+    "@adraffy/ens-normalize" "1.10.1"
+    "@noble/curves" "1.2.0"
+    "@noble/hashes" "1.3.2"
+    "@types/node" "18.15.13"
+    aes-js "4.0.0-beta.5"
+    tslib "2.4.0"
+    ws "8.17.1"
+
 ethers@^6.6.4:
   version "6.11.1"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-6.11.1.tgz#96aae00b627c2e35f9b0a4d65c7ab658259ee6af"
@@ -12276,7 +12289,7 @@ jiti@^1.21.0:
 
 js-conflux-sdk@2.0.6:
   version "2.0.6"
-  resolved "https://registry.yarnpkg.com/js-conflux-sdk/-/js-conflux-sdk-2.0.6.tgz#bfaff45a7bd8c2cf2f7916489b06a562d307d87d"
+  resolved "https://registry.npmjs.org/js-conflux-sdk/-/js-conflux-sdk-2.0.6.tgz#bfaff45a7bd8c2cf2f7916489b06a562d307d87d"
   integrity sha512-bCjJelUbr6BuVAF+SzbbXyShI+ckRUSYEsECw/0tcpIybVhpxocAQiN9WgWQYv8JmU4QzwJZ9fp0H2Ok+qk4Ng==
   dependencies:
     "@conflux-dev/conflux-address-js" "^1.3.10"
@@ -21346,6 +21359,11 @@ write@1.0.3:
   integrity sha512-/lg70HAjtkUgWPVZhZcm+T4hkL8Zbtp1nFNOn3lRrxnlv50SRBv7cR7RqR+GMsd3hUXy9hWBo4CHTbFTcOYwig==
   dependencies:
     mkdirp "^0.5.1"
+
+ws@8.17.1:
+  version "8.17.1"
+  resolved "https://registry.npmjs.org/ws/-/ws-8.17.1.tgz#9293da530bb548febc95371d90f9c878727d919b"
+  integrity sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==
 
 ws@8.5.0:
   version "8.5.0"
