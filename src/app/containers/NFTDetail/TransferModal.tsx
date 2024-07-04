@@ -56,7 +56,6 @@ export const TransferModal = ({
           setIsOwner(isOwner);
         } else {
           let isOwner = false;
-          console.log(await contract.balanceOf(account, id));
           const quantity = Number(await contract.balanceOf(account, id));
           setNFT1155Quantity(quantity);
 
