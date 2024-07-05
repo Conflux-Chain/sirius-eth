@@ -61,7 +61,9 @@ import {
   isEvmContractAddress,
   isEvmAddress as isAddress,
   formatAddress as _formatAddress,
+  formatAddressHexToBase32,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
+
 export {
   getEllipsStr,
   formatNumber,
@@ -94,6 +96,7 @@ export {
   convertObjBigNumbersToStrings,
   constprocessResultArray,
   formatLargeNumber,
+  formatAddressHexToBase32,
 };
 
 export {

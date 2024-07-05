@@ -189,7 +189,7 @@ export const Detail = () => {
       setTransferList(list);
 
       const eventlogsResponse = proRes[1];
-      console.log(eventlogsResponse.list);
+
       setEventlogs(eventlogsResponse.list);
 
       let addressList = list.map(v => v.address);
