@@ -10,18 +10,50 @@ import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { IncreasePercent } from '@cfxjs/sirius-next-common/dist/components/IncreasePercent';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';
 import {
   getPercent,
-  /*fromDripToCfx,*/ formatTimeStamp,
+  formatTimeStamp,
   toThousands,
+  getEvmGasTargetUsage,
 } from 'utils';
 // import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 // import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import iconCross from 'images/icon-crossSpace.svg';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
+import { Progress } from '@cfxjs/antd';
+
+const GasTargetUsage: React.FC<{
+  gasUsed: string;
+  tooltip: React.ReactNode;
+}> = ({ gasUsed, tooltip }) => {
+  const { isNegative, percent, value } = getEvmGasTargetUsage(gasUsed);
+  return (
+    <GasTargetUsageWrapper>
+      <Progress
+        type="dashboard"
+        size="small"
+        gapDegree={180}
+        showInfo={false}
+        strokeWidth={8}
+        strokeColor={isNegative ? '#FA5D5D' : '#4AC2AB'}
+        trailColor="#eeeeee"
+        percent={Math.abs(value)}
+        width={40}
+      />
+      <Tooltip title={tooltip}>
+        <IncreasePercent value={percent} showPlus />
+      </Tooltip>
+    </GasTargetUsageWrapper>
+  );
+};
 
 export function DescriptionPanel() {
   const { hash: blockHash } = useParams<{
@@ -61,6 +93,9 @@ export function DescriptionPanel() {
     pivotHash,
     transactionCount,
     crossSpaceTransactionCount,
+    baseFeePerGas,
+    baseFeePerGasRef,
+    burntGasFee,
   } = data || {};
 
   useEffect(() => {
@@ -246,6 +281,83 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
+            <Tooltip title={t(translations.toolTip.block.gasTargetUsage)}>
+              {t(translations.block.gasTargetUsage)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            <GasTargetUsage
+              gasUsed={gasUsed}
+              tooltip={
+                baseFeePerGasRef?.prePivot?.height && (
+                  <div>
+                    {t(translations.toolTip.block.referencetoPivotBlock, {
+                      block: baseFeePerGasRef.prePivot.height,
+                    })}
+                    <CopyButton
+                      copyText={baseFeePerGasRef.prePivot.height}
+                      color="#ECECEC"
+                      className="copy-button-in-tooltip"
+                    />
+                  </div>
+                )
+              }
+            />
+          </SkeletonContainer>
+        </Description>
+        <Description
+          title={
+            <Tooltip title={t(translations.toolTip.block.baseFeePerGas)}>
+              {t(translations.block.baseFeePerGas)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            {baseFeePerGas
+              ? `${fromDripToGdrip(baseFeePerGas, true)} Gdrip `
+              : '--'}
+            {baseFeePerGas && baseFeePerGasRef?.prePivot?.baseFeePerGas && (
+              <Tooltip
+                title={
+                  baseFeePerGasRef?.prePivot?.height && (
+                    <div>
+                      {t(translations.toolTip.block.compareToPivotBlock, {
+                        block: baseFeePerGasRef.prePivot.height,
+                      })}
+                      <CopyButton
+                        copyText={baseFeePerGasRef.prePivot.height}
+                        color="#ECECEC"
+                        className="copy-button-in-tooltip"
+                      />
+                    </div>
+                  )
+                }
+              >
+                <BaseFeeIncreaseWrapper>
+                  <IncreasePercent
+                    base={baseFeePerGas}
+                    prev={baseFeePerGasRef.prePivot.baseFeePerGas}
+                    showArrow
+                  />
+                </BaseFeeIncreaseWrapper>
+              </Tooltip>
+            )}
+          </SkeletonContainer>
+        </Description>
+        <Description
+          title={
+            <Tooltip title={t(translations.toolTip.block.burntFeesLabel)}>
+              {t(translations.block.burntFeesLabel)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            {burntGasFee ? `🔥 ${fromDripToCfx(burntGasFee, true)} CFX` : '--'}
+          </SkeletonContainer>
+        </Description>
+        <Description
+          title={
             <Tooltip title={t(translations.toolTip.block.timestamp)}>
               {t(translations.block.timestamp)}
             </Tooltip>
@@ -270,12 +382,28 @@ export function DescriptionPanel() {
   );
 }
 
+const BaseFeeIncreaseWrapper = styled.div`
+  display: inline-block;
+  padding: 4px 16px;
+  border: 1px solid #ebeced;
+  margin-left: 16px;
+`;
+
+const GasTargetUsageWrapper = styled.div`
+  display: inline-flex;
+  gap: 16px;
+  height: 22px;
+`;
+
 const StyledCardWrapper = styled.div`
   .card.sirius-blocks-card {
     padding: 0;
     .content {
       padding: 0 18px;
     }
+  }
+  .copy-button-in-tooltip {
+    margin-left: 8px;
   }
 `;
 

@@ -27,11 +27,9 @@ import {
 import {
   formatBalance,
   formatTimeStamp,
-  fromDripToCfx,
   getPercent,
   toThousands,
   isEvmContractAddress,
-  fromDripToGdrip,
   isZeroAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
@@ -61,6 +59,11 @@ import { useNametag } from 'utils/hooks/useNametag';
 
 import iconInfo from 'images/info.svg';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -109,9 +112,18 @@ export const Detail = () => {
     // storageCoveredBySponsor,
     // storageReleased,
     // storageCollateralized,
+    baseFeePerGas,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    burntGasFee,
+    type,
+    typeDesc,
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
   const nametags = useNametag([from, to]);
+
+  const isPending = _.isNil(status) || status === 4;
+  const isCorssSpaceCall = _.isNil(gasFee) || gasFee === '0';
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
     setLoading(true);
@@ -933,8 +945,8 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.gasFee)}>
-              {t(translations.transaction.gasFee)}
+            <Tooltip title={t(translations.toolTip.tx.transactionFee)}>
+              {t(translations.transaction.transactionFee)}
             </Tooltip>
           }
         >
@@ -995,84 +1007,103 @@ export const Detail = () => {
               )}
             </SkeletonContainer>
           </Description>
-          {/* <Description
+          <Description
             title={
-              <Tooltip
-                title={t(translations.toolTip.tx.storageCollateralized)}
-              >
-                {t(translations.transaction.storageCollateralized)}
+              <Tooltip title={t(translations.toolTip.tx.gasFee)}>
+                {t(translations.transaction.gasFee)}
               </Tooltip>
             }
           >
             <SkeletonContainer shown={loading}>
-              <StorageFee
-                fee={storageCollateralized}
-                sponsored={storageCoveredBySponsor}
-              />
+              {isCorssSpaceCall ? (
+                '--'
+              ) : (
+                <>
+                  {isPending ? (
+                    '--'
+                  ) : (
+                    <>
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.baseFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(baseFeePerGas, true)} Gdrip
+                    </>
+                  )}
+                  {type !== 0 && type !== 1 && (
+                    <>
+                      {' | '}
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.maxFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(maxFeePerGas, true)} Gdrip
+                      {' | '}
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.maxPriorityFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(maxPriorityFeePerGas, true)} Gdrip
+                    </>
+                  )}
+                </>
+              )}
             </SkeletonContainer>
           </Description>
           <Description
             title={
-              <Tooltip
-                title={t(translations.toolTip.tx.storageLimit)}
-              >
-                {t(translations.transaction.storageLimit)}
+              <Tooltip title={t(translations.toolTip.tx.burntFees)}>
+                {t(translations.transaction.burntFees)}
               </Tooltip>
             }
           >
             <SkeletonContainer shown={loading}>
-              {_.isNil(storageCollateralized)
+              {isCorssSpaceCall || !burntGasFee
                 ? '--'
-                : toThousands(storageCollateralized)}
-              /{toThousands(storageLimit)}
+                : `🔥 ${fromDripToCfx(burntGasFee, true)} CFX`}
             </SkeletonContainer>
           </Description>
+
           <Description
             title={
-              <Tooltip
-                title={t(translations.toolTip.tx.storageReleased)}
-              >
-                {t(translations.transaction.storageReleased)}
+              <Tooltip title={t(translations.toolTip.tx.transactionAttributes)}>
+                {t(translations.transaction.transactionAttributes)}
               </Tooltip>
             }
           >
             <SkeletonContainer shown={loading}>
-              {storageReleasedTotal} CFX
-            </SkeletonContainer>
-          </Description> */}
-          <Description
-            title={
-              <Tooltip title={t(translations.toolTip.tx.nonce)}>
-                {t(translations.transaction.nonce)}
-              </Tooltip>
-            }
-          >
-            <SkeletonContainer shown={loading}>
-              {toThousands(nonce)} <CopyButton copyText={nonce} />
+              <AttributeWrapper>
+                <Text
+                  className="attribute"
+                  hoverValue={t(translations.toolTip.tx.txnType[type])}
+                  tag="span"
+                >
+                  {t(translations.transaction.txnType, {
+                    type: isCorssSpaceCall || _.isNil(type) ? '--' : type,
+                    typeDesc:
+                      isCorssSpaceCall || _.isNil(typeDesc)
+                        ? ''
+                        : `(${typeDesc})`,
+                  })}
+                </Text>
+                <Text
+                  className="attribute"
+                  hoverValue={t(translations.toolTip.tx.nonce)}
+                  tag="span"
+                >
+                  {t(translations.transaction.nonce, {
+                    num: toThousands(nonce),
+                  })}
+                </Text>
+                <Text
+                  className="attribute"
+                  hoverValue={t(translations.toolTip.tx.position)}
+                  tag="span"
+                >
+                  {t(translations.transaction.position, {
+                    num: _.isNil(transactionIndex) ? '--' : transactionIndex,
+                  })}
+                </Text>
+              </AttributeWrapper>
             </SkeletonContainer>
           </Description>
-          <Description
-            title={
-              <Tooltip title={t(translations.toolTip.tx.position)}>
-                {t(translations.transaction.position)}
-              </Tooltip>
-            }
-          >
-            <SkeletonContainer shown={loading}>
-              {_.isNil(transactionIndex) ? '--' : !loading && transactionIndex}
-            </SkeletonContainer>
-          </Description>
-          {/* <Description
-            title={
-              <Tooltip
-                title={t(translations.toolTip.tx.chainID)}
-              >
-                {t(translations.transaction.chainID)}
-              </Tooltip>
-            }
-          >
-            <SkeletonContainer shown={loading}>{chainId}</SkeletonContainer>
-          </Description> */}
           {/* only send to user type will with empty data */}
           {!data || data === '0x' ? null : (
             <Description
@@ -1140,6 +1171,22 @@ export const Detail = () => {
     </StyledCardWrapper>
   );
 };
+
+const GasFeeLabelWrapper = styled.span`
+  color: #74798c;
+`;
+
+const AttributeWrapper = styled.div`
+  display: flex;
+  gap: 12px;
+  .attribute {
+    border: 1px solid #ebeced;
+    height: 30px;
+    padding: 4px 16px 4px 16px;
+    border-radius: 2px;
+  }
+`;
+
 const IconImg = styled.img`
   width: 1.2857rem;
   margin-left: 0.3571rem;
