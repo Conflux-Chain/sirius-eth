@@ -153,6 +153,10 @@ export const OPEN_API_URLS = Object.entries({
   activeAccounts: '/statistics/account/active/overall',
   contracts: '/statistics/contract',
   approvals: '/account/approvals',
+  baseFeePerBlock: '/statistics/block/base-fee',
+  averagePriorityFeePerBlock: '/statistics/block/avg-priority-fee',
+  gasUsedPerBlock: '/statistics/block/gas-used',
+  percentageOfTxTypeInBlock: '/statistics/block/txs-by-type',
 
   // NFT
   NFTTokens: '/nft/tokens',
