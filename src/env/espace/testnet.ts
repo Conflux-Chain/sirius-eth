@@ -6,11 +6,7 @@ export { default as ENV_LOCALES_EN } from '@cfxjs/sirius-next-i18n/evm/espace/en
 export { default as ENV_LOCALES_CN } from '@cfxjs/sirius-next-i18n/evm/espace/zh_cn/translation.json';
 export const ENV_NETWORK_ID = 71;
 export const ENV_NETWORK_TYPE = NETWORK_TYPES.EVM_TESTNET;
-export const ENV_API_HOST =
-  API_HOST_MAP.openAPIHost ||
-  (IS_STAGE
-    ? `https://evmapi-testnet-stage.confluxscan${DOMAIN}`
-    : `https://evmapi-testnet.confluxscan${DOMAIN}`);
+export const ENV_API_HOST = `https://evmapi-testnet-stage.confluxscan${DOMAIN}`; // open api
 export const ENV_CORE_API_HOST =
   API_HOST_MAP.secondaryOpenAPIHost ||
   (IS_STAGE
