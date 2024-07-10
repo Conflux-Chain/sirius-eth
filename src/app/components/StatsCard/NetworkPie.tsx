@@ -5,6 +5,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { formatNumber } from 'utils';
 import ENV_CONFIG from 'env';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export function NetworkPie({ data }) {
   const { t } = useTranslation();
@@ -27,9 +28,9 @@ export function NetworkPie({ data }) {
         if (data) {
           return `${t(translations.statistics.column.rank)}: <b>${
             data.name
-          }</b><br>${t(translations.statistics.column.address)}: <b>${
-            data.address
           }</b><br>${t(
+            translations.statistics.column.address,
+          )}: <b>${convertCheckSum(data.address)}</b><br>${t(
             translations.statistics.column.gasUsed,
           )}: <b>${formatNumber(data.value, {
             withUnit: false,
