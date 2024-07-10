@@ -19,6 +19,7 @@ export const ScanEvent = {
       contractVerification: 'contract_verification',
       contractsList: 'contracts_list',
       charts: 'charts',
+      cip1559Metrics: 'cip-1559-metrics',
       statistics: 'statistics',
       confluxNetwork: 'official_website',
       fluentWallet: 'portal',

@@ -18,6 +18,7 @@ import { CFXHolderAccounts } from './CFXHolderAccounts';
 import { AccountGrowth } from './AccountGrowth';
 import { ActiveAccounts } from './ActiveAccounts';
 import { Contracts } from './Contracts';
+import { CIP1559Metrics } from './Dashboard';
 
 export function NewChart() {
   const { t, i18n } = useTranslation();
@@ -99,12 +100,18 @@ export function NewChart() {
         <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
           <Contracts preview={true} />
         </Col>
+        <Divider orientation="left">
+          {t(translations.highcharts.preview.dashboard)}
+        </Divider>
+        <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <CIP1559Metrics />
+        </Col>
       </Row>
     </StyledChartPreviewWrapper>
   );
 }
 
-const StyledChartPreviewWrapper = styled.div`
+export const StyledChartPreviewWrapper = styled.div`
   .tip,
   .duration {
     font-size: 16px;
