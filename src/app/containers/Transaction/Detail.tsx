@@ -123,7 +123,7 @@ export const Detail = () => {
   const nametags = useNametag([from, to]);
 
   const isPending = _.isNil(status) || status === 4;
-  const isCorssSpaceCall = _.isNil(gasFee) || gasFee === '0';
+  const isCorssSpaceCall = gasFee === '0';
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
     setLoading(true);
