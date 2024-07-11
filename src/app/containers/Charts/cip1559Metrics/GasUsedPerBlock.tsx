@@ -55,6 +55,13 @@ export function GasUsedPerBlock({ preview = false }: ChildProps) {
         },
         tickLength: 0,
       },
+      navigator: {
+        xAxis: {
+          labels: {
+            enabled: false,
+          },
+        },
+      },
       tooltip: {
         shared: true,
         xDateFormat: '%Y-%m-%d %H:%M:%S',

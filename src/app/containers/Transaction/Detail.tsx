@@ -1009,7 +1009,15 @@ export const Detail = () => {
           </Description>
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.gasFee)}>
+              <Tooltip
+                title={
+                  <>
+                    {t(translations.toolTip.tx.baseFee)}
+                    <br />
+                    {t(translations.toolTip.tx.maxFee)}
+                  </>
+                }
+              >
                 {t(translations.transaction.gasFee)}
               </Tooltip>
             }
