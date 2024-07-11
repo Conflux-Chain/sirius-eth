@@ -2009,6 +2009,11 @@
   resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.1.5.tgz#279cc53364ea418e8a86c8f59c8dfa344185a7f5"
   integrity sha512-+zaW+Aa8IovIOAu2mFjE40VGZ+1wHZDhyuJE0FwP6PIgSXVcX1q70c/nlR9fju/c9SXpZs3mr9WdacOIzd0VMg==
 
+"@cfxjs/sirius-next-i18n@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.1.6.tgz#7d484433343c6c5154dc058b94d3b68c8419e6cd"
+  integrity sha512-PrYm8xj3s6MbO21eDypN0aSEW3Nn9mWLGaBMDNOhn3/XUQHNIhi43HZoKdmzW577lcsbA1GVANYo9XUxLIzYpQ==
+
 "@cfxjs/use-wallet-react@0.0.2-5":
   version "0.0.2-5"
   resolved "https://registry.yarnpkg.com/@cfxjs/use-wallet-react/-/use-wallet-react-0.0.2-5.tgz#d3bd5391e843daaacb4dfcb5671624caa2927332"
