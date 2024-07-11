@@ -22,8 +22,8 @@ export const address = {
   title: (
     <Translation>{t => t(translations.accounts.table.address)}</Translation>
   ),
-  dataIndex: 'base32address',
-  key: 'base32address',
+  dataIndex: 'hex',
+  key: 'hex',
   render: (value, row: any) => {
     const isContract = checkIfContractByInfo(value, row);
     return (

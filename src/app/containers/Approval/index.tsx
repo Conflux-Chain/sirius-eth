@@ -45,9 +45,7 @@ export function Approval() {
   const history = useHistory();
   const location = useLocation();
   const { type: queryType, viewAll, text } = queryString.parse(location.search);
-  const [inputValue, setInputValue] = useState<string>(
-    convertCheckSum(text as string),
-  );
+  const [inputValue, setInputValue] = useState<string>(text as string);
   const [msg, setMsg] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [ageFormat, toggleAgeFormat] = useAge();
@@ -482,7 +480,7 @@ export function Approval() {
       </StyledSubtitleWrapper>
       <SearchWrapper>
         <Search
-          value={inputValue}
+          value={convertCheckSum(inputValue)}
           onChange={handleChange}
           onSearch={handleSearch}
           placeholder={t(translations.approval.inputPlaceholder)}

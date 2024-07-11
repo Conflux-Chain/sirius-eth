@@ -120,7 +120,7 @@ export function Accounts() {
         <TablePanelNew
           url={url}
           columns={columns}
-          rowKey="base32address"
+          rowKey="hex"
           pagination={false}
           title={() => tableTitle}
         ></TablePanelNew>
