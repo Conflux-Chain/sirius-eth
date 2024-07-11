@@ -1027,16 +1027,12 @@ export const Detail = () => {
                 '--'
               ) : (
                 <>
-                  {isPending ? (
-                    '--'
-                  ) : (
-                    <>
-                      <GasFeeLabelWrapper>
-                        {t(translations.transaction.baseFee)}
-                      </GasFeeLabelWrapper>
-                      {fromDripToGdrip(baseFeePerGas, true)} Gdrip
-                    </>
-                  )}
+                  <GasFeeLabelWrapper>
+                    {t(translations.transaction.baseFee)}
+                  </GasFeeLabelWrapper>
+                  {isPending
+                    ? '--'
+                    : `${fromDripToGdrip(baseFeePerGas, true)} Gdrip`}
                   {type !== 0 && type !== 1 && (
                     <>
                       {' | '}
