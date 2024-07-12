@@ -21,15 +21,8 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
         const data1: any = [];
         const data2: any = [];
         const data3: any = [];
-        const timestamps = new Set();
 
         data?.list?.forEach(d => {
-          let t = dayjs.utc(d.timestamp * 1000).valueOf();
-          while (timestamps.has(t)) {
-            t += 1;
-          }
-          timestamps.add(t);
-
           const cip1559 = new BigNumber(d.txsInType.cip1559 || 0);
           const cip2930 = new BigNumber(d.txsInType.cip2930 || 0);
           const legacy = new BigNumber(d.txsInType.legacy || 0);
@@ -39,10 +32,25 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
           const cip1559Percentage = cip1559.div(total).times(100).toNumber();
           const cip2930Percentage = cip2930.div(total).times(100).toNumber();
           const legacyPercentage = legacy.div(total).times(100).toNumber();
+          const name = dayjs
+            .utc(d.timestamp * 1000)
+            .format('dddd MMM DD, HH:mm:ss');
 
-          data1.push([t, cip1559Percentage]);
-          data2.push([t, cip2930Percentage]);
-          data3.push([t, legacyPercentage]);
+          data1.push({
+            x: d.blockNumber,
+            y: cip1559Percentage,
+            name,
+          });
+          data2.push({
+            x: d.blockNumber,
+            y: cip2930Percentage,
+            name,
+          });
+          data3.push({
+            x: d.blockNumber,
+            y: legacyPercentage,
+            name,
+          });
         });
 
         return [data1, data2, data3];
@@ -66,7 +74,6 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
         text: t(translations.highcharts.subtitle),
       },
       xAxis: {
-        type: 'datetime',
         labels: {
           enabled: false,
         },
@@ -105,6 +112,7 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
           tooltip: {
             valueSuffix: ' %',
           },
+          turboThreshold: 2000,
         },
         {
           type: 'column',
@@ -113,6 +121,7 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
           tooltip: {
             valueSuffix: ' %',
           },
+          turboThreshold: 2000,
         },
         {
           type: 'column',
@@ -123,6 +132,7 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
             valueSuffix: ' %',
           },
           color: '#90ed7d',
+          turboThreshold: 2000,
         },
       ],
     },

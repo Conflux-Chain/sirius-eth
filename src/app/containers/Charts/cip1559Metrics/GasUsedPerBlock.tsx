@@ -18,16 +18,13 @@ export function GasUsedPerBlock({ preview = false }: ChildProps) {
       },
       formatter: data => {
         const data1: any = [];
-        const timestamps = new Set();
 
         data?.list?.map(d => {
-          let t = dayjs.utc(d.timestamp * 1000).valueOf();
-          while (timestamps.has(t)) {
-            t += 1;
-          }
-
-          timestamps.add(t);
-          data1.push([t, Number(d.gasUsed)]);
+          data1.push({
+            x: d.blockNumber,
+            y: Number(d.gasUsed),
+            name: dayjs.utc(d.timestamp * 1000).format('dddd MMM DD, HH:mm:ss'),
+          });
         });
 
         return [data1];
@@ -49,11 +46,9 @@ export function GasUsedPerBlock({ preview = false }: ChildProps) {
         text: t(translations.highcharts.subtitle),
       },
       xAxis: {
-        type: 'datetime',
         labels: {
           enabled: false,
         },
-        tickLength: 0,
       },
       navigator: {
         xAxis: {
@@ -75,6 +70,7 @@ export function GasUsedPerBlock({ preview = false }: ChildProps) {
           name: `<span>${t(
             translations.highcharts.burntFeesAnalysis['GasUsed'],
           )}</span>`,
+          turboThreshold: 2000,
         },
       ],
     },
