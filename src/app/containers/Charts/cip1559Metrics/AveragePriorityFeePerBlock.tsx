@@ -19,16 +19,13 @@ export function AveragePriorityFeePerBlock({ preview = false }: ChildProps) {
       },
       formatter: data => {
         const data1: any = [];
-        const timestamps = new Set();
 
         data?.list?.map(d => {
-          let t = dayjs.utc(d.timestamp * 1000).valueOf();
-          while (timestamps.has(t)) {
-            t += 1;
-          }
-
-          timestamps.add(t);
-          data1.push([t, new BigNumber(d.avgPriorityFee).div(1e9).toNumber()]);
+          data1.push({
+            x: d.blockNumber,
+            y: new BigNumber(d.avgPriorityFee).div(1e9).toNumber(),
+            name: dayjs.utc(d.timestamp * 1000).format('dddd MMM DD, HH:mm:ss'),
+          });
         });
         return [data1];
       },
@@ -51,7 +48,6 @@ export function AveragePriorityFeePerBlock({ preview = false }: ChildProps) {
         text: t(translations.highcharts.subtitle),
       },
       xAxis: {
-        type: 'datetime',
         labels: {
           enabled: false,
         },
@@ -80,6 +76,7 @@ export function AveragePriorityFeePerBlock({ preview = false }: ChildProps) {
             valueDecimals: 2,
             valueSuffix: ' Gdrip',
           },
+          turboThreshold: 2000,
         },
       ],
     },
