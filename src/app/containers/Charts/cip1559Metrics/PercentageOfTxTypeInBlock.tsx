@@ -29,9 +29,15 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
 
           const total = cip1559.plus(cip2930).plus(legacy);
 
-          const cip1559Percentage = cip1559.div(total).times(100).toNumber();
-          const cip2930Percentage = cip2930.div(total).times(100).toNumber();
-          const legacyPercentage = legacy.div(total).times(100).toNumber();
+          const cip1559Percentage = total.isZero()
+            ? 0
+            : cip1559.div(total).times(100).toNumber();
+          const cip2930Percentage = total.isZero()
+            ? 0
+            : cip2930.div(total).times(100).toNumber();
+          const legacyPercentage = total.isZero()
+            ? 0
+            : legacy.div(total).times(100).toNumber();
           const name = dayjs
             .utc(d.timestamp * 1000)
             .format('dddd MMM DD, HH:mm:ss');
