@@ -32,7 +32,7 @@ import { Progress } from '@cfxjs/antd';
 
 const GasTargetUsage: React.FC<{
   gasUsed: string;
-  tooltip: React.ReactNode;
+  tooltip?: React.ReactNode;
 }> = ({ gasUsed, tooltip }) => {
   const { isNegative, percent, value } = getEvmGasTargetUsage(gasUsed);
   return (
@@ -48,13 +48,25 @@ const GasTargetUsage: React.FC<{
         percent={Math.abs(value)}
         width={40}
       />
-      <Tooltip title={tooltip}>
+      {tooltip ? (
+        <Tooltip title={tooltip}>
+          <IncreasePercent value={percent} showPlus />
+        </Tooltip>
+      ) : (
         <IncreasePercent value={percent} showPlus />
-      </Tooltip>
+      )}
     </GasTargetUsageWrapper>
   );
 };
 
+/**
+ * ISSUE LIST:
+ * - security: todo, extract a Security component
+ * - others:
+ *  - CopyButton: 目前是 block 的，后续 react-ui/Tooltip 更新后会解决
+ *  - Skeleton: 显示文字 - 后续 react-ui/Skeleton 更新后会解决
+ *  - title tooltip: 需要给定文案后确定哪些需要添加
+ */
 export function DescriptionPanel() {
   const { hash: blockHash } = useParams<{
     hash: string;
@@ -103,14 +115,7 @@ export function DescriptionPanel() {
       intervalToClear.current = false;
     };
   }, [intervalToClear]);
-  /**
-   * ISSUE LIST:
-   * - security: todo, extract a Security component
-   * - others:
-   *  - CopyButton: 目前是 block 的，后续 react-ui/Tooltip 更新后会解决
-   *  - Skeleton: 显示文字 - 后续 react-ui/Skeleton 更新后会解决
-   *  - title tooltip: 需要给定文案后确定哪些需要添加
-   */
+  const isPivot = hash && pivotHash === hash;
 
   return (
     <StyledCardWrapper>
@@ -290,6 +295,7 @@ export function DescriptionPanel() {
             <GasTargetUsage
               gasUsed={gasUsed}
               tooltip={
+                !isPivot &&
                 baseFeePerGasRef?.height && (
                   <div>
                     {t(translations.toolTip.block.referencetoPivotBlock, {
@@ -320,13 +326,13 @@ export function DescriptionPanel() {
             {baseFeePerGas && baseFeePerGasRef?.prePivot?.baseFeePerGas && (
               <Tooltip
                 title={
-                  baseFeePerGasRef?.height && (
+                  baseFeePerGasRef?.prePivot?.height && (
                     <div>
                       {t(translations.toolTip.block.compareToPivotBlock, {
-                        block: baseFeePerGasRef.height,
+                        block: baseFeePerGasRef?.prePivot.height,
                       })}
                       <CopyButton
-                        copyText={baseFeePerGasRef.height}
+                        copyText={baseFeePerGasRef?.prePivot.height}
                         color="#ECECEC"
                         className="copy-button-in-tooltip"
                       />
