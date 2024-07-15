@@ -290,13 +290,13 @@ export function DescriptionPanel() {
             <GasTargetUsage
               gasUsed={gasUsed}
               tooltip={
-                baseFeePerGasRef?.prePivot?.height && (
+                baseFeePerGasRef?.height && (
                   <div>
                     {t(translations.toolTip.block.referencetoPivotBlock, {
-                      block: baseFeePerGasRef.prePivot.height,
+                      block: baseFeePerGasRef.height,
                     })}
                     <CopyButton
-                      copyText={baseFeePerGasRef.prePivot.height}
+                      copyText={baseFeePerGasRef.height}
                       color="#ECECEC"
                       className="copy-button-in-tooltip"
                     />
@@ -320,13 +320,13 @@ export function DescriptionPanel() {
             {baseFeePerGas && baseFeePerGasRef?.prePivot?.baseFeePerGas && (
               <Tooltip
                 title={
-                  baseFeePerGasRef?.prePivot?.height && (
+                  baseFeePerGasRef?.height && (
                     <div>
                       {t(translations.toolTip.block.compareToPivotBlock, {
-                        block: baseFeePerGasRef.prePivot.height,
+                        block: baseFeePerGasRef.height,
                       })}
                       <CopyButton
-                        copyText={baseFeePerGasRef.prePivot.height}
+                        copyText={baseFeePerGasRef.height}
                         color="#ECECEC"
                         className="copy-button-in-tooltip"
                       />
