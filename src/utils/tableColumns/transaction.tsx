@@ -288,7 +288,7 @@ export const gasPrice = {
 export const gasFee = {
   title: (
     <Translation>
-      {t => t(translations.general.table.transaction.gasFee)}
+      {t => t(translations.general.table.transaction.transactionFee)}
     </Translation>
   ),
   dataIndex: 'gasFee',
