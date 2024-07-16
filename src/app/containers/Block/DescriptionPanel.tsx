@@ -115,7 +115,6 @@ export function DescriptionPanel() {
       intervalToClear.current = false;
     };
   }, [intervalToClear]);
-  const isPivot = hash && pivotHash === hash;
 
   return (
     <StyledCardWrapper>
@@ -295,8 +294,8 @@ export function DescriptionPanel() {
             <GasTargetUsage
               gasUsed={gasUsed}
               tooltip={
-                !isPivot &&
-                baseFeePerGasRef?.height && (
+                baseFeePerGasRef?.height &&
+                baseFeePerGasRef.height !== height && (
                   <div>
                     {t(translations.toolTip.block.referencetoPivotBlock, {
                       block: baseFeePerGasRef.height,
