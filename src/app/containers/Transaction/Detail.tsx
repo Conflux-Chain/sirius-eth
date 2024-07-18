@@ -123,7 +123,7 @@ export const Detail = () => {
   const nametags = useNametag([from, to]);
 
   const isPending = _.isNil(status) || status === 4;
-  const isCorssSpaceCall = gasFee === '0';
+  const isCrossSpaceCall = gasFee === '0';
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
     setLoading(true);
@@ -1023,7 +1023,7 @@ export const Detail = () => {
             }
           >
             <SkeletonContainer shown={loading}>
-              {isCorssSpaceCall ? (
+              {isCrossSpaceCall ? (
                 '--'
               ) : (
                 <>
@@ -1059,7 +1059,7 @@ export const Detail = () => {
             }
           >
             <SkeletonContainer shown={loading}>
-              {isCorssSpaceCall || !burntGasFee
+              {isCrossSpaceCall || !burntGasFee
                 ? '--'
                 : `🔥 ${fromDripToCfx(burntGasFee, true)} CFX`}
             </SkeletonContainer>
@@ -1077,12 +1077,13 @@ export const Detail = () => {
                 <Text
                   className="attribute"
                   hoverValue={t(translations.toolTip.tx.txnType[type])}
+                  hideTooltip={isCrossSpaceCall || _.isNil(type)}
                   tag="span"
                 >
                   {t(translations.transaction.txnType, {
-                    type: isCorssSpaceCall || _.isNil(type) ? '--' : type,
+                    type: isCrossSpaceCall || _.isNil(type) ? '--' : type,
                     typeDesc:
-                      isCorssSpaceCall || _.isNil(typeDesc)
+                      isCrossSpaceCall || _.isNil(typeDesc)
                         ? ''
                         : `(${typeDesc})`,
                   })}
