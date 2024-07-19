@@ -371,14 +371,18 @@ export const burntFees = {
   dataIndex: 'burntGasFee',
   key: 'burntGasFee',
   width: 1,
-  render: value =>
-    value ? (
+  render: (value, row) => {
+    if (row.coreBlock === 1) {
+      return <NotApplicable />;
+    }
+    return value ? (
       <Text tag="span" hoverValue={`${fromDripToCfx(value, true)} CFX`}>
         {`${fromDripToCfx(value)} CFX`}
       </Text>
     ) : (
       '--'
-    ),
+    );
+  },
 };
 
 const StyledHashWrapper = styled.span`
