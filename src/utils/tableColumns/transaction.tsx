@@ -125,7 +125,7 @@ export const TxnHashRenderComponent = ({
           <SpanWrap>{hash}</SpanWrap>
         </Text>
       </Link>
-      {row && row.gasFee === '0' && (
+      {row && row.gasPrice === '0' && (
         <Tooltip
           title={
             <Translation>
@@ -292,8 +292,8 @@ export const gasFee = {
   dataIndex: 'gasFee',
   key: 'gasFee',
   width: 1,
-  render: value =>
-    value && value !== '0' ? (
+  render: (value, row) =>
+    value && row.gasPrice !== '0' ? (
       <Text tag="span" hoverValue={`${toThousands(value)} drip`}>
         {`${fromDripToCfx(value, false, {
           precision: 6,

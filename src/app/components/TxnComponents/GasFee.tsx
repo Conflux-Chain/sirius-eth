@@ -7,7 +7,11 @@ import _ from 'lodash';
 import imgSponsoredEn from 'images/sponsored.png';
 import imgSponsoredZh from 'images/sponsored-zh.png';
 
-export const GasFee = ({ fee, sponsored }) => {
+export const GasFee: React.FC<{
+  fee: string;
+  sponsored: boolean;
+  isCrossSpaceCall?: boolean;
+}> = ({ fee, sponsored, isCrossSpaceCall }) => {
   const { i18n } = useTranslation();
   const imgSponsored = i18n.language.startsWith('en')
     ? imgSponsoredEn
@@ -16,7 +20,7 @@ export const GasFee = ({ fee, sponsored }) => {
   return (
     <StyledFeeWrapper>
       {`${
-        _.isNil(fee) || fee === '0'
+        _.isNil(fee) || isCrossSpaceCall
           ? '--'
           : fromDripToCfx(fee, false, {
               precision: 18,

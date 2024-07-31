@@ -25,6 +25,7 @@ export const Overview = ({ data }) => {
     to,
     // confirmedEpochCount,
     gasFee,
+    gasPrice,
     gasCoveredBySponsor,
     // storageCollateralized,
     // storageCoveredBySponsor,
@@ -109,12 +110,13 @@ export const Overview = ({ data }) => {
     event: eventlogs,
     customInfo: customInfoList,
   });
+  const isCrossSpaceCall = gasPrice === '0';
 
   return (
     <StyledWrapper>
       <div className="overview-title">
         {t(translations.transaction.overview)}
-        {gasFee === '0' && (
+        {isCrossSpaceCall && (
           <div className="overview-cross">
             <img src={iconCross} alt="?" />
             {t(translations.general.table.tooltip.crossSpaceCall)}
