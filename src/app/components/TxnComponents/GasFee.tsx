@@ -10,7 +10,7 @@ import imgSponsoredZh from 'images/sponsored-zh.png';
 export const GasFee: React.FC<{
   fee: string;
   sponsored: boolean;
-  isCrossSpaceCall?: boolean;
+  isCrossSpaceCall: boolean;
 }> = ({ fee, sponsored, isCrossSpaceCall }) => {
   const { i18n } = useTranslation();
   const imgSponsored = i18n.language.startsWith('en')

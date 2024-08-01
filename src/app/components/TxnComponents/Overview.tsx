@@ -153,7 +153,11 @@ export const Overview = ({ data }) => {
         size="tiny"
         title={t(translations.transaction.gasFee)}
       >
-        <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
+        <GasFee
+          fee={gasFee}
+          sponsored={gasCoveredBySponsor}
+          isCrossSpaceCall={isCrossSpaceCall}
+        />
       </Description>
       <Description
         vertical

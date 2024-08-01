@@ -947,7 +947,11 @@ export const Detail = () => {
           }
         >
           <SkeletonContainer shown={loading}>
-            <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
+            <GasFee
+              fee={gasFee}
+              sponsored={gasCoveredBySponsor}
+              isCrossSpaceCall={isCrossSpaceCall}
+            />
           </SkeletonContainer>
         </Description>
         <div
