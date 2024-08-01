@@ -10,7 +10,7 @@ import { fromDripToCfx } from '@cfxjs/sirius-next-common/dist/utils';
 export const GasFee: React.FC<{
   fee: string;
   sponsored: boolean;
-  isCrossSpaceCall?: boolean;
+  isCrossSpaceCall: boolean;
 }> = ({ fee, sponsored, isCrossSpaceCall }) => {
   const { i18n } = useTranslation();
   const imgSponsored = i18n.language.startsWith('en')
