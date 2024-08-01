@@ -64,6 +64,7 @@ import {
   fromDripToCfx,
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
+import BigNumber from 'bignumber.js';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -103,6 +104,7 @@ export const Detail = () => {
     syncTimestamp,
     gasFee,
     gasUsed,
+    gasCharged,
     status,
     data,
     contractCreated,
@@ -123,7 +125,10 @@ export const Detail = () => {
   const nametags = useNametag([from, to]);
 
   const isPending = _.isNil(status) || status === 4;
-  const isCrossSpaceCall = gasFee === '0';
+  const isCrossSpaceCall = gasPrice === '0';
+  const isValidGasCharged = new BigNumber(gasCharged)
+    .multipliedBy(gasPrice)
+    .isEqualTo(gasFee);
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
     setLoading(true);
@@ -951,7 +956,11 @@ export const Detail = () => {
           }
         >
           <SkeletonContainer shown={loading}>
-            <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
+            <GasFee
+              fee={gasFee}
+              sponsored={gasCoveredBySponsor}
+              isCrossSpaceCall={isCrossSpaceCall}
+            />
           </SkeletonContainer>
         </Description>
         <div
@@ -1000,7 +1009,7 @@ export const Detail = () => {
                   {`${toThousands(gas)} | ${toThousands(gasUsed)} (${getPercent(
                     gasUsed,
                     gas,
-                  )}) | ${toThousands(Math.max(+gasUsed, (+gas * 3) / 4))}`}
+                  )}) | ${isValidGasCharged ? toThousands(gasCharged) : '--'}`}
                 </>
               ) : (
                 <>--</>

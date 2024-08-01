@@ -29,7 +29,7 @@ export function Transaction() {
     });
   }, [hash]);
 
-  const { from, to, eventLogCount, gasFee } = txnDetail;
+  const { from, to, eventLogCount, gasPrice } = txnDetail;
 
   let tabs: any[] = [
     {
@@ -57,6 +57,7 @@ export function Transaction() {
       hidden: !eventLogCount,
     },
   ];
+  const isCrossSpaceCall = gasPrice === '0';
 
   return (
     <StyledPageWrapper>
@@ -70,7 +71,7 @@ export function Transaction() {
       <PageHeader>
         <StyledHeader>
           {t(translations.transaction.title)}
-          {gasFee === '0' && (
+          {isCrossSpaceCall && (
             <div className="overview-cross">
               <img src={iconCross} alt="?" />
               <div>{t(translations.general.table.tooltip.crossSpaceCall)}</div>
