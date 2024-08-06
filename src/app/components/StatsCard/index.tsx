@@ -632,7 +632,7 @@ export const StatsCard = ({
   if (action === 'cfxSend') {
     total = (
       <span>
-        {t(translations.statistics.valueInTotal)}：
+        {t(translations.statistics.topSend)}：
         {fromDripToCfx(totalTopCfxSent.toString(), false, {
           withUnit: false,
           keepDecimal: false,
@@ -643,7 +643,7 @@ export const StatsCard = ({
   } else if (action === 'cfxReceived') {
     total = (
       <span>
-        {t(translations.statistics.valueInTotal)}：
+        {t(translations.statistics.topReceived)}：
         {fromDripToCfx(totalTopCfxReceived.toString(), false, {
           withUnit: false,
           keepDecimal: false,
