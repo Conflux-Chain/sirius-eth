@@ -7,10 +7,8 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Status } from 'app/components/TxnComponents';
 import {
-  fromDripToCfx,
   toThousands,
   checkIfContractByInfo,
-  fromDripToGdrip,
   getNametagInfo,
   formatNumber,
   roundToFixedPrecision,
@@ -30,6 +28,10 @@ import iconViewTxn from 'images/view-txn.png';
 import iconViewTxnActive from 'images/view-txn-active.svg';
 import lodash from 'lodash';
 import iconCross from 'images/icon-crossSpace.svg';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
 
 const StyledHashWrapper = styled.span`
   padding-left: 16px;

@@ -6,7 +6,6 @@ import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/Ske
 import { reqTokenList, reqTopStatistics } from '../../../utils/httpRequest';
 import {
   formatNumber,
-  fromDripToCfx,
   toThousands,
   checkIfContractByInfo,
 } from '../../../utils';
@@ -22,6 +21,7 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
 import lodash from 'lodash';
 import { NetworkPie } from './NetworkPie';
+import { fromDripToCfx } from '@cfxjs/sirius-next-common/dist/utils';
 
 export enum StatsType {
   overviewTransactions = 'overviewTransactions',
