@@ -9,13 +9,14 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { useHistory, useParams } from 'react-router-dom';
-import { Card, Spinner } from '@cfxjs/react-ui';
-import { Description } from 'app/components/Description/Loadable';
-import { CopyButton } from 'app/components/CopyButton/Loadable';
-import { Link } from 'app/components/Link';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
-import { CountDown } from 'app/components/CountDown/Loadable';
+import { Spinner } from '@cfxjs/react-ui';
+import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
+import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { CountDown } from '@cfxjs/sirius-next-common/dist/components/CountDown';
 import {
   reqContract,
   reqTokenList,
@@ -26,17 +27,15 @@ import {
 import {
   formatBalance,
   formatTimeStamp,
-  fromDripToCfx,
   getPercent,
   toThousands,
-  isContractAddress,
-  fromDripToGdrip,
+  isEvmContractAddress,
   isZeroAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
-import { AddressContainer } from 'app/components/AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import clsx from 'clsx';
 // import BigNumber from 'bignumber.js';
 import { Security } from 'app/components/Security/Loadable';
@@ -47,7 +46,8 @@ import {
   // StorageFee,
   TokenTypeTag,
 } from 'app/components/TxnComponents';
-import { TransactionAction } from 'app/components/TransactionAction';
+// import { TransactionAction } from 'app/components/TransactionAction';
+import { TransactionAction } from '@cfxjs/sirius-next-common/dist/components/TransactionAction/evmTransactionAction';
 import _ from 'lodash';
 
 import imgChevronDown from 'images/chevronDown.png';
@@ -59,6 +59,12 @@ import { useNametag } from 'utils/hooks/useNametag';
 
 import iconInfo from 'images/info.svg';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
+import BigNumber from 'bignumber.js';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -66,7 +72,7 @@ import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 // Transaction Detail Page
 export const Detail = () => {
   const [visible, setVisible] = useState(false);
-  const [globalData = {}] = useGlobalData();
+  const [globalData] = useGlobalData();
   const { t, i18n } = useTranslation();
   const [isContract, setIsContract] = useState(false);
   const [transactionDetail, setTransactionDetail] = useState<any>({});
@@ -98,6 +104,7 @@ export const Detail = () => {
     syncTimestamp,
     gasFee,
     gasUsed,
+    gasCharged,
     status,
     data,
     contractCreated,
@@ -107,9 +114,22 @@ export const Detail = () => {
     // storageCoveredBySponsor,
     // storageReleased,
     // storageCollateralized,
+    baseFeePerGas,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    burntGasFee,
+    type,
+    typeDesc,
+    txExecErrorMsg,
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
   const nametags = useNametag([from, to]);
+
+  const isPending = _.isNil(status) || status === 4;
+  const isCrossSpaceCall = gasPrice === '0';
+  const notEnoughCash = txExecErrorMsg && /^NotEnoughCash/.test(txExecErrorMsg);
+  const isValidGasCharged =
+    !notEnoughCash || new BigNumber(gasCharged).isEqualTo(gas);
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
     setLoading(true);
@@ -118,7 +138,7 @@ export const Detail = () => {
       const proArr: Promise<any>[] = [];
       if (
         toCheckAddress !== null &&
-        (await isContractAddress(toCheckAddress))
+        (await isEvmContractAddress(toCheckAddress))
       ) {
         setIsContract(true);
 
@@ -164,7 +184,7 @@ export const Detail = () => {
 
       if (
         toCheckAddress !== null &&
-        (await isContractAddress(toCheckAddress))
+        (await isEvmContractAddress(toCheckAddress))
       ) {
         const contractResponse = proRes.shift();
         setContractInfo(contractResponse);
@@ -175,7 +195,7 @@ export const Detail = () => {
       setTransferList(list);
 
       const eventlogsResponse = proRes[1];
-      console.log(eventlogsResponse.list);
+
       setEventlogs(eventlogsResponse.list);
 
       let addressList = list.map(v => v.address);
@@ -266,7 +286,7 @@ export const Detail = () => {
       const addr = formatAddress(address);
       return (
         <span>
-          <AddressContainer value={addr} isFull={isFull} />{' '}
+          <EVMAddressContainer value={addr} isFull={isFull} />{' '}
           {nametags[addr]?.nameTag ? `(${nametags[addr]?.nameTag})` : null}{' '}
           <CopyButton copyText={addr} />
         </span>
@@ -281,7 +301,7 @@ export const Detail = () => {
         return (
           <Description
             title={
-              <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
+              <Tooltip title={t(translations.toolTip.tx.to)}>
                 {t(translations.transaction.to)}
               </Tooltip>
             }
@@ -316,7 +336,7 @@ export const Detail = () => {
         return (
           <Description
             title={
-              <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
+              <Tooltip title={t(translations.toolTip.tx.to)}>
                 {t(translations.transaction.to)}
               </Tooltip>
             }
@@ -331,7 +351,7 @@ export const Detail = () => {
       return (
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
+            <Tooltip title={t(translations.toolTip.tx.to)}>
               {t(translations.transaction.to)}
             </Tooltip>
           }
@@ -340,7 +360,7 @@ export const Detail = () => {
             <span className="label">
               {t(translations.transaction.contract)}
             </span>
-            <AddressContainer
+            <EVMAddressContainer
               value={transactionDetail['contractCreated']}
               isFull={true}
               isContract={true}
@@ -356,7 +376,7 @@ export const Detail = () => {
       return (
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.tx.to)} placement="top">
+            <Tooltip title={t(translations.toolTip.tx.to)}>
               {t(translations.transaction.to)}
             </Tooltip>
           }
@@ -514,7 +534,7 @@ export const Detail = () => {
             >
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)}</span>
-              {/*<AddressContainer value={transferItem['from']} />*/}
+              {/*<EVMAddressContainer value={transferItem['from']} />*/}
               <InlineWrapper>
                 {renderAddress(
                   transferItem['from'],
@@ -524,7 +544,7 @@ export const Detail = () => {
                 )}
               </InlineWrapper>
               <span className="to">{t(translations.transaction.to)}</span>
-              {/*<AddressContainer value={transferItem['to']} />*/}
+              {/*<EVMAddressContainer value={transferItem['to']} />*/}
               <InlineWrapper>
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>
@@ -565,7 +585,7 @@ export const Detail = () => {
             >
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)}</span>
-              {/*<AddressContainer value={transferItem['from']} />*/}
+              {/*<EVMAddressContainer value={transferItem['from']} />*/}
               <InlineWrapper>
                 {renderAddress(
                   transferItem['from'],
@@ -575,7 +595,7 @@ export const Detail = () => {
                 )}
               </InlineWrapper>
               <span className="to">{t(translations.transaction.to)}</span>
-              {/*<AddressContainer value={transferItem['to']} />*/}
+              {/*<EVMAddressContainer value={transferItem['to']} />*/}
               <InlineWrapper>
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>
@@ -625,7 +645,7 @@ export const Detail = () => {
             >
               <span className="index">{index++}. </span>
               <span className="from">{t(translations.transaction.from)}</span>
-              {/*<AddressContainer value={transferItem['from']} />*/}
+              {/*<EVMAddressContainer value={transferItem['from']} />*/}
               <InlineWrapper>
                 {renderAddress(
                   transferItem['from'],
@@ -635,7 +655,7 @@ export const Detail = () => {
                 )}
               </InlineWrapper>
               <span className="to">{t(translations.transaction.to)}</span>
-              {/*<AddressContainer value={transferItem['to']} />*/}
+              {/*<EVMAddressContainer value={transferItem['to']} />*/}
               <InlineWrapper>
                 {renderAddress(transferItem['to'], transferItem, 'to', false)}
               </InlineWrapper>
@@ -668,10 +688,7 @@ export const Detail = () => {
       <Description
         title={
           <>
-            <Tooltip
-              text={t(translations.toolTip.tx.tokenTransferred)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.tx.tokenTransferred)}>
               {`${t(translations.transaction.tokenTransferred)} ${
                 transferListContainer.length > 1
                   ? `(${transferListContainer.length})`
@@ -680,17 +697,9 @@ export const Detail = () => {
             </Tooltip>
             {transferListContainer.length > 1 ? (
               <Tooltip
-                className="download-csv-tooltip"
-                text={t(translations.transaction.tipOfTokenTransferCount)}
-                placement="top"
+                title={t(translations.transaction.tipOfTokenTransferCount)}
               >
-                <IconWrapper>
-                  <img
-                    src={iconInfo}
-                    alt="warning-icon"
-                    className="download-svg-img"
-                  ></img>
-                </IconWrapper>
+                <IconImg src={iconInfo} alt="warning-icon" />
               </Tooltip>
             ) : null}
           </>
@@ -721,7 +730,7 @@ export const Detail = () => {
   //   : 0;
 
   const txNoteMap = globalData[LOCALSTORAGE_KEYS_MAP.txPrivateNote];
-  const txNote = txNoteMap[routeHash];
+  const txNote = txNoteMap?.[routeHash];
 
   const txNoteProps = {
     stage: txNote ? 'edit' : 'create',
@@ -752,10 +761,7 @@ export const Detail = () => {
       <Card className="sirius-Transactions-card">
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.tx.transactionHash)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.tx.transactionHash)}>
               {t(translations.transaction.hash)}
             </Tooltip>
           }
@@ -767,8 +773,7 @@ export const Detail = () => {
         {/* <Description
           title={
             <Tooltip
-              text={t(translations.toolTip.tx.executedEpoch)}
-              placement="top"
+              title={t(translations.toolTip.tx.executedEpoch)}
             >
               {t(translations.transaction.executedEpoch)}
             </Tooltip>
@@ -790,8 +795,7 @@ export const Detail = () => {
         {/* <Description
           title={
             <Tooltip
-              text={t(translations.toolTip.tx.proposedEpoch)}
-              placement="top"
+              title={t(translations.toolTip.tx.proposedEpoch)}
             >
               {t(translations.transaction.proposedEpoch)}
             </Tooltip>
@@ -806,10 +810,7 @@ export const Detail = () => {
         </Description> */}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.blockHeight)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.blockHeight)}>
               {t(translations.general.table.block.height)}
             </Tooltip>
           }
@@ -821,10 +822,7 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.tx.blockHash)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.tx.blockHash)}>
               {t(translations.transaction.blockHash)}
             </Tooltip>
           }
@@ -842,10 +840,7 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.tx.timestamp)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.tx.timestamp)}>
               {t(translations.transaction.timestamp)}
             </Tooltip>
           }
@@ -864,10 +859,7 @@ export const Detail = () => {
         {status === 0 && transactionActionElement.show && (
           <Description
             title={
-              <Tooltip
-                text={t(translations.transaction.action.tooltip)}
-                placement="top"
-              >
+              <Tooltip title={t(translations.transaction.action.tooltip)}>
                 {t(translations.transaction.action.title)}
               </Tooltip>
             }
@@ -881,7 +873,7 @@ export const Detail = () => {
         )}
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.tx.status)} placement="top">
+            <Tooltip title={t(translations.toolTip.tx.status)}>
               {t(translations.transaction.status)}
             </Tooltip>
           }
@@ -899,7 +891,7 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.tx.security)} placement="top">
+            <Tooltip title={t(translations.toolTip.tx.security)}>
               {t(translations.block.security)}
             </Tooltip>
           }
@@ -929,7 +921,7 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.tx.from)} placement="top">
+            <Tooltip title={t(translations.toolTip.tx.from)}>
               {t(translations.transaction.from)}
             </Tooltip>
           }
@@ -948,7 +940,7 @@ export const Detail = () => {
 
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.tx.value)} placement="top">
+            <Tooltip title={t(translations.toolTip.tx.value)}>
               {t(translations.transaction.value)}
             </Tooltip>
           }
@@ -959,13 +951,17 @@ export const Detail = () => {
         </Description>
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.tx.gasFee)} placement="top">
-              {t(translations.transaction.gasFee)}
+            <Tooltip title={t(translations.toolTip.tx.transactionFee)}>
+              {t(translations.transaction.transactionFee)}
             </Tooltip>
           }
         >
           <SkeletonContainer shown={loading}>
-            <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
+            <GasFee
+              fee={gasFee}
+              sponsored={gasCoveredBySponsor}
+              isCrossSpaceCall={isCrossSpaceCall}
+            />
           </SkeletonContainer>
         </Description>
         <div
@@ -975,10 +971,7 @@ export const Detail = () => {
         >
           <Description
             title={
-              <Tooltip
-                text={t(translations.toolTip.tx.gasPrice)}
-                placement="top"
-              >
+              <Tooltip title={t(translations.toolTip.tx.gasPrice)}>
                 {t(translations.transaction.gasPrice)}
               </Tooltip>
             }
@@ -995,7 +988,7 @@ export const Detail = () => {
           <Description
             title={
               <Tooltip
-                text={
+                title={
                   <StyleToolTipText>
                     {t(translations.toolTip.tx.gasLimitTip)}
                     <br />
@@ -1006,7 +999,6 @@ export const Detail = () => {
                     {t(translations.toolTip.tx.gasChargedip)}
                   </StyleToolTipText>
                 }
-                placement="top"
               >
                 {t(translations.transaction.gasUsed)}
               </Tooltip>
@@ -1018,106 +1010,120 @@ export const Detail = () => {
                   {`${toThousands(gas)} | ${toThousands(gasUsed)} (${getPercent(
                     gasUsed,
                     gas,
-                  )}) | ${toThousands(Math.max(+gasUsed, (+gas * 3) / 4))}`}
+                  )}) | ${isValidGasCharged ? toThousands(gasCharged) : '--'}`}
                 </>
               ) : (
                 <>--</>
               )}
             </SkeletonContainer>
           </Description>
-          {/* <Description
+          <Description
             title={
               <Tooltip
-                text={t(translations.toolTip.tx.storageCollateralized)}
-                placement="top"
+                title={
+                  <>
+                    {t(translations.toolTip.tx.baseFee)}
+                    <br />
+                    {t(translations.toolTip.tx.maxFee)}
+                  </>
+                }
               >
-                {t(translations.transaction.storageCollateralized)}
+                {t(translations.transaction.gasFee)}
               </Tooltip>
             }
           >
             <SkeletonContainer shown={loading}>
-              <StorageFee
-                fee={storageCollateralized}
-                sponsored={storageCoveredBySponsor}
-              />
+              {isCrossSpaceCall ? (
+                '--'
+              ) : (
+                <>
+                  <GasFeeLabelWrapper>
+                    {t(translations.transaction.baseFee)}
+                  </GasFeeLabelWrapper>
+                  {isPending
+                    ? '--'
+                    : `${fromDripToGdrip(baseFeePerGas, true)} Gdrip`}
+                  {type !== 0 && type !== 1 && (
+                    <>
+                      {' | '}
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.maxFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(maxFeePerGas, true)} Gdrip
+                      {' | '}
+                      <GasFeeLabelWrapper>
+                        {t(translations.transaction.maxPriorityFee)}
+                      </GasFeeLabelWrapper>
+                      {fromDripToGdrip(maxPriorityFeePerGas, true)} Gdrip
+                    </>
+                  )}
+                </>
+              )}
             </SkeletonContainer>
           </Description>
           <Description
             title={
-              <Tooltip
-                text={t(translations.toolTip.tx.storageLimit)}
-                placement="top"
-              >
-                {t(translations.transaction.storageLimit)}
+              <Tooltip title={t(translations.toolTip.tx.burntFees)}>
+                {t(translations.transaction.burntFees)}
               </Tooltip>
             }
           >
             <SkeletonContainer shown={loading}>
-              {_.isNil(storageCollateralized)
+              {isCrossSpaceCall || !burntGasFee
                 ? '--'
-                : toThousands(storageCollateralized)}
-              /{toThousands(storageLimit)}
+                : `🔥 ${fromDripToCfx(burntGasFee, true)} CFX`}
             </SkeletonContainer>
           </Description>
+
           <Description
             title={
-              <Tooltip
-                text={t(translations.toolTip.tx.storageReleased)}
-                placement="top"
-              >
-                {t(translations.transaction.storageReleased)}
+              <Tooltip title={t(translations.toolTip.tx.transactionAttributes)}>
+                {t(translations.transaction.transactionAttributes)}
               </Tooltip>
             }
           >
             <SkeletonContainer shown={loading}>
-              {storageReleasedTotal} CFX
-            </SkeletonContainer>
-          </Description> */}
-          <Description
-            title={
-              <Tooltip text={t(translations.toolTip.tx.nonce)} placement="top">
-                {t(translations.transaction.nonce)}
-              </Tooltip>
-            }
-          >
-            <SkeletonContainer shown={loading}>
-              {toThousands(nonce)} <CopyButton copyText={nonce} />
+              <AttributeWrapper>
+                <Text
+                  className="attribute"
+                  hoverValue={t(translations.toolTip.tx.txnType[type])}
+                  hideTooltip={isCrossSpaceCall || _.isNil(type)}
+                  tag="span"
+                >
+                  {t(translations.transaction.txnType, {
+                    type: isCrossSpaceCall || _.isNil(type) ? '--' : type,
+                    typeDesc:
+                      isCrossSpaceCall || _.isNil(typeDesc)
+                        ? ''
+                        : `(${typeDesc})`,
+                  })}
+                </Text>
+                <Text
+                  className="attribute"
+                  hoverValue={t(translations.toolTip.tx.nonce)}
+                  tag="span"
+                >
+                  {t(translations.transaction.nonce, {
+                    num: toThousands(nonce),
+                  })}
+                </Text>
+                <Text
+                  className="attribute"
+                  hoverValue={t(translations.toolTip.tx.position)}
+                  tag="span"
+                >
+                  {t(translations.transaction.position, {
+                    num: _.isNil(transactionIndex) ? '--' : transactionIndex,
+                  })}
+                </Text>
+              </AttributeWrapper>
             </SkeletonContainer>
           </Description>
-          <Description
-            title={
-              <Tooltip
-                text={t(translations.toolTip.tx.position)}
-                placement="top"
-              >
-                {t(translations.transaction.position)}
-              </Tooltip>
-            }
-          >
-            <SkeletonContainer shown={loading}>
-              {_.isNil(transactionIndex) ? '--' : !loading && transactionIndex}
-            </SkeletonContainer>
-          </Description>
-          {/* <Description
-            title={
-              <Tooltip
-                text={t(translations.toolTip.tx.chainID)}
-                placement="top"
-              >
-                {t(translations.transaction.chainID)}
-              </Tooltip>
-            }
-          >
-            <SkeletonContainer shown={loading}>{chainId}</SkeletonContainer>
-          </Description> */}
           {/* only send to user type will with empty data */}
           {!data || data === '0x' ? null : (
             <Description
               title={
-                <Tooltip
-                  text={t(translations.transaction.inputTips)}
-                  placement="top"
-                >
+                <Tooltip title={t(translations.transaction.inputTips)}>
                   {t(translations.transaction.inputData)}
                 </Tooltip>
               }
@@ -1153,7 +1159,7 @@ export const Detail = () => {
         <Description
           noBorder
           title={
-            <Tooltip text={t(translations.profile.tip.note)} placement="top">
+            <Tooltip title={t(translations.profile.tip.note)}>
               {t(translations.transaction.note)}
             </Tooltip>
           }
@@ -1180,6 +1186,28 @@ export const Detail = () => {
     </StyledCardWrapper>
   );
 };
+
+const GasFeeLabelWrapper = styled.span`
+  color: #74798c;
+`;
+
+const AttributeWrapper = styled.div`
+  display: flex;
+  gap: 12px;
+  .attribute {
+    border: 1px solid #ebeced;
+    height: 30px;
+    padding: 4px 16px 4px 16px;
+    border-radius: 2px;
+  }
+`;
+
+const IconImg = styled.img`
+  width: 1.2857rem;
+  margin-left: 0.3571rem;
+  padding-right: 0.2857rem;
+  margin-top: -0.2765rem;
+`;
 
 const StyledCardWrapper = styled.div`
   .inputLine {
@@ -1325,18 +1353,7 @@ const InlineWrapper = styled.div`
   margin-right: 3px;
 `;
 
-const IconWrapper = styled.div`
-  padding-right: 0.2857rem;
-  width: 1.2857rem;
-  cursor: pointer;
-
-  .download-svg-img {
-    margin-left: 0.3571rem;
-  }
-`;
-
 const StyleToolTipText = styled.div`
-  width: 316px;
   font-size: 12px;
   font-weight: 500;
   font-family: PingFang SC;

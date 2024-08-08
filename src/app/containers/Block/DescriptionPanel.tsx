@@ -2,27 +2,71 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { Card } from '@cfxjs/react-ui';
+import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { useBlockQuery } from 'utils/api';
-import { Text } from 'app/components/Text/Loadable';
-import { Description } from 'app/components/Description/Loadable';
-import { CopyButton } from 'app/components/CopyButton/Loadable';
-import { Link } from 'app/components/Link/Loadable';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
-import { Tooltip } from 'app/components/Tooltip/Loadable';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
+import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { IncreasePercent } from '@cfxjs/sirius-next-common/dist/components/IncreasePercent';
 import { Security } from 'app/components/Security/Loadable';
 import { useHistory } from 'react-router-dom';
 import {
   getPercent,
-  /*fromDripToCfx,*/ formatTimeStamp,
+  formatTimeStamp,
   toThousands,
+  getEvmGasTargetUsage,
 } from 'utils';
-// import { AddressContainer } from 'app/components/AddressContainer';
+// import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 // import { formatAddress } from 'utils';
 import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import iconCross from 'images/icon-crossSpace.svg';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
+import { Progress } from '@cfxjs/antd';
 
+const GasTargetUsage: React.FC<{
+  gasUsed: string;
+  tooltip?: React.ReactNode;
+}> = ({ gasUsed, tooltip }) => {
+  const { isNegative, percent, value } = getEvmGasTargetUsage(gasUsed);
+  return (
+    <GasTargetUsageWrapper>
+      <Progress
+        type="dashboard"
+        size="small"
+        gapDegree={180}
+        showInfo={false}
+        strokeWidth={8}
+        strokeColor={isNegative ? '#FA5D5D' : '#4AC2AB'}
+        trailColor="#eeeeee"
+        percent={Math.abs(value)}
+        width={40}
+      />
+      {tooltip ? (
+        <Tooltip title={tooltip}>
+          <IncreasePercent value={percent} showPlus />
+        </Tooltip>
+      ) : (
+        <IncreasePercent value={percent} showPlus />
+      )}
+    </GasTargetUsageWrapper>
+  );
+};
+
+/**
+ * ISSUE LIST:
+ * - security: todo, extract a Security component
+ * - others:
+ *  - CopyButton: 目前是 block 的，后续 react-ui/Tooltip 更新后会解决
+ *  - Skeleton: 显示文字 - 后续 react-ui/Skeleton 更新后会解决
+ *  - title tooltip: 需要给定文案后确定哪些需要添加
+ */
 export function DescriptionPanel() {
   const { hash: blockHash } = useParams<{
     hash: string;
@@ -61,6 +105,10 @@ export function DescriptionPanel() {
     pivotHash,
     transactionCount,
     crossSpaceTransactionCount,
+    baseFeePerGas,
+    baseFeePerGasRef,
+    burntGasFee,
+    coreBlock,
   } = data || {};
 
   useEffect(() => {
@@ -68,24 +116,15 @@ export function DescriptionPanel() {
       intervalToClear.current = false;
     };
   }, [intervalToClear]);
-  /**
-   * ISSUE LIST:
-   * - security: todo, extract a Security component
-   * - others:
-   *  - CopyButton: 目前是 block 的，后续 react-ui/Tooltip 更新后会解决
-   *  - Skeleton: 显示文字 - 后续 react-ui/Skeleton 更新后会解决
-   *  - title tooltip: 需要给定文案后确定哪些需要添加
-   */
+
+  const onlyCore = coreBlock === 1;
 
   return (
     <StyledCardWrapper>
       <Card className="sirius-blocks-card">
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.blockHeight)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.blockHeight)}>
               {t(translations.block.blockHeight)}
             </Tooltip>
           }
@@ -110,10 +149,7 @@ export function DescriptionPanel() {
         </Description> */}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.difficulty)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.difficulty)}>
               {t(translations.block.difficulty)}
             </Tooltip>
           }
@@ -154,10 +190,7 @@ export function DescriptionPanel() {
         </Description> */}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.security)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.security)}>
               {t(translations.block.security)}
             </Tooltip>
           }
@@ -177,10 +210,7 @@ export function DescriptionPanel() {
         </Description> */}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.blockHash)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.blockHash)}>
               {t(translations.block.blockHash)}
             </Tooltip>
           }
@@ -191,10 +221,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.parentHash)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.parentHash)}>
               {t(translations.block.parentHash)}
             </Tooltip>
           }
@@ -210,7 +237,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.block.nonce)} placement="top">
+            <Tooltip title={t(translations.toolTip.block.nonce)}>
               {t(translations.block.nonce)}
             </Tooltip>
           }
@@ -221,10 +248,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.transactions)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.transactions)}>
               {t(translations.block.transactions)}
             </Tooltip>
           }
@@ -233,7 +257,7 @@ export function DescriptionPanel() {
             <StyledCross>
               {transactionCount - crossSpaceTransactionCount}
               <Text
-                span
+                tag="span"
                 hoverValue={t(
                   translations.general.table.tooltip.crossSpaceCall,
                 )}
@@ -249,10 +273,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.gasUsedLimit)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.gasUsedLimit)}>
               {t(translations.block.gasUsed)}
             </Tooltip>
           }
@@ -265,12 +286,93 @@ export function DescriptionPanel() {
             )})`}
           </SkeletonContainer>
         </Description>
+        {!onlyCore && (
+          <>
+            <Description
+              title={
+                <Tooltip title={t(translations.toolTip.block.gasTargetUsage)}>
+                  {t(translations.block.gasTargetUsage)}
+                </Tooltip>
+              }
+            >
+              <SkeletonContainer shown={loading}>
+                <GasTargetUsage
+                  gasUsed={baseFeePerGasRef?.gasUsed ?? '0'}
+                  tooltip={
+                    baseFeePerGasRef?.height &&
+                    baseFeePerGasRef.height !== height && (
+                      <div>
+                        {t(translations.toolTip.block.referencetoPivotBlock, {
+                          block: baseFeePerGasRef.height,
+                        })}
+                        <CopyButton
+                          copyText={baseFeePerGasRef.height}
+                          color="#ECECEC"
+                          className="copy-button-in-tooltip"
+                        />
+                      </div>
+                    )
+                  }
+                />
+              </SkeletonContainer>
+            </Description>
+            <Description
+              title={
+                <Tooltip title={t(translations.toolTip.block.baseFeePerGas)}>
+                  {t(translations.block.baseFeePerGas)}
+                </Tooltip>
+              }
+            >
+              <SkeletonContainer shown={loading}>
+                {baseFeePerGas
+                  ? `${fromDripToGdrip(baseFeePerGas, true)} Gdrip `
+                  : '--'}
+                {baseFeePerGas && baseFeePerGasRef?.prePivot?.baseFeePerGas && (
+                  <Tooltip
+                    title={
+                      baseFeePerGasRef?.prePivot?.height && (
+                        <div>
+                          {t(translations.toolTip.block.compareToPivotBlock, {
+                            block: baseFeePerGasRef?.prePivot.height,
+                          })}
+                          <CopyButton
+                            copyText={baseFeePerGasRef?.prePivot.height}
+                            color="#ECECEC"
+                            className="copy-button-in-tooltip"
+                          />
+                        </div>
+                      )
+                    }
+                  >
+                    <BaseFeeIncreaseWrapper>
+                      <IncreasePercent
+                        base={baseFeePerGas}
+                        prev={baseFeePerGasRef.prePivot.baseFeePerGas}
+                        showArrow
+                      />
+                    </BaseFeeIncreaseWrapper>
+                  </Tooltip>
+                )}
+              </SkeletonContainer>
+            </Description>
+            <Description
+              title={
+                <Tooltip title={t(translations.toolTip.block.burntFeesLabel)}>
+                  {t(translations.block.burntFeesLabel)}
+                </Tooltip>
+              }
+            >
+              <SkeletonContainer shown={loading}>
+                {burntGasFee
+                  ? `🔥 ${fromDripToCfx(burntGasFee, true)} CFX`
+                  : '--'}
+              </SkeletonContainer>
+            </Description>
+          </>
+        )}
         <Description
           title={
-            <Tooltip
-              text={t(translations.toolTip.block.timestamp)}
-              placement="top"
-            >
+            <Tooltip title={t(translations.toolTip.block.timestamp)}>
               {t(translations.block.timestamp)}
             </Tooltip>
           }
@@ -281,7 +383,7 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip text={t(translations.toolTip.block.size)} placement="top">
+            <Tooltip title={t(translations.toolTip.block.size)}>
               {t(translations.block.size)}
             </Tooltip>
           }
@@ -294,11 +396,28 @@ export function DescriptionPanel() {
   );
 }
 
+const BaseFeeIncreaseWrapper = styled.div`
+  display: inline-block;
+  padding: 4px 16px;
+  border: 1px solid #ebeced;
+  margin-left: 16px;
+`;
+
+const GasTargetUsageWrapper = styled.div`
+  display: inline-flex;
+  gap: 16px;
+  height: 22px;
+`;
+
 const StyledCardWrapper = styled.div`
   .card.sirius-blocks-card {
+    padding: 0;
     .content {
       padding: 0 18px;
     }
+  }
+  .copy-button-in-tooltip {
+    margin-left: 8px;
   }
 `;
 

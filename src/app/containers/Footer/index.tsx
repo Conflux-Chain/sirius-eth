@@ -7,10 +7,10 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Link } from 'app/components/Link/Loadable';
-import { media } from 'styles/media';
-import { Footer as FooterComp } from 'app/components/Footer/Loadable';
-import { TextLogo } from 'app/components/TextLogo/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { Footer as FooterComp } from '@cfxjs/sirius-next-common/dist/components/Footer';
+import { TextLogo } from '@cfxjs/sirius-next-common/dist/components/TextLogo';
 import { translations } from 'locales/i18n';
 import { Language } from './Language';
 // import { Currency } from './Currency';
@@ -468,8 +468,10 @@ export function Footer() {
   ];
   const rightBottom = [
     <div key="copryRight&ICP">
-      <CopyRight>{t(translations.footer.copryRight)}</CopyRight>
-      {ICP}
+      <CopyRight>
+        {t(translations.footer.copryRight)}
+        <span key="ICP">{ICP}</span>
+      </CopyRight>
     </div>,
     <AddNetwork key="addNetwork" onClick={handleAddChain}>
       <img src={IconAdd} alt="add network" />
@@ -508,7 +510,7 @@ const FooterContentWrapper = styled.div`
 const FooterContentTitle = styled.span`
   margin-bottom: 1.07rem;
   font-weight: 600;
-  color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+  color: var(--theme-color-foot-highlight);
   margin-right: 6rem;
   /* margin-right: 8.5714rem;
   width: 5.7143rem;
@@ -538,6 +540,9 @@ const FooterContent = styled.div`
 `;
 
 const FooterContentRow = styled.div`
+  .link {
+    display: inline-flex;
+  }
   display: flex;
   flex-direction: column;
 `;
@@ -545,13 +550,16 @@ const FooterContentRow = styled.div`
 const FooterContentLink = styled.span`
   margin-bottom: 0.5rem;
 
+  .link {
+    display: inline-flex;
+  }
   .link.footer-link {
     color: var(--theme-color-gray0);
     font-size: 0.86rem;
     margin-right: 5.1429rem;
 
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+      color: var(--theme-color-foot-highlight);
     }
 
     ${media.m} {
@@ -576,7 +584,7 @@ const FooterContentIconLink = styled.span`
     color: var(--theme-color-gray2);
 
     &:hover {
-      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
+      color: var(--theme-color-foot-highlight);
     }
   }
 

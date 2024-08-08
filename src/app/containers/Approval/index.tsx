@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { media } from 'styles/media';
-import { PageHeader } from 'app/components/PageHeader';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Input, Button, Switch } from '@cfxjs/antd';
 import { useHistory, useLocation } from 'react-router-dom';
 import { formatBalance, isAddress } from 'utils';
@@ -12,9 +12,10 @@ import { NotFound } from './NotFound';
 import { reqApprovals } from 'utils/httpRequest';
 import { transactionColunms, tokenColunms } from 'utils/tableColumns';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
-import { useAge } from 'utils/hooks/useAge';
-import { InfoIconWithTooltip } from 'app/components/InfoIconWithTooltip/Loadable';
-import { Select } from 'app/components/Select';
+import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
+import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import queryString from 'query-string';
 import { usePortal } from 'utils/hooks/usePortal';
 import { abi as ERC20ABI } from 'utils/contract/ERC20.json';
@@ -24,12 +25,13 @@ import { NETWORK_ID } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import BigNumber from 'bignumber.js';
 import { NFTPreview } from 'app/components/NFTPreview/Loadable';
-import { Link } from 'app/components/Link/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
 import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
 import ENV_CONFIG from 'env';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 // @ts-ignore
 window.aaa = aaa;
@@ -437,13 +439,12 @@ export function Approval() {
               disableMatchWidth
               size="small"
               className="btnSelectContainer"
-              variant="text"
             >
               {options.map((o, index) => {
                 return (
-                  <Select.Option key={o.key} value={String(index)}>
+                  <Option key={o.key} value={String(index)}>
                     {o.name}
-                  </Select.Option>
+                  </Option>
                 );
               })}
             </Select>
@@ -479,7 +480,7 @@ export function Approval() {
       </StyledSubtitleWrapper>
       <SearchWrapper>
         <Search
-          value={inputValue}
+          value={convertCheckSum(inputValue)}
           onChange={handleChange}
           onSearch={handleSearch}
           placeholder={t(translations.approval.inputPlaceholder)}

@@ -6,7 +6,8 @@
 
 import React, { memo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Copy, Qrcode } from './HeadLineButtons';
@@ -31,20 +32,22 @@ import { tokenTypeTag } from '../TokenDetail/Basic';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from 'app/components/Text/Loadable';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface RouteParams {
   address: string;
 }
 
 export const ContractDetailPage = memo(() => {
-  const [globalData = {}] = useGlobalData();
+  const [globalData] = useGlobalData();
   const { t } = useTranslation();
-  const { address } = useParams<RouteParams>();
+  const { address: addressParams } = useParams<RouteParams>();
   const [visible, setVisible] = useState(false);
+  const address = convertCheckSum(addressParams);
 
   const { data: contractInfo } = useContract(address, [
     'name',
@@ -73,19 +76,19 @@ export const ContractDetailPage = memo(() => {
     websiteUrl !== 'http://' &&
     websiteUrl !== t(translations.general.loading);
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
-  const addressLabel = addressLabelMap[address];
+  const addressLabel = addressLabelMap?.[address];
 
   const menu = (
     <MenuWrapper>
       {!contractInfo?.verify?.exactMatch ? (
         <Menu.Item>
-          <RouterLink
-            to={`/contract-verification?address=${SDK.format.hexAddress(
+          <Link
+            href={`/contract-verification?address=${SDK.format.hexAddress(
               address,
             )}`}
           >
             {t(translations.general.address.more.verifyContract)}
-          </RouterLink>
+          </Link>
         </Menu.Item>
       ) : null}
       {/* <Menu.Item>
@@ -94,9 +97,9 @@ export const ContractDetailPage = memo(() => {
         </RouterLink>
       </Menu.Item> */}
       <Menu.Item>
-        <RouterLink to={`/contract-info/${address}`}>
+        <Link href={`/contract-info/${address}`}>
           {t(translations.general.address.more.editContract)}
-        </RouterLink>
+        </Link>
       </Menu.Item>
       <Menu.Item>
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -117,7 +120,7 @@ export const ContractDetailPage = memo(() => {
       </Menu.Item>
       {hasWebsite && (
         <Menu.Item>
-          <RouterLink
+          <Link
             onClick={e => {
               e.preventDefault();
               e.stopPropagation();
@@ -128,10 +131,9 @@ export const ContractDetailPage = memo(() => {
 
               window.open(link);
             }}
-            to=""
           >
             {t(translations.general.address.more.website)}
-          </RouterLink>
+          </Link>
         </Menu.Item>
       )}
     </MenuWrapper>
@@ -175,7 +177,10 @@ export const ContractDetailPage = memo(() => {
                 <>
                   {' '}
                   (
-                  <Text span hoverValue={t(translations.profile.tip.label)}>
+                  <Text
+                    tag="span"
+                    hoverValue={t(translations.profile.tip.label)}
+                  >
                     <Bookmark color="var(--theme-color-gray2)" size={16} />
                   </Text>
                   {addressLabel})

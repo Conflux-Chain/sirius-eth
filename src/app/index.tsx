@@ -23,7 +23,7 @@ import { SWRConfig } from 'swr';
 import { CfxProvider, CssBaseline } from '@cfxjs/react-ui';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { media } from 'styles/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { GlobalStyle } from 'styles/global-styles';
 import { TxnHistoryProvider } from 'utils/hooks/useTxnHistory';
 import { GlobalProvider, useGlobalData } from 'utils/hooks/useGlobal';
@@ -57,7 +57,7 @@ import { Search } from './containers/Search';
 import { Contract } from './containers/Contract/Loadable';
 import { TokenDetail } from './containers/TokenDetail/Loadable';
 
-import Loading from 'app/components/Loading';
+import { Loading } from '@cfxjs/sirius-next-common/dist/components/Loading';
 // import { CookieTip } from './components/CookieTip';
 // import { GlobalTip } from './components/GlobalTip';
 
@@ -93,14 +93,17 @@ import {
   ActiveAccounts,
   Contracts as ContractsCharts,
 } from './containers/Charts/Loadable';
+import { Chart as CIP1559Metrics } from './containers/Charts/cip1559Metrics/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
 import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
 import moment from 'moment';
 import { ConfigProvider } from '@cfxjs/antd';
 import 'moment/locale/zh-cn';
-import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+
+import ENV_CONFIG_LOCAL from 'env';
+import { useEnv } from '@cfxjs/sirius-next-common/dist/store/index';
 
 // WebFontLoader.load({
 //   custom: {
@@ -130,6 +133,7 @@ export function App() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language.includes('zh') ? 'zh-cn' : 'en';
   const [loading, setLoading] = useState(true);
+  const { SET_ENV_CONFIG } = useEnv();
 
   moment.locale(lang);
   dayjs.locale(lang);
@@ -239,15 +243,16 @@ export function App() {
   }, []);
 
   useEffect(() => {
+    SET_ENV_CONFIG(ENV_CONFIG_LOCAL);
     getClientVersion().then(v => {
       console.log('conflux-network-version:', v);
     });
-  }, []);
+  }, [SET_ENV_CONFIG]);
 
   useEffect(() => {
     const key = LOCALSTORAGE_KEYS_MAP.addressLabel;
     const keyTx = LOCALSTORAGE_KEYS_MAP.txPrivateNote;
-    const data = globalData || {};
+    const data = globalData;
 
     // address label
     if (!data[key]) {
@@ -263,10 +268,8 @@ export function App() {
         }, {});
       }
 
-      setGlobalData({
-        ...globalData,
-        [key]: d,
-      });
+      const _globalData = { ...globalData, [key]: d };
+      setGlobalData(_globalData);
     }
 
     // private tx note
@@ -283,10 +286,8 @@ export function App() {
         }, {});
       }
 
-      setGlobalData({
-        ...globalData,
-        [keyTx]: dTx,
-      });
+      const _globalData = { ...globalData, [keyTx]: dTx };
+      setGlobalData(_globalData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalData]);
@@ -404,14 +405,6 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (/[A-Z]/.test(address)) {
-                                return (
-                                  <Redirect
-                                    to={`/address/${address.toLowerCase()}`}
-                                  />
-                                );
-                              }
-
                               if (isAddress(address)) {
                                 if (/[A-Z]/.test(address)) {
                                   return (
@@ -441,14 +434,6 @@ export function App() {
                             render={(routeProps: any) => {
                               const address =
                                 routeProps.match.params.tokenAddress;
-
-                              if (/[A-Z]/.test(address)) {
-                                return (
-                                  <Redirect
-                                    to={`/token/${address.toLowerCase()}`}
-                                  />
-                                );
-                              }
 
                               if (isAddress(address)) {
                                 if (/[A-Z]/.test(address)) {
@@ -520,7 +505,7 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (isAddress(address) || lodash.isNil(address)) {
+                              if (lodash.isNil(address) || isAddress(address)) {
                                 if (
                                   !lodash.isNil(address) &&
                                   /[A-Z]/.test(address)
@@ -538,6 +523,13 @@ export function App() {
                               }
                             }}
                           />
+
+                          <Route
+                            exact
+                            path="/cip-1559-metrics"
+                            component={CIP1559Metrics}
+                          />
+
                           <Route
                             exact
                             path="/statistics"
@@ -729,7 +721,7 @@ const Main = styled.div`
   }
 
   .link {
-    color: ${ENV_CONFIG.ENV_THEME.linkColor} !important;
+    color: var(--theme-color-link) !important;
   }
 `;
 

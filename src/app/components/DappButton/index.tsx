@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Tooltip } from '@cfxjs/react-ui';
+import { Button } from '@cfxjs/react-ui';
 import { useTranslation } from 'react-i18next';
 import { usePortal } from 'utils/hooks/usePortal';
 import styled from 'styled-components';
@@ -8,16 +8,14 @@ import imgSuccess from 'images/success.png';
 import { ButtonProps } from '@cfxjs/react-ui/dist/button/button';
 import { formatAddress } from 'utils';
 import { TXN_ACTION } from 'utils/constants';
-import { AddressContainer } from '../AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import { ConnectButton, useCheckHook } from '../../components/ConnectWallet';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
-import ENV_CONFIG from 'env';
 
 interface DappButtonProps {
-  hoverText?: string;
   btnClassName?: string;
   btnDisabled?: boolean;
   // btnText?: string;
@@ -34,7 +32,6 @@ interface DappButtonProps {
 type NativeAttrs = Omit<React.ButtonHTMLAttributes<any>, keyof ButtonProps>;
 export declare type Props = DappButtonProps & NativeAttrs;
 const DappButton = ({
-  hoverText,
   btnClassName,
   btnDisabled,
   contractAddress,
@@ -148,7 +145,7 @@ const DappButton = ({
           <span
             className={`accountAddress ${accounts[0] ? 'shown' : 'hidden'}`}
           >
-            <AddressContainer value={accounts[0]} />
+            <EVMAddressContainer value={accounts[0]} />
           </span>
         </>
       )}
@@ -156,13 +153,7 @@ const DappButton = ({
   );
   return (
     <>
-      {hoverText ? (
-        <Tooltip text={hoverText} placement="top-start">
-          {btnComp}
-        </Tooltip>
-      ) : (
-        <>{btnComp}</>
-      )}
+      {btnComp}
       <TxnStatusModal
         show={modalShow}
         status={modalType}
@@ -195,13 +186,13 @@ const BtnContainer = styled.div`
     height: 30px;
     line-height: 30px;
     min-width: initial;
-    background-color: ${ENV_CONFIG.ENV_THEME.linkColor};
-    border-color: ${ENV_CONFIG.ENV_THEME.linkColor};
-    --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkColor};
+    background-color: var(--theme-color-link);
+    border-color: var(--theme-color-link);
+    --cfx-ui-button-bg: var(--theme-color-link);
     &:hover {
-      background-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
-      border-color: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
-      --cfx-ui-button-bg: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
+      background-color: var(--theme-color-link-hover);
+      border-color: var(--theme-color-link-hover);
+      --cfx-ui-button-bg: var(--theme-color-link-hover);
     }
   }
   .disabled.btn {
@@ -209,7 +200,6 @@ const BtnContainer = styled.div`
   }
 `;
 DappButton.defaultProps = {
-  hoverText: '',
   btnClassName: '',
   btnDisabled: false,
   // btnText: '',

@@ -2,11 +2,11 @@ import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Link } from 'app/components/Link';
-import { Description } from 'app/components/Description/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
 import { formatAddress } from 'utils';
-import { TransactionAction } from 'app/components/TransactionAction';
-import SkeletonContainer from 'app/components/SkeletonContainer/Loadable';
+import { TransactionAction } from '@cfxjs/sirius-next-common/dist/components/TransactionAction/evmTransactionAction';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { reqContract, reqTransactionEventlogs } from 'utils/httpRequest';
 import _ from 'lodash';
 
@@ -25,6 +25,7 @@ export const Overview = ({ data }) => {
     to,
     // confirmedEpochCount,
     gasFee,
+    gasPrice,
     gasCoveredBySponsor,
     // storageCollateralized,
     // storageCoveredBySponsor,
@@ -109,12 +110,13 @@ export const Overview = ({ data }) => {
     event: eventlogs,
     customInfo: customInfoList,
   });
+  const isCrossSpaceCall = gasPrice === '0';
 
   return (
     <StyledWrapper>
       <div className="overview-title">
         {t(translations.transaction.overview)}
-        {gasFee === '0' && (
+        {isCrossSpaceCall && (
           <div className="overview-cross">
             <img src={iconCross} alt="?" />
             {t(translations.general.table.tooltip.crossSpaceCall)}
@@ -122,7 +124,7 @@ export const Overview = ({ data }) => {
         )}
       </div>
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.status)}
       >
@@ -137,7 +139,7 @@ export const Overview = ({ data }) => {
       </Description>
       {status === 0 && transactionAction && transactionAction.show && (
         <Description
-          verticle
+          vertical
           size="tiny"
           title={t(translations.transaction.action.title)}
         >
@@ -147,14 +149,18 @@ export const Overview = ({ data }) => {
         </Description>
       )}
       <Description
-        verticle
+        vertical
         size="tiny"
-        title={t(translations.transaction.gasFee)}
+        title={t(translations.transaction.transactionFee)}
       >
-        <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
+        <GasFee
+          fee={gasFee}
+          sponsored={gasCoveredBySponsor}
+          isCrossSpaceCall={isCrossSpaceCall}
+        />
       </Description>
       <Description
-        verticle
+        vertical
         size="tiny"
         title={t(translations.transaction.nonce)}
         noBorder

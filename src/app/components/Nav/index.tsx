@@ -6,8 +6,11 @@
 import clsx from 'clsx';
 import React, { HTMLAttributes, memo, ReactNode } from 'react';
 import styled from 'styled-components';
-import { media, useBreakpoint } from 'styles/media';
-import { GasPriceDropdown } from 'app/components/GasPriceDropdown';
+import {
+  useBreakpoint,
+  media,
+} from '@cfxjs/sirius-next-common/dist/utils/media';
+import { GasPriceDropdown } from '@cfxjs/sirius-next-common/dist/components/GasPriceDropdown';
 
 interface Props extends HTMLAttributes<HTMLElement> {
   brand: ReactNode;

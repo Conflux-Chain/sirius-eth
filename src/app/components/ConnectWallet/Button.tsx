@@ -17,12 +17,12 @@ import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from '../Text/Loadable';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 // import { NETWORK_TYPE, NETWORK_TYPES } from 'utils/constants';
 
 import iconLoadingWhite from './assets/loading-white.svg';
 import { Balance } from './Balance';
-import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 interface Button {
@@ -32,7 +32,7 @@ interface Button {
 }
 
 export const Button = ({ className, onClick, showBalance }: Button) => {
-  const [globalData = {}] = useGlobalData();
+  const [globalData] = useGlobalData();
   const { t } = useTranslation();
   const { authConnectStatus, accounts } = usePortal();
 
@@ -63,9 +63,11 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
           });
         } else {
           const addressLabel =
-            globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[accounts[0]];
+            globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[
+              convertCheckSum(accounts[0])
+            ] || globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[accounts[0]];
           const addressLabelIcon = (
-            <Text span hoverValue={t(translations.profile.tip.label)}>
+            <Text tag="span" hoverValue={t(translations.profile.tip.label)}>
               <Bookmark color="var(--theme-color-gray2)" size={16} />
             </Text>
           );
@@ -76,7 +78,7 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
               {addressLabel}
             </StyledAddressLabelWrapper>
           ) : (
-            formatString(accounts[0], 'address')
+            formatString(convertCheckSum(accounts[0]), 'address')
           );
           buttonStatus = <span className="button-status-online"></span>;
         }
@@ -161,7 +163,7 @@ const ButtonWrapper = styled.div`
 
     .connect-wallet-button-left {
       color: #ffffff;
-      background: ${ENV_CONFIG.ENV_THEME.primary};
+      background: var(--theme-color-primary);
     }
   }
 

@@ -10,8 +10,8 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { media } from 'styles/media';
-import { PageHeader } from 'app/components/PageHeader';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Input } from '@cfxjs/antd';
 import { useParams, useHistory } from 'react-router-dom';
 import {
@@ -19,6 +19,7 @@ import {
   isAddress,
 } from 'utils';
 import { NFTAsset } from 'app/containers/NFTAsset';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 const { Search } = Input;
 
@@ -29,7 +30,9 @@ export function NFTChecker() {
   }>();
   const { t } = useTranslation();
   const history = useHistory();
-  const [address, setAddress] = useState<string>(routerAddress);
+  const [address, setAddress] = useState<string>(
+    convertCheckSum(routerAddress),
+  );
   const [addressFormatErrorMsg, setAddressFormatErrorMsg] = useState<string>(
     '',
   );

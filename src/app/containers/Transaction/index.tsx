@@ -8,7 +8,7 @@ import { TabLabel } from 'app/components/TabsTablePanel/Label';
 import { reqTransactionDetail } from 'utils/httpRequest';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { PageHeader } from 'app/components/PageHeader/Loadable';
+import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Detail } from './Detail';
 
 import { InternalTxns } from 'app/containers/Transactions/Loadable';
@@ -29,7 +29,7 @@ export function Transaction() {
     });
   }, [hash]);
 
-  const { from, to, eventLogCount, gasFee } = txnDetail;
+  const { from, to, eventLogCount, gasPrice } = txnDetail;
 
   let tabs: any[] = [
     {
@@ -57,6 +57,7 @@ export function Transaction() {
       hidden: !eventLogCount,
     },
   ];
+  const isCrossSpaceCall = gasPrice === '0';
 
   return (
     <StyledPageWrapper>
@@ -70,7 +71,7 @@ export function Transaction() {
       <PageHeader>
         <StyledHeader>
           {t(translations.transaction.title)}
-          {gasFee === '0' && (
+          {isCrossSpaceCall && (
             <div className="overview-cross">
               <img src={iconCross} alt="?" />
               <div>{t(translations.general.table.tooltip.crossSpaceCall)}</div>

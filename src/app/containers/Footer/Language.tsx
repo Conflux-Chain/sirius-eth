@@ -1,11 +1,11 @@
 import React from 'react';
-import { Select } from '../../components/Select';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Globe from '@zeit-ui/react-icons/globe';
 import { trackEvent } from '../../../utils/ga';
 import { ScanEvent } from '../../../utils/gaConstants';
-import ENV_CONFIG from 'env';
 
 export function Language() {
   const { i18n } = useTranslation();
@@ -47,13 +47,12 @@ export function Language() {
         disableMatchWidth
         size="small"
         className="btnSelectContainer"
-        variant="text"
       >
         {options.map(o => {
           return (
-            <Select.Option key={o.value} value={o.value}>
+            <Option key={o.value} value={o.value}>
               {o.name}
-            </Select.Option>
+            </Option>
           );
         })}
       </Select>
@@ -63,28 +62,13 @@ export function Language() {
 
 const StyledWrapper = styled.span`
   position: relative;
-  display: inline-flex;
+  display: flex;
+  align-items: center;
   color: var(--theme-color-gray0);
+  margin-top: -0.33rem;
 
-  &:hover {
-    color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
-
-    .select.sirius-select.btnSelectContainer .value .option {
-      color: ${ENV_CONFIG.ENV_THEME.footerHighLightColor} !important;
-    }
-  }
-
-  .select.sirius-select.btnSelectContainer {
-    background: transparent;
-    position: absolute;
-    top: -0.6071rem;
-    left: 0.2143rem;
-
-    .value .option {
-      font-weight: normal;
-      &:not(:hover) {
-        color: var(--theme-color-gray0);
-      }
-    }
+  .btnSelectContainer {
+    background-color: var(--theme-color-foot-bg);
+    font-size: 0.8571rem;
   }
 `;

@@ -2,25 +2,26 @@ import React from 'react';
 import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { Text } from 'app/components/Text/Loadable';
-import { Link } from 'app/components/Link/Loadable';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import {
   formatNumber,
   getPercent,
-  fromDripToCfx,
   toThousands,
-  fromDripToGdrip,
   roundToFixedPrecision,
   getNetworkIcon,
 } from 'utils/';
 // import imgPivot from 'images/pivot.svg';
-import { AddressContainer } from 'app/components/AddressContainer';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 import ENV_CONFIG from 'env';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
 
 const IconWrapper = styled.div`
   display: flex;
@@ -69,7 +70,7 @@ export const epoch = {
     <Link href={`/block/${value}`}>
       <IconWrapper>
         <Text
-          span
+          tag="span"
           hoverValue={
             <Translation>
               {t => {
@@ -111,7 +112,7 @@ export const txns = {
     <StyleToolTip>
       <Translation>{t => t(translations.general.table.block.txns)}</Translation>
       <Text
-        span
+        tag="span"
         hoverValue={
           <Translation>
             {t => t(translations.general.table.tooltip.txns)}
@@ -136,7 +137,7 @@ export const crossSpaceCalls = {
         {t => t(translations.general.table.block.cross)}
       </Translation>
       <Text
-        span
+        tag="span"
         hoverValue={
           <Translation>
             {t => t(translations.general.table.tooltip.cross)}
@@ -164,7 +165,7 @@ export const hashWithPivot = {
     return (
       <StyledHashWrapper>
         <Link href={`/block/${value}`}>
-          <Text span hoverValue={value}>
+          <Text tag="span" hoverValue={value}>
             <SpanWrap>{value}</SpanWrap>
           </Text>
         </Link>
@@ -179,7 +180,7 @@ export const hashWithPivot = {
   //   return (
   //     <StyledHashWrapper>
   //       <Link href={`/block/${value}`}>
-  //         <Text span hoverValue={value}>
+  //         <Text tag="span" hoverValue={value}>
   //           <SpanWrap>{value}</SpanWrap>
   //         </Text>
   //       </Link>
@@ -189,16 +190,6 @@ export const hashWithPivot = {
   // },
 };
 
-export const miner = {
-  title: (
-    <Translation>{t => t(translations.general.table.block.miner)}</Translation>
-  ),
-  dataIndex: 'miner',
-  key: 'miner',
-  width: 1,
-  render: value => <AddressContainer value={value} />,
-};
-
 export const avgGasPrice = {
   title: (
     <StyleToolTip>
@@ -206,7 +197,7 @@ export const avgGasPrice = {
         {t => t(translations.general.table.block.avgGasPrice)}
       </Translation>
       <Text
-        span
+        tag="span"
         hoverValue={
           <Translation>
             {t => t(translations.general.table.tooltip.avgGasPrice)}
@@ -222,7 +213,7 @@ export const avgGasPrice = {
   width: 1,
   render: (value, row: any) =>
     (value && value !== '0') || row.coreBlock === 0 ? (
-      <Text span hoverValue={`${toThousands(value)} drip`}>
+      <Text tag="span" hoverValue={`${toThousands(value)} drip`}>
         {`${roundToFixedPrecision(
           fromDripToGdrip(value, false, {
             precision: 6,
@@ -274,7 +265,7 @@ export const gasUsedPercentWithProgress = {
         <StyledGasPercentWrapper>
           <div className="gas-detail">
             <Text
-              span
+              tag="span"
               hoverValue={
                 <Translation>
                   {t =>
@@ -317,7 +308,7 @@ export const reward = {
   width: 1,
   render: value =>
     value ? (
-      <Text span hoverValue={`${fromDripToCfx(value, true)} CFX`}>
+      <Text tag="span" hoverValue={`${fromDripToCfx(value, true)} CFX`}>
         {`${fromDripToCfx(value)} CFX`}
       </Text>
     ) : (
@@ -347,7 +338,7 @@ export const gasLimit = {
         {t => t(translations.general.table.block.gasLimit)}
       </Translation>
       <Text
-        span
+        tag="span"
         hoverValue={
           <Translation>
             {t => t(translations.general.table.tooltip.gasLimit)}
@@ -366,6 +357,31 @@ export const gasLimit = {
       return toThousands(value);
     }
     return <NotApplicable />;
+  },
+};
+
+export const burntFees = {
+  title: (
+    <StyleToolTip>
+      <Translation>
+        {t => t(translations.general.table.block.burntFees)}
+      </Translation>
+    </StyleToolTip>
+  ),
+  dataIndex: 'burntGasFee',
+  key: 'burntGasFee',
+  width: 1,
+  render: (value, row) => {
+    if (row.coreBlock === 1) {
+      return <NotApplicable />;
+    }
+    return value ? (
+      <Text tag="span" hoverValue={`${fromDripToCfx(value, true)} CFX`}>
+        {`${fromDripToCfx(value)} CFX`}
+      </Text>
+    ) : (
+      '--'
+    );
   },
 };
 

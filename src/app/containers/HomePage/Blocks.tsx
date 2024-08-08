@@ -1,7 +1,7 @@
 import React from 'react';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { blockColunms } from 'utils/tableColumns';
-import { useAge } from 'utils/hooks/useAge';
+import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
 
 interface Props {
   url: string;
@@ -10,7 +10,7 @@ interface Props {
 export const Blocks = ({ url }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
 
-  const columnsWidth = [4, 4, 3, 5, 4, 5, 4, 3];
+  const columnsWidth = [4, 4, 3, 5, 4, 5, 4, 4, 3];
   const columns = [
     blockColunms.epoch,
     blockColunms.hashWithPivot,
@@ -19,6 +19,7 @@ export const Blocks = ({ url }: Props) => {
     blockColunms.avgGasPrice,
     blockColunms.gasUsedPercentWithProgress,
     blockColunms.gasLimit,
+    blockColunms.burntFees,
     blockColunms.age(ageFormat, toggleAgeFormat),
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 

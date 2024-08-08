@@ -10,10 +10,10 @@ import { formatType } from 'js-conflux-sdk/src/contract/abi';
 import { reqContract } from 'utils/httpRequest';
 import styled from 'styled-components';
 import { useTranslation, Trans } from 'react-i18next';
-import { AddressContainer } from 'app/components/AddressContainer/Loadable';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { translations } from 'locales/i18n';
-import { Spin } from '@cfxjs/antd';
-import { publishRequestError } from 'utils';
+import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
+import { publishRequestError, formatAddressHexToBase32 } from 'utils';
 
 interface ContractAbiProps {
   type?: 'read' | 'write';
@@ -48,7 +48,7 @@ export const ContractAbi = ({
   const [contract, setContract] = useState(() =>
     CFX.Contract({
       abi: [],
-      address: proxyAddress || address,
+      address: formatAddressHexToBase32(proxyAddress || address),
     }),
   );
 
@@ -70,9 +70,10 @@ export const ContractAbi = ({
         }
 
         const abiJSON = JSON.parse(abiInfo);
+
         const contract = CFX.Contract({
           abi: abiJSON,
-          address: proxyAddress || address,
+          address: formatAddressHexToBase32(proxyAddress || address),
         });
 
         setContract(contract);
@@ -166,7 +167,11 @@ export const ContractAbi = ({
       {pattern ? (
         <StyledContractAbiWrapper>
           <Trans i18nKey="contract.pattern">
-            <AddressContainer isLink={true} value={address} isContract={true} />
+            <EVMAddressContainer
+              link={true}
+              value={address}
+              isContract={true}
+            />
             {pattern}
           </Trans>
         </StyledContractAbiWrapper>

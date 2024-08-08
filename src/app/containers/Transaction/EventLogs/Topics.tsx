@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Select } from 'app/components/Select';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Link } from 'app/components/Link';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
-import { media } from 'styles/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export const Topics = ({ data, signature, contractAndTokenInfo }) => {
   const { t } = useTranslation();
@@ -72,7 +74,9 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
 
             value = (
               <>
-                <Link href={`/address/${value}`}>{value} </Link>
+                <Link href={`/address/${value}`}>
+                  {typeof value === 'string' ? convertCheckSum(value) : value}
+                </Link>
                 <ContractDetail info={contractInfo}></ContractDetail>
                 <AddressLabel address={value} />
               </>
@@ -80,7 +84,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
           }
 
           select = (
-            <Select
+            <TextSelect
               className="select"
               disableMatchWidth={true}
               size="small"
@@ -88,15 +92,15 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
               onChange={value => {
                 handleChange(value, d.argName);
               }}
-              width="7rem"
+              width="7.8rem"
               disabled={valueMap.hex === valueMap.decode}
             >
               {availableOptions.map(o => (
-                <Select.Option key={o.key} value={o.value}>
+                <Option key={o.key} value={o.value}>
                   {o.content}
-                </Select.Option>
+                </Option>
               ))}
-            </Select>
+            </TextSelect>
           );
         }
 
@@ -115,7 +119,10 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
 Topics.defaultProps = {
   contractAndTokenInfo: {},
 };
-
+const TextSelect = styled(Select)`
+  background-color: #fff;
+  border: 1px solid #ccc;
+`;
 const StyledTopicsWrapper = styled.div`
   .topic-item {
     margin-bottom: 0.3571rem;
@@ -145,15 +152,22 @@ const StyledTopicsWrapper = styled.div`
       align-items: center;
     }
 
-    .select.select {
-      padding-left: 0;
+    .select {
       height: 1.5714rem;
       padding: 0 0.7143rem;
       margin-right: 0.8571rem;
+      color: #444;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.25rem;
 
       .value {
         padding-left: 0;
       }
+    }
+
+    .select:hover {
+      background-color: rgba(30, 61, 228, 0.08);
     }
   }
 `;

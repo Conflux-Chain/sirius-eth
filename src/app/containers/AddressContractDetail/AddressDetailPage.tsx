@@ -18,23 +18,24 @@ import { useAccount } from '../../../utils/api';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
-import { media } from '../../../styles/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
-import { Text } from 'app/components/Text/Loadable';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
-import ENV_CONFIG from 'env';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface RouteParams {
   address: string;
 }
 
 export const AddressDetailPage = memo(() => {
-  const [globalData = {}] = useGlobalData();
+  const [globalData] = useGlobalData();
   const { t } = useTranslation();
-  const { address } = useParams<RouteParams>();
+  const { address: addressParams } = useParams<RouteParams>();
+  const address = convertCheckSum(addressParams);
   const { data: accountInfo } = useAccount(address, [
     'cfxTransferCount',
     'erc20TransferCount',
@@ -45,7 +46,9 @@ export const AddressDetailPage = memo(() => {
   const [visible, setVisible] = useState(false);
 
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
-  const addressLabel = addressLabelMap[address];
+  const addressLabel =
+    addressLabelMap?.[convertCheckSum(address)] ||
+    addressLabelMap?.[address.toLowerCase()];
 
   const menu = (
     <MenuWrapper>
@@ -103,12 +106,15 @@ export const AddressDetailPage = memo(() => {
           </Title>
           <HeadAddressLine>
             <span className="address">
-              {address}
+              {convertCheckSum(address)}
               {addressLabel ? (
                 <>
                   {' '}
                   (
-                  <Text span hoverValue={t(translations.profile.tip.label)}>
+                  <Text
+                    tag="span"
+                    hoverValue={t(translations.profile.tip.label)}
+                  >
                     <Bookmark color="var(--theme-color-gray2)" size={16} />
                   </Text>
                   {addressLabel})
@@ -187,7 +193,7 @@ export const MenuWrapper = styled(Menu)`
 
     &:hover {
       a {
-        color: ${ENV_CONFIG.ENV_THEME.primary};
+        color: var(--theme-color-primary);
       }
     }
   }

@@ -5,12 +5,13 @@ import { reqContractAndToken } from 'utils/httpRequest';
 import { formatContractAndTokenInfoMap } from 'utils';
 import _ from 'lodash';
 import { ContractDetail } from '../ContractDetail';
-import { Link } from 'app/components/Link/Loadable';
-import { Text } from 'app/components/Text/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Event } from '../Event';
 // import Info from '@zeit-ui/react-icons/info';
-import { media } from 'styles/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from '../AddressLabel';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export const OptimizationDecode = ({
   data = '',
@@ -75,7 +76,7 @@ export const OptimizationDecode = ({
                 value = (
                   <>
                     <Link href={`/address/${a.hexAddress}`}>
-                      {a.hexAddress}{' '}
+                      {convertCheckSum(a.hexAddress)}{' '}
                     </Link>
                     <ContractDetail info={contractInfo} />
                     <AddressLabel address={a.hexAddress} />

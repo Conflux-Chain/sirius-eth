@@ -1,6 +1,6 @@
 import React from 'react';
 import { Translation } from 'react-i18next';
-import { translations } from '../../locales/i18n';
+import { translations } from 'locales/i18n';
 import {
   toThousands,
   formatNumber,
@@ -8,7 +8,7 @@ import {
   getNametagInfo,
 } from '../../utils/';
 import { ContentWrapper } from './utils';
-import { AddressContainer } from '../../app/components/AddressContainer/Loadable';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 
 export const rank = {
   title: (
@@ -22,12 +22,12 @@ export const address = {
   title: (
     <Translation>{t => t(translations.accounts.table.address)}</Translation>
   ),
-  dataIndex: 'base32address',
-  key: 'base32address',
+  dataIndex: 'hex',
+  key: 'hex',
   render: (value, row: any) => {
     const isContract = checkIfContractByInfo(value, row);
     return (
-      <AddressContainer
+      <EVMAddressContainer
         value={value}
         alias={row.name}
         isFull={isContract}

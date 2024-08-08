@@ -1,27 +1,27 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { translations } from '../../../locales/i18n';
-import SkelontonContainer from '../SkeletonContainer';
+import { translations } from 'locales/i18n';
+import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { reqTokenList, reqTopStatistics } from '../../../utils/httpRequest';
 import {
   formatNumber,
-  fromDripToCfx,
   toThousands,
   checkIfContractByInfo,
 } from '../../../utils';
-import { AddressContainer } from '../AddressContainer';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
-import { Text } from '../Text/Loadable';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import BigNumber from 'bignumber.js';
 import { usePortal } from '../../../utils/hooks/usePortal';
-import { media } from '../../../styles/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { monospaceFont } from '../../../styles/variable';
-import { Link } from '../Link';
-import { Description } from '../Description/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
 import lodash from 'lodash';
 import { NetworkPie } from './NetworkPie';
+import { fromDripToCfx } from '@cfxjs/sirius-next-common/dist/utils';
 
 export enum StatsType {
   overviewTransactions = 'overviewTransactions',
@@ -285,8 +285,7 @@ export const StatsCard = ({
               let sourceList = res.list;
 
               tokenAddress = sourceList.reduce((acc, item) => {
-                if (item.base32address && !acc.includes(item.base32address))
-                  acc.push(item.base32address);
+                if (item.hex && !acc.includes(item.hex)) acc.push(item.hex);
                 return acc;
               }, []);
 
@@ -298,11 +297,11 @@ export const StatsCard = ({
                   .then(tokens => {
                     if (tokens && tokens.list) {
                       const listWithTokenInfo = sourceList.map(item => {
-                        if (tokenAddress.includes(item.base32address)) {
+                        if (tokenAddress.includes(item.hex)) {
                           const tokenInfo = tokens.list.find(
                             t =>
                               formatAddress(t.address) ===
-                              formatAddress(item.base32address),
+                              formatAddress(item.hex),
                           );
                           if (tokenInfo)
                             return { ...item, token: { ...tokenInfo } };
@@ -420,7 +419,7 @@ export const StatsCard = ({
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
-                <AddressContainer
+                <EVMAddressContainer
                   value={formatAddress(d.base32)}
                   alias={
                     d.contractInfo && d.contractInfo.name
@@ -449,7 +448,7 @@ export const StatsCard = ({
         });
       case 'token':
         return data.map((d, i) => {
-          const isContract = checkIfContractByInfo(d.base32address, d);
+          const isContract = checkIfContractByInfo(d.hex, d);
 
           return (
             <tr key={i}>
@@ -458,12 +457,11 @@ export const StatsCard = ({
                 {d.token ? (
                   token.render(d.token)
                 ) : (
-                  <AddressContainer
-                    value={formatAddress(d.base32address)}
+                  <EVMAddressContainer
+                    value={formatAddress(d.hex)}
                     isMe={
                       accounts && accounts.length > 0
-                        ? formatAddress(accounts[0]) ===
-                          formatAddress(d.base32address)
+                        ? formatAddress(accounts[0]) === formatAddress(d.hex)
                         : false
                     }
                     isContract={isContract}
@@ -482,7 +480,7 @@ export const StatsCard = ({
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
-                <AddressContainer
+                <EVMAddressContainer
                   value={formatAddress(d.base32)}
                   isMe={
                     accounts && accounts.length > 0
@@ -553,7 +551,7 @@ export const StatsCard = ({
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
-                <AddressContainer
+                <EVMAddressContainer
                   value={formatAddress(d.base32)}
                   isMe={
                     accounts && accounts.length > 0
@@ -634,7 +632,7 @@ export const StatsCard = ({
   if (action === 'cfxSend') {
     total = (
       <span>
-        {t(translations.statistics.valueInTotal)}：
+        {t(translations.statistics.topSend)}：
         {fromDripToCfx(totalTopCfxSent.toString(), false, {
           withUnit: false,
           keepDecimal: false,
@@ -645,7 +643,7 @@ export const StatsCard = ({
   } else if (action === 'cfxReceived') {
     total = (
       <span>
-        {t(translations.statistics.valueInTotal)}：
+        {t(translations.statistics.topReceived)}：
         {fromDripToCfx(totalTopCfxReceived.toString(), false, {
           withUnit: false,
           keepDecimal: false,
@@ -686,7 +684,7 @@ export const StatsCard = ({
         ) : null}
         {category === 'transaction' ? total : null}
       </HeaderWrapper>
-      <SkelontonContainer
+      <SkeletonContainer
         shown={loading || (category === 'token' && loadingTokenInfo)}
       >
         <div
@@ -711,7 +709,7 @@ export const StatsCard = ({
                   }
                   key={c['title']}
                 >
-                  <SkelontonContainer
+                  <SkeletonContainer
                     shown={lodash.isNil(statsData[c['index']])}
                   >
                     {lodash.isNil(statsData[c['index']])
@@ -721,7 +719,7 @@ export const StatsCard = ({
                       : formatNumber(statsData[c['index']], {
                           withUnit: false,
                         })}
-                  </SkelontonContainer>
+                  </SkeletonContainer>
                 </Description>
               ))}
             </>
@@ -737,7 +735,7 @@ export const StatsCard = ({
             </table>
           )}
         </div>
-      </SkelontonContainer>
+      </SkeletonContainer>
     </CardWrapper>
   );
 };

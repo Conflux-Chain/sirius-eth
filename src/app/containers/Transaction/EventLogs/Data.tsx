@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Select } from 'app/components/Select';
+import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
+import { Option } from 'styles/global-styles';
 import styled from 'styled-components';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
-import { Link } from 'app/components/Link/Loadable';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { media } from 'styles/media';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
 import { DecodedParams } from 'app/components/TxnComponents/util';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
@@ -50,20 +51,20 @@ const SelectedLine = ({
     <StyledSelectItemWrapper>
       {index === undefined ? null : <span className="index">{index + 1}</span>}
       {select ? (
-        <Select
+        <TextSelect
           className="select"
           disableMatchWidth={true}
           size="small"
           value={selected}
           onChange={handleChange}
-          width="7rem"
+          width="7.8rem"
         >
           {options.map(o => (
-            <Select.Option key={o.key} value={o.value}>
+            <Option key={o.key} value={o.value}>
               {o.content}
-            </Select.Option>
+            </Option>
           ))}
-        </Select>
+        </TextSelect>
       ) : null}
       <span className="value">{decodeData(data.hexValue, selected)}</span>
     </StyledSelectItemWrapper>
@@ -101,7 +102,10 @@ const decodeData = (value, type) => {
 
   return result;
 };
-
+const TextSelect = styled(Select)`
+  background-color: #fff;
+  border: 1px solid #ccc;
+`;
 const StyledSelectItemWrapper = styled.div`
   margin-bottom: 5px;
   display: flex;
@@ -128,13 +132,27 @@ const StyledSelectItemWrapper = styled.div`
     align-items: center;
   }
 
-  .select.select {
-    height: 22px;
+  .select {
+    position: absolute;
+    right: 0;
     margin-right: 12px;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
 
     .value {
       padding-left: 0;
     }
+    ${media.s} {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin-bottom: 10px;
+    }
+  }
+  .select:hover {
+    background-color: rgba(30, 61, 228, 0.08);
   }
 `;
 
@@ -189,21 +207,19 @@ export const Data = ({
 
       body = (
         <>
-          <Select
-            className="select-with-abi"
+          <TextSelect
+            className="select"
             value={value}
             onChange={handleChange}
             size="small"
             disableMatchWidth={true}
-            width="7rem"
+            width="7.8rem"
           >
-            <Select.Option value="hex">
-              {t(translations.transaction.logs.hex)}
-            </Select.Option>
-            <Select.Option value="decode">
+            <Option value="hex">{t(translations.transaction.logs.hex)}</Option>
+            <Option value="decode">
               {t(translations.transaction.logs.decode)}
-            </Select.Option>
-          </Select>
+            </Option>
+          </TextSelect>
           {content}
         </>
       );
@@ -246,7 +262,6 @@ export const Data = ({
     return <StyledDataWrapper withAbi={withAbi}>{body}</StyledDataWrapper>;
   }
 };
-
 const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
   padding: 16px ${props => (props.withAbi ? '124px' : '24px')} 16px 16px;
   background-color: #fafbfc;
@@ -260,19 +275,27 @@ const StyledDataWrapper = styled.div<{ withAbi: boolean }>`
     padding-right: 100px;
   }
 
-  .select.select-with-abi {
+  .select {
     position: absolute;
-    top: 11px;
-    right: 16px;
-    height: 30px;
-    padding: 0 10px;
+    right: 0;
+    margin-right: 12px;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
 
+    .value {
+      padding-left: 0;
+    }
     ${media.s} {
       position: relative;
       top: auto;
       right: auto;
       margin-bottom: 10px;
     }
+  }
+  .select:hover {
+    background-color: rgba(30, 61, 228, 0.08);
   }
 
   .data-item {

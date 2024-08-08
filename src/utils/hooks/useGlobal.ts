@@ -2,6 +2,16 @@ import React, { useContext } from 'react';
 import { getCurrency, NETWORK_OPTIONS } from 'utils/constants';
 import { createGlobalState } from 'react-use';
 import ENV_CONFIG from 'env';
+import { useGlobalData as useGlobalDataNext } from '@cfxjs/sirius-next-common/dist/store/index';
+import {
+  GlobalDataType,
+  NetworksTypeEnv,
+} from '@cfxjs/sirius-next-common/dist/store/types';
+
+export interface ExtendedGlobalDataType
+  extends Omit<GlobalDataType, 'networks'> {
+  networks: NetworksTypeEnv;
+}
 
 const defatultGlobalData = {
   currency: getCurrency(),
@@ -43,38 +53,21 @@ export const useGlobal = () => {
   return useContext(GlobalContext);
 };
 
-// react-use version, to solve useContext can not update global value in App.ts
-export interface ContractsType {
-  [index: string]: string;
-  announcement: string;
-  faucet: string;
-  faucetLast: string;
-  wcfx: string;
-  governance: string;
-}
-
-export interface NetworksType {
-  url: string;
-  name: string;
-  id: number;
-}
-
-export interface GlobalDataType {
-  networks: {
-    mainnet: NetworksType[];
-    testnet: NetworksType[];
-    devnet: NetworksType[];
-  };
-  networkId: number;
-  contracts: ContractsType;
-}
-
-// @todo, if no default global data, homepage should loading until getProjectConfig return resp
-export const useGlobalData = createGlobalState<object>({
+const defaultGlobalData: ExtendedGlobalDataType = {
   networks: NETWORK_OPTIONS,
   networkId: ENV_CONFIG.ENV_NETWORK_ID,
   contracts: {},
-});
+};
+const _useGlobalData = createGlobalState(defaultGlobalData);
+export const useGlobalData = () => {
+  const [globalData, setGlobalDataOriginal] = _useGlobalData();
+  const { setGlobalData: setGlobalDataNext } = useGlobalDataNext();
+  const setGlobalData = newData => {
+    setGlobalDataOriginal(newData);
+    setGlobalDataNext(newData);
+  };
+  return [globalData || defaultGlobalData, setGlobalData] as const;
+};
 
 export interface GasPriceBundle {
   gasPriceInfo: {
