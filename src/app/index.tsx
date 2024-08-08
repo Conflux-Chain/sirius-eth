@@ -405,14 +405,6 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (/[A-Z]/.test(address)) {
-                                return (
-                                  <Redirect
-                                    to={`/address/${address.toLowerCase()}`}
-                                  />
-                                );
-                              }
-
                               if (isAddress(address)) {
                                 if (/[A-Z]/.test(address)) {
                                   return (
@@ -442,14 +434,6 @@ export function App() {
                             render={(routeProps: any) => {
                               const address =
                                 routeProps.match.params.tokenAddress;
-
-                              if (/[A-Z]/.test(address)) {
-                                return (
-                                  <Redirect
-                                    to={`/token/${address.toLowerCase()}`}
-                                  />
-                                );
-                              }
 
                               if (isAddress(address)) {
                                 if (/[A-Z]/.test(address)) {
