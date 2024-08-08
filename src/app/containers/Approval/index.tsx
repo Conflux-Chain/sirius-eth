@@ -31,6 +31,7 @@ import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
 import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
 import ENV_CONFIG from 'env';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 // @ts-ignore
 window.aaa = aaa;
@@ -479,7 +480,7 @@ export function Approval() {
       </StyledSubtitleWrapper>
       <SearchWrapper>
         <Search
-          value={inputValue}
+          value={convertCheckSum(inputValue)}
           onChange={handleChange}
           onSearch={handleSearch}
           placeholder={t(translations.approval.inputPlaceholder)}

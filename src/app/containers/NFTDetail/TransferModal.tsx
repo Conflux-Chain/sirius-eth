@@ -12,6 +12,7 @@ import { useGlobalData } from 'utils/hooks/useGlobal';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { formatAddress } from 'utils';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export const TransferModal = ({
   id = '',
@@ -48,7 +49,6 @@ export const TransferModal = ({
       if (id) {
         if (isNFT721) {
           let isOwner = false;
-
           if (formatAddress(await contract.ownerOf(id)) === account) {
             isOwner = true;
           }
@@ -56,7 +56,6 @@ export const TransferModal = ({
           setIsOwner(isOwner);
         } else {
           let isOwner = false;
-
           const quantity = Number(await contract.balanceOf(account, id));
           setNFT1155Quantity(quantity);
 
@@ -217,7 +216,7 @@ export const TransferModal = ({
             name="basic"
             labelCol={{ span: 4 }}
             initialValues={{
-              fromAddress: account,
+              fromAddress: convertCheckSum(account),
               tokenId: id,
             }}
             autoComplete="off"

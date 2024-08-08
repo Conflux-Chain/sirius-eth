@@ -27,11 +27,9 @@ import {
 import {
   formatBalance,
   formatTimeStamp,
-  fromDripToCfx,
   getPercent,
   toThousands,
   isEvmContractAddress,
-  fromDripToGdrip,
   isZeroAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
@@ -61,6 +59,11 @@ import { useNametag } from 'utils/hooks/useNametag';
 
 import iconInfo from 'images/info.svg';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
+import BigNumber from 'bignumber.js';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -100,6 +103,7 @@ export const Detail = () => {
     syncTimestamp,
     gasFee,
     gasUsed,
+    gasCharged,
     status,
     data,
     contractCreated,
@@ -109,9 +113,15 @@ export const Detail = () => {
     // storageCoveredBySponsor,
     // storageReleased,
     // storageCollateralized,
+    txExecErrorMsg,
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
   const nametags = useNametag([from, to]);
+
+  const isCrossSpaceCall = gasPrice === '0';
+  const notEnoughCash = txExecErrorMsg && /^NotEnoughCash/.test(txExecErrorMsg);
+  const isValidGasCharged =
+    !notEnoughCash || new BigNumber(gasCharged).isEqualTo(gas);
 
   const fetchTxTransfer = async (toCheckAddress, txnhash) => {
     setLoading(true);
@@ -177,7 +187,7 @@ export const Detail = () => {
       setTransferList(list);
 
       const eventlogsResponse = proRes[1];
-      console.log(eventlogsResponse.list);
+
       setEventlogs(eventlogsResponse.list);
 
       let addressList = list.map(v => v.address);
@@ -939,7 +949,11 @@ export const Detail = () => {
           }
         >
           <SkeletonContainer shown={loading}>
-            <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
+            <GasFee
+              fee={gasFee}
+              sponsored={gasCoveredBySponsor}
+              isCrossSpaceCall={isCrossSpaceCall}
+            />
           </SkeletonContainer>
         </Description>
         <div
@@ -988,7 +1002,7 @@ export const Detail = () => {
                   {`${toThousands(gas)} | ${toThousands(gasUsed)} (${getPercent(
                     gasUsed,
                     gas,
-                  )}) | ${toThousands(Math.max(+gasUsed, (+gas * 3) / 4))}`}
+                  )}) | ${isValidGasCharged ? toThousands(gasCharged) : '--'}`}
                 </>
               ) : (
                 <>--</>

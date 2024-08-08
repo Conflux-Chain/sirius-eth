@@ -7,10 +7,8 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Status } from 'app/components/TxnComponents';
 import {
-  fromDripToCfx,
   toThousands,
   checkIfContractByInfo,
-  fromDripToGdrip,
   getNametagInfo,
   formatNumber,
   roundToFixedPrecision,
@@ -30,6 +28,10 @@ import iconViewTxn from 'images/view-txn.png';
 import iconViewTxnActive from 'images/view-txn-active.svg';
 import lodash from 'lodash';
 import iconCross from 'images/icon-crossSpace.svg';
+import {
+  fromDripToCfx,
+  fromDripToGdrip,
+} from '@cfxjs/sirius-next-common/dist/utils';
 
 const StyledHashWrapper = styled.span`
   padding-left: 16px;
@@ -125,7 +127,7 @@ export const TxnHashRenderComponent = ({
           <SpanWrap>{hash}</SpanWrap>
         </Text>
       </Link>
-      {row && row.gasFee === '0' && (
+      {row && row.gasPrice === '0' && (
         <Tooltip
           title={
             <Translation>
@@ -292,8 +294,8 @@ export const gasFee = {
   dataIndex: 'gasFee',
   key: 'gasFee',
   width: 1,
-  render: value =>
-    value && value !== '0' ? (
+  render: (value, row) =>
+    value && row.gasPrice !== '0' ? (
       <Text tag="span" hoverValue={`${toThousands(value)} drip`}>
         {`${fromDripToCfx(value, false, {
           precision: 6,

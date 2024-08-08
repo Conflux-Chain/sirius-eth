@@ -19,6 +19,7 @@ import {
   isAddress,
 } from 'utils';
 import { NFTAsset } from 'app/containers/NFTAsset';
+import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 const { Search } = Input;
 
@@ -29,7 +30,9 @@ export function NFTChecker() {
   }>();
   const { t } = useTranslation();
   const history = useHistory();
-  const [address, setAddress] = useState<string>(routerAddress);
+  const [address, setAddress] = useState<string>(
+    convertCheckSum(routerAddress),
+  );
   const [addressFormatErrorMsg, setAddressFormatErrorMsg] = useState<string>(
     '',
   );

@@ -25,6 +25,7 @@ export const Overview = ({ data }) => {
     to,
     // confirmedEpochCount,
     gasFee,
+    gasPrice,
     gasCoveredBySponsor,
     // storageCollateralized,
     // storageCoveredBySponsor,
@@ -46,7 +47,7 @@ export const Overview = ({ data }) => {
   }, [tokenTransferTokenInfo]);
   const customInfoList = useMemo(() => {
     if (tokenTransferTokenInfoList.length > 0) {
-      return [contractInfo, ...tokenTransferTokenInfoList];
+      return tokenTransferTokenInfoList;
     }
     return [contractInfo];
   }, [tokenTransferTokenInfoList, contractInfo]);
@@ -109,12 +110,13 @@ export const Overview = ({ data }) => {
     event: eventlogs,
     customInfo: customInfoList,
   });
+  const isCrossSpaceCall = gasPrice === '0';
 
   return (
     <StyledWrapper>
       <div className="overview-title">
         {t(translations.transaction.overview)}
-        {gasFee === '0' && (
+        {isCrossSpaceCall && (
           <div className="overview-cross">
             <img src={iconCross} alt="?" />
             {t(translations.general.table.tooltip.crossSpaceCall)}
@@ -151,7 +153,11 @@ export const Overview = ({ data }) => {
         size="tiny"
         title={t(translations.transaction.gasFee)}
       >
-        <GasFee fee={gasFee} sponsored={gasCoveredBySponsor} />
+        <GasFee
+          fee={gasFee}
+          sponsored={gasCoveredBySponsor}
+          isCrossSpaceCall={isCrossSpaceCall}
+        />
       </Description>
       <Description
         vertical
