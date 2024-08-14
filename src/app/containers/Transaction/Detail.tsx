@@ -65,6 +65,7 @@ import {
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
 import BigNumber from 'bignumber.js';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -1194,6 +1195,9 @@ const GasFeeLabelWrapper = styled.span`
 const AttributeWrapper = styled.div`
   display: flex;
   gap: 12px;
+  ${media.s} {
+    flex-direction: column;
+  }
   .attribute {
     border: 1px solid #ebeced;
     height: 30px;
