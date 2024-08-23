@@ -51,7 +51,6 @@ import {
   convertObjBigNumbersToStrings,
   constprocessResultArray,
   formatLargeNumber,
-  getIncreasePercent,
 } from '@cfxjs/sirius-next-common/dist/utils';
 
 import {
@@ -452,6 +451,13 @@ export const getNametagInfo = (row: {
   return result;
 };
 
-export const getEvmGasTargetUsage = (
-  gasUsed: Parameters<typeof getIncreasePercent>[0],
-) => getIncreasePercent(gasUsed, 15000000);
+export const getEvmGasTargetUsedPercent = (_gasUsed: string | number) => {
+  const gasUsed = new BigNumber(_gasUsed);
+  const value = Number(
+    gasUsed.dividedBy(15000000).multipliedBy(100).toFixed(0),
+  );
+  return {
+    value,
+    percent: getPercent(_gasUsed, 15000000, 0),
+  };
+};
