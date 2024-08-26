@@ -280,7 +280,11 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {`${gasUsed || '--'} (${getPercent(gasUsed, gasLimit, 2)})`}
+            {`${gasUsed ? toThousands(gasUsed) : '--'} (${getPercent(
+              gasUsed,
+              gasLimit,
+              2,
+            )})`}
             {!onlyCore && (
               <GasTargetUsage
                 gasUsed={baseFeePerGasRef?.gasUsed ?? '0'}
@@ -311,7 +315,7 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {gasLimit || '--'}
+            {gasLimit ? toThousands(gasLimit) : '--'}
           </SkeletonContainer>
         </Description>
 
