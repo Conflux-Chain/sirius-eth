@@ -131,7 +131,8 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {toThousands(epochNumber)} <CopyButton copyText={height} />
+            {toThousands(epochNumber)}{' '}
+            <CopyButton copyText={height} className="copy" />
           </SkeletonContainer>
         </Description>
         {/* <Description
@@ -156,7 +157,8 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {toThousands(difficulty)} <CopyButton copyText={difficulty} />
+            {toThousands(difficulty)}{' '}
+            <CopyButton copyText={difficulty} className="copy" />
           </SkeletonContainer>
         </Description>
         {/* <Description
@@ -217,7 +219,7 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {pivotHash} <CopyButton copyText={pivotHash} />
+            {pivotHash} <CopyButton copyText={pivotHash} className="copy" />
           </SkeletonContainer>
         </Description>
         <Description
@@ -231,7 +233,7 @@ export function DescriptionPanel() {
             {
               <>
                 <Link href={`/block/${parentHash}`}>{parentHash}</Link>{' '}
-                <CopyButton copyText={parentHash} />
+                <CopyButton copyText={parentHash} className="copy" />
               </>
             }
           </SkeletonContainer>
@@ -413,6 +415,14 @@ const StyledCardWrapper = styled.div`
     padding: 0;
     .content {
       padding: 0 18px;
+    }
+  }
+  .description > .right {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    .copy {
+      margin-left: 5px;
     }
   }
   .copy-button-in-tooltip {
