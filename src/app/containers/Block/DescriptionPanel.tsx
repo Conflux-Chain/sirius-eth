@@ -17,7 +17,7 @@ import {
   getPercent,
   formatTimeStamp,
   toThousands,
-  getEvmGasTargetUsage,
+  getEvmGasTargetUsedPercent,
 } from 'utils';
 // import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
 // import { formatAddress } from 'utils';
@@ -34,28 +34,29 @@ const GasTargetUsage: React.FC<{
   gasUsed: string;
   tooltip?: React.ReactNode;
 }> = ({ gasUsed, tooltip }) => {
-  const { isNegative, percent, value } = getEvmGasTargetUsage(gasUsed);
+  const { t } = useTranslation();
+  const { value, percent } = getEvmGasTargetUsedPercent(gasUsed);
   return (
-    <GasTargetUsageWrapper>
+    <span>
       <Progress
         type="dashboard"
         size="small"
-        gapDegree={180}
+        gapDegree={150}
         showInfo={false}
-        strokeWidth={8}
-        strokeColor={isNegative ? '#FA5D5D' : '#4AC2AB'}
+        strokeWidth={10}
+        strokeColor="#4AC2AB"
         trailColor="#eeeeee"
-        percent={Math.abs(value)}
-        width={40}
+        percent={Math.min(value, 100)}
+        width={35}
+        style={{
+          margin: '0 16px',
+          display: 'inline',
+        }}
       />
-      {tooltip ? (
-        <Tooltip title={tooltip}>
-          <IncreasePercent value={percent} showPlus />
-        </Tooltip>
-      ) : (
-        <IncreasePercent value={percent} showPlus />
-      )}
-    </GasTargetUsageWrapper>
+      <Tooltip title={tooltip}>
+        {t(translations.block.gasTarget, { percent })}
+      </Tooltip>
+    </span>
   );
 };
 
@@ -130,7 +131,8 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {toThousands(epochNumber)} <CopyButton copyText={height} />
+            {toThousands(epochNumber)}{' '}
+            <CopyButton copyText={height} className="copy" />
           </SkeletonContainer>
         </Description>
         {/* <Description
@@ -155,7 +157,8 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {toThousands(difficulty)} <CopyButton copyText={difficulty} />
+            {toThousands(difficulty)}{' '}
+            <CopyButton copyText={difficulty} className="copy" />
           </SkeletonContainer>
         </Description>
         {/* <Description
@@ -216,7 +219,7 @@ export function DescriptionPanel() {
           }
         >
           <SkeletonContainer shown={loading}>
-            {pivotHash} <CopyButton copyText={pivotHash} />
+            {pivotHash} <CopyButton copyText={pivotHash} className="copy" />
           </SkeletonContainer>
         </Description>
         <Description
@@ -230,7 +233,7 @@ export function DescriptionPanel() {
             {
               <>
                 <Link href={`/block/${parentHash}`}>{parentHash}</Link>{' '}
-                <CopyButton copyText={parentHash} />
+                <CopyButton copyText={parentHash} className="copy" />
               </>
             }
           </SkeletonContainer>
@@ -273,49 +276,53 @@ export function DescriptionPanel() {
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.block.gasUsedLimit)}>
+            <Tooltip title={t(translations.toolTip.block.gasUsed)}>
               {t(translations.block.gasUsed)}
             </Tooltip>
           }
         >
           <SkeletonContainer shown={loading}>
-            {`${gasLimit || '--'} | ${gasUsed || '--'} (${getPercent(
+            {`${gasUsed ? toThousands(gasUsed) : '--'} (${getPercent(
               gasUsed,
               gasLimit,
               2,
             )})`}
+            {!onlyCore && (
+              <GasTargetUsage
+                gasUsed={baseFeePerGasRef?.gasUsed ?? '0'}
+                tooltip={
+                  baseFeePerGasRef?.height &&
+                  baseFeePerGasRef.height !== height && (
+                    <div>
+                      {t(translations.toolTip.block.referencetoPivotBlock, {
+                        block: baseFeePerGasRef.height,
+                      })}
+                      <CopyButton
+                        copyText={baseFeePerGasRef.height}
+                        color="#ECECEC"
+                        className="copy-button-in-tooltip"
+                      />
+                    </div>
+                  )
+                }
+              />
+            )}
           </SkeletonContainer>
         </Description>
+        <Description
+          title={
+            <Tooltip title={t(translations.toolTip.block.gasLimit)}>
+              {t(translations.block.gasLimit)}
+            </Tooltip>
+          }
+        >
+          <SkeletonContainer shown={loading}>
+            {gasLimit ? toThousands(gasLimit) : '--'}
+          </SkeletonContainer>
+        </Description>
+
         {!onlyCore && (
           <>
-            <Description
-              title={
-                <Tooltip title={t(translations.toolTip.block.gasTargetUsage)}>
-                  {t(translations.block.gasTargetUsage)}
-                </Tooltip>
-              }
-            >
-              <SkeletonContainer shown={loading}>
-                <GasTargetUsage
-                  gasUsed={baseFeePerGasRef?.gasUsed ?? '0'}
-                  tooltip={
-                    baseFeePerGasRef?.height &&
-                    baseFeePerGasRef.height !== height && (
-                      <div>
-                        {t(translations.toolTip.block.referencetoPivotBlock, {
-                          block: baseFeePerGasRef.height,
-                        })}
-                        <CopyButton
-                          copyText={baseFeePerGasRef.height}
-                          color="#ECECEC"
-                          className="copy-button-in-tooltip"
-                        />
-                      </div>
-                    )
-                  }
-                />
-              </SkeletonContainer>
-            </Description>
             <Description
               title={
                 <Tooltip title={t(translations.toolTip.block.baseFeePerGas)}>
@@ -403,17 +410,19 @@ const BaseFeeIncreaseWrapper = styled.div`
   margin-left: 16px;
 `;
 
-const GasTargetUsageWrapper = styled.div`
-  display: inline-flex;
-  gap: 16px;
-  height: 22px;
-`;
-
 const StyledCardWrapper = styled.div`
   .card.sirius-blocks-card {
     padding: 0;
     .content {
       padding: 0 18px;
+    }
+  }
+  .description > .right {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    .copy {
+      margin-left: 5px;
     }
   }
   .copy-button-in-tooltip {
