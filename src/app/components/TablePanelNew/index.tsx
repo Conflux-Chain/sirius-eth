@@ -13,6 +13,7 @@ import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 import styled from 'styled-components';
 import clsx from 'clsx';
 import { Empty } from '@cfxjs/sirius-next-common/dist/components/Empty';
+import { invert } from 'lodash';
 
 interface TableProp extends Omit<TableProps<any>, 'title' | 'footer'> {
   url?: string;
@@ -139,10 +140,12 @@ export const TablePanel = ({
     error: null,
   });
 
-  const { query: outerQuery, url: queryUrl } = useMemo(
-    () => qs.parseUrl(outerUrl || ''),
-    [outerUrl],
-  );
+  const { query: outerQuery, url: queryUrl } = useMemo(() => {
+    const parsed = qs.parseUrl(outerUrl || '');
+    const q = parsed.query;
+    q.orderBy = invert(sortKeyMap)[(q.orderBy as string) ?? ''] || q.orderBy;
+    return parsed;
+  }, [sortKeyMap, outerUrl]);
   const { orderBy, reverse } = useMemo(
     () => ({ ...outerQuery, ...qs.parse(search) }),
     [search, outerQuery],
@@ -174,6 +177,10 @@ export const TablePanel = ({
 
   useEffect(() => {
     if (queryUrl) {
+      const query = { ...getQuery } as qs.ParsedQuery<string>;
+      query.orderBy =
+        sortKeyMap[(query.orderBy as string) ?? ''] || query.orderBy;
+
       setState({
         ...state,
         loading: true,
@@ -181,9 +188,7 @@ export const TablePanel = ({
 
       sendRequest({
         url: queryUrl,
-        query: {
-          ...getQuery,
-        },
+        query,
       })
         .then(resp => {
           setState({
@@ -217,7 +222,7 @@ export const TablePanel = ({
     console.log('sorter: ', sorter, sorter.order);
 
     if (sorter?.order) {
-      query.orderBy = sortKeyMap[String(sorter.field)] || sorter.field;
+      query.orderBy = sorter.field;
       query.reverse = sorter.order === 'ascend' ? 'false' : 'true';
     } else {
       delete query.orderBy;
