@@ -12,7 +12,6 @@ import { formatNumber, formatLargeNumber } from 'utils';
 import queryString from 'query-string';
 // import { useGlobal } from 'utils/hooks/useGlobal';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
-import { useLocation } from 'react-router-dom';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { monospaceFont } from 'styles/variable';
 
@@ -23,11 +22,9 @@ interface RouteParams {
 }
 
 export function Tokens() {
-  const location = useLocation();
   const { t } = useTranslation();
   // const { data: globalData } = useGlobal();
   const { tokenType = CFX_TOKEN_TYPES.erc20 } = useParams<RouteParams>();
-  const { orderBy } = queryString.parse(location.search);
 
   let columnsWidth = [1, 7, 3, 3, 3, 3, 2];
   let columns = [
@@ -46,7 +43,6 @@ export function Tokens() {
     {
       ...tokenColunms.marketCap,
       sorter: true,
-      defaultSortOrder: 'descend' as 'descend' | 'ascend',
       render(value, row, index) {
         const largeShrinkNumber = formatLargeNumber(value);
         return (
@@ -186,25 +182,11 @@ export function Tokens() {
     title = t(translations.header.tokens1155);
   }
 
-  if (orderBy) {
-    columns = columns.map(c => {
-      // @ts-ignore
-      if (c.dataIndex === orderBy) {
-        // @ts-ignore
-        c.defaultSortOrder = 'descend';
-      } else {
-        // @ts-ignore
-        delete c.defaultSortOrder;
-      }
-      return c;
-    });
-  }
-
   return (
     <>
       <Helmet>
         <title>{title}</title>
-        <meta name="description" content={t(title)} />
+        <meta name="description" content={title} />
       </Helmet>
       <PageHeader>
         {title}

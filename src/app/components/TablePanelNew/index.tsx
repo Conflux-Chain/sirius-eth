@@ -1,7 +1,6 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { sendRequest } from 'utils/httpRequest';
 import qs from 'query-string';
-import { useState } from 'react';
 import { Table } from '@cfxjs/antd';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import { Option } from 'styles/global-styles';
@@ -14,6 +13,7 @@ import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 import styled from 'styled-components';
 import clsx from 'clsx';
 import { Empty } from '@cfxjs/sirius-next-common/dist/components/Empty';
+import { invert } from 'lodash';
 
 interface TableProp extends Omit<TableProps<any>, 'title' | 'footer'> {
   url?: string;
@@ -140,7 +140,16 @@ export const TablePanel = ({
     error: null,
   });
 
-  const { orderBy, reverse } = useMemo(() => qs.parse(search), [search]);
+  const { query: outerQuery, url: queryUrl } = useMemo(() => {
+    const parsed = qs.parseUrl(outerUrl || '');
+    const q = parsed.query;
+    q.orderBy = invert(sortKeyMap)[(q.orderBy as string) ?? ''] || q.orderBy;
+    return parsed;
+  }, [sortKeyMap, outerUrl]);
+  const { orderBy, reverse } = useMemo(
+    () => ({ ...outerQuery, ...qs.parse(search) }),
+    [search, outerQuery],
+  );
 
   const getQuery = useMemo(() => {
     let defaultPagination = !pagination
@@ -149,24 +158,28 @@ export const TablePanel = ({
           current: '1',
         }
       : pagination;
-    const { query } = qs.parseUrl(outerUrl || '');
     const searchQuery = qs.parse(search);
-    const skip = searchQuery.skip || query.skip || '0';
+    const skip = searchQuery.skip || outerQuery.skip || '0';
 
     const limit =
-      searchQuery.limit || query.limit || defaultPagination.pageSize || '10';
+      searchQuery.limit ||
+      outerQuery.limit ||
+      defaultPagination.pageSize ||
+      '10';
 
     return {
-      ...query,
+      ...outerQuery,
       ...searchQuery,
       skip: skip,
       limit: limit,
     };
-  }, [outerUrl, search, pagination]);
+  }, [outerQuery, search, pagination]);
 
   useEffect(() => {
-    if (outerUrl) {
-      const { url } = qs.parseUrl(outerUrl);
+    if (queryUrl) {
+      const query = { ...getQuery } as qs.ParsedQuery<string>;
+      query.orderBy =
+        sortKeyMap[(query.orderBy as string) ?? ''] || query.orderBy;
 
       setState({
         ...state,
@@ -174,10 +187,8 @@ export const TablePanel = ({
       });
 
       sendRequest({
-        url: url,
-        query: {
-          ...getQuery,
-        },
+        url: queryUrl,
+        query,
       })
         .then(resp => {
           setState({
@@ -196,7 +207,7 @@ export const TablePanel = ({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [outerUrl, search]);
+  }, [queryUrl, search]);
 
   const handleTableChange = (pagination, filters, sorter) => {
     const { current, pageSize } = pagination;
@@ -210,9 +221,12 @@ export const TablePanel = ({
 
     console.log('sorter: ', sorter, sorter.order);
 
-    if (sorter) {
-      query.orderBy = sortKeyMap[sorter.field] || sorter.field;
+    if (sorter?.order) {
+      query.orderBy = sorter.field;
       query.reverse = sorter.order === 'ascend' ? 'false' : 'true';
+    } else {
+      delete query.orderBy;
+      delete query.reverse;
     }
 
     const url = qs.stringifyUrl({
@@ -231,8 +245,7 @@ export const TablePanel = ({
     _columns = columns?.map(c => {
       delete c.defaultSortOrder;
       if (c.key === orderBy) {
-        console.log(c.key, reverse);
-        c.defaultSortOrder = reverse === 'true' ? 'descend' : 'ascend';
+        c.sortOrder = reverse === 'true' ? 'descend' : 'ascend';
       }
       return c;
     });
