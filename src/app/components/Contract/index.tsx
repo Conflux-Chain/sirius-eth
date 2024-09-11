@@ -29,7 +29,10 @@ import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
-import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
+import {
+  convertCheckSum,
+  isAddressEqual,
+} from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface Props {
   contractDetail: any;
@@ -390,7 +393,7 @@ export const ContractOrTokenInfo = ({
         if (accounts[0]) {
           reqContract({ address: addressVal, fields: fieldsContract })
             .then(dataContractInfo => {
-              if (formatAddress(dataContractInfo.from) === accounts[0]) {
+              if (isAddressEqual(dataContractInfo.from, accounts[0])) {
                 setIsAdminError(false);
                 if (tokenIcon) {
                   reqToken({ address: addressVal }).then(tokenInfo => {

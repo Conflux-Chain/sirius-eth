@@ -35,6 +35,7 @@ export const Modal = ({
 }: Modal) => {
   const { t } = useTranslation();
   const { installed, login, authConnectStatus, accounts } = usePortal();
+  const checksumAddress = convertCheckSum(accounts[0]);
   const { isValid } = useCheckHook();
   let inValidModalTip = t(translations.connectWallet.modal.upgradeTipAddress);
 
@@ -109,7 +110,7 @@ export const Modal = ({
               {t(translations.connectWallet.modal.connectedWithFluentWallet)}
             </span>
             <span className="modal-portal-name">
-              {convertCheckSum(accounts[0])}
+              {checksumAddress}
               {/* <AddressContainer
                 value={accounts[0]}
                 link={false}
@@ -119,12 +120,9 @@ export const Modal = ({
             <span className="modal-portal-connected-tip">
               <span className="modal-portal-connected-copy">
                 {t(translations.connectWallet.modal.copyAddress)}{' '}
-                <CopyButton
-                  copyText={convertCheckSum(accounts[0])}
-                  size={10}
-                ></CopyButton>
+                <CopyButton copyText={checksumAddress} size={10}></CopyButton>
               </span>
-              <ScanLink href={`/address/${convertCheckSum(accounts[0])}`}>
+              <ScanLink href={`/address/${accounts[0]}`}>
                 {t(translations.connectWallet.modal.viewOnConfluxScan)}
               </ScanLink>
             </span>

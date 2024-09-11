@@ -31,7 +31,10 @@ import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
 import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
 import ENV_CONFIG from 'env';
-import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
+import {
+  convertCheckSum,
+  isAddressEqual,
+} from '@cfxjs/sirius-next-common/dist/utils/address';
 
 // @ts-ignore
 window.aaa = aaa;
@@ -396,8 +399,7 @@ export function Approval() {
           width: 1,
           render: (_, row) => {
             const disabled =
-              !accounts.length ||
-              accounts[0].toLowerCase() !== String(text).toLowerCase();
+              !accounts.length || !isAddressEqual(accounts[0], String(text));
 
             return (
               <Button
