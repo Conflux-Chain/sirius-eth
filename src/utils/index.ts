@@ -61,6 +61,7 @@ import {
   isEvmAddress as isAddress,
   formatAddress as _formatAddress,
   formatAddressHexToBase32,
+  isAddressEqual,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export {
@@ -271,15 +272,15 @@ export function checkIfContractByInfo(address: string, info: any, type?) {
     const commonInfo =
       info.contractInfo || info.tokenInfo || info.transferTokenInfo || {};
 
-    if (address === fromInfo.address) {
+    if (isAddressEqual(address, fromInfo.address)) {
       return true;
     }
 
-    if (address === toInfo.address) {
+    if (isAddressEqual(address, toInfo.address)) {
       return true;
     }
 
-    if (address === commonInfo.address) {
+    if (isAddressEqual(address, commonInfo.address)) {
       return true;
     }
 

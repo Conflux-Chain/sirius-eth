@@ -10,7 +10,6 @@ import {
   checkIfContractByInfo,
 } from '../../../utils';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
-import { formatAddress } from '../../../utils';
 import { token } from '../../../utils/tableColumns/token';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import BigNumber from 'bignumber.js';
@@ -25,6 +24,7 @@ import {
   fromDripToCfx,
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
+import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 export enum StatsType {
   overviewTransactions = 'overviewTransactions',
@@ -313,10 +313,8 @@ export const StatsCard = ({
                     if (tokens && tokens.list) {
                       const listWithTokenInfo = sourceList.map(item => {
                         if (tokenAddress.includes(item.hex)) {
-                          const tokenInfo = tokens.list.find(
-                            t =>
-                              formatAddress(t.address) ===
-                              formatAddress(item.hex),
+                          const tokenInfo = tokens.list.find(t =>
+                            isAddressEqual(t.address, item.hex),
                           );
                           if (tokenInfo)
                             return { ...item, token: { ...tokenInfo } };
@@ -429,13 +427,13 @@ export const StatsCard = ({
           if (d.contractInfo && d.contractInfo.verify) {
             verify = d.contractInfo.verify.result !== 0;
           }
-          const isContract = checkIfContractByInfo(d.base32, d);
+          const isContract = checkIfContractByInfo(d.hex, d);
           return (
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
                 <EVMAddressContainer
-                  value={formatAddress(d.base32)}
+                  value={d.hex}
                   alias={
                     d.contractInfo && d.contractInfo.name
                       ? d.contractInfo.name
@@ -445,7 +443,7 @@ export const StatsCard = ({
                   }
                   isMe={
                     accounts && accounts.length > 0
-                      ? formatAddress(accounts[0]) === formatAddress(d.base32)
+                      ? isAddressEqual(accounts[0], d.hex)
                       : false
                   }
                   verify={verify}
@@ -473,10 +471,10 @@ export const StatsCard = ({
                   token.render(d.token)
                 ) : (
                   <EVMAddressContainer
-                    value={formatAddress(d.hex)}
+                    value={d.hex}
                     isMe={
                       accounts && accounts.length > 0
-                        ? formatAddress(accounts[0]) === formatAddress(d.hex)
+                        ? isAddressEqual(accounts[0], d.hex)
                         : false
                     }
                     isContract={isContract}
@@ -489,17 +487,17 @@ export const StatsCard = ({
         });
       case 'miner':
         return data.map((d, i) => {
-          const isContract = checkIfContractByInfo(d.base32, d);
+          const isContract = checkIfContractByInfo(d.hex, d);
 
           return (
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
                 <EVMAddressContainer
-                  value={formatAddress(d.base32)}
+                  value={d.hex}
                   isMe={
                     accounts && accounts.length > 0
-                      ? formatAddress(accounts[0]) === formatAddress(d.base32)
+                      ? isAddressEqual(accounts[0], d.hex)
                       : false
                   }
                   isContract={isContract}
@@ -560,17 +558,17 @@ export const StatsCard = ({
         });
       case 'network':
         return data.map((d, i) => {
-          const isContract = checkIfContractByInfo(d.base32, d);
+          const isContract = checkIfContractByInfo(d.hex, d);
 
           return (
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
                 <EVMAddressContainer
-                  value={formatAddress(d.base32)}
+                  value={d.hex}
                   isMe={
                     accounts && accounts.length > 0
-                      ? formatAddress(accounts[0]) === formatAddress(d.base32)
+                      ? isAddressEqual(accounts[0], d.hex)
                       : false
                   }
                   isContract={isContract}
@@ -624,7 +622,7 @@ export const StatsCard = ({
           .sort((a, b) => b.gas - a.gas >= 0)
           .map((d, i) => ({
             name: i + 1,
-            address: formatAddress(d.base32),
+            address: d.hex,
             value: +d.gas,
           }));
         return <NetworkPie data={chartData} />;
