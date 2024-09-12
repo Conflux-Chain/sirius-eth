@@ -90,6 +90,8 @@ export function Approval() {
       spenderName: string;
       tokenInfo: {
         base32: string;
+        hex: string;
+        address: string;
         decimals: number;
         iconUrl: string;
         name: string;
@@ -167,7 +169,7 @@ export function Approval() {
                 ...l,
                 tokenInfo: {
                   ...l.tokenInfo,
-                  address: l.tokenInfo.base32,
+                  address: l.tokenInfo.hex,
                 },
               })),
             );
@@ -374,16 +376,21 @@ export function Approval() {
           key: 'contract',
           width: 1,
           render: (_, row) => {
-            return transactionColunms.to.render(
-              row.spenderInfo?.contract?.address || row.spender,
-              {
-                contractInfo: {
-                  verify: { result: 0 },
-                  ...row.spenderInfo.contract,
-                },
-                tokenInfo: row.spenderInfo.token,
+            const contractInfo = row.spenderInfo.contract ?? {};
+            const tokenInfo = row.spenderInfo.token ?? {};
+            const isContract = 'verify' in contractInfo;
+            const isToken = 'name' in tokenInfo;
+            return transactionColunms.to.render(row.spender, {
+              contractInfo: {
+                verify: { result: 0 },
+                ...contractInfo,
+                address: isContract ? row.spender : '',
               },
-            );
+              tokenInfo: {
+                ...tokenInfo,
+                address: isToken ? row.spender : '',
+              },
+            });
           },
         },
         {
