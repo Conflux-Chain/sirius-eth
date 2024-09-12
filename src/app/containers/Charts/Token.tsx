@@ -19,7 +19,7 @@ export function Token({
       query: {
         limit: '365',
         intervalType: 'day',
-        base32: address,
+        address,
       },
       formatter: data => {
         const data1: any = [];

@@ -10,10 +10,11 @@ import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import { Option } from 'styles/global-styles';
 import { usePortal } from 'utils/hooks/usePortal';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
-import { formatAddress, checkIfContractByInfo } from 'utils';
+import { checkIfContractByInfo } from 'utils';
 import { monospaceFont } from 'styles/variable';
 import { AccountWrapper } from 'utils/tableColumns/token';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
+import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 const { ContentWrapper } = tableColumnsUtils;
 
@@ -39,7 +40,7 @@ export function Accounts() {
             isFull={true}
             isMe={
               accounts && accounts.length > 0
-                ? formatAddress(accounts[0]) === formatAddress(value)
+                ? isAddressEqual(accounts[0], value)
                 : false
             }
             isContract={checkIfContractByInfo(value, row)}
