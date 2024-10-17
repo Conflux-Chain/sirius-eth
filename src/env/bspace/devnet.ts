@@ -36,4 +36,3 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
-export const ENV_ADDRESS = 'hex';
