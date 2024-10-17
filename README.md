@@ -84,7 +84,6 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
-export const ENV_ADDRESS = 'hex';
 ```
 
 ## add chain
@@ -125,7 +124,6 @@ export const ENV_ADDRESS = 'hex';
      },
    };
    export const ENV_LOGO = logo;
-   export const ENV_ADDRESS = 'hex';
    ```
 2. add environment variables in package.json's scripts for development
    ```json
