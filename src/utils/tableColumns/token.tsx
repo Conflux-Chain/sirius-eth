@@ -37,6 +37,7 @@ import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/I
 import { Tag } from '@cfxjs/antd';
 import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
 import ENV_CONFIG from 'env';
+import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 const fromTypeInfo = {
   arrow: {
@@ -86,7 +87,7 @@ const getFromType = (value: string): GetFromTypeReturnValueType => {
 
   return !filter
     ? 'arrow'
-    : formatAddress(filter) === formatAddress(value)
+    : isAddressEqual(formatAddress(filter), formatAddress(value))
     ? 'out'
     : 'in';
 };
@@ -152,7 +153,7 @@ export const renderAddress = (
       <EVMAddressContainer
         value={value}
         alias={alias}
-        link={formatAddress(filter) !== formatAddress(value)}
+        link={!isAddressEqual(formatAddress(filter), formatAddress(value))}
         contractCreated={row.contractCreated}
         verify={verify}
         isContract={isContract}

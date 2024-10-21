@@ -11,7 +11,6 @@ import { Transfers } from './Transfers';
 import { useTokenQuery } from '../../../utils/api';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import { formatAddress } from '../../../utils';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import DownIcon from '../../../images/down.png';
 import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
@@ -72,10 +71,6 @@ export function TokenDetail() {
   //   }
   // }
 
-  const isFC =
-    formatAddress(tokenAddress) ===
-    'cfx:achc8nxj7r451c223m18w2dwjnmhkd6rxawrvkvsy2';
-
   const menu = (
     <MenuWrapper>
       <Menu.Item>
@@ -126,13 +121,6 @@ export function TokenDetail() {
             <div className="basic-symbol">{`(${
               data.symbol || t(translations.general.notAvailable)
             })`}</div>
-            {isFC ? (
-              <div className="basic-link">
-                <Link href="https://fccfx.confluxscan.io/" target="_blank">
-                  {t(translations.token.fcMining)}
-                </Link>
-              </div>
-            ) : null}
             <DropdownWrapper overlay={menu} trigger={['click']}>
               <span onClick={e => e.preventDefault()}>
                 {t(translations.general.address.more.title)}{' '}
