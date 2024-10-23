@@ -192,6 +192,37 @@ export const ENV_LOGO = logo;
    ```bash
    yarn start:demo
    ```
+## Run with Docker
+
+Open and modify the `docker-compose.yml` file and run `docker-compose up -d --build`
+
+Modify the values of the following parameters as needed. Please note that some features of Conflux eSpace require API support from Core Space.
+
+```yml
+args:
+    - NETWORK_ID=1030
+    - NETWORK_NAME=Conflux eSpace
+    - NETWORK_TYPE=EVM_MAINNET
+      # Required
+    - SCAN_BACKEND_API=https://evm.confluxscan.io
+      # Required
+    - OPEN_API_HOST=https://evmapi.confluxscan.io
+      # Required
+    - RPC_SERVER=https://evm-cfxbridge.confluxrpc.com
+      # Required conflux core space open api
+    - OPEN_CORE_API=https://api.confluxscan.io
+      # Required conflux core space scan api
+    - SCAN_CORE_SCAN_API=https://www.confluxscan.io
+    - LOGO=
+    # Optional add the network to wallet config
+    - WALLET_CONFIG_RPC_URL=https://evm.confluxrpc.com
+    - WALLET_CONFIG_BLOCK_EXPLORER_URL=https://evm.confluxscan.io
+    - WALLET_CONFIG_NATIVE_CURRENCY_NAME=CFX
+    - WALLET_CONFIG_NATIVE_CURRENCY_SYMBOL=CFX
+    - WALLET_CONFIG_NATIVE_CURRENCY_DECIMALS=18
+    - ADDRESS_TYPE=hex
+```
+
 
 ## What can I do?
 

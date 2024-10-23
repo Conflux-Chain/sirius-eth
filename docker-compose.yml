@@ -1,0 +1,25 @@
+services:
+  scan:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+      # - NETWORK_ID=1030
+      # - NETWORK_NAME=Conflux eSpace
+      # - NETWORK_TYPE=EVM_MAINNET
+      - SCAN_BACKEND_API=https://evm.confluxscan.io
+      - OPEN_API_HOST=https://evmapi.confluxscan.io
+      - RPC_SERVER=https://evm-cfxbridge.confluxrpc.com
+      - OPEN_CORE_API=https://api.confluxscan.io
+      - SCAN_CORE_SCAN_API=https://www.confluxscan.io
+      # - LOGO=
+
+      # - WALLET_CONFIG_RPC_URL=https://evm.confluxrpc.com
+      # - WALLET_CONFIG_BLOCK_EXPLORER_URL=https://evm.confluxscan.io
+      # - WALLET_CONFIG_NATIVE_CURRENCY_NAME=CFX
+      # - WALLET_CONFIG_NATIVE_CURRENCY_SYMBOL=CFX
+      # - WALLET_CONFIG_NATIVE_CURRENCY_DECIMALS=18
+      # - ADDRESS_TYPE=hex
+    ports:
+      - "3000:3000"
+    restart: always

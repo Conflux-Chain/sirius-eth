@@ -15,7 +15,7 @@ import {
 
 const DEFAULT_NETWORK_CONFIG = ESPACE_MAINNET_CONFIG;
 
-const ENV_CONFIG = (() => {
+const _ENV_CONFIG = (() => {
   if (IS_ESPACE_MAINNET) {
     return ESPACE_MAINNET_CONFIG;
   } else if (IS_ESPACE_TESTNET) {
@@ -36,4 +36,9 @@ const ENV_CONFIG = (() => {
 
 export * from './env-constants';
 export * from './types';
+/**
+ * This makes it easy to replace strings directly in the script
+ * @see `docker/setupEnv.js`
+ */
+const ENV_CONFIG = _ENV_CONFIG;
 export default ENV_CONFIG;

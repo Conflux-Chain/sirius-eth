@@ -252,8 +252,15 @@ const DEVNET_NETWORK_OPTIONS = lodash.compact([
     url: '//net8890btc.confluxscan.net',
   },
 ]);
-export const NETWORK_OPTIONS = {
+export const _NETWORK_OPTIONS = {
   mainnet: MAINNET_NETWORK_OPTIONS,
   testnet: TESTNET_NETWORK_OPTIONS,
   devnet: DEVNET_NETWORK_OPTIONS,
 };
+
+
+/**
+ * This makes it easy to replace strings directly in the script
+ * @see `docker/setupEnv.js`
+ */
+export const NETWORK_OPTIONS = _NETWORK_OPTIONS;
