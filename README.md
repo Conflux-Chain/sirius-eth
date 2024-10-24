@@ -49,7 +49,7 @@ yarn build REACT_APP_EVM_TESTNET=true
 
 ## config
 
-> the config file is in `src/env/espace/xxx.ts`
+> the config file is in `src/env/espace/xxx.ts` & `src/env/espace/base.ts`
 
 ```ts
 // src/env/espace/xxx.ts
@@ -84,6 +84,56 @@ export const ENV_WALLET_CONFIG = {
   },
 };
 export const ENV_LOGO = logo;
+// if you want to change i18n, you can override the default i18n config by export ENV_LOCALES_EN & ENV_LOCALES_CN
+export const ENV_LOCALES_EN = {};
+export const ENV_LOCALES_CN = {};
+
+// src/env/espace/base.ts
+const baseColor = '#17B38A';
+export const ENV_THEME = {
+  primary: baseColor,
+  antdPrimaryButtonBg: '#7789D3',
+  buttonBg: 'rgba(0, 84, 254, 0.8)',
+  outlineColor: '#7789D3',
+  shadowColor: 'rgba(30, 61, 228, 0.2)',
+  searchButtonBg: '#AFE9D2',
+  searchButtonHoverBg: baseColor,
+  gasPriceLineBg: '#F0F4F3',
+  footerBg: '#05343F',
+  footerHighLightColor: '#AFE9D2',
+  linkColor: '#1e3de4',
+  linkHoverColor: '#0f23bd',
+  chartColors: [
+    '#7cb5ec',
+    '#434348',
+    '#f7a35c',
+    '#2b908f',
+    '#91e8e1',
+    '#90ed7d',
+    '#8085e9',
+    '#f15c80',
+    '#e4d354',
+    '#f45b5b',
+  ] as const,
+  mixedChartColors: ['#7cb5ec', '#90ed7d', '#434348'] as const,
+  pieChartColors: [
+    '#7cb5ec',
+    '#434348',
+    '#f7a35c',
+    '#2b908f',
+    '#91e8e1',
+    '#90ed7d',
+    '#8085e9',
+    '#f15c80',
+    '#e4d354',
+    '#f45b5b',
+  ] as const,
+  chartTitleColor: '#7789D3',
+  chartDetailLinkColor: '#1e3de4',
+};
+export const ENV_ICONS = {
+  imgArrow,
+};
 ```
 
 ## add chain
@@ -91,6 +141,7 @@ export const ENV_LOGO = logo;
 > Note: only support evm network
 
 1. You can copy the `src/env/espace` folder, name it the chain you plan to add, and modify its configuration.
+
    ```ts
    // src/env/demo/mainnet.ts
    export const ENV_NETWORK_ID = 11111111;
@@ -124,34 +175,77 @@ export const ENV_LOGO = logo;
      },
    };
    export const ENV_LOGO = logo;
+   export const ENV_LOCALES_EN = {};
+   export const ENV_LOCALES_CN = {};
+
+   // src/env/demo/base.ts
+   const baseColor = '#FFFFFF';
+   export const ENV_THEME = {
+     primary: baseColor,
+     antdPrimaryButtonBg: '#7789D3',
+     buttonBg: 'rgba(0, 84, 254, 0.8)',
+     outlineColor: '#7789D3',
+     shadowColor: 'rgba(30, 61, 228, 0.2)',
+     searchButtonBg: '#AFE9D2',
+     searchButtonHoverBg: baseColor,
+     gasPriceLineBg: '#F0F4F3',
+     footerBg: '#05343F',
+     footerHighLightColor: '#AFE9D2',
+     linkColor: '#1e3de4',
+     linkHoverColor: '#0f23bd',
+     chartColors: [
+       '#7cb5ec',
+       '#434348',
+       '#f7a35c',
+       '#2b908f',
+       '#91e8e1',
+       '#90ed7d',
+       '#8085e9',
+       '#f15c80',
+       '#e4d354',
+       '#f45b5b',
+     ] as const,
+     mixedChartColors: ['#7cb5ec', '#90ed7d', '#434348'] as const,
+     pieChartColors: [
+       '#7cb5ec',
+       '#434348',
+       '#f7a35c',
+       '#2b908f',
+       '#91e8e1',
+       '#90ed7d',
+       '#8085e9',
+       '#f15c80',
+       '#e4d354',
+       '#f45b5b',
+     ] as const,
+     chartTitleColor: '#7789D3',
+     chartDetailLinkColor: '#1e3de4',
+   };
+   export const ENV_ICONS = {
+     imgArrow,
+   };
    ```
+
 2. add environment variables in package.json's scripts for development
    ```json
    "scripts": {
-     "start:demo": "NODE_OPTIONS=--openssl-legacy-provider REACT_APP_DEMO_MAINNET=true react-app-rewired start",
+     "start:demo": "REACT_APP_DEMO_MAINNET=true yarn start:base",
    },
    ```
-3. use environment variables in the `src/env/env-constants.ts` file
-   ```ts
-   export const IS_DEMO_MAINNET =
-     process.env.REACT_APP_DEMO_MAINNET === 'true' ||
-     /^demo[.-]/.test(window.location.hostname);
-   ```
-4. use the chain config in the `src/env/index.ts` file
+3. use the chain config in the `src/env/index.ts` file
    ```ts
    const ENV_CONFIG = (() => {
+     export const IS_DEMO_MAINNET =
+       process.env.REACT_APP_DEMO_MAINNET === 'true' ||
+       /^demo[.-]/.test(window.location.hostname);
      if (IS_DEMO_MAINNET) {
        return DEMO_MAINNET_CONFIG;
-     } else if (IS_DEMO_TESTNET) {
-       return DEMO_TESTNET_CONFIG;
-     } else if (IS_DEMO_DEVNET) {
-       return DEMO_DEVNET_CONFIG;
      }
      // ...
      return DEFAULT_NETWORK_CONFIG;
    })();
    ```
-5. set network option in `src/utils/constants.ts`
+4. set network option in `src/utils/constants.ts`
    ```ts
    export const NETWORK_OPTIONS = lodash.compact([
      // demo
@@ -174,7 +268,7 @@ export const ENV_LOGO = logo;
      },
    ]);
    ```
-6. setup proxy in `src/setupProxy.js` for development
+5. setup proxy in `src/setupProxy.js` for development
    ```ts
    const configs = {
      demo_mainnet_url: 'https://demo.confluxscan.net/',
@@ -188,7 +282,7 @@ export const ENV_LOGO = logo;
      url = configs.demo_devnet_url;
    }
    ```
-7. start development
+6. start development
    ```bash
    yarn start:demo
    ```
