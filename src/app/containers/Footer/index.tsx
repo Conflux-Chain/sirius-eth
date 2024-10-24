@@ -36,7 +36,7 @@ import {
   Youtube,
 } from './Icon';
 import { addChain } from 'utils/chainManage';
-import ENV_CONFIG, { IS_FOREIGN_HOST, NETWORK_TYPES } from 'env';
+import ENV_CONFIG, { IS_ESPACE, IS_FOREIGN_HOST, IS_TESTNET } from 'env';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -108,7 +108,7 @@ export function Footer() {
       className="footer-link"
       // TODO-btc
       href={
-        ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+        IS_ESPACE && IS_TESTNET
           ? 'https://test.confluxhub.io/'
           : 'https://confluxhub.io/'
       }

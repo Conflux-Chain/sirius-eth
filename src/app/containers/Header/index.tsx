@@ -29,7 +29,7 @@ import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from '@cfxjs/sirius-next-common/dist/components/GasPriceDropdown';
 
-import ENV_CONFIG, { NETWORK_TYPES } from 'env';
+import ENV_CONFIG, { IS_ESPACE, IS_MAINNET, IS_TESTNET } from 'env';
 
 // TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {
@@ -165,11 +165,7 @@ export const Header = memo(() => {
     },
   ];
 
-  if (
-    [NETWORK_TYPES.EVM_MAINNET, NETWORK_TYPES.EVM_TESTNET].includes(
-      ENV_CONFIG.ENV_NETWORK_TYPE,
-    )
-  ) {
+  if (IS_ESPACE && (IS_MAINNET || IS_TESTNET)) {
     const TLD = getDomainTLD();
     supportAndHelpMenuItems.unshift({
       title: [
@@ -179,7 +175,7 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.developerAPI,
       afterClick: menuClick,
       href:
-        ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+        IS_ESPACE && IS_TESTNET
           ? `https://evmapi-testnet.confluxscan.${TLD}/doc`
           : `https://evmapi.confluxscan.${TLD}/doc`,
     });
@@ -191,13 +187,10 @@ export const Header = memo(() => {
       ],
       name: ScanEvent.menu.action.stakingAndGovernance,
       afterClick: menuClick,
-      href: iszh
-        ? ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+      href:
+        IS_ESPACE && IS_TESTNET
           ? 'https://test.confluxhub.io/governance/'
-          : 'https://confluxhub.io/governance/'
-        : ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
-        ? 'https://test.confluxhub.io/governance/'
-        : 'https://confluxhub.io/governance/',
+          : 'https://confluxhub.io/governance/',
     });
 
     ecosystemItems.push({
@@ -208,7 +201,7 @@ export const Header = memo(() => {
       name: ScanEvent.menu.action.crossSpace,
       afterClick: menuClick,
       href:
-        ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
+        IS_ESPACE && IS_TESTNET
           ? 'https://test.confluxhub.io/'
           : 'https://confluxhub.io/',
     });
@@ -225,7 +218,7 @@ export const Header = memo(() => {
     // });
   }
 
-  if (ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET) {
+  if (IS_ESPACE && IS_TESTNET) {
     toolItems.unshift({
       title: [t(translations.header.faucet), <Check size={18} key="check" />],
       name: ScanEvent.menu.action.faucet,

@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { publishRequestError } from 'utils';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import ENV_CONFIG, { NETWORK_TYPES, STAGE_FLAG } from 'env';
+import { IS_ESPACE, IS_MAINNET, STAGE_FLAG } from 'env';
 import { uniqueId } from 'lodash';
 
 const treeToFlat = tree => {
@@ -120,10 +120,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
 
   // TODO-btc: hide in bspace ?
   const AdvancedViewLink = useMemo(() => {
-    const sld =
-      ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_MAINNET
-        ? 'evm'
-        : 'evmtestnet';
+    const sld = IS_ESPACE && IS_MAINNET ? 'evm' : 'evmtestnet';
     const domain = window.location.hostname.includes('.io') ? 'io' : 'net';
 
     return `https://${sld}${STAGE_FLAG}.confluxscan.${domain}/tracer#${address}`;
