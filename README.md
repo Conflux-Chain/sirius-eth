@@ -290,7 +290,7 @@ export const ENV_ICONS = {
 ## Run with Docker
 
 1. nginx
-   Modify the value of `proxy_pass` in `docker/nginx.conf` to your Conflux Core Space backend URL.
+   Modify the value of `proxy_pass` in `docker/nginx.conf` to your Conflux eSpace backend URL.
 
 2. config.example
 
