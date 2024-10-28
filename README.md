@@ -287,6 +287,17 @@ export const ENV_ICONS = {
    yarn start:demo
    ```
 
+## Run with Docker
+
+1. nginx
+   Modify the value of `proxy_pass` in `docker/nginx.conf` to your Conflux eSpace backend URL.
+
+2. config.example
+
+Modify the `config.example` file with your needed.
+
+
+
 ## What can I do?
 
 Conflux Scan is still in its early stages compared to [Etherscan](https://etherscan.io). So
