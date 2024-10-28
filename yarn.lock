@@ -1981,10 +1981,10 @@
     react-popper "^2.2.3"
     styled-jsx "^3.2.5"
 
-"@cfxjs/sirius-next-common@0.1.17":
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-common/-/sirius-next-common-0.1.17.tgz#a4b736ea7be2b3e226a60b33c59f68b47c75e355"
-  integrity sha512-V6sKX+FJLEXGxKWCoPcooRcA/bfpPAVtlJDBfgXBLzAY6FtMdb+60ClABqCgN8W3LMWqNt3UmJunTEpLgsVuQg==
+"@cfxjs/sirius-next-common@0.1.19":
+  version "0.1.19"
+  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-common/-/sirius-next-common-0.1.19.tgz#1f93b77cf8fa88b0075195f798e4e408c408156a"
+  integrity sha512-d/Sf/+Mxym/09jHF0+Xhgtmayte4SWPvgfv8ehf7haZ9gz6794O0NUNLZ9vw+5mTzafbk/Pq7uDYeXmLYZjGUA==
   dependencies:
     "@cfx-kit/dapp-utils" "^0.2.3"
     "@cfx-kit/react-utils" "^0.0.29"
