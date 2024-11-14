@@ -162,6 +162,7 @@ export function App() {
     setLoading(true);
     reqProjectConfig()
       .then(resp => {
+        delete resp.referer;
         const networks = {
           ...NETWORK_OPTIONS,
         };
