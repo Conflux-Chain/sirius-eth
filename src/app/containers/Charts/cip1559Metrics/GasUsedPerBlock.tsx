@@ -23,7 +23,7 @@ export function GasUsedPerBlock({ preview = false }: ChildProps) {
           data1.push({
             x: d.blockNumber,
             y: Number(d.gasUsed),
-            name: dayjs(d.timestamp * 1000).format('dddd MMM DD, HH:mm:ss'),
+            name: dayjs(d.timestamp * 1000).format('dddd MMM DD, HH:mm:ss (UTC)'),
           });
         });
 
