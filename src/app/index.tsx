@@ -128,6 +128,14 @@ window.recaptchaOptions = {
   useRecaptchaNet: true,
 };
 
+export const PageLoading = () => {
+  return (
+    <StyledMaskWrapper>
+      <Loading></Loading>
+    </StyledMaskWrapper>
+  );
+};
+
 export function App() {
   const [globalData, setGlobalData] = useGlobalData();
   const { t, i18n } = useTranslation();
@@ -154,6 +162,7 @@ export function App() {
     setLoading(true);
     reqProjectConfig()
       .then(resp => {
+        delete resp.referer;
         const networks = {
           ...NETWORK_OPTIONS,
         };
@@ -361,10 +370,7 @@ export function App() {
                   />
                 </Helmet>
                 {loading ? (
-                  <StyledMaskWrapper>
-                    {/* <Spin spinning={loading} tip="Welcome to ConfluxScan" /> */}
-                    <Loading></Loading>
-                  </StyledMaskWrapper>
+                  <PageLoading />
                 ) : (
                   <>
                     <Header />

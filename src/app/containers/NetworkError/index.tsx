@@ -12,7 +12,7 @@ import { translations } from 'locales/i18n';
 import imgNetworkError from 'images/changeNetwork.png';
 import { useParams } from 'react-router-dom';
 import { getNetwork, gotoNetwork } from 'utils';
-import ENV_CONFIG, { NETWORK_TYPES } from 'env';
+import { IS_ESPACE, IS_TESTNET } from 'env';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 
 interface RouteParams {
@@ -27,9 +27,7 @@ export function NetworkError() {
   const [globalData] = useGlobalData();
   const { networks } = globalData;
   const {
-    network = ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
-      ? 'Tethys'
-      : 'Testnet',
+    network = IS_ESPACE && IS_TESTNET ? 'Tethys' : 'Testnet',
   } = useParams<RouteParams>();
 
   return (
@@ -47,10 +45,7 @@ export function NetworkError() {
           href="#"
           onClick={e => {
             e.preventDefault();
-            const networkId =
-              ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM_TESTNET
-                ? 1030
-                : 71;
+            const networkId = IS_ESPACE && IS_TESTNET ? 1030 : 71;
             const network = getNetwork(networks, networkId);
             gotoNetwork(network.url);
           }}
