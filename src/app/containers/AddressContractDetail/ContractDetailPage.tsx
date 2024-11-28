@@ -217,7 +217,7 @@ export const ContractDetailPage = memo(() => {
         </Middle>
         <Bottom key="bottom">
           <Table
-            key="table"
+            key={address}
             address={address}
             addressInfo={contractInfo}
             type="contract"

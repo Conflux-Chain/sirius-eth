@@ -110,6 +110,8 @@ export const TitleTotal = ({
   );
 };
 
+const defaultSortKeyMap = {};
+
 export const TablePanel = ({
   url: outerUrl,
   dataSource,
@@ -125,7 +127,7 @@ export const TablePanel = ({
   hideDefaultTitle,
   hideShadow,
   className,
-  sortKeyMap = {},
+  sortKeyMap = defaultSortKeyMap,
   ...others
 }: TableProp) => {
   const history = useHistory();
@@ -207,7 +209,7 @@ export const TablePanel = ({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryUrl, search]);
+  }, [outerUrl, queryUrl, search]);
 
   const handleTableChange = (pagination, filters, sorter) => {
     const { current, pageSize } = pagination;
