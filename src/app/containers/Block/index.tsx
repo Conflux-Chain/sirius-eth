@@ -6,7 +6,7 @@ import {
   TabLabel,
   TabsTablePanel,
 } from 'app/components/TabsTablePanel/Loadable';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Helmet } from 'react-helmet-async';
 import { DescriptionPanel } from './DescriptionPanel';
@@ -17,32 +17,42 @@ import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { Txns } from './Txns';
 
 export function Block() {
+  const history = useHistory();
   const bp = useBreakpoint();
   const { t } = useTranslation();
   const { hash } = useParams<{
     hash: string;
   }>();
-  const [
-    { transactionCount, hash: blockHash /*, refereeHashes*/ },
-    setBlockDetail,
-  ] = useState<any>({
+  const [blockDetail, setBlockDetail] = useState<any>({
     transactionCount: 0,
-    refereeHashes: [],
+    initial: true, // identify for send request or not
   });
+  const [loading, setLoading] = useState(false);
+  const { transactionCount, hash: blockHash } = blockDetail;
 
   useEffect(() => {
+    setLoading(true);
     reqBlockDetail({
       hash,
-    }).then(body => {
-      setBlockDetail(body);
-    });
+    })
+      .then(body => {
+        setBlockDetail(body);
+      })
+      .finally(() => setLoading(false));
   }, [hash]);
+  useEffect(() => {
+    if (!blockDetail.initial && !blockDetail.hash) {
+      history.push(`/notfound/${hash}`, {
+        type: 'block',
+      });
+    }
+  }, [history, hash, blockDetail]);
 
   const tabs = [
     {
       value: 'overview',
       label: t(translations.block.overview),
-      content: <DescriptionPanel />,
+      content: <DescriptionPanel data={blockDetail} loading={loading} />,
     },
     {
       value: 'transactions',
