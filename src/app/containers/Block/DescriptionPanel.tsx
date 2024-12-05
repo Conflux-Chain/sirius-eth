@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { useBlockQuery } from 'utils/api';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
@@ -12,16 +11,12 @@ import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/Ske
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { IncreasePercent } from '@cfxjs/sirius-next-common/dist/components/IncreasePercent';
 import { Security } from 'app/components/Security/Loadable';
-import { useHistory } from 'react-router-dom';
 import {
   getPercent,
   formatTimeStamp,
   toThousands,
   getEvmGasTargetUsedPercent,
 } from 'utils';
-// import { AddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer';
-// import { formatAddress } from 'utils';
-import { useParams } from 'react-router-dom';
 import BigNumber from 'bignumber.js';
 import iconCross from 'images/icon-crossSpace.svg';
 import {
@@ -68,26 +63,8 @@ const GasTargetUsage: React.FC<{
  *  - Skeleton: 显示文字 - 后续 react-ui/Skeleton 更新后会解决
  *  - title tooltip: 需要给定文案后确定哪些需要添加
  */
-export function DescriptionPanel() {
-  const { hash: blockHash } = useParams<{
-    hash: string;
-  }>();
-  const history = useHistory();
+export function DescriptionPanel({ data, loading }) {
   const { t } = useTranslation();
-  let loading = false;
-  const hashQuery = useMemo(() => ({ hash: blockHash }), [blockHash]);
-  const { data } = useBlockQuery(hashQuery);
-
-  useEffect(() => {
-    if (data && !data.hash) {
-      history.push(`/notfound/${blockHash}`, {
-        type: 'block',
-      });
-    }
-  }, [blockHash, data, history]);
-
-  const intervalToClear = useRef(false);
-  if (!data) loading = true;
 
   const {
     hash,
@@ -111,12 +88,6 @@ export function DescriptionPanel() {
     burntGasFee,
     coreBlock,
   } = data || {};
-
-  useEffect(() => {
-    return () => {
-      intervalToClear.current = false;
-    };
-  }, [intervalToClear]);
 
   const onlyCore = coreBlock === 1;
 
