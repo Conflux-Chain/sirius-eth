@@ -59,6 +59,7 @@ import {
 } from '@cfxjs/sirius-next-common/dist/utils';
 import BigNumber from 'bignumber.js';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import dayjs from 'dayjs';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -780,7 +781,11 @@ export const Detail = ({
               '--'
             ) : (
               <>
-                <Age from={syncTimestamp} retainDurations={4} />
+                <Age
+                  from={syncTimestamp}
+                  retainDurations={4}
+                  to={dayjs().valueOf()}
+                />
                 {` (${formatTimeStamp(syncTimestamp * 1000, 'timezone')})`}
               </>
             )}

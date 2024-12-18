@@ -117,7 +117,7 @@ export const ColumnAge = ({
       const second = /^\d+$/.test(value) ? value : dayjs(value).unix();
 
       return ageFormat === 'age' ? (
-        <Age from={second} />
+        <Age from={second} to={dayjs().valueOf()} />
       ) : (
         <div
           style={{
