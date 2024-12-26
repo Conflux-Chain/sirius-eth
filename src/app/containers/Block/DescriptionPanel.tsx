@@ -88,6 +88,7 @@ export function DescriptionPanel({ data, loading }) {
     burntGasFee,
     coreBlock,
   } = data || {};
+  const isEip1559Enabled = 'baseFeePerGas' in data;
 
   const onlyCore = coreBlock === 1;
 
@@ -258,7 +259,7 @@ export function DescriptionPanel({ data, loading }) {
               gasLimit,
               2,
             )})`}
-            {!onlyCore && (
+            {isEip1559Enabled && !onlyCore && (
               <GasTargetUsage
                 gasUsed={baseFeePerGasRef?.gasUsed ?? '0'}
                 tooltip={
@@ -292,7 +293,7 @@ export function DescriptionPanel({ data, loading }) {
           </SkeletonContainer>
         </Description>
 
-        {!onlyCore && (
+        {isEip1559Enabled && !onlyCore && (
           <>
             <Description
               title={
