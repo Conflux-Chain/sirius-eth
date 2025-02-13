@@ -11,10 +11,10 @@ export function CIP1559Metrics() {
 
   const header = {
     title: {
-      text: t(translations.highcharts.burntFeesAnalysis['CIP-1559Metrics']),
+      text: t(translations.highcharts.burntFeesAnalysis['EIP-1559Metrics']),
     },
     subtitle: {
-      text: t(translations.highcharts.burntFeesAnalysis['CIP-1559MetricsTips']),
+      text: t(translations.highcharts.burntFeesAnalysis['EIP-1559MetricsTips']),
     },
     breadcrumb: [
       {
@@ -22,8 +22,8 @@ export function CIP1559Metrics() {
         path: '/pow-charts',
       },
       {
-        name: t(translations.highcharts.burntFeesAnalysis['CIP-1559Metrics']),
-        path: '/cip-1559-metrics',
+        name: t(translations.highcharts.burntFeesAnalysis['EIP-1559Metrics']),
+        path: '/eip-1559-metrics',
       },
     ],
   };

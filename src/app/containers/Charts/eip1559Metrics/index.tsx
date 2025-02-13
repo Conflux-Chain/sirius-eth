@@ -17,10 +17,10 @@ export function Chart() {
     <StyledChartPreviewWrapper>
       <PageHeader
         subtitle={t(
-          translations.highcharts.burntFeesAnalysis['CIP-1559MetricsTips'],
+          translations.highcharts.burntFeesAnalysis['EIP-1559MetricsTips'],
         )}
       >
-        {t(translations.highcharts.burntFeesAnalysis['CIP-1559Metrics'])}
+        {t(translations.highcharts.burntFeesAnalysis['EIP-1559Metrics'])}
       </PageHeader>
 
       <Row gutter={[20, 20]}>

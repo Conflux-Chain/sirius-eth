@@ -93,7 +93,7 @@ import {
   ActiveAccounts,
   Contracts as ContractsCharts,
 } from './containers/Charts/Loadable';
-import { Chart as CIP1559Metrics } from './containers/Charts/cip1559Metrics/Loadable';
+import { Chart as EIP1559Metrics } from './containers/Charts/eip1559Metrics/Loadable';
 
 import enUS from '@cfxjs/antd/lib/locale/en_US';
 import zhCN from '@cfxjs/antd/lib/locale/zh_CN';
@@ -532,8 +532,8 @@ export function App() {
 
                           <Route
                             exact
-                            path="/cip-1559-metrics"
-                            component={CIP1559Metrics}
+                            path="/eip-1559-metrics"
+                            component={EIP1559Metrics}
                           />
 
                           <Route
