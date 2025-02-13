@@ -113,7 +113,7 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
       series: [
         {
           type: 'column',
-          name: `<span>CIP-1559</span>`,
+          name: `<span>EIP-1559</span>`,
           color: '#7cb5ec',
           tooltip: {
             valueSuffix: ' %',
@@ -122,7 +122,7 @@ export function PercentageOfTxTypeInBlock({ preview = false }: ChildProps) {
         },
         {
           type: 'column',
-          name: `<span>CIP-2930</span>`,
+          name: `<span>EIP-2930</span>`,
           color: '#434348',
           tooltip: {
             valueSuffix: ' %',
