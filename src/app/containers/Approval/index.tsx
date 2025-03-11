@@ -147,7 +147,7 @@ export function Approval() {
     setMsg('');
 
     if (text) {
-      if (isAddress(text as string)) {
+      if (isAddress(text as string, false)) {
         setLoading(true);
 
         const query: { account: string; tokenType?: string } = {
