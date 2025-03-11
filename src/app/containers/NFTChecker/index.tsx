@@ -37,7 +37,7 @@ export function NFTChecker() {
     '',
   );
   const validateAddress = (address, cb?) => {
-    if (isAddress(address)) {
+    if (isAddress(address, false)) {
       cb && cb();
       // setLoading(true);
       // isAccountAddress(address)

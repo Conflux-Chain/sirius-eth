@@ -104,6 +104,7 @@ import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 import ENV_CONFIG_LOCAL from 'env';
 import { useEnv } from '@cfxjs/sirius-next-common/dist/store/index';
+import { isBase32Address } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 // WebFontLoader.load({
 //   custom: {
@@ -411,7 +412,7 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (isAddress(address)) {
+                              if (isAddress(address, false)) {
                                 if (/[A-Z]/.test(address)) {
                                   return (
                                     <Redirect
@@ -419,7 +420,6 @@ export function App() {
                                     />
                                   );
                                 }
-
                                 return (
                                   <AddressContractDetailPage {...routeProps} />
                                 );
@@ -441,7 +441,7 @@ export function App() {
                               const address =
                                 routeProps.match.params.tokenAddress;
 
-                              if (isAddress(address)) {
+                              if (isAddress(address, false)) {
                                 if (/[A-Z]/.test(address)) {
                                   return (
                                     <Redirect
@@ -490,7 +490,7 @@ export function App() {
                                 /(\/.*\/)/,
                               )[1];
 
-                              if (isAddress(address)) {
+                              if (isAddress(address, false)) {
                                 if (/[A-Z]/.test(address)) {
                                   return (
                                     <Redirect
@@ -511,7 +511,10 @@ export function App() {
                             render={(routeProps: any) => {
                               const address = routeProps.match.params.address;
 
-                              if (lodash.isNil(address) || isAddress(address)) {
+                              if (
+                                lodash.isNil(address) ||
+                                isAddress(address, false)
+                              ) {
                                 if (
                                   !lodash.isNil(address) &&
                                   /[A-Z]/.test(address)

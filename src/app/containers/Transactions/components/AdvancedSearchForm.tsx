@@ -210,7 +210,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
         );
       },
       isAddress: (_, value) => {
-        if (!value || isAddress(value)) {
+        if (!value || isAddress(value, false)) {
           return Promise.resolve();
         }
         return Promise.reject(

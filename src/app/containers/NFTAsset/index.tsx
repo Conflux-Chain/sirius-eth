@@ -69,14 +69,6 @@ export function NFTAsset({
   const pageSize = Number(limit);
   const page = Math.floor((Number(skip) || 0) / pageSize) + 1;
 
-  const validateAddress = async function (address) {
-    if (isAddress(address)) {
-      return true;
-    }
-
-    return false;
-  };
-
   const handleNFTSearch = async () => {
     let NFTBalances: NFTBalancesType[] = [];
     let selectedNFT = {
@@ -115,7 +107,7 @@ export function NFTAsset({
       // @ts-ignore
       total = NFTs.total;
     } else {
-      if (await validateAddress(address)) {
+      if (isAddress(address, false)) {
         const data = await reqNFTBalance({
           query: {
             owner: formatAddress(address),
