@@ -47,8 +47,7 @@ export const AddressDetailPage = memo(() => {
 
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
   const addressLabel =
-    addressLabelMap?.[convertCheckSum(address)] ||
-    addressLabelMap?.[address.toLowerCase()];
+    addressLabelMap?.[address] || addressLabelMap?.[address.toLowerCase()];
 
   const menu = (
     <MenuWrapper>
@@ -106,7 +105,7 @@ export const AddressDetailPage = memo(() => {
           </Title>
           <HeadAddressLine>
             <span className="address">
-              {convertCheckSum(address)}
+              {address}
               {addressLabel ? (
                 <>
                   {' '}

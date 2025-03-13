@@ -51,7 +51,7 @@ export const ContractVerification = () => {
   const [respErrors, setRespErrors] = useState<Array<string>>([]);
 
   const isAddressValidator = (_, value) => {
-    if (!value || isAddress(value)) {
+    if (!value || isAddress(value, false)) {
       return Promise.resolve();
     }
     return Promise.reject(
@@ -252,7 +252,7 @@ export const ContractVerification = () => {
                       );
                       const address = value.trim();
 
-                      if (isAddress(address)) {
+                      if (isAddress(address, false)) {
                         return Promise.resolve();
                       } else {
                         return Promise.reject(new Error(textInvalidAddress));
