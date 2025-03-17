@@ -104,7 +104,6 @@ import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 
 import ENV_CONFIG_LOCAL from 'env';
 import { useEnv } from '@cfxjs/sirius-next-common/dist/store/index';
-import { isBase32Address } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 // WebFontLoader.load({
 //   custom: {
