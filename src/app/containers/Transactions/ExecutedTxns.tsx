@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  tokenColunms,
-  transactionColunms,
-  blockColunms,
+  tokenColumns,
+  transactionColumns,
+  blockColumns,
 } from 'utils/tableColumns';
 import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
@@ -13,7 +13,7 @@ interface Props {
   address: string;
 }
 
-export const ExcutedTxns = ({ address }: Props) => {
+export const ExecutedTxns = ({ address }: Props) => {
   const [ageFormat, toggleAgeFormat] = useAge();
   const [isAccount, setIsAccount] = useState(false);
 
@@ -21,20 +21,20 @@ export const ExcutedTxns = ({ address }: Props) => {
 
   const columnsWidth = [4, 3, 4, 5, 5, 3, 4, 4, 4];
   const columns = [
-    transactionColunms.hash,
-    transactionColunms.method,
-    blockColunms.blockHeight,
+    transactionColumns.hash,
+    transactionColumns.method,
+    blockColumns.blockHeight,
     {
-      ...tokenColunms.from,
+      ...tokenColumns.from,
       render(text, record, index) {
-        return tokenColunms.from.render(text, record, index, false);
+        return tokenColumns.from.render(text, record, index, false);
       },
     },
-    tokenColunms.to,
-    transactionColunms.value,
-    transactionColunms.gasPrice,
-    transactionColunms.gasFee,
-    transactionColunms.age(ageFormat, toggleAgeFormat),
+    tokenColumns.to,
+    transactionColumns.value,
+    transactionColumns.gasPrice,
+    transactionColumns.gasFee,
+    transactionColumns.age(ageFormat, toggleAgeFormat),
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
   let searchOptions = {
@@ -61,7 +61,7 @@ export const ExcutedTxns = ({ address }: Props) => {
           setIsAccount(await isAccountAddress(address));
         }
       } catch (e) {
-        console.log('excuted txns list, get address type error: ', e);
+        console.log('executed txns list, get address type error: ', e);
       }
     }
     fn();
