@@ -1,5 +1,5 @@
 import React from 'react';
-import { tokenColunms, blockColunms } from 'utils/tableColumns';
+import { tokenColumns, blockColumns } from 'utils/tableColumns';
 import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
 import { Title, Footer } from './components';
@@ -16,20 +16,20 @@ export const CRC721Txns = ({ address }: Props) => {
   const columnsWidth = [4, 4, 5, 5, 2, 4, 6, 5, 3];
 
   const columns = [
-    tokenColunms.txnHash,
-    blockColunms.blockHeight,
+    tokenColumns.txnHash,
+    blockColumns.blockHeight,
     {
-      ...tokenColunms.from,
+      ...tokenColumns.from,
       render(text, record, index) {
-        return tokenColunms.from.render(text, record, index, false);
+        return tokenColumns.from.render(text, record, index, false);
       },
     },
-    tokenColunms.to,
-    tokenColunms.fromType,
-    tokenColunms.tokenId(),
-    tokenColunms.token2,
-    tokenColunms.age(ageFormat, toggleAgeFormat),
-    tokenColunms.details,
+    tokenColumns.to,
+    tokenColumns.fromType,
+    tokenColumns.tokenId(),
+    tokenColumns.token2,
+    tokenColumns.age(ageFormat, toggleAgeFormat),
+    tokenColumns.details,
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
   const title = ({ total, listLimit }) => (
