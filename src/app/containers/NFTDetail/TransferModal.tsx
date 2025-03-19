@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Form, Input, Button, Modal, InputNumber } from '@cfxjs/antd';
+import { Form, Input, Button, InputNumber } from '@cfxjs/antd';
+import { Modal } from '@cfxjs/sirius-next-common/dist/components/Modal';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
@@ -151,7 +152,9 @@ export const TransferModal = ({
         addRecord({
           hash,
           info: JSON.stringify({
-            code: isNFT721 ? TXN_ACTION.tranferNFT : TXN_ACTION.tranferNFT1155,
+            code: isNFT721
+              ? TXN_ACTION.transferNFT
+              : TXN_ACTION.transferNFT1155,
             description: '',
             hash,
             id: id,
