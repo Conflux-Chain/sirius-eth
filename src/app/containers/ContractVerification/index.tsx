@@ -6,7 +6,8 @@ import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader
 import { Remark } from '@cfxjs/sirius-next-common/dist/components/Remark';
 import styled from 'styled-components';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { Form, Input, Button, Row, Col, Select, Collapse } from '@cfxjs/antd';
+import { Form, Input, Button, Row, Col, Select } from '@cfxjs/antd';
+import { Collapse } from '@cfxjs/sirius-next-common/dist/components/Collapse';
 import { isAddress } from 'utils';
 import {
   reqContractCompiler,
@@ -26,7 +27,6 @@ import { useLocation } from 'react-router-dom';
 import querystring from 'query-string';
 // import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
-const { Panel } = Collapse;
 const { Option } = Select;
 const AceEditorStyle = {
   width: '100%',
@@ -482,80 +482,85 @@ export const ContractVerification = () => {
                 </span>
               );
             }}
-          >
-            <Panel
-              header={
-                <span>
-                  {t(translations.contractVerification.contractLibraryAddress)}{' '}
-                  <small>
+            items={[
+              {
+                key: '1',
+                header: (
+                  <span>
                     {t(
-                      translations.contractVerification
-                        .contractLibraryAddressTip,
+                      translations.contractVerification.contractLibraryAddress,
+                    )}{' '}
+                    <small>
+                      {t(
+                        translations.contractVerification
+                          .contractLibraryAddressTip,
+                      )}
+                    </small>
+                  </span>
+                ),
+                className: 'collapse-body',
+                children: (
+                  <Form.List
+                    name="library"
+                    initialValue={Array.from(Array(10), (k, i) => ({
+                      key: i + 1,
+                      name: '',
+                      address: '',
+                    }))}
+                  >
+                    {fields => (
+                      <>
+                        {fields.map(({ key, name, ...restField }) => {
+                          return (
+                            <Row key={key}>
+                              <Col span={8}>
+                                <Form.Item
+                                  {...restField}
+                                  name={[name, 'name']}
+                                  label={t(
+                                    translations.contractVerification
+                                      .libraryName,
+                                    {
+                                      index: key + 1,
+                                    },
+                                  )}
+                                >
+                                  <Input placeholder="" />
+                                </Form.Item>
+                              </Col>
+                              <Col span={1} style={{ textAlign: 'center' }}>
+                                <Form.Item label=" ">&rarr;</Form.Item>
+                              </Col>
+                              <Col span={8}>
+                                <Form.Item
+                                  {...restField}
+                                  name={[name, 'address']}
+                                  label={t(
+                                    translations.contractVerification
+                                      .libraryContractAddress,
+                                    {
+                                      index: key + 1,
+                                    },
+                                  )}
+                                  rules={[
+                                    () => ({
+                                      validator: isAddressValidator,
+                                    }),
+                                  ]}
+                                >
+                                  <Input placeholder="" />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                          );
+                        })}
+                      </>
                     )}
-                  </small>
-                </span>
-              }
-              key="1"
-              className="collapse-body"
-            >
-              <Form.List
-                name="library"
-                initialValue={Array.from(Array(10), (k, i) => ({
-                  key: i + 1,
-                  name: '',
-                  address: '',
-                }))}
-              >
-                {fields => (
-                  <>
-                    {fields.map(({ key, name, ...restField }) => {
-                      return (
-                        <Row key={key}>
-                          <Col span={8}>
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'name']}
-                              label={t(
-                                translations.contractVerification.libraryName,
-                                {
-                                  index: key + 1,
-                                },
-                              )}
-                            >
-                              <Input placeholder="" />
-                            </Form.Item>
-                          </Col>
-                          <Col span={1} style={{ textAlign: 'center' }}>
-                            <Form.Item label=" ">&rarr;</Form.Item>
-                          </Col>
-                          <Col span={8}>
-                            <Form.Item
-                              {...restField}
-                              name={[name, 'address']}
-                              label={t(
-                                translations.contractVerification
-                                  .libraryContractAddress,
-                                {
-                                  index: key + 1,
-                                },
-                              )}
-                              rules={[
-                                () => ({
-                                  validator: isAddressValidator,
-                                }),
-                              ]}
-                            >
-                              <Input placeholder="" />
-                            </Form.Item>
-                          </Col>
-                        </Row>
-                      );
-                    })}
-                  </>
-                )}
-              </Form.List>
-            </Panel>
-          </Collapse>
+                  </Form.List>
+                ),
+              },
+            ]}
+          />
           <Form.Item
             style={{
               marginBottom: 0,
@@ -639,7 +644,7 @@ const StyledContractVerificationWrapper = styled.div`
     border-bottom: none !important;
     margin-top: -12px;
 
-    .ant-collapse-header {
+    .collapse-header {
       background-color: #ffffff;
 
       & > span {
@@ -647,11 +652,11 @@ const StyledContractVerificationWrapper = styled.div`
       }
     }
 
-    .ant-collapse-content-box {
+    .collapse-content-box {
       padding-top: 16px !important;
     }
 
-    .ant-collapse-arrow {
+    .collapse-arrow {
       float: right;
       margin-right: -1rem !important;
       color: var(--theme-color-link);
