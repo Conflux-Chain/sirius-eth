@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Space, Modal, Input } from '@cfxjs/antd';
+import { Space, Input } from '@cfxjs/antd';
 import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 import { formatTimeStamp } from 'utils';
 import { ContentWrapper } from 'utils/tableColumns/utils';
@@ -13,8 +13,8 @@ import styled from 'styled-components';
 import qs from 'query-string';
 import { CreateTxNote } from './CreateTxNote';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { confirm } from '@cfxjs/sirius-next-common/dist/components/Modal';
 
-const { confirm, warning } = Modal;
 const { Search } = Input;
 
 type Type = {
@@ -31,7 +31,6 @@ export function TxNote() {
   const [visible, setVisible] = useState(false);
   const [stage, setStage] = useState('create');
   const [list, setList] = useState<Type[]>([]);
-  const [loading, setLoading] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [globalData, setGlobalData] = useGlobalData();
   const [search, setSearch] = useState(() => {
@@ -44,12 +43,10 @@ export function TxNote() {
 
   useEffect(() => {
     try {
-      setLoading(true);
       const l = localStorage.getItem(LOCALSTORAGE_KEYS_MAP.txPrivateNote);
       if (l) {
         setList(JSON.parse(l));
       }
-      setLoading(false);
     } catch (e) {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -95,12 +92,11 @@ export function TxNote() {
 
   const handleClickC = (e, hash = '') => {
     if (list.length > 1000) {
-      warning({
+      confirm({
         title: t(translations.general.warning),
-        content: t(translations.general.exceedTip),
-        icon: null,
+        children: t(translations.general.exceedTip),
         okText: t(translations.general.buttonOk),
-        cancelText: t(translations.general.buttonCancel),
+        cancelText: false,
       });
 
       return;
@@ -127,14 +123,11 @@ export function TxNote() {
   const handleClickD = () => {
     confirm({
       title: t(translations.general.warning),
-      content: t(translations.general.deleteTip),
-      icon: null,
+      children: t(translations.general.deleteTip),
       okText: t(translations.general.buttonOk),
       cancelText: t(translations.general.buttonCancel),
       onOk() {
         const newList = list.filter(l => !selectedRowKeys.includes(l.h));
-
-        setLoading(true);
 
         localStorage.setItem(
           LOCALSTORAGE_KEYS_MAP.txPrivateNote,
@@ -157,10 +150,6 @@ export function TxNote() {
         handleSearch('');
 
         setList(newList);
-        setLoading(false);
-      },
-      onCancel() {
-        console.log('Cancel');
       },
     });
   };
@@ -245,7 +234,6 @@ export function TxNote() {
           l => l.h.includes(queryKey) || l.n.includes(queryKey),
         )}
         columns={columns}
-        loading={loading}
         rowKey="h"
         key={Math.random()}
         scroll={{ x: 800 }}
