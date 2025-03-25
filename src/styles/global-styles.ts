@@ -139,15 +139,6 @@ export const GlobalStyle = createGlobalStyle`
     color: #333333;
   }
 
-  // image preview text
-  .ant-image-mask-info {
-    font-size: 0;
-
-    > span {
-      font-size: 12px
-    }
-  }
-
   // .ant-pagination-next, .ant-pagination-prev {
   //   button.ant-pagination-item-link {
   //     display: flex;
