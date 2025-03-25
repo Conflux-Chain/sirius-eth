@@ -1,5 +1,6 @@
 import React from 'react';
-import { Row, Col, Divider } from '@cfxjs/antd';
+import { Row, Col } from '@cfxjs/antd';
+import { Divider } from '@cfxjs/sirius-next-common/dist/components/Divider';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -123,7 +124,7 @@ export const StyledChartPreviewWrapper = styled.div`
     color: var(--theme-color-chart-title);
   }
 
-  div.ant-divider.ant-divider-horizontal {
+  div.divider.divider-horizontal {
     margin: 0;
     color: var(--theme-color-chart-title);
   }
