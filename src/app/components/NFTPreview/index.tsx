@@ -26,7 +26,7 @@ import audioPlay from './audio-play.svg';
 import Link from '@zeit-ui/react-icons/link';
 import { Link as ALink } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { formatAddress } from 'utils';
-import { Tag } from '@cfxjs/antd';
+import { Tag } from '@cfxjs/sirius-next-common/dist/components/Tag';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { ThreeD } from './3D';
 import { addIPFSGateway } from 'utils';
@@ -571,7 +571,7 @@ const NFTCard = styled.div`
       position: absolute;
       top: 5px;
       right: 5px;
-      .ant-tag {
+      .sirius-tag {
         margin: 0;
         padding: 0 5px;
       }
