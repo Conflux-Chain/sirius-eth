@@ -4,7 +4,8 @@
  *
  */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { Image, Popover } from '@cfxjs/antd';
+import { Popover } from '@cfxjs/antd';
+import { Image } from '@cfxjs/sirius-next-common/dist/components/Image';
 import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
 import tokenIdNotFound from 'images/token/tokenIdNotFound.jpg';
 import styled from 'styled-components';
@@ -25,7 +26,7 @@ import audioPlay from './audio-play.svg';
 import Link from '@zeit-ui/react-icons/link';
 import { Link as ALink } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { formatAddress } from 'utils';
-import { Tag } from '@cfxjs/antd';
+import { Tag } from '@cfxjs/sirius-next-common/dist/components/Tag';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { ThreeD } from './3D';
 import { addIPFSGateway } from 'utils';
@@ -517,7 +518,7 @@ const NFTCard = styled.div`
   border: 1px solid #ebeced;
   border-radius: 5px;
 
-  .ant-image {
+  .sirius-image {
     position: relative;
     display: block;
     width: 100%;
@@ -544,13 +545,13 @@ const NFTCard = styled.div`
     }
   }
 
-  .ant-skeleton {
+  .skeleton {
     position: relative;
     width: 100%;
     max-width: 100%;
     padding-top: 100%;
 
-    .ant-skeleton-image {
+    .skeleton-image {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -570,7 +571,7 @@ const NFTCard = styled.div`
       position: absolute;
       top: 5px;
       right: 5px;
-      .ant-tag {
+      .sirius-tag {
         margin: 0;
         padding: 0 5px;
       }
