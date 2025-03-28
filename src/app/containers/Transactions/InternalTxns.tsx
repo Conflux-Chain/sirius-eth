@@ -121,7 +121,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
   // TODO-btc: hide in bspace ?
   const AdvancedViewLink = useMemo(() => {
     const sld = IS_ESPACE && IS_MAINNET ? 'evm' : 'evmtestnet';
-    const domain = window.location.hostname.includes('.io') ? 'io' : 'net';
+    const domain = window.location.hostname.includes('.org') ? 'org' : 'net';
 
     return `https://${sld}${STAGE_FLAG}.confluxscan.${domain}/tracer#${address}`;
   }, [address]);

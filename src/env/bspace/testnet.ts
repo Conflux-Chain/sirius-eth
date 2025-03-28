@@ -33,7 +33,7 @@ export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
   chainName: 'bSpace Testnet',
   rpcUrls: ['https://evmtestnet.confluxrpc.com'],
-  blockExplorerUrls: ['https://btctestnet.confluxscan.io/'],
+  blockExplorerUrls: ['https://btctestnet.confluxscan.org/'],
   nativeCurrency: {
     name: 'Conflux',
     symbol: 'CFX',

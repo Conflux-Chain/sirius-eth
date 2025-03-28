@@ -2,7 +2,7 @@
 
 <p align="center">Blockchain Explorer for Conflux Network.</p>
 
-Source code of [Conflux Scan](https://confluxscan.io)
+Source code of [Conflux Scan](https://confluxscan.org)
 
 ## environment
 
@@ -76,7 +76,7 @@ export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
   chainName: 'Conflux eSpace',
   rpcUrls: ['https://evm.confluxrpc.com'],
-  blockExplorerUrls: ['https://evm.confluxscan.io/'],
+  blockExplorerUrls: ['https://evm.confluxscan.org/'],
   nativeCurrency: {
     name: 'Conflux',
     symbol: 'CFX',
@@ -167,7 +167,7 @@ export const ENV_ICONS = {
      chainId: ENV_NETWORK_ID,
      chainName: 'Conflux Demo Space',
      rpcUrls: ['https://demo.confluxrpc.com'],
-     blockExplorerUrls: ['https://demo.confluxscan.io/'],
+     blockExplorerUrls: ['https://demo.confluxscan.org/'],
      nativeCurrency: {
        name: 'Conflux Demo',
        symbol: 'CDS',
@@ -272,7 +272,7 @@ export const ENV_ICONS = {
    ```ts
    const configs = {
      demo_mainnet_url: 'https://demo.confluxscan.net/',
-     demo_testnet_url: 'https://demo-testnet.confluxscan.io/',
+     demo_testnet_url: 'https://demo-testnet.confluxscan.org/',
      demo_devnet_url: 'https://demo-devnet.confluxscan.net/',
    };
    let url = configs.demo_mainnet_url;
