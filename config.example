@@ -13,7 +13,7 @@
             "https://evm.confluxrpc.com"
         ],
         "blockExplorerUrls": [
-            "https://evm.confluxscan.io/"
+            "https://evm.confluxscan.org/"
         ],
         "nativeCurrency": {
             "name": "Conflux",
