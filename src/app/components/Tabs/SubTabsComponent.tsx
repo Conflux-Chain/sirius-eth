@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '@cfxjs/react-ui';
+import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 import clsx from 'clsx';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 
@@ -31,6 +31,7 @@ export const SubTabs = ({
       {tabs.map((o, index) => (
         <Button
           key={o.key}
+          type="action"
           className={clsx('subtabs-tabItem', {
             'subtabs-tabItem-active': o.key === activeKey,
           })}
@@ -48,7 +49,7 @@ const StyledSubTabsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  .btn.subtabs-tabItem {
+  .subtabs-tabItem {
     border-radius: 1.1429rem;
     padding: 0 1rem;
     min-width: initial;
@@ -67,13 +68,9 @@ const StyledSubTabsWrapper = styled.div`
       color: #ffffff;
       background-color: var(--theme-color-button-bg);
     }
-
-    .text {
-      top: 0px !important;
-    }
   }
 
-  .subtabs-tabItem-active.btn {
+  .subtabs-tabItem-active {
     color: #ffffff;
     background-color: var(--theme-color-button-bg);
   }
