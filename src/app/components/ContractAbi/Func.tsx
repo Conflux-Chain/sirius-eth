@@ -3,7 +3,7 @@ import { Form } from '@cfxjs/antd';
 import { useTranslation } from 'react-i18next';
 import { Buffer } from 'buffer';
 import styled from 'styled-components';
-import { Button } from '@cfxjs/react-ui';
+import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 import { usePortal } from 'utils/hooks/usePortal';
 import lodash from 'lodash';
 import FuncBody from './FuncBody';
@@ -310,7 +310,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
     type === 'read' ? (
       <Button
         htmlType="submit"
-        variant="solid"
+        type="action"
         color="primary"
         className="btnComp"
         loading={queryLoading}
@@ -321,7 +321,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
       <ConnectButton>
         <Button
           htmlType="submit"
-          variant="solid"
+          type="action"
           color="primary"
           className="btnComp"
         >
@@ -370,7 +370,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
                 {btnComp}
                 {txHash && (
                   <Button
-                    variant="solid"
+                    type="action"
                     color="primary"
                     onClick={openTx}
                     className="viewBtn"
@@ -423,7 +423,7 @@ const Container = styled.div`
   .inputComp {
     margin-top: 8px;
   }
-  .btnComp.btn {
+  .btnComp {
     height: 30px;
     line-height: 30px;
     min-width: initial;
