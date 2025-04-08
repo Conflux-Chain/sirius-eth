@@ -473,6 +473,7 @@ export const ContractVerification = () => {
           </Form.Item>
           <Collapse
             bordered={false}
+            expandIconPosition="right"
             expandIcon={props => {
               return (
                 <span>
@@ -657,7 +658,6 @@ const StyledContractVerificationWrapper = styled.div`
     }
 
     .collapse-arrow {
-      float: right;
       margin-right: -1rem !important;
       color: var(--theme-color-link);
       text-decoration: underline;
