@@ -20,7 +20,7 @@ import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/A
 import { formatString } from 'utils';
 import { ICON_DEFAULT_TOKEN, ICON_DEFAULT_CONTRACT } from 'utils/constants';
 // import Edit3 from '@zeit-ui/react-icons/edit3';
-import { Image } from '@cfxjs/antd';
+import { Image } from '@cfxjs/sirius-next-common/dist/components/Image';
 
 export function ContractMetadata({ address, contractInfo }) {
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ export function ContractMetadata({ address, contractInfo }) {
         <SkeletonContainer shown={loading} style={skeletonStyle}>
           <CenterLine>
             <Image
-              width={24} // width: 16px + padingRight: 8px = 24px
+              width={24} // width: 16px + paddingRight: 8px = 24px
               style={{
                 paddingRight: '8px',
               }}
@@ -89,7 +89,7 @@ export function ContractMetadata({ address, contractInfo }) {
         <SkeletonContainer shown={loading} style={skeletonStyle}>
           <CenterLine>
             <Image
-              width={24} // width: 16px + padingRight: 8px = 24px
+              width={24} // width: 16px + paddingRight: 8px = 24px
               style={{
                 paddingRight: '8px',
               }}

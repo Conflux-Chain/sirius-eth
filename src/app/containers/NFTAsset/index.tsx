@@ -11,7 +11,8 @@ import styled from 'styled-components';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { toThousands, isAddress, formatAddress } from 'utils';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { Col, Pagination, Row, Tag } from '@cfxjs/antd';
+import { Col, Pagination, Row } from '@cfxjs/antd';
+import { Tag } from '@cfxjs/sirius-next-common/dist/components/Tag';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { NFTPreview } from 'app/components/NFTPreview';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
@@ -287,7 +288,7 @@ const TagsWrapper = styled.div`
   padding: 10px 0 0;
   border-bottom: 1px solid #ebeced;
 
-  .ant-tag {
+  .sirius-tag {
     margin-bottom: 10px;
     background: rgba(30, 61, 228, 0.04);
     border-radius: 16px;
