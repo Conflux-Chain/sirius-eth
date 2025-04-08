@@ -4,9 +4,9 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 // http-proxy-middleware doc https://www.npmjs.com/package/http-proxy-middleware#example
 
 const configs = {
-  evm_mainnet_url: 'https://evm.confluxscan.net/',
-  evm_testnet_url: 'https://evmtestnet-stage.confluxscan.io/',
-  evm_devnet_url: 'https://net8889eth.confluxscan.net/',
+  evm_mainnet_url: 'https://evm.confluxscan.org/',
+  evm_testnet_url: 'https://evmtestnet-stage.confluxscan.org/',
+  evm_devnet_url: 'https://net8889eth.confluxscan.org/',
   // TODO-btc
   btc_mainnet_url: 'https://btc.confluxscan.net/',
   // TODO-btc
