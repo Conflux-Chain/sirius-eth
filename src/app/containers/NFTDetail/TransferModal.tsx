@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Form, Input, Button, InputNumber } from '@cfxjs/antd';
+import { Form, Input, InputNumber } from '@cfxjs/antd';
+import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 import { Modal } from '@cfxjs/sirius-next-common/dist/components/Modal';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -204,7 +205,8 @@ export const TransferModal = ({
   return (
     <StyledWrapper>
       <Button
-        type="primary"
+        type="action"
+        color="primary"
         onClick={showTransferModal}
         className="button-transfer"
         loading={submitLoading}
