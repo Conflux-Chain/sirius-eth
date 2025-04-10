@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Grid } from '@cfxjs/react-ui';
+import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { translations } from 'locales/i18n';
@@ -84,18 +84,18 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
   return (
     <CardWrapper>
       <Card>
-        <Grid.Container
-          gap={1}
-          justify="flex-start"
+        <Row
+          gutter={[8, 8]}
+          justify="start"
           className="stats-container stats-container-pow-top"
         >
-          <Grid xs={24} sm={24} md={5}>
+          <Col xs={24} sm={24} lg2={5}>
             {Info(
               t(translations.statistics.home.currentEpoch),
               `${dashboardData.epochNumber ? dashboardData.epochNumber : '--'}`,
             )}
-          </Grid>
-          <Grid xs={24} sm={24} md={4}>
+          </Col>
+          <Col xs={24} sm={24} lg2={4}>
             {Info(
               t(translations.statistics.home.account),
               `${
@@ -107,8 +107,8 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
                   : '--'
               }`,
             )}
-          </Grid>
-          <Grid xs={24} sm={24} md={3}>
+          </Col>
+          <Col xs={24} sm={24} lg2={3}>
             {Info(
               // t(translations.statistics.home.transactions),
               <Link href={'/charts/tx'} className="info-link">
@@ -123,8 +123,8 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
                   : '--'
               }`,
             )}
-          </Grid>
-          <Grid xs={24} sm={24} md={3}>
+          </Col>
+          <Col xs={24} sm={24} lg2={3}>
             {Info(
               // t(translations.charts.tps.title),
               <Link href="/charts/tps" className="info-link">
@@ -132,8 +132,8 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               </Link>,
               lodash.isNil(tps) ? '--' : tps,
             )}
-          </Grid>
-          <Grid xs={24} sm={24} md={3}>
+          </Col>
+          <Col xs={24} sm={24} lg2={3}>
             {Info(
               t(translations.statistics.home.gasUsed),
               `${
@@ -145,8 +145,8 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
                   : '--'
               }`,
             )}
-          </Grid>
-          <Grid xs={24} sm={24} md={3}>
+          </Col>
+          <Col xs={24} sm={24} lg2={3}>
             {Info(
               // t(translations.charts.blockTime.title),
               <Link href="/charts/blocktime" className="info-link">
@@ -154,8 +154,8 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               </Link>,
               lodash.isNil(blockTime) ? '--' : blockTime + 's',
             )}
-          </Grid>
-          <Grid xs={24} sm={24} md={3}>
+          </Col>
+          <Col xs={24} sm={24} lg2={3}>
             {Info(
               // t(translations.charts.hashRate.title),
               <Link href="/charts/hashrate" className="info-link">
@@ -163,15 +163,15 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               </Link>,
               lodash.isNil(hashRate) ? '--' : hashRate,
             )}
-          </Grid>
+          </Col>
 
-          {/* <Grid xs={24} sm={24} md={4}>
+          {/* <Col xs={24} sm={24} lg2={4}>
             {Info(
               t(translations.statistics.home.currentBlockNumber),
               `${dashboardData.blockNumber ? dashboardData.blockNumber : '--'}`,
             )}
-          </Grid> */}
-          {/* <Grid xs={24} sm={24} md={4}>
+          </Col> */}
+          {/* <Col xs={24} sm={24} lg2={4}>
             {Info(
               t(translations.statistics.home.contract),
               // <Link to={'/chart/contractDeploy'} className="info-link">
@@ -186,16 +186,16 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
                   : '--'
               }`,
             )}
-          </Grid> */}
-        </Grid.Container>
+          </Col> */}
+        </Row>
         {/* <div className="stats-container stats-container-split"></div>
-        <Grid.Container
-          gap={1}
-          justify="flex-start"
+        <Row
+          gutter={[8, 8]}
+          justify="start"
           className="stats-container stats-container-pow-bottom"
         >
           
-          <Grid xs={24} sm={24} md={4}>
+          <Col xs={24} sm={24} lg2={4}>
             {Info(
               t(translations.charts.tokenTransferTps.title),
               lodash.isNil(transferData?.tps)
@@ -204,20 +204,20 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
                     withUnit: false,
                   }),
             )}
-          </Grid>
+          </Col>
           
-        </Grid.Container> */}
+        </Row> */}
       </Card>
 
       <div className="charts">
-        <Grid.Container gap={2.7} justify="center">
-          <Grid xs={24} sm={24} md={12}>
+        <Row gutter={[20, 20]} justify="center">
+          <Col xs={24} sm={24} lg2={12}>
             <Tx preview={true} />
-          </Grid>
-          <Grid xs={24} sm={24} md={12}>
+          </Col>
+          <Col xs={24} sm={24} lg2={12}>
             <AccountGrowth preview={true} />
-          </Grid>
-        </Grid.Container>
+          </Col>
+        </Row>
       </div>
     </CardWrapper>
   );
@@ -265,7 +265,7 @@ const CardWrapper = styled.div`
       padding: 0;
     }
 
-    & > .item {
+    & > .sirius-col {
       &:nth-child(1) {
         border-right: 1px solid #e8e9ea;
       }
@@ -290,7 +290,7 @@ const CardWrapper = styled.div`
       padding: 0;
     }
 
-    & > .item {
+    & > .sirius-col {
       ${media.m} {
         max-width: 100%;
         border-right: none !important;

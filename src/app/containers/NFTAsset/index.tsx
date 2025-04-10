@@ -11,7 +11,8 @@ import styled from 'styled-components';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { toThousands, isAddress, formatAddress } from 'utils';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { Col, Pagination, Row } from '@cfxjs/antd';
+import { Pagination } from '@cfxjs/antd';
+import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
 import { Tag } from '@cfxjs/sirius-next-common/dist/components/Tag';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { NFTPreview } from 'app/components/NFTPreview';
@@ -240,7 +241,7 @@ export function NFTAsset({
                   <EVMAddressContainer value={selectedNFT.contract} />
                 </span>
               </div>
-              <Row gutter={20}>
+              <Row gutter={[20, 20]}>
                 {NFTs.map(({ tokenId, amount, owner }) => (
                   <Col xs={24} sm={12} lg={6} xl={4} key={tokenId}>
                     <NFTPreview
@@ -342,9 +343,5 @@ const NFTWrapper = styled.div`
         vertical-align: 1px;
       }
     }
-  }
-
-  .ant-col {
-    padding-bottom: 20px;
   }
 `;
