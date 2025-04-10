@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import qs from 'query-string';
 import lodash from 'lodash';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Form, Input, Button, Select, DatePicker } from '@cfxjs/antd';
+import { Form, Input, Select, DatePicker } from '@cfxjs/antd';
+import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
 import { ColProps, ColSize } from '@cfxjs/antd/es/col';
 import {
@@ -751,7 +752,8 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
           <StyledButtonWrapper>
             <Button
               className="advanced-search-button"
-              type="primary"
+              type="action"
+              color="primary"
               htmlType="submit"
             >
               {t(translations.general.advancedSearch.button.lookup)}
@@ -760,6 +762,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
           <StyledButtonWrapper>
             <Button
               className="advanced-search-button"
+              type="action"
               style={{ marginLeft: '8px' }}
               onClick={handleReset}
             >
