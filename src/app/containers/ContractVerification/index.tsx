@@ -6,7 +6,8 @@ import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader
 import { Remark } from '@cfxjs/sirius-next-common/dist/components/Remark';
 import styled from 'styled-components';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { Form, Input, Row, Col, Select } from '@cfxjs/antd';
+import { Form, Input, Select } from '@cfxjs/antd';
+import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
 import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 import { Collapse } from '@cfxjs/sirius-next-common/dist/components/Collapse';
 import { isAddress } from 'utils';

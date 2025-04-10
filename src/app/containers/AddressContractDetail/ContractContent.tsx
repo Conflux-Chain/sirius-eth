@@ -14,7 +14,7 @@ import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { Tag } from '@cfxjs/sirius-next-common/dist/components/Tag';
 import clsx from 'clsx';
-import { Row, Col } from '@cfxjs/antd';
+import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { CFX } from 'utils/constants';
 import lodash from 'lodash';
