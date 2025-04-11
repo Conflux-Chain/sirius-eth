@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { StyledCard as Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';

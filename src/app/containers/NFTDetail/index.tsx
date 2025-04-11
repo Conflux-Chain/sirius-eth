@@ -4,11 +4,12 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { StyledCard as Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { NFTPreview } from 'app/components/NFTPreview';
 import styled from 'styled-components';
-import { Row, Col, message, Typography } from '@cfxjs/antd';
+import { message, Typography } from '@cfxjs/antd';
+import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
 import { Collapse } from '@cfxjs/sirius-next-common/dist/components/Collapse';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
@@ -495,6 +496,7 @@ const StyledWrapper = styled.div`
     right: 10px;
     top: 10px;
     z-index: 2;
+    min-width: 124px;
   }
 `;
 

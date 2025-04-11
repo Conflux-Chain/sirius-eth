@@ -5,8 +5,10 @@ import { translations } from 'locales/i18n';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Remark } from '@cfxjs/sirius-next-common/dist/components/Remark';
 import styled from 'styled-components';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
-import { Form, Input, Button, Row, Col, Select } from '@cfxjs/antd';
+import { StyledCard as Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { Form, Input, Select } from '@cfxjs/antd';
+import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
+import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 import { Collapse } from '@cfxjs/sirius-next-common/dist/components/Collapse';
 import { isAddress } from 'utils';
 import {
@@ -473,6 +475,7 @@ export const ContractVerification = () => {
           </Form.Item>
           <Collapse
             bordered={false}
+            expandIconPosition="right"
             expandIcon={props => {
               return (
                 <span>
@@ -577,7 +580,8 @@ export const ContractVerification = () => {
               </div>
             ) : null}
             <Button
-              type="primary"
+              type="action"
+              color="primary"
               htmlType="submit"
               loading={loading}
               className="submit-button"
@@ -657,7 +661,6 @@ const StyledContractVerificationWrapper = styled.div`
     }
 
     .collapse-arrow {
-      float: right;
       margin-right: -1rem !important;
       color: var(--theme-color-link);
       text-decoration: underline;

@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { Spinner } from '@cfxjs/react-ui';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
+import { StyledCard as Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Description } from '@cfxjs/sirius-next-common/dist/components/Description';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -844,7 +844,7 @@ export const Detail = ({
                       : confirmedEpochCount,
                   })}
                   {partLoading ? (
-                    <Spinner
+                    <Spin
                       size="small"
                       style={{ display: 'inline-block', marginLeft: 5 }}
                     />

@@ -7,8 +7,8 @@ import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader
 import { AddressLabel } from './AddressLabel';
 import { TxNote } from './TxNote';
 import { File } from './File';
-import { Row, Col } from '@cfxjs/antd';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
+import { StyledCard as Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { useLocation, useHistory } from 'react-router-dom';
 import qs from 'query-string';
 
@@ -82,6 +82,10 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    .sirius-btn {
+      min-width: 124px;
+    }
   }
 
   div.card.sirius-card {
