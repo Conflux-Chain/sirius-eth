@@ -11,7 +11,7 @@ import { useEffectOnce } from 'react-use';
 import { AddressDetailPage, ContractDetailPage } from './Loadable';
 import { isAccountAddress, isAddress, isZeroAddress } from '../../../utils';
 import styled from 'styled-components';
-import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
+import { StyledCard as Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
