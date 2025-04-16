@@ -8,7 +8,8 @@ import { StyledCard as Card } from '@cfxjs/sirius-next-common/dist/components/Ca
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { NFTPreview } from 'app/components/NFTPreview';
 import styled from 'styled-components';
-import { message, Typography } from '@cfxjs/antd';
+import { message } from '@cfxjs/antd';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Row, Col } from '@cfxjs/sirius-next-common/dist/components/Grid';
 import { Collapse } from '@cfxjs/sirius-next-common/dist/components/Collapse';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
@@ -33,8 +34,6 @@ import { TransferModal } from './TransferModal';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import dayjs from 'dayjs';
 import _ from 'lodash';
-
-const { Text } = Typography;
 
 const AceEditorStyle = {
   width: 'initial',
@@ -61,10 +60,10 @@ const TraitPanel = ({ data = [] }: { data: Array<StringAttributes> }) => {
         {data.map(d => (
           <Col span={6} key={d.trait_type}>
             <div className="container">
-              <Text className="type" ellipsis={{ tooltip: d.trait_type }}>
+              <Text className="type" maxWidth="100%">
                 {d.trait_type}
               </Text>
-              <Text className="value" ellipsis={{ tooltip: d.value }}>
+              <Text className="value" maxWidth="100%">
                 {d.value}
               </Text>
             </div>
@@ -111,7 +110,7 @@ const StyledTraitPanelWrapper = styled.div`
   }
 
   .type {
-    color: var(--theme-color-gray4);
+    color: var(--theme-color-gray4) !important;
     font-weight: 500;
     font-size: 12px;
     margin-bottom: 12px;

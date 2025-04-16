@@ -29,11 +29,11 @@ export function Statistics() {
   const history = useHistory();
   const [tabValue, setTabValue] = useState(statsType || 'overview');
   const [statsData, setStatsData] = useState({});
-  const timespan = ['24h', '3d', '7d'];
+  const timeSpan = ['24h', '3d', '7d'];
 
   let { span = '7d' } = queryString.parse(window.location.search);
 
-  if (!timespan.includes(span + '')) span = '7d';
+  if (!timeSpan.includes(span + '')) span = '7d';
 
   const title = t(translations.statistics.statistics);
 
@@ -87,7 +87,7 @@ export function Statistics() {
   const spanButtons = span => {
     return (
       <SpanButtonsWrapper>
-        {timespan.map(v => (
+        {timeSpan.map(v => (
           <span
             key={v}
             className={`btn ${span === v ? 'active' : ''}`}
