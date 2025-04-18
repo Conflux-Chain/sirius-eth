@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { Space, Input } from '@cfxjs/antd';
+import { Input } from '@cfxjs/antd';
 import { formatTimeStamp } from 'utils';
 import { ContentWrapper } from 'utils/tableColumns/utils';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useGlobalData } from 'utils/hooks/useGlobal';
+import { Space } from '@cfxjs/sirius-next-common/dist/components/Space';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
