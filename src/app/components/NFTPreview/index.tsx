@@ -4,7 +4,7 @@
  *
  */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { Popover } from '@cfxjs/antd';
+import { Popover } from '@cfxjs/sirius-next-common/dist/components/Popover';
 import { Image } from '@cfxjs/sirius-next-common/dist/components/Image';
 import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
 import tokenIdNotFound from 'images/token/tokenIdNotFound.jpg';
@@ -357,9 +357,10 @@ export const NFTPreview = React.memo(
       } else if (type === 'preview') {
         return imageUri ? (
           <PopoverWrapper
-            placement="right"
-            trigger="click"
-            overlayClassName="image-preview-popover"
+            positioning={{
+              placement: 'right',
+            }}
+            containerClassName="image-preview-popover"
             content={
               <>
                 {contractAddress === epiKProtocolKnowledgeBadge ? (
@@ -391,8 +392,11 @@ export const NFTPreview = React.memo(
                 ) : null}
               </>
             }
-            onVisibleChange={(visible: boolean) => {
-              setPreviewIcon(visible ? nftPreviewActive : nftPreview);
+            onOpen={() => {
+              setPreviewIcon(nftPreviewActive);
+            }}
+            onClose={() => {
+              setPreviewIcon(nftPreview);
             }}
           >
             <Text tag="span" hoverValue={t(translations.general.preview)}>
