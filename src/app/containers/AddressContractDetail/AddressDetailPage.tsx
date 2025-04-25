@@ -15,7 +15,11 @@ import { Main, Title, Bottom, HeadAddressLine, Top, Head } from './layouts';
 import { Table } from './Loadable';
 import { isZeroAddress } from '../../../utils';
 import { useAccount } from '../../../utils/api';
-import { Dropdown, Menu } from '@cfxjs/antd';
+import {
+  DropdownMenu,
+  MenuContainer,
+  MenuItem,
+} from '@cfxjs/sirius-next-common/dist/components/Dropdown';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
@@ -51,7 +55,7 @@ export const AddressDetailPage = memo(() => {
 
   const menu = (
     <MenuWrapper>
-      <Menu.Item>
+      <MenuItem>
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a
           onClick={e => {
@@ -67,7 +71,7 @@ export const AddressDetailPage = memo(() => {
             ],
           )}
         </a>
-      </Menu.Item>
+      </MenuItem>
     </MenuWrapper>
   );
 
@@ -126,7 +130,7 @@ export const AddressDetailPage = memo(() => {
               <Copy address={address} />
               <Qrcode address={address} />
               <Debank address={address} />
-              <DropdownWrapper overlay={menu} trigger={['hover']}>
+              <DropdownWrapper overlay={menu}>
                 <span onClick={e => e.preventDefault()}>
                   {t(translations.general.address.more.title)}{' '}
                   <img
@@ -157,7 +161,7 @@ export const AddressDetailPage = memo(() => {
   );
 });
 
-export const DropdownWrapper = styled(Dropdown)`
+export const DropdownWrapper = styled(DropdownMenu)`
   position: absolute;
   right: 0;
   top: 0;
@@ -176,12 +180,10 @@ export const DropdownWrapper = styled(Dropdown)`
   }
 `;
 
-export const MenuWrapper = styled(Menu)`
+export const MenuWrapper = styled(MenuContainer)`
   min-width: 100px;
 
-  li {
-    list-style: none;
-
+  .sirius-dropdown-menu-item {
     &:before {
       display: none;
     }
