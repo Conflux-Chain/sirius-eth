@@ -23,7 +23,7 @@ import {
   fromDripToCfx,
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
-import { Progress } from '@cfxjs/antd';
+import { Progress } from '@cfxjs/sirius-next-common/dist/components/Progress';
 
 const GasTargetUsage: React.FC<{
   gasUsed: string;
@@ -39,7 +39,7 @@ const GasTargetUsage: React.FC<{
         gapDegree={150}
         showInfo={false}
         strokeWidth={10}
-        strokeColor="#4AC2AB"
+        strokeColor="#4ac2ab"
         trailColor="#eeeeee"
         percent={Math.min(value, 100)}
         width={35}

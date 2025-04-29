@@ -13,7 +13,7 @@ import {
 } from 'utils/';
 // import imgPivot from 'images/pivot.svg';
 import { ColumnAge } from './utils';
-import { Progress } from '@cfxjs/antd';
+import { Progress } from '@cfxjs/sirius-next-common/dist/components/Progress';
 import BigNumber from 'bignumber.js';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
