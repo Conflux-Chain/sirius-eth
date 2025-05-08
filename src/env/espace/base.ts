@@ -3,6 +3,7 @@ const baseColor = '#17B38A';
 export const ENV_THEME = {
   primary: baseColor,
   antdPrimaryButtonBg: '#7789D3',
+  highlightBg: '#eefffb',
   buttonBg: 'rgba(0, 84, 254, 0.8)',
   outlineColor: '#7789D3',
   shadowColor: 'rgba(30, 61, 228, 0.2)',

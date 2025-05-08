@@ -38,6 +38,7 @@ import { Tag } from '@cfxjs/antd';
 import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
 import ENV_CONFIG from 'env';
 import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 
 const fromTypeInfo = {
   arrow: {
@@ -150,15 +151,17 @@ export const renderAddress = (
 
   return (
     <>
-      <EVMAddressContainer
-        value={value}
-        alias={alias}
-        link={!isAddressEqual(formatAddress(filter), formatAddress(value))}
-        contractCreated={row.contractCreated}
-        verify={verify}
-        isContract={isContract}
-        nametagInfo={getNametagInfo(row)}
-      />
+      <ValueHighlight scope="address" value={value}>
+        <EVMAddressContainer
+          value={value}
+          alias={alias}
+          link={!isAddressEqual(formatAddress(filter), formatAddress(value))}
+          contractCreated={row.contractCreated}
+          verify={verify}
+          isContract={isContract}
+          nametagInfo={getNametagInfo(row)}
+        />
+      </ValueHighlight>
       {type === 'from' && withArrow && (
         <ImgWrap src={fromTypeInfo[getFromType(value)].src} />
       )}

@@ -3,6 +3,7 @@ const baseColor = '#F7931A';
 export const ENV_THEME = {
   primary: baseColor,
   antdPrimaryButtonBg: baseColor,
+  highlightBg: '#eefffb',
   buttonBg: 'rgb(247, 147, 26, 0.8)',
   outlineColor: baseColor,
   shadowColor: 'rgb(247, 147, 26, 0.2)',
