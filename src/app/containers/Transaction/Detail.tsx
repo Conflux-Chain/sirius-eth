@@ -217,11 +217,13 @@ export const Detail = ({
     (isFull = false, address) => {
       const addr = formatAddress(address);
       return (
-        <StyledHighlight scope="address" value={addr}>
-          <EVMAddressContainer value={addr} isFull={isFull} />{' '}
+        <span>
+          <StyledHighlight scope="address" value={addr}>
+            <EVMAddressContainer value={addr} isFull={isFull} />
+          </StyledHighlight>{' '}
           {nametags[addr]?.nameTag ? `(${nametags[addr]?.nameTag})` : null}{' '}
           <CopyButton copyText={addr} />
-        </StyledHighlight>
+        </span>
       );
     },
     [nametags],
