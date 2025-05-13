@@ -32,6 +32,7 @@ import {
   fromDripToCfx,
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
+import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 
 const StyledHashWrapper = styled.span`
   padding-left: 16px;
@@ -182,13 +183,15 @@ export const from = {
   render: (value, row) => {
     const isContract = checkIfContractByInfo(value, row);
     return (
-      <EVMAddressContainer
-        value={value}
-        alias={row.fromContractInfo ? row.fromContractInfo.name : ''}
-        contractCreated={row.contractCreated}
-        isContract={isContract}
-        nametagInfo={getNametagInfo(row)}
-      />
+      <ValueHighlight scope="address" value={value}>
+        <EVMAddressContainer
+          value={value}
+          alias={row.fromContractInfo ? row.fromContractInfo.name : ''}
+          contractCreated={row.contractCreated}
+          isContract={isContract}
+          nametagInfo={getNametagInfo(row)}
+        />
+      </ValueHighlight>
     );
   },
 };
@@ -222,14 +225,16 @@ export const to = {
     }
 
     return (
-      <EVMAddressContainer
-        value={value}
-        alias={alias}
-        contractCreated={row.contractCreated}
-        verify={verify}
-        isContract={isContract}
-        nametagInfo={getNametagInfo(row)}
-      />
+      <ValueHighlight scope="address" value={value}>
+        <EVMAddressContainer
+          value={value}
+          alias={alias}
+          contractCreated={row.contractCreated}
+          verify={verify}
+          isContract={isContract}
+          nametagInfo={getNametagInfo(row)}
+        />
+      </ValueHighlight>
     );
   },
 };
@@ -333,11 +338,13 @@ export const method = {
     }
 
     return (
-      <Text tag="span" hoverValue={text}>
-        <StyledMethodContainerWrapper>
-          <StyledMethodWrapper>{text}</StyledMethodWrapper>
-        </StyledMethodContainerWrapper>
-      </Text>
+      <MethodHighlight scope="method" value={text}>
+        <Text tag="span" hoverValue={text}>
+          <StyledMethodContainerWrapper>
+            <StyledMethodWrapper>{text}</StyledMethodWrapper>
+          </StyledMethodContainerWrapper>
+        </Text>
+      </MethodHighlight>
     );
   },
 };
@@ -421,6 +428,9 @@ const ImageWrap = styled.span`
 
 const StyledMethodContainerWrapper = styled.span`
   display: flex;
+`;
+const MethodHighlight = styled(ValueHighlight)`
+  padding: 0;
 `;
 const StyledMethodWrapper = styled.span`
   background: rgba(171, 172, 181, 0.1);
