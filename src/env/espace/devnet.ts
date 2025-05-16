@@ -25,8 +25,8 @@ export const ENV_RPC_SERVER =
 export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
   chainName: 'eSpace Devnet',
-  rpcUrls: ['https://net8889eth-cfxbridge.confluxrpc.com'],
-  blockExplorerUrls: ['https://net8889eth.confluxscan.net/'],
+  rpcUrls: [ENV_RPC_SERVER],
+  blockExplorerUrls: [window.location.origin],
   nativeCurrency: {
     name: 'Conflux',
     symbol: 'CFX',
