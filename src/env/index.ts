@@ -50,12 +50,11 @@ const ENV_CONFIG = (() => {
   return DEFAULT_NETWORK_CONFIG;
 })();
 
+export * from './env-constants';
+export * from './types';
 export const IS_ESPACE = ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.EVM;
 export const IS_BSPACE = ENV_CONFIG.ENV_NETWORK_TYPE === NETWORK_TYPES.BTC;
 export const IS_MAINNET = ENV_CONFIG.ENV_CHAIN_TYPE === CHAIN_TYPES.MAINNET;
 export const IS_TESTNET = ENV_CONFIG.ENV_CHAIN_TYPE === CHAIN_TYPES.TESTNET;
 export const IS_DEVNET = ENV_CONFIG.ENV_CHAIN_TYPE === CHAIN_TYPES.DEVNET;
-
-export * from './env-constants';
-export * from './types';
 export default ENV_CONFIG;
