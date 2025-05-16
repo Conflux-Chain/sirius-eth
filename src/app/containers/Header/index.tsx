@@ -5,7 +5,6 @@
  */
 
 import React, { memo } from 'react';
-import lodash from 'lodash';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -564,26 +563,26 @@ export const Header = memo(() => {
         </NetWorkWrapper>
       ),
       className: 'not-link',
-      children: lodash.compact([
+      children: [
         {
           title: false,
           plain: true,
           vertical: true,
-          children: networks.mainnet.map(getNetworkLink),
+          children: networks.mainnet?.map(getNetworkLink),
         },
         {
           title: false,
           plain: true,
           vertical: true,
-          children: networks.testnet.map(getNetworkLink),
+          children: networks.testnet?.map(getNetworkLink),
         },
-        networks.devnet.length > 0 && {
+        {
           title: false,
           plain: true,
           vertical: true,
-          children: networks.devnet.map(getNetworkLink),
+          children: networks.devnet?.map(getNetworkLink),
         },
-      ]),
+      ].filter(i => i.children && i.children.length > 0),
     },
   ];
 
