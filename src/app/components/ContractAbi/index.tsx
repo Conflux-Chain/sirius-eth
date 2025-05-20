@@ -14,6 +14,7 @@ import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/A
 import { translations } from 'locales/i18n';
 import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
 import { publishRequestError, formatAddressHexToBase32 } from 'utils';
+import { usePortal } from 'utils/hooks/usePortal';
 
 interface ContractAbiProps {
   type?: 'read' | 'write';
@@ -34,6 +35,7 @@ export const ContractAbi = ({
   pattern,
   proxyAddress,
 }: Props) => {
+  const { accounts } = usePortal();
   const { t } = useTranslation();
   const [data, setData] = useState<{
     read: DataType;
@@ -94,7 +96,11 @@ export const ContractAbi = ({
                         name: abiItem['name'],
                         inputs: abiItem['inputs'],
                       });
-                      batcher.add(contract[fullNameWithType]().request());
+                      batcher.add(
+                        contract[fullNameWithType]().request({
+                          from: accounts[0],
+                        }),
+                      );
                     }
                     dataForRead.push(abiItem);
                     break;
