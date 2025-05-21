@@ -124,13 +124,13 @@ export const getCurrencySymbol = () => {
   return CURRENCY_SYMBOLS[getCurrency()];
 };
 
+export const CFXToDecode = new SDK.Conflux({
+  url: ENV_CONFIG.ENV_RPC_SERVER,
+});
+
 export const CFX = new SDK.Conflux({
   url: ENV_CONFIG.ENV_RPC_SERVER,
   networkId: NETWORK_ID,
-});
-
-export const CFXToDecode = new SDK.Conflux({
-  url: ENV_CONFIG.ENV_RPC_SERVER,
 });
 
 export const ICON_DEFAULT_CONTRACT =
