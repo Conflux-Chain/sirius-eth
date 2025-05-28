@@ -16,9 +16,8 @@ import { SearchIcon } from '@cfxjs/sirius-next-common/dist/components/SearchIcon
 import ClearIcon from 'images/clear.png';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import _ from 'lodash';
-import fetch from 'utils/request';
+import { fetchWithPrefix } from '@cfxjs/sirius-next-common/dist/utils/request';
 import { formatAddress, isBlockNumber, isHash } from 'utils';
-import { appendApiPrefix } from 'utils/api';
 import verifiedIcon from 'images/nametag/verified.svg';
 import warningIcon from 'images/nametag/warning.svg';
 
@@ -193,10 +192,10 @@ export const Search = () => {
 
       controller = new AbortController();
 
-      fetch(appendApiPrefix('/stat/tokens/name?name=' + value), {
+      fetchWithPrefix('/stat/tokens/name?name=' + value, {
         signal: controller.signal,
       })
-        .then(res => {
+        .then((res: any) => {
           if (res) {
             const options: any = [];
             if (res.list && res.list.length > 0)

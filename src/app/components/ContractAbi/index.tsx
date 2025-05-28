@@ -13,7 +13,8 @@ import { useTranslation, Trans } from 'react-i18next';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { translations } from 'locales/i18n';
 import { Spin } from '@cfxjs/sirius-next-common/dist/components/Spin';
-import { publishRequestError, formatAddressHexToBase32 } from 'utils';
+import { formatAddressHexToBase32 } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { publishRequestError } from '@cfxjs/sirius-next-common/dist/utils/pubsub';
 import { usePortal } from 'utils/hooks/usePortal';
 
 interface ContractAbiProps {
