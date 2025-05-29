@@ -14,6 +14,7 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import lodash from 'lodash';
 import { Tx, AccountGrowth } from '../Charts/Loadable';
 import ENV_CONFIG from 'env';
+import { fetch } from '@cfxjs/sirius-next-common/dist/utils/request';
 
 function Info(title, number: any) {
   return (
@@ -30,7 +31,7 @@ const reqCorePlotData = async () => {
       `${ENV_CONFIG.ENV_CORE_SCAN_HOST}/v1/plot?interval=133&limit=7`,
     );
 
-    return await response.json();
+    return response as any;
   } catch (error) {
     return { error };
   }
@@ -54,11 +55,15 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
         console.log('reqHomeDashboard error: ', e);
       });
 
-    reqCorePlotData().then(res => {
-      if (res && res.data && res.data.list) {
-        setHashRate(formatNumber(res.data.list[6].hashRate));
-      }
-    });
+    reqCorePlotData()
+      .then(res => {
+        if (res && res.list) {
+          setHashRate(formatNumber(res.list[6].hashRate));
+        }
+      })
+      .catch(e => {
+        console.log('reqCorePlotData error: ', e);
+      });
     // reqTransferTPS()
     //   .then(res => {
     //     if (Object.keys(res)) {
