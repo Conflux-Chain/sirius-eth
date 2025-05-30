@@ -18,6 +18,7 @@ export const switchChain = async () => {
 };
 
 export const addChain = () => {
+  if (!ENV_CONFIG.ENV_WALLET_CONFIG) return;
   return _addChain(
     {
       ...ENV_CONFIG.ENV_WALLET_CONFIG,
