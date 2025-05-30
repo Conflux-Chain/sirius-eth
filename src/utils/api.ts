@@ -4,104 +4,21 @@ import qs from 'query-string';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { formatBalance } from './index';
-import fetch from './request';
+import {
+  fetchWithPrefix,
+  simpleGetFetcher,
+} from '@cfxjs/sirius-next-common/dist/utils/request';
 // import { getCurrency } from 'utils/constants';
 
-export const appendApiPrefix = (url: string) => {
-  // for cfx top N
-  if (url.startsWith('/stat/')) {
-    return url;
-  }
-  return `/v1${url}`;
-};
-
-export interface Params {
+interface Params {
   [name: string]: string | string[];
 }
 
-export type useApi = (
+type useApi = (
   params?: Params | any[],
   shouldFetch?: boolean,
   ...rest: any[]
 ) => responseInterface<any, any>;
-
-export const simpleGetFetcher = async (...args: any[]) => {
-  let [url, query] = args;
-  if (query) {
-    url = qs.stringifyUrl({ url, query });
-  }
-  return await fetch(appendApiPrefix(url), {
-    method: 'get',
-  });
-};
-
-const simplePostFetcher = async (...args: any[]) => {
-  let [url, params, shouldAppendPrefix] = args;
-  shouldAppendPrefix =
-    shouldAppendPrefix === undefined ? true : shouldAppendPrefix;
-
-  return await fetch(shouldAppendPrefix ? appendApiPrefix(url) : url, {
-    method: 'post',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
-  });
-};
-
-export const useSWRWithGetFecher = (key, swrOpts = {}) => {
-  const isTransferReq =
-    (typeof key === 'string' && key.startsWith('/transfer')) ||
-    (Array.isArray(key) &&
-      typeof key[0] === 'string' &&
-      key[0].startsWith('/transfer'));
-
-  const { data, error, mutate } = useSWR(key, simpleGetFetcher, { ...swrOpts });
-
-  let tokenAddress;
-
-  // deal with token info
-  if (isTransferReq && data && data.list) {
-    tokenAddress = data.list.reduce((acc, trans) => {
-      if (trans.address && !acc.includes(trans.address))
-        acc.push(trans.address);
-      return acc;
-    }, []);
-  }
-
-  const { data: tokenData } = useSWR(
-    tokenAddress
-      ? qs.stringifyUrl({
-          url: '/token',
-          query: { addressArray: tokenAddress, fields: 'iconUrl' },
-        })
-      : null,
-    simpleGetFetcher,
-  );
-
-  if (tokenData && tokenData.list) {
-    const newTransferList = data.list.map(trans => {
-      if (tokenAddress.includes(trans.address)) {
-        const tokenInfo = tokenData.list.find(t => t.address === trans.address);
-        if (tokenInfo) return { ...trans, token: { ...tokenInfo } };
-      }
-
-      return trans;
-    });
-
-    return {
-      data: {
-        ...data,
-        list: newTransferList,
-      },
-      error,
-      mutate,
-    };
-  }
-
-  return { data, error, mutate };
-};
 
 export const useDashboardDag: useApi = (
   params,
@@ -273,19 +190,6 @@ export const useCMContractList: useApi = (
     rest[0],
   );
 };
-export const useCMContractCreate: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  // params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/contract', ...params] : null,
-    rest[1] || simplePostFetcher,
-    rest[0],
-  );
-};
 
 export const useAccountTokenList = (
   accountAddress: string,
@@ -304,8 +208,8 @@ export const useAccountTokenList = (
         })
       : null,
     url =>
-      fetch(appendApiPrefix(url))
-        .then(({ total, list }) => {
+      fetchWithPrefix(url)
+        .then(({ total, list }: any) => {
           return {
             loading: false,
             total,
@@ -349,8 +253,8 @@ export const useAccount = (
   return useSWR(
     accountAddress ? url : null,
     url =>
-      fetch(appendApiPrefix(url))
-        .then(rst => {
+      fetchWithPrefix(url)
+        .then((rst: any) => {
           return {
             ...rst,
           };
@@ -396,8 +300,8 @@ export const useContract = (
   return useSWR(
     contractAddress ? url : null,
     url =>
-      fetch(appendApiPrefix(url))
-        .then(rst => {
+      fetchWithPrefix(url)
+        .then((rst: any) => {
           return {
             name: null,
             website: null,
@@ -486,8 +390,8 @@ export const useToken = (
   return useSWR(
     contractAddress ? url : null,
     url =>
-      fetch(appendApiPrefix(url))
-        .then(rst => {
+      fetchWithPrefix(url)
+        .then((rst: any) => {
           const { totalSupply, decimals } = rst;
           return {
             ...rst,
@@ -530,51 +434,10 @@ export const useToken = (
   );
 };
 
-// this is the new api
-export const useTransfers = (query = {}, opts = {}) => {
-  return useSWR(
-    qs.stringifyUrl({
-      url: '/transfer',
-      query,
-    }),
-    url =>
-      fetch(url)
-        .then(rst => {
-          const { list } = rst;
-          return {
-            ...rst,
-            list: list.map(i => {
-              const { value } = i;
-              return {
-                ...i,
-                value: formatBalance(value),
-              };
-            }),
-          };
-        })
-        .catch(error => {
-          return {
-            total: 0,
-            listLimit: 0,
-            list: [],
-          };
-        }),
-    {
-      initialData: {
-        total: 0,
-        listLimit: 0,
-        list: [],
-      },
-      ...opts,
-      revalidateOnMount: true,
-    },
-  );
-};
-
 export const fetchRecentDagBlock = async (opts = {}) => {
   let data;
   try {
-    data = await fetch(appendApiPrefix('/dag'));
+    data = await fetchWithPrefix('/dag');
   } catch (error) {
     data = { total: 0, list: [] };
   }

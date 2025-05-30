@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { tokenColunms, transactionColunms } from 'utils/tableColumns';
-import { fetchWithPrefix } from 'utils/request';
+import { fetchWithPrefix } from '@cfxjs/sirius-next-common/dist/utils/request';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { useTranslation, Trans } from 'react-i18next';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -9,7 +9,7 @@ import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/A
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
 import { formatAddress } from 'utils';
 import styled from 'styled-components';
-import { publishRequestError } from 'utils';
+import { publishRequestError } from '@cfxjs/sirius-next-common/dist/utils/pubsub';
 import IconQuestion from 'images/icon-question.svg';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { IS_ESPACE, IS_MAINNET, STAGE_FLAG } from 'env';
@@ -71,7 +71,7 @@ export const InternalTxns = ({ address, from, to }: Props) => {
         loading: true,
       });
       fetchWithPrefix(`/transferTree/${address}`)
-        .then(resp => {
+        .then((resp: any) => {
           if (resp?.traceTree) {
             try {
               const list = treeToFlat(resp.traceTree).map(l => {
