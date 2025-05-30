@@ -1,23 +1,12 @@
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { NetworksType } from '@cfxjs/sirius-next-common/dist/store/types';
-import { ExtendedGlobalDataType } from 'utils/hooks/useGlobal';
-import {
-  CFX,
-  getCurrencySymbol,
-  CORE_SPACE_CHAIN_IDS,
-  ESPACE_CHAIN_IDS,
-  BSPACE_CHAIN_IDS,
-} from 'utils/constants';
+import { CFX, getCurrencySymbol } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import pubsub from './pubsub';
 import lodash from 'lodash';
 import { Nametag } from 'utils/hooks/useNametag';
 import ENV_CONFIG from 'env';
-import IconCore from 'images/core-space/icon.svg';
-import IconEvm from 'images/espace/icon.svg';
-import IconBtc from 'images/bspace/icon.svg';
 
 import {
   getEllipsStr,
@@ -205,51 +194,6 @@ export function isBlockNumber(str: string) {
   var n = Math.floor(Number(str));
   return n !== Infinity && String(n) === str && n >= 0;
 }
-
-export const getNetwork = (
-  networks: ExtendedGlobalDataType['networks'],
-  id: number,
-) => {
-  const list = [
-    ...(networks.mainnet ?? []),
-    ...(networks.testnet ?? []),
-    ...(networks.devnet ?? []),
-  ];
-  const matched = list.find(n => n.id === id);
-  let network: NetworksType;
-
-  if (matched) {
-    network = matched;
-  } else {
-    network = list[0];
-  }
-
-  return network;
-};
-
-export const gotoNetwork = (networkUrl: string): void => {
-  networkUrl && window.location.assign(networkUrl);
-};
-
-export const getNetworkIcon = (
-  id = NaN,
-  props?: {
-    isCore?: boolean;
-    isEvm?: boolean;
-    isBtc?: boolean;
-  },
-) => {
-  const isCore = CORE_SPACE_CHAIN_IDS.includes(id) || props?.isCore;
-  const isEvm = ESPACE_CHAIN_IDS.includes(id) || props?.isEvm;
-  const isBtc = BSPACE_CHAIN_IDS.includes(id) || props?.isBtc;
-  if (isCore) {
-    return IconCore;
-  } else if (isEvm) {
-    return IconEvm;
-  } else if (isBtc) {
-    return IconBtc;
-  }
-};
 
 export function padLeft(n: string, totalLength?: number): string;
 export function padLeft(n: number, totalLength?: number): string;

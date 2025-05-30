@@ -21,7 +21,7 @@ import {
   orange0,
   black0,
 } from './variable';
-import ENV_CONFIG from 'env';
+import { theme } from './theme';
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -42,21 +42,21 @@ export const GlobalStyle = createGlobalStyle`
     --theme-color-green3: ${green3};
     --theme-color-orange0: ${orange0};
     --theme-color-black0: ${black0};
-    --theme-color-primary: ${ENV_CONFIG.ENV_THEME.primary};
-    --theme-color-highlight-bg: ${ENV_CONFIG.ENV_THEME.highlightBg};
-    --theme-color-primary-button-bg: ${ENV_CONFIG.ENV_THEME.antdPrimaryButtonBg};
-    --theme-color-button-bg: ${ENV_CONFIG.ENV_THEME.buttonBg};
-    --theme-color-outline: ${ENV_CONFIG.ENV_THEME.outlineColor};
-    --theme-color-shadow: ${ENV_CONFIG.ENV_THEME.shadowColor};
-    --theme-color-search-button-bg: ${ENV_CONFIG.ENV_THEME.searchButtonBg};
-    --theme-color-search-button-hover-bg: ${ENV_CONFIG.ENV_THEME.searchButtonHoverBg};
-    --theme-color-gas-price-line-bg: ${ENV_CONFIG.ENV_THEME.gasPriceLineBg};
-    --theme-color-foot-bg: ${ENV_CONFIG.ENV_THEME.footerBg};
-    --theme-color-foot-highlight: ${ENV_CONFIG.ENV_THEME.footerHighLightColor};
-    --theme-color-link: ${ENV_CONFIG.ENV_THEME.linkColor};
-    --theme-color-link-hover: ${ENV_CONFIG.ENV_THEME.linkHoverColor};
-    --theme-color-chart-title: ${ENV_CONFIG.ENV_THEME.chartTitleColor};
-    --theme-color-chart-link: ${ENV_CONFIG.ENV_THEME.chartDetailLinkColor};
+    --theme-color-primary: ${theme.primary};
+    --theme-color-highlight-bg: ${theme.highlightBg};
+    --theme-color-primary-button-bg: ${theme.antdPrimaryButtonBg};
+    --theme-color-button-bg: ${theme.buttonBg};
+    --theme-color-outline: ${theme.outlineColor};
+    --theme-color-shadow: ${theme.shadowColor};
+    --theme-color-search-button-bg: ${theme.searchButtonBg};
+    --theme-color-search-button-hover-bg: ${theme.searchButtonHoverBg};
+    --theme-color-gas-price-line-bg: ${theme.gasPriceLineBg};
+    --theme-color-foot-bg: ${theme.footerBg};
+    --theme-color-foot-highlight: ${theme.footerHighLightColor};
+    --theme-color-link: ${theme.linkColor};
+    --theme-color-link-hover: ${theme.linkHoverColor};
+    --theme-color-chart-title: ${theme.chartTitleColor};
+    --theme-color-chart-link: ${theme.chartDetailLinkColor};
   }
 
   html,

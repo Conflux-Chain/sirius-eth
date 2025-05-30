@@ -1,13 +1,12 @@
 import { API_HOST_MAP, DOMAIN, IS_STAGE } from 'env/env-constants';
 import { NETWORK_TYPES, CHAIN_TYPES } from 'env/types';
 import logo from 'images/espace/logo-testnet.svg';
-export * from './base';
 export { default as ENV_LOCALES_EN } from '@cfxjs/sirius-next-i18n/evm/espace/en/translation.json';
 export { default as ENV_LOCALES_CN } from '@cfxjs/sirius-next-i18n/evm/espace/zh_cn/translation.json';
 export const ENV_NETWORK_ID = 71;
 export const ENV_NETWORK_TYPE = NETWORK_TYPES.EVM;
 export const ENV_CHAIN_TYPE = CHAIN_TYPES.TESTNET;
-export const ENV_API_HOST =
+export const ENV_OPEN_API_HOST =
   API_HOST_MAP.openAPIHost ||
   (IS_STAGE
     ? `https://evmapi-testnet-stage.confluxscan${DOMAIN}`

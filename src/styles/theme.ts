@@ -1,6 +1,5 @@
-import imgArrow from 'images/token/arrow.svg';
 const baseColor = '#17B38A';
-export const ENV_THEME = {
+export const theme = {
   primary: baseColor,
   antdPrimaryButtonBg: '#7789D3',
   highlightBg: '#eefffb',
@@ -25,8 +24,8 @@ export const ENV_THEME = {
     '#f15c80',
     '#e4d354',
     '#f45b5b',
-  ] as const,
-  mixedChartColors: ['#7cb5ec', '#90ed7d', '#434348'] as const,
+  ],
+  mixedChartColors: ['#7cb5ec', '#90ed7d', '#434348'],
   pieChartColors: [
     '#7cb5ec',
     '#434348',
@@ -38,10 +37,7 @@ export const ENV_THEME = {
     '#f15c80',
     '#e4d354',
     '#f45b5b',
-  ] as const,
+  ],
   chartTitleColor: '#7789D3',
   chartDetailLinkColor: '#1e3de4',
-};
-export const ENV_ICONS = {
-  imgArrow,
 };
