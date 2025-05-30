@@ -476,12 +476,14 @@ export function Footer() {
       <CopyRight>{t(translations.footer.copyRight)}</CopyRight>
       {ICP}
     </div>,
-    <AddNetwork key="addNetwork" onClick={handleAddChain}>
-      <img src={IconAdd} alt="add network" />
-      {t(translations.footer.addNetwork, {
-        name: ENV_CONFIG.ENV_WALLET_CONFIG.chainName,
-      })}
-    </AddNetwork>,
+    ENV_CONFIG.ENV_WALLET_CONFIG ? (
+      <AddNetwork key="addNetwork" onClick={handleAddChain}>
+        <img src={IconAdd} alt="add network" />
+        {t(translations.footer.addNetwork, {
+          name: ENV_CONFIG.ENV_WALLET_CONFIG.chainName,
+        })}
+      </AddNetwork>
+    ) : null,
   ];
 
   return (

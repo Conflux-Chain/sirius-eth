@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import ENV_CONFIG from 'env';
+import { theme } from 'styles/theme';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { fromDripToGdrip } from '@cfxjs/sirius-next-common/dist/utils';
 
@@ -12,7 +12,7 @@ export function NetworkPie({ data }) {
   const chart = useRef(null);
 
   const options = {
-    colors: ENV_CONFIG.ENV_THEME.pieChartColors,
+    colors: theme.pieChartColors,
     title: {
       text: '',
     },

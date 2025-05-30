@@ -1,7 +1,6 @@
 import { API_HOST_MAP, DOMAIN, IS_STAGE } from 'env/env-constants';
 import { NETWORK_TYPES, CHAIN_TYPES } from 'env/types';
 import logo from 'images/bspace/logo.svg';
-export * from './base';
 export { default as ENV_LOCALES_EN } from '@cfxjs/sirius-next-i18n/evm/bspace/en/translation.json';
 export { default as ENV_LOCALES_CN } from '@cfxjs/sirius-next-i18n/evm/bspace/zh_cn/translation.json';
 
@@ -10,7 +9,7 @@ export const ENV_NETWORK_ID = 1030;
 export const ENV_NETWORK_TYPE = NETWORK_TYPES.BTC;
 export const ENV_CHAIN_TYPE = CHAIN_TYPES.MAINNET;
 // TODO-btc
-export const ENV_API_HOST =
+export const ENV_OPEN_API_HOST =
   API_HOST_MAP.openAPIHost ||
   (IS_STAGE
     ? `https://evmapi-stage.confluxscan${DOMAIN}`

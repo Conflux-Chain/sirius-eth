@@ -2,7 +2,7 @@
     "ENV_NETWORK_ID": 1030,
     "ENV_NETWORK_TYPE": "EVM",
     "ENV_CHAIN_TYPE": "MAINNET",
-    "ENV_API_HOST": "https://evmapi.confluxscan.net",
+    "ENV_OPEN_API_HOST": "https://evmapi.confluxscan.net",
     "ENV_CORE_API_HOST": "https://api.confluxscan.net",
     "ENV_CORE_SCAN_HOST": "https://www.confluxscan.net",
     "ENV_RPC_SERVER": "https://evm-cfxbridge.confluxrpc.com",
@@ -22,54 +22,6 @@
         }
     },
     "ENV_LOGO": "https://evm.confluxscan.net/static/media/logo.8e57dceb.svg",
-    "ENV_THEME": {
-        "primary": "#17B38A",
-        "antdPrimaryButtonBg": "#7789D3",
-        "buttonBg": "rgba(0, 84, 254, 0.8)",
-        "outlineColor": "#7789D3",
-        "shadowColor": "rgba(30, 61, 228, 0.2)",
-        "searchButtonBg": "#AFE9D2",
-        "searchButtonHoverBg": "#17B38A",
-        "gasPriceLineBg": "#F0F4F3",
-        "footerBg": "#05343F",
-        "footerHighLightColor": "#AFE9D2",
-        "linkColor": "#1e3de4",
-        "linkHoverColor": "#0f23bd",
-        "chartColors": [
-            "#7cb5ec",
-            "#434348",
-            "#f7a35c",
-            "#2b908f",
-            "#91e8e1",
-            "#90ed7d",
-            "#8085e9",
-            "#f15c80",
-            "#e4d354",
-            "#f45b5b"
-        ],
-        "mixedChartColors": [
-            "#7cb5ec",
-            "#90ed7d",
-            "#434348"
-        ],
-        "pieChartColors": [
-            "#7cb5ec",
-            "#434348",
-            "#f7a35c",
-            "#2b908f",
-            "#91e8e1",
-            "#90ed7d",
-            "#8085e9",
-            "#f15c80",
-            "#e4d354",
-            "#f45b5b"
-        ],
-        "chartTitleColor": "#7789D3",
-        "chartDetailLinkColor": "#1e3de4"
-    },
-    "ENV_ICONS": {
-        "imgArrow": "/static/media/arrow.4e79d439.svg"
-    },
     "ENV_LOCALES_EN": {},
     "ENV_LOCALES_CN": {}
 }
