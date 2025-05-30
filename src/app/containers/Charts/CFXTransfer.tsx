@@ -7,7 +7,7 @@ import { PreviewChartTemplate } from '@cfxjs/sirius-next-common/dist/components/
 import { ChildProps } from '@cfxjs/sirius-next-common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
 import BigNumber from 'bignumber.js';
-import ENV_CONFIG from 'env';
+import { theme } from 'styles/theme';
 
 export function CFXTransfer({ preview = false }: ChildProps) {
   const { t } = useTranslation();
@@ -99,21 +99,21 @@ export function CFXTransfer({ preview = false }: ChildProps) {
             valueDecimals: 2,
             valueSuffix: ' CFX',
           },
-          color: ENV_CONFIG.ENV_THEME.mixedChartColors[0],
+          color: theme.mixedChartColors[0],
         },
         {
           type: 'line',
           name: `<span>${t(
             translations.highcharts.transfer.seriesName2,
           )}</span>`,
-          color: ENV_CONFIG.ENV_THEME.mixedChartColors[1],
+          color: theme.mixedChartColors[1],
         },
         {
           type: 'line',
           name: `<span>${t(
             translations.highcharts.transfer.seriesName,
           )}</span>`,
-          color: ENV_CONFIG.ENV_THEME.mixedChartColors[2],
+          color: theme.mixedChartColors[2],
         },
       ],
     },

@@ -10,14 +10,14 @@ import {
   toThousands,
   roundToFixedPrecision,
   getNetworkIcon,
-} from 'utils/';
+} from '@cfxjs/sirius-next-common/dist/utils';
 // import imgPivot from 'images/pivot.svg';
 import { ColumnAge } from './utils';
 import { Progress } from '@cfxjs/antd';
 import BigNumber from 'bignumber.js';
 import imgInfo from 'images/info.svg';
 import NotApplicable from 'app/components/TxnComponents/NotApplicable';
-import ENV_CONFIG from 'env';
+import { theme } from 'styles/theme';
 import {
   fromDripToCfx,
   fromDripToGdrip,
@@ -81,11 +81,9 @@ export const epoch = {
             </Translation>
           }
         >
-          {/* TODO-btc */}
           <img
-            src={getNetworkIcon(undefined, {
-              isCore: row.coreBlock === 1,
-              isEvm: row.coreBlock !== 1,
+            src={getNetworkIcon({
+              space: row.coreBlock === 1 ? 'core' : 'evm',
             })}
             alt="?"
           />
@@ -288,7 +286,7 @@ export const gasUsedPercentWithProgress = {
             size="small"
             showInfo={false}
             strokeWidth={2}
-            strokeColor={ENV_CONFIG.ENV_THEME.linkColor}
+            strokeColor={theme.linkColor}
             trailColor="#eeeeee"
           />
         </StyledGasPercentWrapper>
