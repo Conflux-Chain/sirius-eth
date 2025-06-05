@@ -34,6 +34,9 @@ const IconWrapper = styled.div`
 const StyleToolTip = styled.div`
   display: flex;
   align-items: center;
+  > span[data-scope='tooltip'] {
+    flex-shrink: 0;
+  }
   img {
     margin-top: -4px;
     margin-left: 4px;
@@ -360,11 +363,9 @@ export const gasLimit = {
 
 export const burntFees = {
   title: (
-    <StyleToolTip>
-      <Translation>
-        {t => t(translations.general.table.block.burntFees)}
-      </Translation>
-    </StyleToolTip>
+    <Translation>
+      {t => t(translations.general.table.block.burntFees)}
+    </Translation>
   ),
   dataIndex: 'burntGasFee',
   key: 'burntGasFee',
