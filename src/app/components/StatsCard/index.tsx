@@ -176,7 +176,7 @@ export const StatsCard = ({
         {
           title: t(translations.statistics.overviewColumns.totalGasFees),
           index: 'gasUsed',
-          unit: 'Gdrip',
+          unit: 'CFX',
         },
       ];
       action = 'network';
@@ -575,7 +575,7 @@ export const StatsCard = ({
                 />
               </td>
               <td className="text-right">
-                {gdripValue(d.gas)}
+                {cfxValue(d.gas, { showUnit: true })}
 
                 <Text
                   hoverValue={

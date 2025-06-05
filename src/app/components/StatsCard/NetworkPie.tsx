@@ -5,7 +5,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { theme } from 'styles/theme';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
-import { fromDripToGdrip } from '@cfxjs/sirius-next-common/dist/utils';
+import { fromDripToCfx } from '@cfxjs/sirius-next-common/dist/utils';
 
 export function NetworkPie({ data }) {
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ export function NetworkPie({ data }) {
             translations.statistics.column.address,
           )}: <b>${convertCheckSum(data.address)}</b><br>${t(
             translations.statistics.column.fees,
-          )}: <b>${fromDripToGdrip(data.value, true)} Gdrip</b>`;
+          )}: <b>${fromDripToCfx(data.value, true)} CFX</b>`;
         }
         return '';
       },
