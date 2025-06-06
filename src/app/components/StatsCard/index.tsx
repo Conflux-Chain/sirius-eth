@@ -575,7 +575,7 @@ export const StatsCard = ({
                 />
               </td>
               <td className="text-right">
-                {cfxValue(d.gas, { showUnit: true })}
+                {cfxValue(d.gas, { showUnit: true, keepDecimal: true })}
 
                 <Text
                   hoverValue={
