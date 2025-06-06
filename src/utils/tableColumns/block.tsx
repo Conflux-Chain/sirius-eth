@@ -34,7 +34,7 @@ const IconWrapper = styled.div`
 const StyleToolTip = styled.div`
   display: flex;
   align-items: center;
-  > span[data-scope='tooltip'] {
+  > span[data-part='trigger'] {
     flex-shrink: 0;
   }
   img {
