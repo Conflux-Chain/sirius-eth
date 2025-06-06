@@ -94,13 +94,13 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
           justify="flex-start"
           className="stats-container stats-container-pow-top"
         >
-          <Grid xs={24} sm={24} md={5}>
+          <Grid xs={24} sm={24} md={3}>
             {Info(
               t(translations.statistics.home.currentEpoch),
               `${dashboardData.epochNumber ? dashboardData.epochNumber : '--'}`,
             )}
           </Grid>
-          <Grid xs={24} sm={24} md={4}>
+          <Grid xs={24} sm={24} md={3}>
             {Info(
               t(translations.statistics.home.account),
               `${
@@ -122,6 +122,21 @@ export function BlockchainInfo({ timestamp = 1 }: { timestamp?: number }) {
               `${
                 dashboardData.transactionCount
                   ? formatNumber(dashboardData.transactionCount, {
+                      withUnit: false,
+                      keepDecimal: false,
+                    })
+                  : '--'
+              }`,
+            )}
+          </Grid>
+          <Grid xs={24} sm={24} md={3}>
+            {Info(
+              <Link href={'/charts/contracts'} className="info-link">
+                {t(translations.statistics.home.contract)}
+              </Link>,
+              `${
+                dashboardData.contractCount
+                  ? formatNumber(dashboardData.contractCount, {
                       withUnit: false,
                       keepDecimal: false,
                     })
@@ -275,13 +290,12 @@ const CardWrapper = styled.div`
         border-right: 1px solid #e8e9ea;
       }
 
-      &:nth-child(3) {
+      &:nth-child(4) {
         border-right: 1px solid #e8e9ea;
       }
 
-      &:nth-child(1),
       &:nth-child(2),
-      &:nth-child(4) {
+      &:nth-child(5) {
         padding-left: 2rem;
       }
     }
