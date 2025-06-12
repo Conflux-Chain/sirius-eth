@@ -4,8 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
-import lodash from 'lodash';
+import React, { memo, useMemo } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -25,16 +24,21 @@ import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { NetworksType } from '@cfxjs/sirius-next-common/dist/store/types';
-import { getNetwork, gotoNetwork, getDomainTLD, getNetworkIcon } from 'utils';
+import { getDomainTLD } from 'utils';
+import { getNetwork, gotoNetwork } from '@cfxjs/sirius-next-common/dist/utils';
 // import { Notices } from 'app/containers/Notices/Loadable';
 import { GasPriceDropdown } from '@cfxjs/sirius-next-common/dist/components/GasPriceDropdown';
+import { NetworkIcon } from '@cfxjs/sirius-next-common/dist/components/NetworkIcon';
 
 import ENV_CONFIG, { IS_ESPACE, IS_MAINNET, IS_TESTNET } from 'env';
 
-// TODO-btc: NETWORK_TYPES
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
   const { networkId, networks } = globalData;
+  const network = useMemo(() => getNetwork(networks, networkId), [
+    networks,
+    networkId,
+  ]);
 
   const { t, i18n } = useTranslation();
   const zh = '中文';
@@ -528,7 +532,7 @@ export const Header = memo(() => {
     return {
       title: [
         <NetWorkWrapper key="network">
-          <img src={getNetworkIcon(n.id)} alt="" />
+          <NetworkIcon network={n} />
           {n.name}
         </NetWorkWrapper>,
         isMatch && <Check size={18} key="check" />,
@@ -553,39 +557,42 @@ export const Header = memo(() => {
     };
   };
 
-  const endLinks: HeaderLinks = [
+  const networkChildren = [
     {
+      title: false,
+      plain: true,
+      vertical: true,
+      children: networks.mainnet?.map(getNetworkLink),
+    },
+    {
+      title: false,
+      plain: true,
+      vertical: true,
+      children: networks.testnet?.map(getNetworkLink),
+    },
+    {
+      title: false,
+      plain: true,
+      vertical: true,
+      children: networks.devnet?.map(getNetworkLink),
+    },
+  ].filter(i => i.children && i.children.length > 0);
+
+  const endLinks: HeaderLinks = [];
+  if (networkChildren.length > 0) {
+    endLinks.push({
       // switch network
       name: 'switch-network',
       title: (
         <NetWorkWrapper>
-          <img src={getNetworkIcon(networkId)} alt="Network" />
-          {getNetwork(networks, networkId).name}
+          <NetworkIcon network={network} />
+          {network.name}
         </NetWorkWrapper>
       ),
       className: 'not-link',
-      children: lodash.compact([
-        {
-          title: false,
-          plain: true,
-          vertical: true,
-          children: networks.mainnet.map(getNetworkLink),
-        },
-        {
-          title: false,
-          plain: true,
-          vertical: true,
-          children: networks.testnet.map(getNetworkLink),
-        },
-        networks.devnet.length > 0 && {
-          title: false,
-          plain: true,
-          vertical: true,
-          children: networks.devnet.map(getNetworkLink),
-        },
-      ]),
-    },
-  ];
+      children: networkChildren,
+    });
+  }
 
   if (bp === 'm' || bp === 's') {
     endLinks.push({
@@ -640,7 +647,7 @@ export const Header = memo(() => {
     </div>
   );
 
-  const brand = (
+  const brand = !!ENV_CONFIG.ENV_LOGO && (
     <LogoWrapper>
       <Link href="/">
         <img

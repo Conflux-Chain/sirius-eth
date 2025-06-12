@@ -49,13 +49,13 @@ yarn build REACT_APP_EVM_TESTNET=true
 
 ## config
 
-> the config file is in `src/env/espace/xxx.ts` & `src/env/espace/base.ts`
+> the config file is in `src/env/espace/xxx.ts`
 
 ```ts
 // src/env/espace/xxx.ts
 export const ENV_NETWORK_ID = 1030;
 export const ENV_NETWORK_TYPE = NETWORK_TYPES.EVM_MAINNET;
-export const ENV_API_HOST =
+export const ENV_OPEN_API_HOST =
   API_HOST_MAP.openAPIHost ||
   (IS_STAGE
     ? `https://evmapi-stage.confluxscan${DOMAIN}`
@@ -87,53 +87,6 @@ export const ENV_LOGO = logo;
 // if you want to change i18n, you can override the default i18n config by export ENV_LOCALES_EN & ENV_LOCALES_CN
 export const ENV_LOCALES_EN = {};
 export const ENV_LOCALES_CN = {};
-
-// src/env/espace/base.ts
-const baseColor = '#17B38A';
-export const ENV_THEME = {
-  primary: baseColor,
-  antdPrimaryButtonBg: '#7789D3',
-  buttonBg: 'rgba(0, 84, 254, 0.8)',
-  outlineColor: '#7789D3',
-  shadowColor: 'rgba(30, 61, 228, 0.2)',
-  searchButtonBg: '#AFE9D2',
-  searchButtonHoverBg: baseColor,
-  gasPriceLineBg: '#F0F4F3',
-  footerBg: '#05343F',
-  footerHighLightColor: '#AFE9D2',
-  linkColor: '#1e3de4',
-  linkHoverColor: '#0f23bd',
-  chartColors: [
-    '#7cb5ec',
-    '#434348',
-    '#f7a35c',
-    '#2b908f',
-    '#91e8e1',
-    '#90ed7d',
-    '#8085e9',
-    '#f15c80',
-    '#e4d354',
-    '#f45b5b',
-  ] as const,
-  mixedChartColors: ['#7cb5ec', '#90ed7d', '#434348'] as const,
-  pieChartColors: [
-    '#7cb5ec',
-    '#434348',
-    '#f7a35c',
-    '#2b908f',
-    '#91e8e1',
-    '#90ed7d',
-    '#8085e9',
-    '#f15c80',
-    '#e4d354',
-    '#f45b5b',
-  ] as const,
-  chartTitleColor: '#7789D3',
-  chartDetailLinkColor: '#1e3de4',
-};
-export const ENV_ICONS = {
-  imgArrow,
-};
 ```
 
 ## add chain
@@ -146,7 +99,7 @@ export const ENV_ICONS = {
    // src/env/demo/mainnet.ts
    export const ENV_NETWORK_ID = 11111111;
    export const ENV_NETWORK_TYPE = NETWORK_TYPES.DEMO_MAINNET;
-   export const ENV_API_HOST =
+   export const ENV_OPEN_API_HOST =
      API_HOST_MAP.openAPIHost ||
      (IS_STAGE
        ? `https://demoapi-stage.confluxscan${DOMAIN}`
@@ -177,53 +130,6 @@ export const ENV_ICONS = {
    export const ENV_LOGO = logo;
    export const ENV_LOCALES_EN = {};
    export const ENV_LOCALES_CN = {};
-
-   // src/env/demo/base.ts
-   const baseColor = '#FFFFFF';
-   export const ENV_THEME = {
-     primary: baseColor,
-     antdPrimaryButtonBg: '#7789D3',
-     buttonBg: 'rgba(0, 84, 254, 0.8)',
-     outlineColor: '#7789D3',
-     shadowColor: 'rgba(30, 61, 228, 0.2)',
-     searchButtonBg: '#AFE9D2',
-     searchButtonHoverBg: baseColor,
-     gasPriceLineBg: '#F0F4F3',
-     footerBg: '#05343F',
-     footerHighLightColor: '#AFE9D2',
-     linkColor: '#1e3de4',
-     linkHoverColor: '#0f23bd',
-     chartColors: [
-       '#7cb5ec',
-       '#434348',
-       '#f7a35c',
-       '#2b908f',
-       '#91e8e1',
-       '#90ed7d',
-       '#8085e9',
-       '#f15c80',
-       '#e4d354',
-       '#f45b5b',
-     ] as const,
-     mixedChartColors: ['#7cb5ec', '#90ed7d', '#434348'] as const,
-     pieChartColors: [
-       '#7cb5ec',
-       '#434348',
-       '#f7a35c',
-       '#2b908f',
-       '#91e8e1',
-       '#90ed7d',
-       '#8085e9',
-       '#f15c80',
-       '#e4d354',
-       '#f45b5b',
-     ] as const,
-     chartTitleColor: '#7789D3',
-     chartDetailLinkColor: '#1e3de4',
-   };
-   export const ENV_ICONS = {
-     imgArrow,
-   };
    ```
 
 2. add environment variables in package.json's scripts for development
@@ -295,8 +201,6 @@ export const ENV_ICONS = {
 2. config.example
 
 Modify the `config.example` file with your needed.
-
-
 
 ## What can I do?
 

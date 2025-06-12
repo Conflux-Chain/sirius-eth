@@ -3,16 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import ENV_CONFIG from 'env';
+import { theme } from 'styles/theme';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
-import { fromDripToGdrip } from '@cfxjs/sirius-next-common/dist/utils';
+import { fromDripToCfx } from '@cfxjs/sirius-next-common/dist/utils';
 
 export function NetworkPie({ data }) {
   const { t } = useTranslation();
   const chart = useRef(null);
 
   const options = {
-    colors: ENV_CONFIG.ENV_THEME.pieChartColors,
+    colors: theme.pieChartColors,
     title: {
       text: '',
     },
@@ -32,7 +32,7 @@ export function NetworkPie({ data }) {
             translations.statistics.column.address,
           )}: <b>${convertCheckSum(data.address)}</b><br>${t(
             translations.statistics.column.fees,
-          )}: <b>${fromDripToGdrip(data.value, true)} Gdrip</b>`;
+          )}: <b>${fromDripToCfx(data.value, true)} CFX</b>`;
         }
         return '';
       },
