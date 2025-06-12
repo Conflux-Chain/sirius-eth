@@ -12,7 +12,7 @@ export function Blocks() {
   const url = '/block';
   const [ageFormat, toggleAgeFormat] = useAge();
 
-  const columnsBlocksWidth = [4, 4, 3, 4, 4, 5, 4, 4, 5];
+  const columnsBlocksWidth = [3, 3, 2, 4, 4, 4, 4, 4, 4];
   const columnsBlocks = [
     blockColunms.epoch,
     blockColunms.hashWithPivot,
