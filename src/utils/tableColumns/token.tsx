@@ -38,8 +38,8 @@ import { Tag } from '@cfxjs/antd';
 import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
 import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
-import imgArrow from 'images/token/arrow.svg';
 import { PhishingAddressContainer } from '@cfxjs/sirius-next-common/dist/components/PhishingAddressContainer';
+import imgArrow from 'images/token/arrow.svg';
 
 const fromTypeInfo = {
   arrow: {
