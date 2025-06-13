@@ -13,6 +13,10 @@ import { Detail } from './Detail';
 
 import { InternalTxns } from 'app/containers/Transactions/Loadable';
 import iconCross from 'images/icon-crossSpace.svg';
+import { getTransactionByHash } from 'utils/rpcRequest';
+import { ReactComponent as JsonIcon } from 'images/json.svg';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { viewJson } from '@cfxjs/sirius-next-common/dist/utils';
 
 export function Transaction() {
   const { t } = useTranslation();
@@ -106,6 +110,11 @@ export function Transaction() {
   ];
   const isCrossSpaceCall = gasPrice === '0';
 
+  const handleViewRawTxJson = async () => {
+    const transaction = await getTransactionByHash(hash);
+    viewJson(transaction);
+  };
+
   return (
     <StyledPageWrapper>
       <Helmet>
@@ -126,13 +135,44 @@ export function Transaction() {
           )}
         </StyledHeader>
       </PageHeader>
-      <TabsTablePanel tabs={tabs} />
+      <div className="content-wrapper">
+        <div className="raw-tx-json-wrapper">
+          <Tooltip title={t(translations.toolTip.tx.getRawTxJson)}>
+            <div className="raw-tx-json" onClick={handleViewRawTxJson}>
+              <JsonIcon style={{ width: '24px', height: '24px' }} />
+            </div>
+          </Tooltip>
+        </div>
+        <TabsTablePanel tabs={tabs} />
+      </div>
     </StyledPageWrapper>
   );
 }
 
 const StyledPageWrapper = styled.div`
   margin-bottom: 2.2857rem;
+  .content-wrapper {
+    position: relative;
+    .raw-tx-json-wrapper {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 3.2857rem;
+      display: flex;
+      align-items: center;
+      .raw-tx-json {
+        cursor: pointer;
+        background: #fefefe;
+        border: 1px solid #ebeced;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        border-radius: 16px;
+        color: #686c7e;
+        padding: 0 16px;
+      }
+    }
+  }
 `;
 
 const StyledHeader = styled.div`
