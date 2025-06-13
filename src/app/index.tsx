@@ -64,6 +64,7 @@ import { Loading } from '@cfxjs/sirius-next-common/dist/components/Loading';
 // import { Swap } from './containers/Swap';
 import { ContractDeployment } from './containers/ContractDeployment/Loadable';
 import { ContractVerification } from './containers/ContractVerification/Loadable';
+import { ABIVerification } from './containers/ABIVerification/Loadable';
 import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
@@ -453,6 +454,11 @@ export function App() {
                             exact
                             path="/contract-verification"
                             component={ContractVerification}
+                          />
+                          <Route
+                            exact
+                            path="/abi-verification"
+                            component={ABIVerification}
                           />
                           <Route
                             exact

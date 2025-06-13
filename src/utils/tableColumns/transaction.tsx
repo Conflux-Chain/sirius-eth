@@ -26,6 +26,7 @@ import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 
 import iconViewTxn from 'images/view-txn.png';
 import iconViewTxnActive from 'images/view-txn-active.svg';
+import ContractIcon from 'images/contract-icon.png';
 import lodash from 'lodash';
 import iconCross from 'images/icon-crossSpace.svg';
 import {
@@ -336,15 +337,36 @@ export const method = {
     } else {
       text = value;
     }
+    const verify =
+      row.toContractInfo &&
+      row.toContractInfo.verify &&
+      row.toContractInfo.verify.result !== 0;
+    const showWarning = !value.startsWith('0x') && !verify;
 
     return (
-      <MethodHighlight scope="method" value={text}>
-        <Text tag="span" hoverValue={text}>
-          <StyledMethodContainerWrapper>
+      <StyledMethodContainerWrapper>
+        {showWarning && (
+          <Tooltip
+            title={
+              <Translation>
+                {t => t(translations.general.table.tooltip.methodWarning)}
+              </Translation>
+            }
+            className="method-warning"
+          >
+            <img
+              src={ContractIcon}
+              alt="warning"
+              className="method-warning-icon"
+            />
+          </Tooltip>
+        )}
+        <MethodHighlight scope="method" value={text}>
+          <Text tag="span" hoverValue={text}>
             <StyledMethodWrapper>{text}</StyledMethodWrapper>
-          </StyledMethodContainerWrapper>
-        </Text>
-      </MethodHighlight>
+          </Text>
+        </MethodHighlight>
+      </StyledMethodContainerWrapper>
     );
   },
 };
@@ -428,6 +450,15 @@ const ImageWrap = styled.span`
 
 const StyledMethodContainerWrapper = styled.span`
   display: flex;
+  .method-warning {
+    flex-shrink: 0;
+  }
+  .method-warning-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
+    margin-bottom: 3px;
+  }
 `;
 const MethodHighlight = styled(ValueHighlight)`
   padding: 0;
@@ -441,7 +472,7 @@ const StyledMethodWrapper = styled.span`
   color: #424a71;
   line-height: 12px;
   max-width: 95px;
-  display: inline-block;
+  display: inline-flex;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
