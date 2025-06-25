@@ -41,7 +41,6 @@ import {
 
 import {
   isZeroAddress,
-  isContractCodeHashEmpty,
   getEvmAddressType,
   isEvmContractAddress,
   isEvmAddress as isAddress,
@@ -85,13 +84,7 @@ export {
   formatAddressHexToBase32,
 };
 
-export {
-  isZeroAddress,
-  isContractCodeHashEmpty,
-  getEvmAddressType,
-  isEvmContractAddress,
-  isAddress,
-};
+export { isZeroAddress, getEvmAddressType, isEvmContractAddress, isAddress };
 // @ts-ignore
 window.SDK = SDK;
 // @ts-ignore
