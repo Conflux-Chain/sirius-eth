@@ -136,6 +136,7 @@ export const TxnHashRenderComponent = ({
               {t => t(translations.general.table.tooltip.crossSpaceCall)}
             </Translation>
           }
+          className="tooltip-cross-space-call"
         >
           <ImageWrap>
             <img className="iconCross" src={iconCross} alt="?" />
@@ -425,6 +426,9 @@ const StyledTransactionHashWrapper = styled.span`
     }
   }
 
+  .tooltip-cross-space-call {
+    flex-shrink: 0;
+  }
   .iconCross {
     margin-left: 4px;
   }
@@ -463,6 +467,7 @@ const StyledMethodContainerWrapper = styled.span`
   }
 `;
 const MethodHighlight = styled(ValueHighlight)`
+  height: 20px;
   padding: 0;
 `;
 const StyledMethodWrapper = styled.span`
@@ -474,7 +479,7 @@ const StyledMethodWrapper = styled.span`
   color: #424a71;
   line-height: 12px;
   max-width: 95px;
-  display: inline-flex;
+  display: inline-block;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

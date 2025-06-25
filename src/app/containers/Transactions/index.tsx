@@ -11,7 +11,7 @@ export function Transactions() {
   const { t } = useTranslation();
   const [ageFormat, toggleAgeFormat] = useAge();
 
-  const columnsTransactionsWidth = [7, 7, 6, 10, 10, 6, 8, 8, 8];
+  const columnsTransactionsWidth = [8, 7, 6, 10, 10, 6, 8, 8, 8];
   const columnsTransactions = [
     transactionColunms.hash,
     transactionColunms.method,
