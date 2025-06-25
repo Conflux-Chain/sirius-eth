@@ -20,7 +20,7 @@ export const ExcutedTxns = ({ address }: Props) => {
 
   const url = `/transaction?accountAddress=${address}`;
 
-  const columnsWidth = [7, 7, 6, 10, 10, 6, 8, 8, 8];
+  const columnsWidth = [8, 7, 6, 10, 10, 6, 8, 8, 8];
   const columns = [
     transactionColunms.hash,
     transactionColunms.method,
