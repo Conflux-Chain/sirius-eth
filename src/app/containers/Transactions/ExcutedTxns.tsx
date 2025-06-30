@@ -7,7 +7,8 @@ import {
 import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
 import { Title, Footer, TxnSwitcher } from './components';
-import { isAccountAddress, isAddress } from 'utils';
+import { isAddress } from 'utils';
+import { isEvmUserAddress } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { formatListResponseWithPhishingInfo } from '@cfxjs/sirius-next-common/dist/components/PhishingAddressContainer';
 
 interface Props {
@@ -59,7 +60,7 @@ export const ExcutedTxns = ({ address }: Props) => {
     async function fn() {
       try {
         if (isAddress(address)) {
-          setIsAccount(await isAccountAddress(address));
+          setIsAccount(await isEvmUserAddress(address, true));
         }
       } catch (e) {
         console.log('excuted txns list, get address type error: ', e);

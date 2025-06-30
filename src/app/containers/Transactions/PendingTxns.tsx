@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import BigNumber from 'bignumber.js';
 import { TxnSwitcher, Title } from './components';
-import { isAccountAddress, isAddress } from 'utils';
+import { isAddress } from 'utils';
+import { isEvmUserAddress } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { reqPendingTxs } from 'utils/httpRequest';
 
 interface Props {
@@ -79,7 +80,7 @@ export const PendingTxns = ({ address }: Props) => {
     async function fn() {
       try {
         if (isAddress(address)) {
-          setIsAccount(await isAccountAddress(address));
+          setIsAccount(await isEvmUserAddress(address, true));
         }
       } catch (e) {
         console.log('pending txns list, get address type error: ', e);
