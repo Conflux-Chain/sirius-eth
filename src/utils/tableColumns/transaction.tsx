@@ -26,6 +26,7 @@ import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 
 import iconViewTxn from 'images/view-txn.png';
 import iconViewTxnActive from 'images/view-txn-active.svg';
+import ContractIcon from 'images/contract-icon.png';
 import lodash from 'lodash';
 import iconCross from 'images/icon-crossSpace.svg';
 import {
@@ -135,6 +136,7 @@ export const TxnHashRenderComponent = ({
               {t => t(translations.general.table.tooltip.crossSpaceCall)}
             </Translation>
           }
+          className="tooltip-cross-space-call"
         >
           <ImageWrap>
             <img className="iconCross" src={iconCross} alt="?" />
@@ -203,7 +205,7 @@ export const to = {
     </Translation>
   ),
   dataIndex: 'to',
-  key: 'hash',
+  key: 'to',
   width: 1,
   render: (value, row) => {
     let alias = '';
@@ -212,10 +214,12 @@ export const to = {
 
     if (row.toContractInfo && row.toContractInfo.name)
       alias = row.toContractInfo.name;
+    else if (row.toTokenInfo && row.toTokenInfo.name)
+      alias = `${row.toTokenInfo.name}`;
     else if (row.contractInfo && row.contractInfo.name)
       alias = row.contractInfo.name;
     else if (row.tokenInfo && row.tokenInfo.name)
-      alias = `${row.tokenInfo.name} (${row.tokenInfo.symbol || '-'})`;
+      alias = `${row.tokenInfo.name}`;
 
     if (row.toContractInfo) {
       verify =
@@ -336,15 +340,36 @@ export const method = {
     } else {
       text = value;
     }
+    const verify =
+      row.toContractInfo &&
+      row.toContractInfo.verify &&
+      row.toContractInfo.verify.result !== 0;
+    const showWarning = !value.startsWith('0x') && !verify;
 
     return (
-      <MethodHighlight scope="method" value={text}>
-        <Text tag="span" hoverValue={text}>
-          <StyledMethodContainerWrapper>
+      <StyledMethodContainerWrapper>
+        {showWarning && (
+          <Tooltip
+            title={
+              <Translation>
+                {t => t(translations.general.table.tooltip.methodWarning)}
+              </Translation>
+            }
+            className="method-warning"
+          >
+            <img
+              src={ContractIcon}
+              alt="warning"
+              className="method-warning-icon"
+            />
+          </Tooltip>
+        )}
+        <MethodHighlight scope="method" value={text}>
+          <Text tag="span" hoverValue={text}>
             <StyledMethodWrapper>{text}</StyledMethodWrapper>
-          </StyledMethodContainerWrapper>
-        </Text>
-      </MethodHighlight>
+          </Text>
+        </MethodHighlight>
+      </StyledMethodContainerWrapper>
     );
   },
 };
@@ -401,6 +426,9 @@ const StyledTransactionHashWrapper = styled.span`
     }
   }
 
+  .tooltip-cross-space-call {
+    flex-shrink: 0;
+  }
   .iconCross {
     margin-left: 4px;
   }
@@ -428,8 +456,18 @@ const ImageWrap = styled.span`
 
 const StyledMethodContainerWrapper = styled.span`
   display: flex;
+  .method-warning {
+    flex-shrink: 0;
+  }
+  .method-warning-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
+    margin-bottom: 3px;
+  }
 `;
 const MethodHighlight = styled(ValueHighlight)`
+  height: 20px;
   padding: 0;
 `;
 const StyledMethodWrapper = styled.span`

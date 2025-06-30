@@ -23,7 +23,7 @@ import { ReactComponent as UploadIcon } from 'images/contract/upload.svg';
 import imgWarning from 'images/warning.png';
 import { usePortal } from 'utils/hooks/usePortal';
 import { DappButton } from '../DappButton/Loadable';
-import { packContractAndToken } from 'utils/contractManagerTool';
+import { packContractAndToken } from '@cfxjs/sirius-next-common/dist/utils/contractManagerTool';
 import { TXN_ACTION } from 'utils/constants';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { CheckCircleIcon } from 'app/containers/AddressContractDetail/ContractContent';
@@ -44,7 +44,7 @@ interface Props {
 interface RequestBody {
   [key: string]: any;
 }
-const MAXSIZEFORICON = 30; //kb
+const MAX_SIZE_FOR_ICON = 30; //kb
 const fieldsContract = ['token'];
 export const ContractOrTokenInfo = ({
   contractDetail,
@@ -86,7 +86,7 @@ export const ContractOrTokenInfo = ({
   const [isSiteError, setIsSiteError] = useState(false);
   const [isTokenSiteError, setIsTokenSiteError] = useState(false);
   const [isGatewayError, setIsGatewayError] = useState(false);
-  const [txData, setTxData] = useState('');
+  const [txData, setTxData] = useState<string>();
   const fileContractInputRef = React.createRef<any>();
   const fileTokenInputRef = React.createRef<any>();
   const inputStyle = { margin: '0 0.2857rem' };
@@ -146,7 +146,7 @@ export const ContractOrTokenInfo = ({
   }, [address, contractDetailStr, type]);
   useEffect(
     () => {
-      let isSubmitable = false;
+      let canSubmit = false;
       if (accounts[0]) {
         if (
           !isAddressError &&
@@ -156,16 +156,16 @@ export const ContractOrTokenInfo = ({
             ? !isNameError && !isSiteError
             : !isTokenSiteError && !isGatewayError)
         ) {
-          isSubmitable = true;
+          canSubmit = true;
           setTxData(getTxData());
         } else {
           setTxData('');
         }
       } else {
         setTxData('');
-        isSubmitable = true;
+        canSubmit = true;
       }
-      setBtnShouldClick(isSubmitable);
+      setBtnShouldClick(canSubmit);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -323,7 +323,7 @@ export const ContractOrTokenInfo = ({
         return;
       }
 
-      if (byteToKb(file.size) > MAXSIZEFORICON) {
+      if (byteToKb(file.size) > MAX_SIZE_FOR_ICON) {
         setMessage({ text: t('contract.invalidIconSize'), color: 'error' });
         return;
       }
@@ -345,7 +345,7 @@ export const ContractOrTokenInfo = ({
         return;
       }
 
-      if (byteToKb(file.size) > MAXSIZEFORICON) {
+      if (byteToKb(file.size) > MAX_SIZE_FOR_ICON) {
         setMessage({ text: t('contract.invalidIconSize'), color: 'error' });
         return;
       }
@@ -360,8 +360,9 @@ export const ContractOrTokenInfo = ({
   };
   function getTxData() {
     try {
-      const bodyParams: RequestBody = {};
-      bodyParams.address = addressVal;
+      const bodyParams: Parameters<typeof packContractAndToken>[0] = {
+        address: addressVal,
+      };
       if (updateInfoType === 'contract') {
         bodyParams.name = contractName; // only submit name when update contract info
       }

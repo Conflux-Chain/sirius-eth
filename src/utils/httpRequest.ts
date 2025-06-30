@@ -380,6 +380,16 @@ export const reqRefreshMetadata = (param?: object, extra?: object) => {
   });
 };
 
+export const reqAbiByMethodId = (methodId: string, extra?: object) => {
+  return sendRequest({
+    url: `/stat/list-abi-method`,
+    query: {
+      id: methodId,
+    },
+    ...extra,
+  });
+};
+
 export const reqNametag = (address: string[], extra?: object) => {
   const query = address.reduce((prev, curr, index) => {
     return !index ? `address=${curr}` : `${prev}&address=${curr}`;

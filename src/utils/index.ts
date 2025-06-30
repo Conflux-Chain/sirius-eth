@@ -41,9 +41,6 @@ import {
 
 import {
   isZeroAddress,
-  isContractCodeHashEmpty,
-  getEvmAddressType,
-  isEvmContractAddress,
   isEvmAddress as isAddress,
   formatAddress as _formatAddress,
   formatAddressHexToBase32,
@@ -85,13 +82,7 @@ export {
   formatAddressHexToBase32,
 };
 
-export {
-  isZeroAddress,
-  isContractCodeHashEmpty,
-  getEvmAddressType,
-  isEvmContractAddress,
-  isAddress,
-};
+export { isZeroAddress, isAddress };
 // @ts-ignore
 window.SDK = SDK;
 // @ts-ignore
@@ -106,15 +97,6 @@ export const formatAddress = (
 ) => {
   return _formatAddress(address, outputType);
 };
-
-// Todo: Distinguish between core and evm
-export async function isAccountAddress(address: string): Promise<boolean> {
-  try {
-    return (await getEvmAddressType(address)) === 'user';
-  } catch (e) {
-    throw e;
-  }
-}
 
 /**
  * 格式化字符串
