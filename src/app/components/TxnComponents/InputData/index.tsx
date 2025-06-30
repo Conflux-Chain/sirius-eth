@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { isEvmContractAddress, isZeroAddress, formatAddress } from 'utils';
+import { isZeroAddress, formatAddress } from 'utils';
+import { isEvmContractAddress } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { reqAbiByMethodId, reqContract } from 'utils/httpRequest';
 import { CFXToDecode } from 'utils/constants';
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';

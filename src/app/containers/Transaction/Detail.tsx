@@ -22,7 +22,6 @@ import {
   formatTimeStamp,
   getPercent,
   toThousands,
-  isEvmContractAddress,
   isZeroAddress,
 } from 'utils';
 import { formatAddress } from 'utils';
@@ -57,6 +56,7 @@ import {
   fromDripToCfx,
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
+import { isEvmContractAddress } from '@cfxjs/sirius-next-common/dist/utils/address';
 import BigNumber from 'bignumber.js';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import dayjs from 'dayjs';
