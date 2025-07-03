@@ -1,0 +1,118 @@
+import React from 'react';
+import { Translation } from 'react-i18next';
+import { translations } from 'locales/i18n';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { ColumnAge } from './utils';
+import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { Tag } from '@cfxjs/antd';
+import styled from 'styled-components';
+import imgInfo from 'images/info.svg';
+import { renderAddress } from './token';
+
+const StyleToolTip = styled.div`
+  display: flex;
+  align-items: center;
+  > span[data-part='trigger'] {
+    flex-shrink: 0;
+  }
+  img {
+    margin-top: -4px;
+    margin-left: 4px;
+  }
+`;
+const SpanWrap = styled.span`
+  display: inline-block;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  overflow: hidden;
+  vertical-align: bottom;
+`;
+
+export const hash = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.transaction.hash)}
+    </Translation>
+  ),
+  dataIndex: 'txHash',
+  key: 'txHash',
+  width: 1,
+  render: hash => (
+    <Link href={`/tx/${hash}`}>
+      <Text tag="span" hoverValue={hash}>
+        <SpanWrap>{hash}</SpanWrap>
+      </Text>
+    </Link>
+  ),
+};
+
+export const delegatedAddress = {
+  title: (
+    <Translation>{t => t(translations.authList.delegatedAddress)}</Translation>
+  ),
+  dataIndex: 'address',
+  key: 'address',
+  width: 1,
+  render: (value, row) => {
+    return renderAddress(value, row, 'to', false);
+  },
+};
+
+export const txSender = {
+  title: <Translation>{t => t(translations.authList.txSender)}</Translation>,
+  dataIndex: 'txSender',
+  key: 'txSender',
+  width: 1,
+  render: (value, row) => {
+    return renderAddress(value, row, 'from', false);
+  },
+};
+
+export const nonce = {
+  title: <Translation>{t => t(translations.authList.nonce)}</Translation>,
+  dataIndex: 'nonce',
+  key: 'nonce',
+  width: 1,
+};
+
+export const valid = {
+  title: (
+    <StyleToolTip>
+      <Translation>{t => t(translations.authList.valid)}</Translation>
+      <Text
+        tag="span"
+        hoverValue={
+          <Translation>
+            {t => t(translations.authList.tooltip.valid)}
+          </Translation>
+        }
+      >
+        <img src={imgInfo} alt="tips" />
+      </Text>
+    </StyleToolTip>
+  ),
+  dataIndex: 'result',
+  key: 'result',
+  width: 1,
+  render: (result: string) => {
+    if (result === 'success') {
+      return (
+        <Tag color="green">
+          <Translation>{t => t(translations.authList.yes)}</Translation>
+        </Tag>
+      );
+    } else {
+      return (
+        <Tooltip title={result}>
+          <Tag color="red">
+            <Translation>{t => t(translations.authList.no)}</Translation>
+          </Tag>
+        </Tooltip>
+      );
+    }
+  },
+};
+
+export const age = (ageFormat, toggleAgeFormat) =>
+  ColumnAge({ ageFormat, toggleAgeFormat, dataIndex: 'txTime' });

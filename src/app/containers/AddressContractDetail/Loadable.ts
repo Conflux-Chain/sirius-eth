@@ -35,3 +35,8 @@ export const ContractMetadata = lazyLoad(
   () => import('./ContractMetadata'),
   module => module.ContractMetadata,
 );
+
+export const Authorizations = lazyLoad(
+  () => import('./Authorizations'),
+  module => module.Authorizations,
+);

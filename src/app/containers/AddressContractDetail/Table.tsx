@@ -17,6 +17,8 @@ import {
 import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
 import styled from 'styled-components';
 import { ContractStatus } from '../AddressContractDetail/ContractStatus';
+import type { EvmAddressType } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { Authorizations } from './Loadable';
 
 export const Table = memo(
   ({
@@ -26,7 +28,7 @@ export const Table = memo(
   }: {
     address: string;
     addressInfo: any;
-    type: 'contract' | 'account';
+    type: EvmAddressType;
   }) => {
     const { t } = useTranslation();
     const isContract = type === 'contract';
@@ -104,6 +106,14 @@ export const Table = memo(
           content: <ContractContent contractInfo={addressInfo} />,
         },
       );
+    } else {
+      tabs.push({
+        hidden: !addressInfo.authorizationsTab,
+        value: 'auth-list',
+        action: 'authList',
+        label: t(translations.authList.authorizations),
+        content: <Authorizations address={address} />,
+      });
     }
 
     return <TabsTablePanel key="table" tabs={tabs} />;
