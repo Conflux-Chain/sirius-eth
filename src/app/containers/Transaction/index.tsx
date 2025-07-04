@@ -4,6 +4,7 @@ import { translations } from 'locales/i18n';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
 import styled from 'styled-components';
 import { EventLogs } from './EventLogs/Loadable';
+import { AuthorizationList } from './AuthorizationList';
 import { TabLabel } from 'app/components/TabsTablePanel/Label';
 import { reqTransactionDetail } from 'utils/httpRequest';
 import { useHistory, useParams } from 'react-router-dom';
@@ -78,7 +79,7 @@ export function Transaction() {
     };
   }, [fetchTxDetail]);
 
-  const { from, to, eventLogCount, gasPrice } = txnDetail;
+  const { from, to, eventLogCount, gasPrice, type } = txnDetail;
 
   let tabs: any[] = [
     {
@@ -106,6 +107,18 @@ export function Transaction() {
       },
       content: <EventLogs hash={hash}></EventLogs>,
       hidden: !eventLogCount,
+    },
+    {
+      value: 'authorization-list',
+      label: () => {
+        return (
+          <TabLabel showTooltip={false}>
+            {t(translations.authList.authorizationList)}
+          </TabLabel>
+        );
+      },
+      content: <AuthorizationList hash={hash} />,
+      hidden: type !== 4,
     },
   ];
   const isCrossSpaceCall = gasPrice === '0';

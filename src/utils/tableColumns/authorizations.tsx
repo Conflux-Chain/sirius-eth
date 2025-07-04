@@ -9,6 +9,9 @@ import { Tag } from '@cfxjs/antd';
 import styled from 'styled-components';
 import imgInfo from 'images/info.svg';
 import { renderAddress } from './token';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
+import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
+import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
 
 const StyleToolTip = styled.div`
   display: flex;
@@ -27,6 +30,7 @@ const SpanWrap = styled.span`
   max-width: 160px;
   overflow: hidden;
   vertical-align: bottom;
+  white-space: nowrap;
 `;
 
 export const hash = {
@@ -45,6 +49,20 @@ export const hash = {
       </Text>
     </Link>
   ),
+};
+
+export const authority = {
+  title: <Translation>{t => t(translations.authList.authority)}</Translation>,
+  dataIndex: 'author',
+  key: 'author',
+  width: 1,
+  render: value => {
+    return (
+      <ValueHighlight scope="address" value={value}>
+        <EVMAddressContainer value={value} />
+      </ValueHighlight>
+    );
+  },
 };
 
 export const delegatedAddress = {
@@ -114,5 +132,38 @@ export const valid = {
   },
 };
 
+export const yParity = {
+  title: <Translation>{t => t(translations.authList.yParity)}</Translation>,
+  dataIndex: 'yParity',
+  key: 'yParity',
+  width: 1,
+};
+
+export const r = {
+  title: <Translation>{t => t(translations.authList.r)}</Translation>,
+  dataIndex: 'r',
+  key: 'r',
+  width: 1,
+  render: r => (
+    <>
+      <SpanWrap>{r}</SpanWrap>
+      <CopyButton copyText={r} size={14} />
+    </>
+  ),
+};
+
+export const s = {
+  title: <Translation>{t => t(translations.authList.s)}</Translation>,
+  dataIndex: 's',
+  key: 's',
+  width: 1,
+  render: s => (
+    <>
+      <SpanWrap>{s}</SpanWrap>
+      <CopyButton copyText={s} size={14} />
+    </>
+  ),
+};
+
 export const age = (ageFormat, toggleAgeFormat) =>
-  ColumnAge({ ageFormat, toggleAgeFormat, dataIndex: 'txTime' });
+  ColumnAge({ ageFormat, toggleAgeFormat, dataIndex: 'createdAt' });
