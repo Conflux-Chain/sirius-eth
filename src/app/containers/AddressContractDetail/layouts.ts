@@ -35,7 +35,7 @@ export const Title = styled.div`
     margin-bottom: 1rem;
   }
 `;
-export const HeadAddressLine = styled.span`
+export const HeadAddressLine = styled.span<{ $marginTop?: string }>`
   position: relative;
   color: #74798c;
   display: flex;
@@ -43,6 +43,7 @@ export const HeadAddressLine = styled.span`
   align-items: center;
   flex-wrap: wrap;
   text-align: left;
+  margin-top: ${props => (props.$marginTop ? props.$marginTop : '0')};
 
   ${media.s} {
     align-items: baseline;

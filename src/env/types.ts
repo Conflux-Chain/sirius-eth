@@ -33,6 +33,7 @@ export interface ENVConfig {
   ENV_CORE_API_HOST?: string;
   ENV_CORE_SCAN_HOST?: string;
   ENV_RPC_SERVER: string;
+  ENV_EVM_RPC_SERVER?: string;
   ENV_WALLET_CONFIG?: WalletConfig;
   ENV_LOCALES_EN?: typeof ENV_LOCALES_EN;
   ENV_LOCALES_CN?: typeof ENV_LOCALES_CN;

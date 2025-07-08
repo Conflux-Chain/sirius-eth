@@ -17,7 +17,8 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import {
   convertCheckSum,
-  isEvmUserAddress,
+  getEvmAddressType,
+  EvmAddressType,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface RouteParams {
@@ -29,8 +30,8 @@ export const AddressContractDetailPage = () => {
   const { address: addressParams } = useParams<RouteParams>();
   const address = convertCheckSum(addressParams);
   const history = useHistory();
-  const [isAccount, setIsAccount] = useState<null | boolean>(() => {
-    return isZeroAddress(address) ? true : null;
+  const [addressType, setAddressType] = useState<EvmAddressType | null>(() => {
+    return isZeroAddress(address) ? 'user' : null;
   });
   const [error, setError] = useState(false);
 
@@ -43,7 +44,7 @@ export const AddressContractDetailPage = () => {
       setError(false);
       try {
         if (isAddress(address)) {
-          setIsAccount(await isEvmUserAddress(address, true));
+          setAddressType(await getEvmAddressType(address));
         }
       } catch (e) {
         console.log('check address type error: ', e);
@@ -56,7 +57,7 @@ export const AddressContractDetailPage = () => {
     }
   }, [address]);
 
-  if (isAccount === null) {
+  if (addressType === null) {
     return (
       <Card style={{ marginTop: '20px' }}>
         <StyledWrapper>
@@ -70,7 +71,11 @@ export const AddressContractDetailPage = () => {
     );
   }
 
-  return isAccount ? <AddressDetailPage /> : <ContractDetailPage />;
+  return addressType !== 'contract' ? (
+    <AddressDetailPage type={addressType} />
+  ) : (
+    <ContractDetailPage />
+  );
 };
 
 const StyledWrapper = styled.div`

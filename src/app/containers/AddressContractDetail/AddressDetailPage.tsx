@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,7 @@ import { BalanceCard, TokensCard, NonceCard } from './AddressInfoCards';
 import { Main, Title, Bottom, HeadAddressLine, Top, Head } from './layouts';
 import { Table } from './Loadable';
 import { isZeroAddress } from '../../../utils';
-import { useAccount } from '../../../utils/api';
+import { useAccount } from 'utils/api';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
@@ -25,13 +25,19 @@ import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
-import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
+import {
+  convertCheckSum,
+  EvmAddressType,
+} from '@cfxjs/sirius-next-common/dist/utils/address';
+import { EOACodeIcon } from 'app/components/EOACodeIcon';
+import { useDelegatedInfoStore } from 'utils/store';
+import { DelegatedAddress } from './DelegatedAddress';
 
 interface RouteParams {
   address: string;
 }
 
-export const AddressDetailPage = memo(() => {
+export const AddressDetailPage = memo(({ type }: { type: EvmAddressType }) => {
   const [globalData] = useGlobalData();
   const { t } = useTranslation();
   const { address: addressParams } = useParams<RouteParams>();
@@ -44,6 +50,7 @@ export const AddressDetailPage = memo(() => {
     'stakingBalance',
   ]);
   const [visible, setVisible] = useState(false);
+  const { delegatedAddress, fetchDelegatedInfo } = useDelegatedInfoStore();
 
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
   const addressLabel =
@@ -85,6 +92,10 @@ export const AddressDetailPage = memo(() => {
     },
   };
 
+  useEffect(() => {
+    fetchDelegatedInfo(type === 'eoaWithCode' ? address : null);
+  }, [fetchDelegatedInfo, address, type]);
+
   return (
     <>
       <Helmet>
@@ -102,6 +113,7 @@ export const AddressDetailPage = memo(() => {
               : t(translations.general.address.address)}
 
             <Nametag address={address}></Nametag>
+            {type === 'eoaWithCode' && <EOACodeIcon />}
           </Title>
           <HeadAddressLine>
             <span className="address">
@@ -137,6 +149,11 @@ export const AddressDetailPage = memo(() => {
               </DropdownWrapper>
             </div>
           </HeadAddressLine>
+          {delegatedAddress && (
+            <HeadAddressLine $marginTop="12px">
+              <DelegatedAddress />
+            </HeadAddressLine>
+          )}
         </Head>
         <Top>
           <BalanceCard accountInfo={accountInfo} />
@@ -148,7 +165,7 @@ export const AddressDetailPage = memo(() => {
             address={address}
             addressInfo={accountInfo}
             key={address}
-            type="account"
+            type={type}
           />
         </Bottom>
         <CreateAddressLabel {...props}></CreateAddressLabel>
