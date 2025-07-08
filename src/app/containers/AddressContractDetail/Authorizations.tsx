@@ -1,5 +1,5 @@
 import React from 'react';
-import { blockColunms, authorizationsColumns } from 'utils/tableColumns';
+import { authorizationsColumns } from 'utils/tableColumns';
 import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
 
@@ -10,11 +10,7 @@ export const Authorizations = ({ address }: { address: string }) => {
   const columnsWidth = [2, 1, 2, 2, 1, 1, 2];
   const columns = [
     authorizationsColumns.hash,
-    {
-      ...blockColunms.blockHeight,
-      dataIndex: 'blockNumber',
-      key: 'blockNumber',
-    },
+    authorizationsColumns.blockHeight,
     authorizationsColumns.delegatedAddress,
     authorizationsColumns.txSender,
     authorizationsColumns.nonce,

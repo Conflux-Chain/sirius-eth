@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Tabs } from '../Tabs';
 import { useTabs, Tab } from '../Tabs/useTabs';
 import { trackEvent } from '../../../utils/ga';
@@ -13,7 +13,7 @@ export type TabsTablePanelType = {
 
 export const TabsTablePanel = ({ tabs, onTabsChange }: TabsTablePanelType) => {
   const { switchToTab, currentTabValue } = useTabs(tabs);
-  const visibleTabs = useMemo(() => tabs.filter(i => !i.hidden), [tabs]);
+  const visibleTabs = tabs.filter(i => !i.hidden);
 
   const handleTabsChange = function (value: string) {
     switchToTab(value);

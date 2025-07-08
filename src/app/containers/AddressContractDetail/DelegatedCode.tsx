@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { trackEvent } from 'utils/ga';
-import { ScanEvent } from 'utils/gaConstants';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { ContractAbi } from 'app/components/ContractAbi/Loadable';
@@ -73,19 +71,8 @@ export const DelegatedCode = ({ address, delegatedContractInfo }) => {
     ]);
   }
 
-  const clickHandler = (key, index) => {
+  const clickHandler = (key: string, index: number) => {
     setActiveIndex(index);
-    if (key) {
-      trackEvent({
-        category: ScanEvent.tab.category,
-        action:
-          ScanEvent.tab.action[
-            `contract${
-              (key + '').charAt(0).toUpperCase() + (key + '').slice(1)
-            }`
-          ],
-      });
-    }
   };
 
   useEffect(() => {

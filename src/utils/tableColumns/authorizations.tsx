@@ -51,6 +51,16 @@ export const hash = {
   ),
 };
 
+export const blockHeight = {
+  title: (
+    <Translation>{t => t(translations.general.table.block.height)}</Translation>
+  ),
+  dataIndex: 'blockNumber',
+  key: 'blockNumber',
+  width: 1,
+  render: value => <Link href={`/block/${value}`}>{value}</Link>,
+};
+
 export const authority = {
   title: <Translation>{t => t(translations.authList.authority)}</Translation>,
   dataIndex: 'author',
