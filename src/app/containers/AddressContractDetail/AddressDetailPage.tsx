@@ -14,7 +14,7 @@ import { BalanceCard, TokensCard, NonceCard } from './AddressInfoCards';
 import { Main, Title, Bottom, HeadAddressLine, Top, Head } from './layouts';
 import { Table } from './Loadable';
 import { isZeroAddress } from '../../../utils';
-import { useAccount } from '../../../utils/api';
+import { useAccount } from 'utils/api';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import DownIcon from '../../../images/down.png';
 import styled from 'styled-components';
@@ -28,10 +28,10 @@ import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 import {
   convertCheckSum,
   EvmAddressType,
-  getDelegatedAddress,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
-import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { EOACodeIcon } from 'app/components/EOACodeIcon';
+import { useDelegatedInfoStore } from 'utils/store';
+import { DelegatedAddress } from './DelegatedAddress';
 
 interface RouteParams {
   address: string;
@@ -50,9 +50,7 @@ export const AddressDetailPage = memo(({ type }: { type: EvmAddressType }) => {
     'stakingBalance',
   ]);
   const [visible, setVisible] = useState(false);
-  const [delegatedAddress, setDelegatedAddress] = useState(
-    type === 'eoaWithCode' ? '' : null,
-  );
+  const { delegatedAddress, fetchDelegatedInfo } = useDelegatedInfoStore();
 
   const addressLabelMap = globalData[LOCALSTORAGE_KEYS_MAP.addressLabel];
   const addressLabel =
@@ -95,18 +93,8 @@ export const AddressDetailPage = memo(({ type }: { type: EvmAddressType }) => {
   };
 
   useEffect(() => {
-    async function fn() {
-      try {
-        setDelegatedAddress(await getDelegatedAddress(address));
-      } catch (e) {
-        console.log('get delegated address error: ', e);
-      }
-    }
-
-    if (type === 'eoaWithCode') {
-      fn();
-    }
-  }, [address, type]);
+    fetchDelegatedInfo(type === 'eoaWithCode' ? address : null);
+  }, [fetchDelegatedInfo, address, type]);
 
   return (
     <>
@@ -163,9 +151,7 @@ export const AddressDetailPage = memo(({ type }: { type: EvmAddressType }) => {
           </HeadAddressLine>
           {delegatedAddress && (
             <HeadAddressLine $marginTop="12px">
-              <span>{t(translations.authList.delegateTo)}</span>
-              <EVMAddressContainer value={delegatedAddress} />
-              <Copy address={delegatedAddress} />
+              <DelegatedAddress />
             </HeadAddressLine>
           )}
         </Head>

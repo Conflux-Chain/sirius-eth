@@ -19,6 +19,8 @@ import styled from 'styled-components';
 import { ContractStatus } from '../AddressContractDetail/ContractStatus';
 import type { EvmAddressType } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { Authorizations } from './Loadable';
+import { DelegatedCode } from './DelegatedCode';
+import { useDelegatedInfoStore } from 'utils/store';
 
 export const Table = memo(
   ({
@@ -31,6 +33,7 @@ export const Table = memo(
     type: EvmAddressType;
   }) => {
     const { t } = useTranslation();
+    const { delegatedContractInfo } = useDelegatedInfoStore();
     const isContract = type === 'contract';
 
     const tabs: any = [
@@ -106,7 +109,21 @@ export const Table = memo(
           content: <ContractContent contractInfo={addressInfo} />,
         },
       );
-    } else {
+    }
+    if (type === 'eoaWithCode' && delegatedContractInfo) {
+      tabs.push({
+        value: 'delegated-code',
+        action: 'delegatedCode',
+        label: t(translations.authList.delegatedCode),
+        content: (
+          <DelegatedCode
+            address={address}
+            delegatedContractInfo={delegatedContractInfo}
+          />
+        ),
+      });
+    }
+    if (!isContract) {
       tabs.push({
         hidden: !addressInfo.authorizationsTab,
         value: 'auth-list',
