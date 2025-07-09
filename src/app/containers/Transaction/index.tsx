@@ -81,7 +81,7 @@ export function Transaction() {
 
   const { from, to, eventLogCount, gasPrice, type } = txnDetail;
 
-  let tabs: any[] = [
+  let tabs = [
     {
       value: 'overview',
       label: t(translations.transaction.overview),
@@ -98,25 +98,21 @@ export function Transaction() {
     },
     {
       value: 'logs',
-      label: () => {
-        return (
-          <TabLabel showTooltip={false}>
-            {t(translations.transaction.logs.title)}
-          </TabLabel>
-        );
-      },
+      label: (
+        <TabLabel showTooltip={false}>
+          {t(translations.transaction.logs.title)}
+        </TabLabel>
+      ),
       content: <EventLogs hash={hash}></EventLogs>,
       hidden: !eventLogCount,
     },
     {
       value: 'authorization-list',
-      label: () => {
-        return (
-          <TabLabel showTooltip={false}>
-            {t(translations.authList.authorizationList)}
-          </TabLabel>
-        );
-      },
+      label: (
+        <TabLabel showTooltip={false}>
+          {t(translations.authList.authorizationList)}
+        </TabLabel>
+      ),
       content: <AuthorizationList hash={hash} />,
       hidden: type !== 4,
     },
