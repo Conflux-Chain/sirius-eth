@@ -108,16 +108,16 @@ export const valid = {
   title: (
     <StyleToolTip>
       <Translation>{t => t(translations.authList.valid)}</Translation>
-      <Text
-        tag="span"
-        hoverValue={
+      <Tooltip
+        title={
           <Translation>
             {t => t(translations.authList.tooltip.valid)}
           </Translation>
         }
+        portalled
       >
         <img src={imgInfo} alt="tips" />
-      </Text>
+      </Tooltip>
     </StyleToolTip>
   ),
   dataIndex: 'result',
