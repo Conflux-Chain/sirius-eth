@@ -5,9 +5,7 @@ import { useDelegatedInfoStore } from 'utils/store';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 
-export const DelegatedAddress: React.FC<{
-  link?: boolean;
-}> = ({ link = true }) => {
+export const DelegatedAddress: React.FC = () => {
   const { t } = useTranslation();
   const {
     delegatedAddress,
@@ -21,7 +19,6 @@ export const DelegatedAddress: React.FC<{
       <EVMAddressContainer
         value={delegatedAddress}
         alias={delegatedContractInfo?.name || delegatedTokenInfo?.name}
-        link={link}
         verify={delegatedContractInfo?.verify?.exactMatch}
         isContract={!!delegatedContractInfo}
       />

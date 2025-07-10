@@ -212,7 +212,7 @@ export const Code = ({
           )}
           {isDelegated && (
             <div className="contract-code-delegate-to">
-              <DelegatedAddress link={false} />
+              <DelegatedAddress />
             </div>
           )}
           <Row className="contract-code-verify-info">
