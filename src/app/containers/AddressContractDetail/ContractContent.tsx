@@ -21,9 +21,9 @@ import { formatData } from 'app/components/TxnComponents/util';
 import { monospaceFont } from 'styles/variable';
 import CheckCircle from '@zeit-ui/react-icons/checkCircle';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
-
 import { SubTabs } from 'app/components/Tabs/Loadable';
 import { formatAddress, isZeroAddress } from 'utils';
+import { DelegatedAddress } from './DelegatedAddress';
 
 const AceEditorStyle = {
   width: '100%',
@@ -34,7 +34,13 @@ export const CheckCircleIcon = (size?) => (
   <CheckCircle size={typeof size === 'number' ? size : 16} color="#7cd77b" />
 );
 
-const Code = ({ contractInfo }) => {
+export const Code = ({
+  contractInfo,
+  isDelegated,
+}: {
+  contractInfo: any;
+  isDelegated?: boolean;
+}) => {
   const { t } = useTranslation();
   const { sourceCode, abi, address, verify = {} } = contractInfo;
   const {
@@ -198,10 +204,17 @@ const Code = ({ contractInfo }) => {
     <StyledContractContentCodeWrapper>
       {exactMatch ? (
         <>
-          <div className="contract-code-verified">
-            {t(translations.contract.verify.contractCodeVerified)}{' '}
-            <CheckCircleIcon />
-          </div>
+          {!isDelegated && (
+            <div className="contract-code-verified">
+              {t(translations.contract.verify.contractCodeVerified)}{' '}
+              <CheckCircleIcon />
+            </div>
+          )}
+          {isDelegated && (
+            <div className="contract-code-delegate-to">
+              <DelegatedAddress />
+            </div>
+          )}
           <Row className="contract-code-verify-info">
             <Col span={6} sm={12} xs={24}>
               <span className="verify-info-title">
@@ -389,6 +402,17 @@ const StyledContractContentCodeWrapper = styled.div`
     &.margin-bottom-0 {
       margin-bottom: 0;
     }
+  }
+  .contract-code-delegate-to {
+    font-size: 14px;
+    color: #74798c;
+    line-height: 22px;
+    padding: 15px 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ebeced;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
   .contract-verify-tip {
     a {

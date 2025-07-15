@@ -72,6 +72,8 @@ export const ENV_CORE_SCAN_HOST =
     : `https://www.confluxscan${DOMAIN}`);
 export const ENV_RPC_SERVER =
   API_HOST_MAP.rpcHost || 'https://evm-cfxbridge.confluxrpc.com';
+export const ENV_EVM_RPC_SERVER =
+  API_HOST_MAP.rpcHost || 'https://evm.confluxrpc.com';
 export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
   chainName: 'Conflux eSpace',
@@ -116,6 +118,8 @@ export const ENV_LOCALES_CN = {};
        : `https://www.confluxscan${DOMAIN}`);
    export const ENV_RPC_SERVER =
      API_HOST_MAP.rpcHost || 'https://demo-cfxbridge.confluxrpc.com';
+   export const ENV_EVM_RPC_SERVER =
+     API_HOST_MAP.rpcHost || 'https://demo.confluxrpc.com';
    export const ENV_WALLET_CONFIG = {
      chainId: ENV_NETWORK_ID,
      chainName: 'Conflux Demo Space',

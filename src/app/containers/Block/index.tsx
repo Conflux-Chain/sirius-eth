@@ -57,23 +57,17 @@ export function Block() {
     {
       value: 'transactions',
       action: 'blockTransactions',
-      label: () => {
-        return (
-          <TabLabel
-            // total={transactionCount}
-            // realTotal={transactionCount}
-            showTooltip={bp !== 's'}
-          >
-            {bp === 's' ? (
-              t(translations.block.tabs.transactions)
-            ) : (
-              <Tooltip title={t(translations.toolTip.block.transactions)}>
-                {t(translations.block.tabs.transactions)}
-              </Tooltip>
-            )}
-          </TabLabel>
-        );
-      },
+      label: (
+        <TabLabel showTooltip={bp !== 's'}>
+          {bp === 's' ? (
+            t(translations.block.tabs.transactions)
+          ) : (
+            <Tooltip title={t(translations.toolTip.block.transactions)}>
+              {t(translations.block.tabs.transactions)}
+            </Tooltip>
+          )}
+        </TabLabel>
+      ),
       content: blockHash && (
         <Txns url={`/transaction?blockHash=${blockHash}`} />
       ),

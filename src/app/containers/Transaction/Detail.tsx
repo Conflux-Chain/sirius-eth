@@ -61,6 +61,7 @@ import BigNumber from 'bignumber.js';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import dayjs from 'dayjs';
 import { StyledHighlight } from './EventLogs/StyledComponents';
+import { EOACodeIcon } from 'app/components/EOACodeIcon';
 
 // const getStorageFee = byteSize =>
 //   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
@@ -116,9 +117,13 @@ export const Detail = ({
     type,
     typeDesc,
     txExecErrorMsg,
+    effectiveAuth: _effectiveAuth,
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
   const nametags = useNametag([from, to]);
+  const effectiveAuth = isZeroAddress(_effectiveAuth?.address)
+    ? null
+    : _effectiveAuth;
 
   const loading = innerLoading || outerLoading;
   const isPending = _.isNil(status) || status === 4;
@@ -229,7 +234,7 @@ export const Detail = ({
     [nametags],
   );
 
-  const generatedDiv = () => {
+  const generatedToAddress = () => {
     if (to) {
       if (isContract) {
         return (
@@ -276,7 +281,10 @@ export const Detail = ({
             }
           >
             <SkeletonContainer shown={loading}>
-              {addressContent(true, to)}
+              <RowWrapper>
+                {effectiveAuth && <EOACodeIcon />}
+                {addressContent(true, to)}
+              </RowWrapper>
             </SkeletonContainer>
           </Description>
         );
@@ -868,7 +876,28 @@ export const Detail = ({
             {addressContent(true, from)}
           </SkeletonContainer>
         </Description>
-        {generatedDiv()}
+        {generatedToAddress()}
+        {effectiveAuth && (
+          <Description
+            title={
+              <Tooltip title={t(translations.authList.tooltip.delegateTo)}>
+                {t(translations.authList.delegateTo)}
+              </Tooltip>
+            }
+          >
+            <SkeletonContainer shown={loading}>
+              <RowWrapper>
+                {renderAddress(
+                  effectiveAuth.address,
+                  effectiveAuth,
+                  'to',
+                  false,
+                )}
+                <CopyButton copyText={effectiveAuth.address} size={14} />
+              </RowWrapper>
+            </SkeletonContainer>
+          </Description>
+        )}
 
         {/* @todo check if can be use new TokenTransfer component to instead of getTransferListDiv() */}
         {/* {isContract ? (
@@ -1299,4 +1328,10 @@ const StyleToolTipText = styled.div`
   font-weight: 500;
   font-family: PingFang SC;
   color: #ececec;
+`;
+
+const RowWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;

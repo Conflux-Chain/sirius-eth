@@ -10,6 +10,7 @@ export const STAGE_FLAG = IS_STAGE ? '-stage' : '';
 
 export const API_HOST_MAP: {
   rpcHost?: string;
+  evmRPCHost?: string;
   openAPIHost?: string;
   secondaryOpenAPIHost?: string;
   secondaryBackendAPIHost?: string;

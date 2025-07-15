@@ -202,6 +202,7 @@ export function App() {
           localStorage.setItem(
             LOCALSTORAGE_KEYS_MAP.apis,
             JSON.stringify({
+              evmRPCHost: resp?.EVM_RPC_URL,
               rpcHost: resp?.CONFURA_URL,
               openAPIHost: resp?.OPEN_API_URL,
               secondaryOpenAPIHost: resp?.CORE_OPEN_API_URL,

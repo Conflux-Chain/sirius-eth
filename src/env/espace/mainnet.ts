@@ -23,10 +23,12 @@ export const ENV_CORE_SCAN_HOST =
     : `https://www.confluxscan${DOMAIN}`);
 export const ENV_RPC_SERVER =
   API_HOST_MAP.rpcHost || 'https://evm-cfxbridge.confluxrpc.com';
+export const ENV_EVM_RPC_SERVER =
+  API_HOST_MAP.evmRPCHost || 'https://evm.confluxrpc.com';
 export const ENV_WALLET_CONFIG = {
   chainId: ENV_NETWORK_ID,
   chainName: 'Conflux eSpace',
-  rpcUrls: ['https://evm.confluxrpc.com'],
+  rpcUrls: [ENV_EVM_RPC_SERVER],
   blockExplorerUrls: ['https://evm.confluxscan.org/'],
   nativeCurrency: {
     name: 'Conflux',

@@ -1,29 +1,19 @@
 import React from 'react';
 import { Tabs } from '../Tabs';
-import { useTabTableData } from './useTabTableData';
+import { useTabs, Tab } from '../Tabs/useTabs';
 import { trackEvent } from '../../../utils/ga';
 import { ScanEvent } from '../../../utils/gaConstants';
 
 export type { ColumnsType } from '@cfxjs/react-ui/dist/table/table';
 
 export type TabsTablePanelType = {
-  tabs: Array<{
-    hideTotalZero?: boolean;
-    hidden?: boolean;
-    value: string;
-    action?: string;
-    label:
-      | ((total: number, realTotal: number, item: any) => React.ReactNode)
-      | string;
-    content?: React.ReactNode;
-  }>;
+  tabs: Tab[];
   onTabsChange?: (value: string) => void;
 };
 
 export const TabsTablePanel = ({ tabs, onTabsChange }: TabsTablePanelType) => {
-  const { total, realTotal, switchToTab, currentTabValue } = useTabTableData(
-    tabs,
-  );
+  const { switchToTab, currentTabValue } = useTabs(tabs);
+  const visibleTabs = tabs.filter(i => !i.hidden);
 
   const handleTabsChange = function (value: string) {
     switchToTab(value);
@@ -37,40 +27,18 @@ export const TabsTablePanel = ({ tabs, onTabsChange }: TabsTablePanelType) => {
       });
     }
   };
-  const ui = tabs
-    .filter((item, i) => {
-      if (
-        item.hideTotalZero &&
-        typeof total[i] === 'number' &&
-        item.value !== currentTabValue
-      ) {
-        // hideTotalZero must satisfy two conditions: total === 0 && tab not activity
-        return total[i];
-      }
-      return true;
-    })
-    .map((item, i) => {
-      // TODO tabs item do not support class, so use `disabled` prop to hide tab
-      return (
-        <Tabs.Item
-          label={
-            typeof item.label === 'function'
-              ? item.label(total[i], realTotal[i], item)
-              : item.label
-          }
-          value={item.value}
-          key={i}
-          disabled={item.hidden === true}
-        >
-          {item.content}
-        </Tabs.Item>
-      );
-    });
+  const ui = visibleTabs.map((item, i) => {
+    return (
+      <Tabs.Item label={item.label} value={item.value} key={i}>
+        {item.content}
+      </Tabs.Item>
+    );
+  });
 
   return (
     <>
       <Tabs
-        key="table-panel-tabs"
+        key={visibleTabs.map(i => i.value).join(',')}
         initialValue={currentTabValue}
         onChange={handleTabsChange}
       >

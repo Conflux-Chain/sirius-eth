@@ -10,7 +10,7 @@ interface Props {
     key: string;
   }>;
   activeKey: string;
-  onChange: (activeKey?: string, index?: number) => void;
+  onChange: (activeKey: string, index: number) => void;
   className?: string;
   extra?: React.ReactNode;
 }
