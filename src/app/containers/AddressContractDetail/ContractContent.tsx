@@ -53,6 +53,7 @@ export const Code = ({
     constructorArgs,
     libraries = [],
     evmVersion,
+    language,
   } = verify;
 
   const constructor = useMemo(() => {
@@ -233,10 +234,12 @@ export const Code = ({
                 {t(translations.contract.verify.optimizationEnabled)}
               </span>
               <span className="verify-info-content">
-                {t(translations.contract.verify.runs, {
-                  count: runs,
-                  status: optimization ? 'yes' : 'no',
-                })}
+                {language === 'vyper'
+                  ? optimization
+                  : t(translations.contract.verify.runs, {
+                      count: runs,
+                      status: optimization ? 'yes' : 'no',
+                    })}
               </span>
             </Col>
             <Col span={6} sm={12} xs={24}>
