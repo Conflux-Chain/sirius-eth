@@ -123,6 +123,12 @@ export const Step2: React.FC<{
     });
   };
 
+  const handleReset = () => {
+    form.resetFields();
+    setSourceCode('');
+    setOptimizationValue(DEFAULT_OPTIMIZATION_VALUE);
+  };
+
   return (
     <>
       <FileUpload
@@ -482,10 +488,7 @@ export const Step2: React.FC<{
             type="default"
             loading={loading}
             className="submit-button"
-            onClick={() => {
-              form.resetFields();
-              setOptimizationValue(DEFAULT_OPTIMIZATION_VALUE);
-            }}
+            onClick={handleReset}
           >
             {t(translations.contractVerification.button.reset)}
           </Button>
