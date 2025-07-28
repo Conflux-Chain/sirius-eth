@@ -123,13 +123,19 @@ export const Step2: React.FC<{
     });
   };
 
+  const handleReset = () => {
+    form.resetFields();
+    setSourceCode('');
+    setOptimizationValue(DEFAULT_OPTIMIZATION_VALUE);
+  };
+
   return (
     <>
       <FileUpload
         ref={inputRef}
         onChange={handleFileChange}
         onError={handleFileError}
-        accept=".sol"
+        accept={isSolidity ? '.sol' : '.vy'}
       />
       <div className="form-title">
         {t(translations.contractVerification.stepTitle.step2)}
@@ -482,10 +488,7 @@ export const Step2: React.FC<{
             type="default"
             loading={loading}
             className="submit-button"
-            onClick={() => {
-              form.resetFields();
-              setOptimizationValue(DEFAULT_OPTIMIZATION_VALUE);
-            }}
+            onClick={handleReset}
           >
             {t(translations.contractVerification.button.reset)}
           </Button>
