@@ -301,6 +301,9 @@ export const Step2: React.FC<{
             </Panel>
           </Collapse>
         )}
+        <div className="form-title">
+          {t(translations.contractVerification.advancedConfiguration)}
+        </div>
         <Row gutter={24}>
           <Col span={24} md={8}>
             <Form.Item
