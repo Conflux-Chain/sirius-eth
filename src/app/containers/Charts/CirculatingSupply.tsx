@@ -21,8 +21,9 @@ export function CirculatingSupply({ preview = false }: ChildProps) {
           }
         : undefined,
       formatter: data => {
+        let result: any = [];
         if (data) {
-          return [
+          result = [
             {
               name: t(translations.highcharts.circulatingSupply.others),
               y: parseInt(
@@ -33,15 +34,17 @@ export function CirculatingSupply({ preview = false }: ChildProps) {
                 ).toCFX(),
               ),
             },
-            {
+          ];
+          if (new BigNumber(data?.nullAddressBalance).gt(0)) {
+            result.push({
               sliced: true,
               selected: true,
               name: t(translations.highcharts.circulatingSupply.zeroAddress),
               y: parseInt(new SDK.Drip(data?.nullAddressBalance).toCFX()),
-            },
-          ];
+            });
+          }
         }
-        return [];
+        return result;
       },
     },
     options: {
