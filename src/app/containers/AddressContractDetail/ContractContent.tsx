@@ -53,7 +53,10 @@ export const Code = ({
     constructorArgs,
     libraries = [],
     evmVersion,
+    language,
   } = verify;
+
+  const isSolidity = language === 'solidity';
 
   const constructor = useMemo(() => {
     if (constructorArgs && abi && address) {
@@ -162,13 +165,15 @@ export const Code = ({
 
       return fSourceCode.map((s, i) => (
         <>
-          <div className={`multiple-sourcecode-title ${i === 0 && 'first'}`}>
-            {t(translations.contract.sourceCodeFilename, {
-              index: i + 1,
-              total: len,
-              filename: s.key,
-            })}
-          </div>
+          {isSolidity && (
+            <div className={`multiple-sourcecode-title ${i === 0 && 'first'}`}>
+              {t(translations.contract.sourceCodeFilename, {
+                index: i + 1,
+                total: len,
+                filename: s.key,
+              })}
+            </div>
+          )}
           <AceEditor
             readOnly
             style={AceEditorStyle}
@@ -190,7 +195,7 @@ export const Code = ({
     } else {
       return null;
     }
-  }, [t, sourceCode]);
+  }, [t, isSolidity, sourceCode]);
 
   if (!contractInfo.codeHash) {
     return (
@@ -233,10 +238,12 @@ export const Code = ({
                 {t(translations.contract.verify.optimizationEnabled)}
               </span>
               <span className="verify-info-content">
-                {t(translations.contract.verify.runs, {
-                  count: runs,
-                  status: optimization ? 'yes' : 'no',
-                })}
+                {!isSolidity
+                  ? optimization
+                  : t(translations.contract.verify.runs, {
+                      count: runs,
+                      status: optimization ? 'yes' : 'no',
+                    })}
               </span>
             </Col>
             <Col span={6} sm={12} xs={24}>
