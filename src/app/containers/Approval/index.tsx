@@ -21,7 +21,6 @@ import { usePortal } from 'utils/hooks/usePortal';
 import { abi as ERC20ABI } from 'utils/contract/ERC20.json';
 import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
 import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
-import { NETWORK_ID } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import BigNumber from 'bignumber.js';
 import { NFTPreview } from 'app/components/NFTPreview/Loadable';
@@ -63,7 +62,6 @@ export function Approval() {
     (address: string, type: string) => {
       const CFX = new SDK.Conflux({
         url: ENV_CONFIG.ENV_RPC_SERVER,
-        networkId: NETWORK_ID,
       });
 
       CFX.provider = provider;
