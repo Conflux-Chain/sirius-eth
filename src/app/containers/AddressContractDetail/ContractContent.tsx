@@ -15,7 +15,7 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import clsx from 'clsx';
 import { Row, Col, Tag } from '@cfxjs/antd';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
-import { CFX } from 'utils/constants';
+import { CFXToDecode } from 'utils/constants';
 import lodash from 'lodash';
 import { formatData } from 'app/components/TxnComponents/util';
 import { monospaceFont } from 'styles/variable';
@@ -61,7 +61,7 @@ export const Code = ({
   const constructor = useMemo(() => {
     if (constructorArgs && abi && address) {
       try {
-        const contract = CFX.Contract({
+        const contract = CFXToDecode.Contract({
           abi,
           address,
         });
@@ -522,7 +522,7 @@ export const ContractContent = ({ contractInfo }) => {
   // some contract init will trigger SDK error, need SDK to solve it
   useEffect(() => {
     try {
-      CFX.Contract({
+      CFXToDecode.Contract({
         abi,
         address,
       });
