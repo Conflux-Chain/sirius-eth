@@ -16,6 +16,7 @@ import DownIcon from '../../../images/down.png';
 import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import descIcon from 'images/table-desc.svg';
+import verifiedIcon from 'images/nametag/verified.svg';
 
 // import { useGlobal } from 'utils/hooks/useGlobal';
 
@@ -71,6 +72,10 @@ export function TokenDetail() {
   //   }
   // }
 
+  const isOfficialVerified = data.securityAudit?.officialLabels?.some(
+    i => i === 'Verified',
+  );
+
   const menu = (
     <MenuWrapper>
       <Menu.Item>
@@ -121,6 +126,22 @@ export function TokenDetail() {
             <div className="basic-symbol">{`(${
               data.symbol || t(translations.general.notAvailable)
             })`}</div>
+            {isOfficialVerified && (
+              <Tooltip title={t(translations.nametag.labels.tooltips.verified)}>
+                <StyledLabelWrapper>
+                  <img
+                    src={verifiedIcon}
+                    style={{
+                      marginRight: '6px',
+                      width: '16px',
+                      height: '16px',
+                    }}
+                    alt="status-icon"
+                  ></img>
+                  Verified
+                </StyledLabelWrapper>
+              </Tooltip>
+            )}
             <DropdownWrapper overlay={menu} trigger={['click']}>
               <span onClick={e => e.preventDefault()}>
                 {t(translations.general.address.more.title)}{' '}
@@ -258,6 +279,19 @@ export const DropdownWrapper = styled(Dropdown)`
     height: 6px;
     margin-left: 5px;
   }
+`;
+
+const StyledLabelWrapper = styled.span`
+  background-color: #ffffff;
+  border-radius: 16px;
+  font-size: 14px;
+  padding: 4px 12px;
+  margin-left: 12px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  color: var(--theme-color-gray4);
+  text-transform: none;
 `;
 
 // const WarningInfoWrapper = styled.div`
