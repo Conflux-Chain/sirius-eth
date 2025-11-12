@@ -112,6 +112,9 @@ const searchResult = (list: any[], notAvailable = '-', type = 'token') => {
         name: l.name || notAvailable,
         address: formatAddress(l.address),
       };
+      const isOfficialVerified = l.securityAudit?.officialLabels?.some(
+        i => i === 'Verified',
+      );
 
       return {
         key: `${type}-${token.address}`,
@@ -143,6 +146,19 @@ const searchResult = (list: any[], notAvailable = '-', type = 'token') => {
                       {token?.symbol ? ` (${token.symbol}) ` : ' '}
                       {token?.transferType && (
                         <span className="tag">{token?.transferType}</span>
+                      )}
+                      {isOfficialVerified && (
+                        <img
+                          src={verifiedIcon}
+                          style={{
+                            marginTop: '0',
+                            marginRight: '0',
+                            marginLeft: '8px',
+                            width: '16px',
+                            height: '16px',
+                          }}
+                          alt="status-icon"
+                        ></img>
                       )}
                     </div>
                     {token?.address ? (
