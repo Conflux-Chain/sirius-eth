@@ -138,9 +138,7 @@ export const Detail = ({
     try {
       const proArr: Promise<any>[] = [];
       const _isContract =
-        isContract ||
-        (toCheckAddress !== null &&
-          (await isEvmContractAddress(toCheckAddress)));
+        toCheckAddress !== null && (await isEvmContractAddress(toCheckAddress));
       if (_isContract) {
         setIsContract(true);
 
@@ -216,7 +214,7 @@ export const Detail = ({
     if (!to) return;
     fetchTxTransfer(to);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [to]);
+  }, [to, routeHash]);
 
   const addressContent = useCallback(
     (isFull = false, address) => {
