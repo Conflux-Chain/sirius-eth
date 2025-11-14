@@ -86,14 +86,19 @@ export function Transaction() {
       value: 'overview',
       label: t(translations.transaction.overview),
       content: (
-        <Detail data={txnDetail} loading={loading} partLoading={partLoading} />
+        <Detail
+          data={txnDetail}
+          loading={loading}
+          partLoading={partLoading}
+          key={hash}
+        />
       ),
     },
     {
       value: 'internal-txns',
       action: 'transactionCfxTransfers',
       label: t(translations.transaction.internalTxns.title),
-      content: <InternalTxns address={hash} from={from} to={to} />,
+      content: <InternalTxns address={hash} from={from} to={to} key={hash} />,
       // hidden: cfxTransferAllCount < 2,
     },
     {
@@ -103,7 +108,7 @@ export function Transaction() {
           {t(translations.transaction.logs.title)}
         </TabLabel>
       ),
-      content: <EventLogs hash={hash}></EventLogs>,
+      content: <EventLogs hash={hash} key={hash}></EventLogs>,
       hidden: !eventLogCount,
     },
     {
@@ -113,7 +118,7 @@ export function Transaction() {
           {t(translations.authList.authorizationList)}
         </TabLabel>
       ),
-      content: <AuthorizationList hash={hash} />,
+      content: <AuthorizationList hash={hash} key={hash} />,
       hidden: type !== 4,
     },
   ];
