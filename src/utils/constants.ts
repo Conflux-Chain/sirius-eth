@@ -7,6 +7,8 @@ import {
   NetworksTypeEnv,
 } from '@cfxjs/sirius-next-common/dist/store/types';
 
+export const IS_SHOW_BANNER = true;
+
 interface ContractsType {
   faucet: string;
   faucetLast: string;
