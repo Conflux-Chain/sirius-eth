@@ -31,6 +31,7 @@ import { GasPriceDropdown } from '@cfxjs/sirius-next-common/dist/components/GasP
 import { NetworkIcon } from '@cfxjs/sirius-next-common/dist/components/NetworkIcon';
 
 import ENV_CONFIG, { IS_ESPACE, IS_MAINNET, IS_TESTNET } from 'env';
+import { IS_SHOW_BANNER } from 'utils/constants';
 
 export const Header = memo(() => {
   const [globalData, setGlobalData] = useGlobalData();
@@ -696,7 +697,7 @@ export const Header = memo(() => {
         // subMenu={<Notices />}
       />
       {(bp === 's' || bp === 'm') && (
-        <SearchWrapper>
+        <SearchWrapper $isShowBanner={IS_SHOW_BANNER}>
           <Search />
         </SearchWrapper>
       )}
@@ -796,7 +797,7 @@ const Wrapper = styled.header`
   }
 `;
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled.div<{ $isShowBanner?: boolean }>`
   flex-grow: 1;
 
   .header-search-container {
@@ -820,6 +821,7 @@ const SearchWrapper = styled.div`
       left: 0;
       right: 0;
       top: 5.67rem;
+      top: ${({ $isShowBanner }) => ($isShowBanner ? '10.67rem' : '5.67rem')};
       z-index: 100;
     }
   }
