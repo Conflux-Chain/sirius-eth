@@ -63,7 +63,10 @@ export const Nav = memo(
                 <StyledLink href="https://usdt0.confluxhub.io" target="_blank">
                   Convert now
                 </StyledLink>
-                <StyledLink href="https://usdt0.to/transfer" target="_blank">
+                <StyledLink
+                  href="https://usdt0.to/transfer?source=conflux&token=usdt0"
+                  target="_blank"
+                >
                   bridge
                 </StyledLink>
               </Trans>
