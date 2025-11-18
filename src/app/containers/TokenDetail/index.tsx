@@ -16,6 +16,7 @@ import DownIcon from '../../../images/down.png';
 import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import descIcon from 'images/table-desc.svg';
+import verifiedIcon from 'images/nametag/verified.svg';
 
 // import { useGlobal } from 'utils/hooks/useGlobal';
 
@@ -71,6 +72,10 @@ export function TokenDetail() {
   //   }
   // }
 
+  const isOfficialVerified = data.securityAudit?.officialLabels?.some(
+    i => i === 'Verified',
+  );
+
   const menu = (
     <MenuWrapper>
       <Menu.Item>
@@ -121,6 +126,19 @@ export function TokenDetail() {
             <div className="basic-symbol">{`(${
               data.symbol || t(translations.general.notAvailable)
             })`}</div>
+            {isOfficialVerified && (
+              <Tooltip title={t(translations.nametag.labels.tooltips.verified)}>
+                <img
+                  src={verifiedIcon}
+                  style={{
+                    marginLeft: '6px',
+                    width: '16px',
+                    height: '16px',
+                  }}
+                  alt="status-icon"
+                ></img>
+              </Tooltip>
+            )}
             <DropdownWrapper overlay={menu} trigger={['click']}>
               <span onClick={e => e.preventDefault()}>
                 {t(translations.general.address.more.title)}{' '}
