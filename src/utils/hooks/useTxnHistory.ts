@@ -104,7 +104,7 @@ Notes:
  */
 
 export const useTxnHistory = (opts?: UseTxnHistoryConfig) => {
-  const { installed } = usePortal();
+  const { wallets } = usePortal();
 
   const config = {
     ...DEFAULT_CONTEXT_CONFIG,
@@ -248,7 +248,7 @@ export const useTxnHistory = (opts?: UseTxnHistoryConfig) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
-  if (!installed) {
+  if (wallets.length === 0) {
     return {
       addRecord: noop,
       getRecords: () => [],

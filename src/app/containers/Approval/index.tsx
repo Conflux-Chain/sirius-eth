@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -17,7 +17,7 @@ import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/I
 import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import { Option } from 'styles/global-styles';
 import queryString from 'query-string';
-import { usePortal } from 'utils/hooks/usePortal';
+import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
 import { abi as ERC20ABI } from 'utils/contract/ERC20.json';
 import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
 import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
@@ -28,20 +28,32 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import aaa from '@conflux-dev/conflux-address-js';
-import { sendTransaction } from '@cfxjs/use-wallet-react/ethereum';
-import ENV_CONFIG from 'env';
 import {
   convertCheckSum,
   isAddressEqual,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { CFXToDecode } from 'utils/constants';
 
 // @ts-ignore
 window.aaa = aaa;
 
 const { Search } = Input;
 
+const getContract = (address: string, type: string) => {
+  const typeMap = {
+    ERC20: ERC20ABI,
+    ERC721: ERC721ABI,
+    ERC1155: ERC1155ABI,
+  };
+
+  return CFXToDecode.Contract({
+    abi: typeMap[type],
+    address,
+  });
+};
+
 export function Approval() {
-  const { accounts, provider } = usePortal();
+  const { account, authConnectStatus, sendTransaction } = usePortal();
   const { t } = useTranslation();
   const [globalData, setGlobalData] = useGlobalData();
   const history = useHistory();
@@ -57,28 +69,6 @@ export function Approval() {
     status: '',
     errorMessage: '',
   });
-
-  const getContract = useCallback(
-    (address: string, type: string) => {
-      const CFX = new SDK.Conflux({
-        url: ENV_CONFIG.ENV_RPC_SERVER,
-      });
-
-      CFX.provider = provider;
-
-      const typeMap = {
-        ERC20: ERC20ABI,
-        ERC721: ERC721ABI,
-        ERC1155: ERC1155ABI,
-      };
-
-      return CFX.Contract({
-        abi: typeMap[type],
-        address,
-      });
-    },
-    [provider],
-  );
 
   const [list, setList] = useState<
     Array<{
@@ -280,12 +270,12 @@ export function Approval() {
 
   useEffect(() => {
     // initial search
-    if (!text && accounts.length) {
-      handleSearch(accounts[0]);
-      setInputValue(accounts[0]);
+    if (!text && account) {
+      handleSearch(account);
+      setInputValue(account);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accounts, text]);
+  }, [account, text]);
 
   const getContent = () => {
     if (msg) {
@@ -404,7 +394,8 @@ export function Approval() {
           width: 1,
           render: (_, row) => {
             const disabled =
-              !accounts.length || !isAddressEqual(accounts[0], String(text));
+              authConnectStatus !== AuthConnectStatus.Connected ||
+              !isAddressEqual(account!, String(text));
 
             return (
               <Button

@@ -22,7 +22,7 @@ export function Accounts() {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language.startsWith('en');
   // get portal selected address
-  const { accounts } = usePortal();
+  const { account } = usePortal();
 
   let columnsWidth = [2, 9, 4, 3, 3];
   let columns = [
@@ -38,11 +38,7 @@ export function Accounts() {
               (row.tokenInfo && row.tokenInfo.name ? row.tokenInfo.name : null)
             }
             isFull={true}
-            isMe={
-              accounts && accounts.length > 0
-                ? isAddressEqual(accounts[0], value)
-                : false
-            }
+            isMe={account ? isAddressEqual(account, value) : false}
             isContract={checkIfContractByInfo(value, row)}
           />
         </AccountWrapper>

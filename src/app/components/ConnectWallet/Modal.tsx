@@ -3,7 +3,7 @@
  * Modal
  *
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled, { keyframes } from 'styled-components';
@@ -12,13 +12,10 @@ import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
 import { Link as ScanLink } from './Link';
 import { RotateImg } from './RotateImg';
 import { History } from './History';
-// @todo extract an independent component, do not use outside one
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
-// import { AddressContainer } from './../../components/AddressContainer';
 import { useCheckHook } from './useCheckHook';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
-import iconLogo from './assets/metamask.svg';
 import iconClose from './assets/close.svg';
 import iconLoading from './assets/loading.svg';
 
@@ -34,10 +31,15 @@ export const Modal = ({
   onClose = () => {},
 }: Modal) => {
   const { t } = useTranslation();
-  const { installed, login, authConnectStatus, accounts } = usePortal();
-  const checksumAddress = convertCheckSum(accounts[0]);
+  const {
+    login,
+    authConnectStatus,
+    walletConnectingMap,
+    account,
+    wallets,
+  } = usePortal();
+  const checksumAddress = useMemo(() => convertCheckSum(account), [account]);
   const { isValid } = useCheckHook();
-  let inValidModalTip = t(translations.connectWallet.modal.upgradeTipAddress);
 
   useEffect(() => {
     if (show) {
@@ -61,24 +63,19 @@ export const Modal = ({
     onClose();
   };
 
-  const handleLogin = () => {
-    login()
+  const handleLogin = (walletName: string) => {
+    login(walletName)
       .then(() => onClose())
       .catch(e => console.log('connect wallet error: ', e));
   };
 
   let title: string = t(translations.connectWallet.modal.title);
-  let portal: React.ReactNode = t(
-    translations.connectWallet.modal.fluentWallet,
-  );
-  let logo = (
-    <img className="modal-portal-logo" src={iconLogo} alt="logo"></img>
-  );
+  let portal: React.ReactNode = null;
   let tip: React.ReactNode = (
     <div className="modal-tip">
       <span>{t(translations.connectWallet.modal.newToConflux)}</span>
       <a
-        href="https://metamask.io/"
+        href="https://fluentwallet.com"
         target="_blank"
         className="modal-tip-link"
         rel="noopener noreferrer"
@@ -90,79 +87,67 @@ export const Modal = ({
   );
   let handleClick: VoidFunction | undefined = undefined;
 
-  if (installed) {
+  if (wallets.length > 0) {
     if (authConnectStatus === AuthConnectStatus.NotConnected) {
       portal = (
-        <>
-          <span className="modal-portal-name">
-            {t(translations.connectWallet.modal.fluentWallet)}
-          </span>
-          {logo}
-        </>
+        <div className="modal-portal-wallets">
+          {wallets.map(wallet => {
+            const isConnecting = walletConnectingMap[wallet.walletName];
+            return (
+              <div
+                className="modal-portal-wallet"
+                key={wallet.walletName}
+                onClick={() => handleLogin(wallet.walletName)}
+              >
+                <span className="modal-portal-wallet-name">
+                  {wallet.walletName ?? 'Unknown'}
+                </span>
+                {isConnecting ? (
+                  <RotateImg
+                    src={iconLoading}
+                    alt="loading-icon"
+                    className="modal-portal-loading-icon"
+                  ></RotateImg>
+                ) : wallet.walletIcon ? (
+                  <img
+                    className="modal-portal-wallet-logo"
+                    src={wallet.walletIcon}
+                    alt="logo"
+                  ></img>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
       );
-      handleClick = handleLogin;
     } else if (authConnectStatus === AuthConnectStatus.Connected) {
-      if (isValid) {
-        title = t(translations.connectWallet.modal.account);
-        portal = (
-          <>
-            <span className="modal-portal-connected-title">
-              {t(translations.connectWallet.modal.connectedWithFluentWallet)}
-            </span>
-            <span className="modal-portal-name">
-              {checksumAddress}
-              {/* <AddressContainer
-                value={accounts[0]}
-                link={false}
-                maxWidth={350}
-              /> */}
-            </span>
-            <span className="modal-portal-connected-tip">
-              <span className="modal-portal-connected-copy">
-                {t(translations.connectWallet.modal.copyAddress)}{' '}
-                <CopyButton copyText={checksumAddress} size={10}></CopyButton>
-              </span>
-              <ScanLink href={`/address/${accounts[0]}`}>
-                {t(translations.connectWallet.modal.viewOnConfluxScan)}
-              </ScanLink>
-            </span>
-          </>
-        );
-        tip = null;
-      } else {
-        portal = (
-          <>
-            <span className="modal-portal-name">
-              {t(translations.connectWallet.modal.cannotProcess)}
-            </span>
-            {logo}
-          </>
-        );
-        tip = (
-          <div className="modal-tip error">
-            <span>{inValidModalTip}</span>
-          </div>
-        );
-      }
-    } else if (authConnectStatus === AuthConnectStatus.Connecting) {
+      title = t(translations.connectWallet.modal.account);
       portal = (
         <>
-          <span className="modal-portal-loading">
-            <RotateImg
-              src={iconLoading}
-              alt="loading-icon"
-              className="modal-portal-loading-icon"
-            ></RotateImg>
-            <span>{t(translations.connectWallet.modal.initializing)}</span>
+          <span className="modal-portal-connected-title">
+            {t(translations.connectWallet.modal.connectedWithFluentWallet)}
           </span>
-          {logo}
+          <span className="modal-portal-name">{checksumAddress}</span>
+          <span className="modal-portal-connected-tip">
+            <span className="modal-portal-connected-copy">
+              {t(translations.connectWallet.modal.copyAddress)}{' '}
+              <CopyButton
+                copyText={checksumAddress ?? ''}
+                size={10}
+              ></CopyButton>
+            </span>
+            <ScanLink href={`/address/${account}`}>
+              {t(translations.connectWallet.modal.viewOnConfluxScan)}
+            </ScanLink>
+          </span>
         </>
       );
+      tip = null;
     }
   } else {
     portal = (
       <a
-        href="https://metamask.io/"
+        href="https://fluentwallet.com"
         target="_blank"
         className="modal-portal-link"
         rel="noopener noreferrer"
@@ -232,16 +217,27 @@ const ModalWrapper = styled.div`
 
   &.connected {
     .modal-portal {
-      flex-direction: column;
+      display: flex;
       align-items: flex-start;
+      justify-content: space-between;
+      flex-direction: column;
       cursor: inherit;
+      padding: 1.1429rem;
+      border: 1px solid #cccccc;
+      border-radius: 0.2857rem;
     }
   }
 
   &.error {
     .modal-portal {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       border-color: ${redColor};
       cursor: default;
+      padding: 1.1429rem;
+      border: 1px solid #cccccc;
+      border-radius: 0.2857rem;
 
       .modal-portal-name {
         color: ${redColor};
@@ -254,6 +250,7 @@ const ModalWrapper = styled.div`
   }
 
   .modal-and-history-container {
+    max-height: calc(100% - 4rem);
     box-sizing: border-box;
     border-radius: 0.5714rem;
     box-shadow: 0.5714rem 2.1429rem 5.7143rem 0rem rgba(112, 126, 158, 0.24);
@@ -262,7 +259,10 @@ const ModalWrapper = styled.div`
 
   .modal-body {
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 39rem;
+    max-height: 100%;
     background: #ffffff;
     padding: 1.7143rem 2.2857rem 2.2857rem;
     box-sizing: border-box;
@@ -275,15 +275,35 @@ const ModalWrapper = styled.div`
   }
 
   .modal-portal {
+    flex: 1;
+    height: 0;
     width: 34.5rem;
-    border-radius: 0.2857rem;
-    border: 1px solid #cccccc;
     margin-top: 1.1429rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.1429rem 1.1429rem;
     cursor: pointer;
+    overflow-y: auto;
+
+    .modal-portal-wallets {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8571rem;
+      .modal-portal-wallet {
+        border: 1px solid #cccccc;
+        border-radius: 0.2857rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.1429rem;
+        .modal-portal-wallet-name {
+          font-size: 18px;
+          color: #333;
+        }
+        .modal-portal-wallet-logo {
+          width: 1.8571rem;
+          height: 1.8571rem;
+        }
+      }
+    }
 
     .modal-portal-connected-title,
     .modal-portal-connected-tip {

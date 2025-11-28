@@ -35,7 +35,7 @@ import {
   Weibo,
   Youtube,
 } from './Icon';
-import { addChain } from 'utils/chainManage';
+import { switchChain } from 'utils/chainManage';
 import ENV_CONFIG, { IS_ESPACE, IS_FOREIGN_HOST, IS_TESTNET } from 'env';
 
 export function Footer() {
@@ -375,7 +375,7 @@ export function Footer() {
 
   const handleAddChain = async () => {
     try {
-      await addChain();
+      await switchChain();
     } catch (error) {
       console.log('add chain error:', error);
       const switchError = error as { code: number; message?: string };
