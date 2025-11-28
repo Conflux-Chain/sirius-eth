@@ -64,7 +64,6 @@ module.exports = function (config, mode) {
             __dirname,
             './node_modules/react-i18next',
           ),
-          destr: path.resolve(__dirname, './node_modules/destr/dist/index.mjs'),
         },
       },
       module: {
@@ -118,7 +117,6 @@ module.exports = function (config, mode) {
           __dirname,
           './node_modules/react-i18next',
         ),
-        destr: path.resolve(__dirname, './node_modules/destr/dist/index.mjs'),
       },
     },
     module: {
