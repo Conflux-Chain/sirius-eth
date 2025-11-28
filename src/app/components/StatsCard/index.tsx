@@ -117,7 +117,7 @@ export const StatsCard = ({
   );
 
   // get portal selected address
-  const { accounts } = usePortal();
+  const { account } = usePortal();
 
   let columns: any[] = [];
   let action = '';
@@ -441,11 +441,7 @@ export const StatsCard = ({
                       ? d.tokenInfo.name
                       : null
                   }
-                  isMe={
-                    accounts && accounts.length > 0
-                      ? isAddressEqual(accounts[0], d.hex)
-                      : false
-                  }
+                  isMe={account ? isAddressEqual(account, d.hex) : false}
                   verify={verify}
                   isContract={isContract}
                 />
@@ -472,11 +468,7 @@ export const StatsCard = ({
                 ) : (
                   <EVMAddressContainer
                     value={d.hex}
-                    isMe={
-                      accounts && accounts.length > 0
-                        ? isAddressEqual(accounts[0], d.hex)
-                        : false
-                    }
+                    isMe={account ? isAddressEqual(account, d.hex) : false}
                     isContract={isContract}
                   />
                 )}
@@ -495,11 +487,7 @@ export const StatsCard = ({
               <td className="address">
                 <EVMAddressContainer
                   value={d.hex}
-                  isMe={
-                    accounts && accounts.length > 0
-                      ? isAddressEqual(accounts[0], d.hex)
-                      : false
-                  }
+                  isMe={account ? isAddressEqual(account, d.hex) : false}
                   isContract={isContract}
                 />
               </td>
@@ -566,11 +554,7 @@ export const StatsCard = ({
               <td className="address">
                 <EVMAddressContainer
                   value={d.hex}
-                  isMe={
-                    accounts && accounts.length > 0
-                      ? isAddressEqual(accounts[0], d.hex)
-                      : false
-                  }
+                  isMe={account ? isAddressEqual(account, d.hex) : false}
                   isContract={isContract}
                 />
               </td>
@@ -604,13 +588,12 @@ export const StatsCard = ({
         return null;
     }
   };
-  const currentAccount = accounts[0];
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const tableBodyMemo = useMemo(() => tableBody(category, data), [
     category,
     data,
     action,
-    currentAccount,
+    account,
     totalDifficulty,
     totalGas,
   ]);

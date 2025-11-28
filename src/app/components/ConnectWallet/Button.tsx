@@ -34,7 +34,7 @@ interface Button {
 export const Button = ({ className, onClick, showBalance }: Button) => {
   const [globalData] = useGlobalData();
   const { t } = useTranslation();
-  const { authConnectStatus, accounts } = usePortal();
+  const { authConnectStatus, account } = usePortal();
 
   const { pendingRecords } = useContext(TxnHistoryContext);
   const { isValid } = useCheckHook();
@@ -49,7 +49,7 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
 
   if (authConnectStatus !== AuthConnectStatus.NotConnected) {
     if (isValid) {
-      if (accounts.length) {
+      if (account) {
         if (hasPendingRecords) {
           buttonStatus = (
             <RotateImg
@@ -64,8 +64,8 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
         } else {
           const addressLabel =
             globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[
-              convertCheckSum(accounts[0])
-            ] || globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[accounts[0]];
+              convertCheckSum(account)
+            ] || globalData[LOCALSTORAGE_KEYS_MAP.addressLabel]?.[account];
           const addressLabelIcon = (
             <Text tag="span" hoverValue={t(translations.profile.tip.label)}>
               <Bookmark color="var(--theme-color-gray2)" size={16} />
@@ -78,7 +78,7 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
               {addressLabel}
             </StyledAddressLabelWrapper>
           ) : (
-            formatString(convertCheckSum(accounts[0]), 'address')
+            formatString(convertCheckSum(account), 'address')
           );
           buttonStatus = <span className="button-status-online"></span>;
         }
@@ -106,8 +106,8 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
     <ButtonWrapper
       className={clsx('connect-wallet-button', className, {
         pending: hasPendingRecords,
-        connected: accounts.length && isValid,
-        notConnected: !(accounts.length && isValid),
+        connected: account && isValid,
+        notConnected: !(account && isValid),
         switchNetowrk:
           authConnectStatus !== AuthConnectStatus.NotConnected && !isValid,
       })}
@@ -117,9 +117,7 @@ export const Button = ({ className, onClick, showBalance }: Button) => {
         {buttonStatus}
         <span className="text">{buttonText}</span>
       </span>
-      {accounts.length && showBalance && !hasPendingRecords ? (
-        <Balance />
-      ) : null}
+      {account && showBalance && !hasPendingRecords ? <Balance /> : null}
     </ButtonWrapper>
   );
 };
