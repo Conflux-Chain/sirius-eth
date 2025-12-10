@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { usePortal } from 'utils/hooks/usePortal';
 import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
 import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
-import { TXN_ACTION, CFX } from 'utils/constants';
+import { TXN_ACTION, CFX, CFXToDecode } from 'utils/constants';
 import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
@@ -26,10 +26,9 @@ export const TransferModal = ({
   const [globalData, setGlobalData] = useGlobalData();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const { accounts, sendTransaction } = usePortal();
+  const { account, sendTransaction } = usePortal();
   const [form] = Form.useForm();
   const { addRecord } = useTxnHistory();
-  const account = accounts[0];
   const [submitLoading, setSubmitLoading] = useState(false);
   const [txnStatusModal, setTxnStatusModal] = useState({
     show: false,
@@ -47,12 +46,20 @@ export const TransferModal = ({
     });
   }, [contractAddress, isNFT721]);
 
+  const contractToDecode = useMemo(() => {
+    return CFXToDecode.Contract({
+      address: contractAddress,
+      abi: isNFT721 ? ERC721ABI : ERC1155ABI,
+    });
+  }, [contractAddress, isNFT721]);
+
   useEffect(() => {
     async function fn() {
       if (id) {
         if (isNFT721) {
           let isOwner = false;
           if (
+            account &&
             isAddressEqual(formatAddress(await contract.ownerOf(id)), account)
           ) {
             isOwner = true;
@@ -126,14 +133,14 @@ export const TransferModal = ({
         let hash = '';
 
         if (isNFT721) {
-          const { data, to } = contract.safeTransferFrom(
+          const { data, to } = contractToDecode.safeTransferFrom(
             fromAddress,
             toAddress,
             tokenId,
           );
           hash = await sendTransaction({ data, to });
         } else {
-          const { data, to } = contract.safeTransferFrom(
+          const { data, to } = contractToDecode.safeTransferFrom(
             fromAddress,
             toAddress,
             tokenId,

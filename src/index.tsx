@@ -12,7 +12,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from 'serviceWorker';
 import { RecoilRoot } from 'recoil';
-import { completeDetect } from '@cfxjs/use-wallet-react/ethereum';
 import 'sanitize.css/sanitize.css';
 import '@cfxjs/antd/dist/@cfxjs/antd.css';
 import '@cfxjs/sirius-next-common/dist/uno.css';
@@ -25,6 +24,26 @@ import { HelmetProvider } from 'react-helmet-async';
 // Initialize languages
 import 'locales/i18n';
 import ENV_CONFIG, { IS_TESTNET, IS_MAINNET } from 'env';
+import {
+  createWalletConnectProvider,
+  register6963Wallet,
+} from '@cfx-kit/react-utils/dist/AccountManagePlugins';
+import { registerWallet } from '@cfx-kit/react-utils/dist/AccountManage';
+import { NETWORK_ID } from 'utils/constants';
+
+const WalletConnectProvider = createWalletConnectProvider({
+  projectId: '5cb3b846e0efdd6c0161fbd15b89f31c',
+  targetChainId: `eip155:${NETWORK_ID}`,
+  metadata: {
+    name: 'Conflux BlockChain Explorer',
+    description: 'BlockChain Explorer for Conflux Network',
+    url: window.location.origin,
+    icons: [`${window.location.origin}/logo512.png`],
+  },
+});
+
+register6963Wallet({ persistFirst: true });
+registerWallet(WalletConnectProvider);
 
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
@@ -62,16 +81,12 @@ if (module.hot) {
   // have to be constants at compile-time
   module.hot.accept(['./app', 'locales/i18n'], () => {
     ReactDOM.unmountComponentAtNode(MOUNT_NODE);
-    Promise.all([completeDetect()]).then(() => {
-      const App = require('./app').App;
-      render(App);
-    });
+    const App = require('./app').App;
+    render(App);
   });
 }
 
-Promise.all([completeDetect()]).then(() => {
-  render(App);
-});
+render(App);
 
 const currentVersion = 'v1.10.0';
 

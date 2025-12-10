@@ -26,6 +26,7 @@ import { theme } from './theme';
 export const GlobalStyle = createGlobalStyle`
 
   body {
+    --wcm-z-index: 1111;
     --theme-color-blue0: ${blue0};
     --theme-color-blue1: ${blue1};
     --theme-color-blue2: ${blue2};
