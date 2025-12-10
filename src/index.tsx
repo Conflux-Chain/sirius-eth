@@ -38,7 +38,7 @@ const WalletConnectProvider = createWalletConnectProvider({
     name: 'Conflux BlockChain Explorer',
     description: 'BlockChain Explorer for Conflux Network',
     url: window.location.origin,
-    icons: [`${window.location.origin}/favicon.ico`],
+    icons: [`${window.location.origin}/logo512.png`],
   },
 });
 
