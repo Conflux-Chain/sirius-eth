@@ -4,7 +4,7 @@ import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import { BlockTime } from './BlockTime';
 import { TPS } from './TPS';
@@ -25,10 +25,9 @@ export function NewChart() {
   const iszh = i18n.language.includes('zh');
 
   const format = iszh ? 'YYYY MMMDD' : 'DD MMM YYYY';
-  // TODO, temporary use moment, should use dayjs, but need solve locale issue first
-  moment.locale(iszh ? 'zh-cn' : 'en');
-  const current = moment().subtract(1, 'day');
-  const oneMonthBefore = moment().subtract(30, 'day');
+  dayjs.locale(iszh ? 'zh-cn' : 'en');
+  const current = dayjs().subtract(1, 'day');
+  const oneMonthBefore = dayjs().subtract(30, 'day');
 
   return (
     <StyledChartPreviewWrapper>

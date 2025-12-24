@@ -6,19 +6,18 @@ import { PreviewChartTemplate } from '@cfxjs/sirius-next-common/dist/components/
 import { ChildProps } from '@cfxjs/sirius-next-common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
 import SDK from 'js-conflux-sdk';
+import { useChartQueryParams } from '@cfxjs/sirius-next-common/dist/utils/hooks/useChartQueryParams';
 
 export function TotalSupply({ preview = false }: ChildProps) {
   const { t } = useTranslation();
+  const query = useChartQueryParams({
+    preview,
+  });
 
   const props = {
     request: {
       url: OPEN_API_URLS.supply,
-      query: preview
-        ? {
-            limit: '30',
-            intervalType: 'day',
-          }
-        : undefined,
+      query: query,
       formatter: data => {
         if (data) {
           return [
