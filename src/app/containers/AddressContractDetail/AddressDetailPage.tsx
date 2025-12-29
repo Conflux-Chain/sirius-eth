@@ -22,6 +22,7 @@ import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { Bookmark } from '@zeit-ui/react-icons';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
@@ -74,6 +75,11 @@ export const AddressDetailPage = memo(({ type }: { type: EvmAddressType }) => {
             ],
           )}
         </a>
+      </Menu.Item>
+      <Menu.Item>
+        <Link href={`/approval?text=${address}`}>
+          {t(translations.header.approval)}
+        </Link>
       </Menu.Item>
     </MenuWrapper>
   );

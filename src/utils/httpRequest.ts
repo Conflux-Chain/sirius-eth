@@ -254,6 +254,17 @@ export const reqContractVerification = param => {
   });
 };
 
+export const reqContractCrossSpaceSimilarMatch = param => {
+  return sendRequest({
+    url: `/contract/verify/cross-space`,
+    type: 'POST',
+    body: JSON.stringify(param),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
 export const reqTransactions = (extra?: object) => {
   return sendRequest({
     url: `/transaction`,

@@ -4,21 +4,21 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { StockChartTemplate } from '@cfxjs/sirius-next-common/dist/components/Charts/StockChartTemplate';
 import { PreviewChartTemplate } from '@cfxjs/sirius-next-common/dist/components/Charts/PreviewChartTemplate';
+import { useChartQueryParams } from '@cfxjs/sirius-next-common/dist/utils/hooks/useChartQueryParams';
 import { ChildProps } from '@cfxjs/sirius-next-common/dist/components/Charts/config';
 import { OPEN_API_URLS } from 'utils/constants';
 
 export function Tx({ preview = false }: ChildProps) {
   const { t } = useTranslation();
+  const query = useChartQueryParams({
+    preview,
+    withoutToday: true,
+  });
 
   const props = {
     request: {
       url: OPEN_API_URLS.tx,
-      query: preview
-        ? {
-            limit: '30',
-            intervalType: 'day',
-          }
-        : undefined,
+      query: query,
       formatter: data => {
         return [
           data?.list?.map(s => [
