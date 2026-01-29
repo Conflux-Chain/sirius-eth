@@ -182,7 +182,7 @@ export const Code = ({
       const len = fSourceCode.length;
 
       return fSourceCode.map((s, i) => (
-        <>
+        <React.Fragment key={i}>
           {isSolidity && (
             <div className={`multiple-sourcecode-title ${i === 0 && 'first'}`}>
               {t(translations.contract.sourceCodeFilename, {
@@ -208,7 +208,7 @@ export const Code = ({
             showGutter={false}
             showPrintMargin={false}
           />
-        </>
+        </React.Fragment>
       ));
     } else {
       return null;
@@ -395,7 +395,7 @@ export const Code = ({
                     -----{t(translations.contract.decodedView)}---------------
                   </div>
                   {constructor.decodeArgs.map((a, i) => (
-                    <div>
+                    <div key={i}>
                       Arg[{i}] : {a[1]} ({a[0]}): {a[2]}
                     </div>
                   ))}
@@ -409,7 +409,7 @@ export const Code = ({
                     :
                   </div>
                   {constructor.encodeArgs.map((a, i) => (
-                    <div>
+                    <div key={i}>
                       Arg[{i}] : {a}
                     </div>
                   ))}
@@ -424,8 +424,8 @@ export const Code = ({
               {t(translations.contract.libraryContracts)}
             </div>
             <div className="contract-library-body">
-              {libraries.map(l => (
-                <div>
+              {libraries.map((l, i) => (
+                <div key={i}>
                   <span>{l.name}: </span>
                   <span>
                     <EVMAddressContainer
