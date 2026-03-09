@@ -18,7 +18,7 @@ import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
 import Button from '@cfxjs/sirius-next-common/dist/components/Button';
 
-import AceEditor from 'react-ace';
+import { AceEditor } from '@cfxjs/sirius-next-common/dist/components/AceEditor';
 import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-tomorrow';
@@ -36,7 +36,6 @@ const { Text } = Typography;
 
 const AceEditorStyle = {
   width: 'initial',
-  backgroundColor: '#F8F9FB',
   opacity: 0.62,
   margin: '0.3571rem 0',
 };
@@ -173,6 +172,14 @@ export function NFTDetail(props) {
     name: '',
     symbol: '',
   });
+  const metadata = useMemo(() => {
+    if (!data.detail) return '';
+    try {
+      return JSON.stringify(data.detail.metadata, null, 4);
+    } catch (e) {
+      return '';
+    }
+  }, [data.detail]);
 
   useEffect(() => {
     setLoading(true);
@@ -443,13 +450,10 @@ export function NFTDetail(props) {
                     mode="json"
                     theme="tomorrow"
                     name="inputdata_json"
-                    setOptions={{
-                      showLineNumbers: true,
-                    }}
                     fontSize="1rem"
                     showGutter={false}
                     showPrintMargin={false}
-                    value={JSON.stringify(data.detail?.metadata, null, 4)}
+                    value={metadata}
                     readOnly={true}
                     height="20.1429rem"
                     wrapEnabled={true}
