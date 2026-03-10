@@ -17,6 +17,8 @@ import { MenuWrapper } from '../AddressContractDetail/AddressDetailPage';
 import { Dropdown, Menu } from '@cfxjs/antd';
 import descIcon from 'images/table-desc.svg';
 import verifiedIcon from 'images/nametag/verified.svg';
+import { useSearchParams } from '@cfxjs/sirius-next-common/dist/utils/hooks/useSearchParams';
+import { HolderFilter } from './HolderFilter';
 
 // import { useGlobal } from 'utils/hooks/useGlobal';
 
@@ -28,6 +30,7 @@ export function TokenDetail() {
   const { t } = useTranslation();
   // const { data: globalData } = useGlobal();
   const { tokenAddress } = useParams<RouteParams>();
+  const { a: holder } = useSearchParams();
   const params = {
     address: tokenAddress,
     fields: ['iconUrl', 'transferCount', 'price', 'totalPrice', 'quoteUrl'],
@@ -170,6 +173,9 @@ export function TokenDetail() {
           tokenAddress={tokenAddress}
           transferType={data.transferType}
         />
+        {holder && data.address && (
+          <HolderFilter holder={holder as string} tokenData={data} />
+        )}
         {data.address ? (
           <Transfers
             tokenData={data}

@@ -9,7 +9,7 @@ export interface Tab {
   content?: React.ReactNode;
 }
 
-export const useTabs = (tabs: Tab[]) => {
+export const useTabs = (tabs: Tab[], query: Record<string, string> = {}) => {
   const location = useLocation();
   const history = useHistory();
   let { tab: currentTab } = queryString.parse(location.search);
@@ -23,6 +23,7 @@ export const useTabs = (tabs: Tab[]) => {
         url: location.pathname,
         query: {
           tab: v,
+          ...query,
         },
       }),
     );
