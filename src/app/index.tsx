@@ -440,7 +440,9 @@ export function App() {
                                 if (/[A-Z]/.test(address)) {
                                   return (
                                     <Redirect
-                                      to={`/token/${address.toLowerCase()}`}
+                                      to={`/token/${address.toLowerCase()}${
+                                        routeProps.location.search
+                                      }`}
                                     />
                                   );
                                 }
