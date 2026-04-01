@@ -204,8 +204,8 @@ export const Header = memo(() => {
       afterClick: menuClick,
       href:
         IS_ESPACE && IS_TESTNET
-          ? 'https://test.confluxhub.io/governance/'
-          : 'https://confluxhub.io/governance/',
+          ? 'https://test.confluxhub.io/vote/chain-params'
+          : 'https://confluxhub.io/vote/chain-params',
     });
 
     ecosystemItems.push({
