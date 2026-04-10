@@ -4,6 +4,7 @@ import * as tokenColunms from './token';
 import * as accountColunms from './account';
 import * as utils from './utils';
 import * as authorizationsColumns from './authorizations';
+import * as traceColumns from './trace';
 
 export {
   blockColunms,
@@ -12,4 +13,5 @@ export {
   accountColunms,
   utils,
   authorizationsColumns,
+  traceColumns,
 };
