@@ -11,45 +11,23 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Age } from '@cfxjs/sirius-next-common/dist/components/Age';
-import {
-  reqContract,
-  reqTokenList,
-  reqTransferList,
-  reqTransactionEventlogs,
-} from 'utils/httpRequest';
-import {
-  formatBalance,
-  formatTimeStamp,
-  getPercent,
-  toThousands,
-  isZeroAddress,
-} from 'utils';
+import { reqContract, reqTransactionEventlogs } from 'utils/httpRequest';
+import { formatTimeStamp, getPercent, toThousands, isZeroAddress } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
-import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import clsx from 'clsx';
-// import BigNumber from 'bignumber.js';
 import { Security } from 'app/components/Security/Loadable';
-import {
-  GasFee,
-  InputDataNew,
-  Status,
-  // StorageFee,
-  TokenTypeTag,
-} from 'app/components/TxnComponents';
-// import { TransactionAction } from 'app/components/TransactionAction';
+import { GasFee, InputDataNew, Status } from 'app/components/TxnComponents';
 import { TransactionAction } from '@cfxjs/sirius-next-common/dist/components/TransactionAction/evmTransactionAction';
 import _ from 'lodash';
 
 import imgChevronDown from 'images/chevronDown.png';
 import { renderAddress } from 'utils/tableColumns/token';
-import { NFTPreview } from '../../components/NFTPreview/Loadable';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { CreateTxNote } from '../Profile/CreateTxNote';
 import { useNametag } from 'utils/hooks/useNametag';
 
-import iconInfo from 'images/info.svg';
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import {
@@ -62,9 +40,9 @@ import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import dayjs from 'dayjs';
 import { StyledHighlight } from './EventLogs/StyledComponents';
 import { EOACodeIcon } from 'app/components/EOACodeIcon';
-
-// const getStorageFee = byteSize =>
-//   toThousands(new BigNumber(byteSize).dividedBy(1024).toFixed(2));
+import { CFXTransfers } from './CFXTransfers';
+import { TokenTransfers } from './TokenTransfers';
+import { getItemByKey } from './utils';
 
 // Transaction Detail Page
 export const Detail = ({
@@ -74,18 +52,15 @@ export const Detail = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [globalData] = useGlobalData();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isContract, setIsContract] = useState(false);
   const [eventlogs, setEventlogs] = useState<any>([]);
   const [contractInfo, setContractInfo] = useState({});
-  const [transferList, setTransferList] = useState([]);
   const [innerLoading, setInnerLoading] = useState(false);
-  const [tokenList, setTokenList] = useState([]);
   const { hash: routeHash } = useParams<{
     hash: string;
   }>();
   const {
-    // epochHeight,
     from,
     to,
     value,
@@ -93,8 +68,6 @@ export const Detail = ({
     gas,
     nonce,
     blockHash,
-    // storageLimit,
-    // chainId,
     transactionIndex,
     epochNumber,
     syncTimestamp,
@@ -107,9 +80,6 @@ export const Detail = ({
     confirmedEpochCount,
     txExecErrorInfo,
     gasCoveredBySponsor,
-    // storageCoveredBySponsor,
-    // storageReleased,
-    // storageCollateralized,
     baseFeePerGas,
     maxFeePerGas,
     maxPriorityFeePerGas,
@@ -118,6 +88,9 @@ export const Detail = ({
     typeDesc,
     txExecErrorMsg,
     effectiveAuth: _effectiveAuth,
+    tokenTransfers,
+    cfxTransfers,
+    nameMap,
   } = transactionDetail;
   const [folded, setFolded] = useState(true);
   const nametags = useNametag([from, to]);
@@ -132,88 +105,64 @@ export const Detail = ({
   const isValidGasCharged =
     !notEnoughCash || new BigNumber(gasCharged).isEqualTo(gas);
 
-  const fetchTxTransfer = async toCheckAddress => {
-    setInnerLoading(true);
-
-    try {
-      const proArr: Promise<any>[] = [];
-      const _isContract =
-        toCheckAddress !== null && (await isEvmContractAddress(toCheckAddress));
-      if (_isContract) {
-        setIsContract(true);
-
-        const contractFields = [
-          'address',
-          'type',
-          'name',
-          'website',
-          'tokenName',
-          'tokenSymbol',
-          'token',
-          'tokenDecimal',
-          'abi',
-          'bytecode',
-          'iconUrl',
-          'sourceCode',
-          'typeCode',
-        ];
-
-        proArr.push(
-          reqContract({ address: toCheckAddress, fields: contractFields }),
-        );
-      }
-
-      const transferFields = 'token';
-      proArr.push(
-        reqTransferList({
-          transactionHash: routeHash,
-          fields: transferFields,
-          limit: 100,
-          reverse: false,
-        }),
-      );
-
-      proArr.push(
-        reqTransactionEventlogs({
-          transactionHash: routeHash,
-          aggregate: false,
-        }),
-      );
-
-      const proRes = await Promise.all(proArr);
-
-      if (_isContract) {
-        const contractResponse = proRes.shift();
-        setContractInfo(contractResponse);
-      }
-
-      const transferListResponse = proRes[0];
-      const list = transferListResponse.list || [];
-      setTransferList(list);
-
-      const eventlogsResponse = proRes[1];
-
-      setEventlogs(eventlogsResponse.list);
-
-      let addressList = list.map(v => v.address);
-      addressList = Array.from(new Set(addressList));
-      const tokenListResponse = await reqTokenList({
-        addressArray: addressList,
-        fields: ['iconUrl'],
-      });
-
-      setTokenList(tokenListResponse.list || []);
-    } catch (e) {
-      console.error('fetchTxTransfer error: ', e);
-    } finally {
-      setInnerLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (!to) return;
-    fetchTxTransfer(to);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchTxInfo = async toCheckAddress => {
+      setInnerLoading(true);
+
+      try {
+        const proArr: Promise<any>[] = [];
+        const _isContract =
+          toCheckAddress !== null &&
+          (await isEvmContractAddress(toCheckAddress));
+        if (_isContract) {
+          setIsContract(true);
+
+          const contractFields = [
+            'address',
+            'type',
+            'name',
+            'website',
+            'tokenName',
+            'tokenSymbol',
+            'token',
+            'tokenDecimal',
+            'abi',
+            'bytecode',
+            'iconUrl',
+            'sourceCode',
+            'typeCode',
+          ];
+
+          proArr.push(
+            reqContract({ address: toCheckAddress, fields: contractFields }),
+          );
+        }
+
+        proArr.push(
+          reqTransactionEventlogs({
+            transactionHash: routeHash,
+            aggregate: false,
+          }),
+        );
+
+        const proRes = await Promise.all(proArr);
+
+        if (_isContract) {
+          const contractResponse = proRes.shift();
+          setContractInfo(contractResponse);
+        }
+
+        const eventlogsResponse = proRes[0];
+
+        setEventlogs(eventlogsResponse.list);
+      } catch (e) {
+        console.error('fetchTxInfo error: ', e);
+      } finally {
+        setInnerLoading(false);
+      }
+    };
+    fetchTxInfo(to);
   }, [to, routeHash]);
 
   const addressContent = useCallback(
@@ -328,18 +277,10 @@ export const Detail = ({
       );
     }
   };
-  const getItemByKey = (key, list, value) => {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i][key] === value) {
-        return list[i];
-      }
-    }
-    return {};
-  };
-  const transferToken = useMemo(() => {
-    let transferListInfo: Array<any> = [];
+  const batchCombinedTransferList = useMemo(() => {
+    const transferList = tokenTransfers?.list ?? [];
     // combine erc1155 batch transfer with batchIndex field
-    let batchCombinedTransferList: any = [];
+    let batchCombinedTransferList: any[] = [];
     if (transferList && transferList.length > 0) {
       transferList.forEach((transfer: any) => {
         if (transfer.transferType === CFX_TOKEN_TYPES.erc1155) {
@@ -348,7 +289,6 @@ export const Detail = ({
             trans =>
               trans.transferType === transfer.transferType &&
               trans.address === transfer.address &&
-              trans.transactionHash === transfer.transactionHash &&
               trans.from === transfer.from &&
               trans.to === transfer.to,
           );
@@ -367,15 +307,15 @@ export const Detail = ({
         }
       });
     }
+    return batchCombinedTransferList;
+  }, [tokenTransfers]);
+  const transferToken = useMemo(() => {
+    let transferListInfo: Array<any> = [];
 
     for (let i = 0; i < batchCombinedTransferList.length; i++) {
       const transferItem: any = batchCombinedTransferList[i];
 
-      const tokenItem = getItemByKey(
-        'address',
-        tokenList,
-        transferItem['address'],
-      );
+      const tokenItem = getItemByKey('token', nameMap, transferItem.address);
 
       transferListInfo.push({
         token: tokenItem,
@@ -391,283 +331,9 @@ export const Detail = ({
       transferListInfo.push(contractInfoCopy);
     }
     return transferListInfo;
-  }, [contractInfo, tokenList, transferList]);
-  // support erc20/721/1155
-  const getTransferListDiv = () => {
-    if (!isContract) {
-      return null;
-    }
-    if (transferList.length <= 0) {
-      return null;
-    }
-    let transferListContainer: Array<any> = [];
-    let transferListContainerStyle = {};
-
-    // combine erc1155 batch transfer with batchIndex field
-    let batchCombinedTransferList: any = [];
-
-    transferList.forEach((transfer: any) => {
-      if (transfer.transferType === CFX_TOKEN_TYPES.erc1155) {
-        // find batch transfers
-        const batchCombinedTransferListIndex = batchCombinedTransferList.findIndex(
-          trans =>
-            trans.transferType === transfer.transferType &&
-            trans.address === transfer.address &&
-            trans.transactionHash === transfer.transactionHash &&
-            trans.from === transfer.from &&
-            trans.to === transfer.to,
-        );
-        if (batchCombinedTransferListIndex < 0) {
-          batchCombinedTransferList.push({
-            batch: [transfer],
-            ...transfer,
-          });
-        } else {
-          batchCombinedTransferList[batchCombinedTransferListIndex].batch.push(
-            transfer,
-          );
-        }
-      } else {
-        batchCombinedTransferList.push(transfer);
-      }
-    });
-
-    let index = 1;
-
-    for (let i = 0; i < batchCombinedTransferList.length; i++) {
-      const transferItem: any = batchCombinedTransferList[i];
-      let imgSrc = '';
-      let tokenName = '';
-      let tokenSymbol = '';
-      let tokenDecimals = 0;
-      const tokenItem = getItemByKey(
-        'address',
-        tokenList,
-        transferItem['address'],
-      );
-      if (tokenItem) {
-        tokenName = tokenItem['name'] || t(translations.general.notAvailable);
-        tokenSymbol =
-          tokenItem['symbol'] || t(translations.general.notAvailable);
-        tokenDecimals = tokenItem['decimals'];
-        imgSrc = tokenItem['iconUrl'];
-      }
-      const imgIcon = (
-        <img
-          className="logo"
-          src={`${imgSrc || ICON_DEFAULT_TOKEN}`}
-          alt="logo"
-        />
-      );
-      const nameContainer = (
-        <Link href={`/token/${transferItem['address']}`} className="nameItem">
-          {`${tokenName} (${tokenSymbol})`}
-        </Link>
-      );
-      // do not deal with erc721
-      switch (transferItem['transferType']) {
-        case CFX_TOKEN_TYPES.erc721: {
-          transferListContainer.push(
-            <div
-              className="lineContainer"
-              key={`transfer${CFX_TOKEN_TYPES.erc721}${i + 1}`}
-            >
-              <span className="index">{index++}. </span>
-              <span className="from">{t(translations.transaction.from)}</span>
-              {/*<EVMAddressContainer value={transferItem['from']} />*/}
-              <InlineWrapper>
-                {renderAddress(
-                  transferItem['from'],
-                  transferItem,
-                  'from',
-                  false,
-                )}
-              </InlineWrapper>
-              <span className="to">{t(translations.transaction.to)}</span>
-              {/*<EVMAddressContainer value={transferItem['to']} />*/}
-              <InlineWrapper>
-                {renderAddress(transferItem['to'], transferItem, 'to', false)}
-              </InlineWrapper>
-              <span className="for">{t(translations.transaction.for)}</span>
-              <span className="type">1</span>
-              <span>{i18n.language === 'zh-CN' ? '个' : null}</span>
-              <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="erc721" />
-              <span className="type">
-                {transferItem['tokenId'].length > 10 ? (
-                  <>
-                    <br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                  </>
-                ) : (
-                  <>&nbsp;</>
-                )}
-                {t(translations.transaction.tokenId)}:
-                <span className="tokenId">
-                  {transferItem['tokenId']}
-                  {!isZeroAddress(formatAddress(transferItem['to'])) && (
-                    <NFTPreview
-                      contractAddress={transferItem['address']}
-                      tokenId={transferItem['tokenId']}
-                    />
-                  )}
-                </span>
-              </span>
-            </div>,
-          );
-          break;
-        }
-        case CFX_TOKEN_TYPES.erc1155: {
-          transferListContainer.push(
-            <div
-              className="lineContainer"
-              key={`transfer${CFX_TOKEN_TYPES.erc1155}${i + 1}`}
-            >
-              <span className="index">{index++}. </span>
-              <span className="from">{t(translations.transaction.from)}</span>
-              {/*<EVMAddressContainer value={transferItem['from']} />*/}
-              <InlineWrapper>
-                {renderAddress(
-                  transferItem['from'],
-                  transferItem,
-                  'from',
-                  false,
-                )}
-              </InlineWrapper>
-              <span className="to">{t(translations.transaction.to)}</span>
-              {/*<EVMAddressContainer value={transferItem['to']} />*/}
-              <InlineWrapper>
-                {renderAddress(transferItem['to'], transferItem, 'to', false)}
-              </InlineWrapper>
-              <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="erc1155" />
-              {transferItem['batch'].map((item, index) => {
-                return (
-                  <span
-                    key={`transfer${CFX_TOKEN_TYPES.erc1155}${i + 1}${index}`}
-                  >
-                    <br />
-                    <span className="batch">
-                      - {t(translations.transaction.for)}{' '}
-                      <span className="value">
-                        {_.isNil(tokenDecimals)
-                          ? item['value']
-                          : `${formatBalance(
-                              item['value'],
-                              tokenDecimals,
-                              true,
-                            )}`}
-                      </span>
-                      <span>{i18n.language === 'zh-CN' ? '个' : null}</span>
-                      &nbsp;&nbsp;{t(translations.transaction.tokenId)}:{' '}
-                      <span className="tokenId">
-                        {item['tokenId']}
-                        {!isZeroAddress(formatAddress(transferItem['to'])) && (
-                          <NFTPreview
-                            contractAddress={transferItem['address']}
-                            tokenId={item['tokenId']}
-                          />
-                        )}
-                      </span>
-                    </span>
-                  </span>
-                );
-              })}
-            </div>,
-          );
-          break;
-        }
-        case CFX_TOKEN_TYPES.erc20: {
-          transferListContainer.push(
-            <div
-              className="lineContainer"
-              key={`transfer${CFX_TOKEN_TYPES.erc20}${i + 1}`}
-            >
-              <span className="index">{index++}. </span>
-              <span className="from">{t(translations.transaction.from)}</span>
-              {/*<EVMAddressContainer value={transferItem['from']} />*/}
-              <InlineWrapper>
-                {renderAddress(
-                  transferItem['from'],
-                  transferItem,
-                  'from',
-                  false,
-                )}
-              </InlineWrapper>
-              <span className="to">{t(translations.transaction.to)}</span>
-              {/*<EVMAddressContainer value={transferItem['to']} />*/}
-              <InlineWrapper>
-                {renderAddress(transferItem['to'], transferItem, 'to', false)}
-              </InlineWrapper>
-              <span className="for">{t(translations.transaction.for)}</span>
-              <span className="value">
-                {_.isNil(tokenDecimals)
-                  ? transferItem['value']
-                  : `${formatBalance(
-                      transferItem['value'],
-                      tokenDecimals,
-                      true,
-                    )}`}
-              </span>
-              <span>{i18n.language === 'zh-CN' ? '个' : null}</span>
-              <span>{imgIcon}</span>
-              <span>{nameContainer}</span> <TokenTypeTag type="erc20" />
-            </div>,
-          );
-          break;
-        }
-        // not deal with erc721
-        default:
-          break;
-      }
-    }
-    if (transferList.length > 5) {
-      transferListContainerStyle = { height: '8.5714rem', overflow: 'auto' };
-    }
-    return (
-      <Description
-        title={
-          <>
-            <Tooltip title={t(translations.toolTip.tx.tokenTransferred)}>
-              {`${t(translations.transaction.tokenTransferred)} ${
-                transferListContainer.length > 1
-                  ? `(${transferListContainer.length})`
-                  : ''
-              }`}
-            </Tooltip>
-            {transferListContainer.length > 1 ? (
-              <Tooltip
-                title={t(translations.transaction.tipOfTokenTransferCount)}
-              >
-                <IconImg src={iconInfo} alt="warning-icon" />
-              </Tooltip>
-            ) : null}
-          </>
-        }
-      >
-        <SkeletonContainer shown={loading}>
-          <div
-            style={transferListContainerStyle}
-            className={`transferListContainer ${
-              transferListContainer.length === 1 ? 'onlyOne' : ''
-            }`}
-          >
-            {transferListContainer}
-          </div>
-        </SkeletonContainer>
-      </Description>
-    );
-  };
+  }, [contractInfo, nameMap, batchCombinedTransferList]);
 
   const handleFolded = () => setFolded(folded => !folded);
-
-  // const storageReleasedTotal = storageReleased
-  //   ? getStorageFee(
-  //       storageReleased.reduce((prev, curr) => {
-  //         return prev + curr.collaterals ? Number(curr.collaterals) : 0;
-  //       }, 0),
-  //     )
-  //   : 0;
 
   const txNoteMap = globalData[LOCALSTORAGE_KEYS_MAP.txPrivateNote];
   const txNote = txNoteMap?.[routeHash];
@@ -706,48 +372,10 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             {routeHash} <CopyButton copyText={routeHash} />
           </SkeletonContainer>
         </Description>
-        {/* <Description
-          title={
-            <Tooltip
-              title={t(translations.toolTip.tx.executedEpoch)}
-            >
-              {t(translations.transaction.executedEpoch)}
-            </Tooltip>
-          }
-        >
-          <SkeletonContainer shown={loading}>
-            {_.isNil(epochNumber) ? (
-              '--'
-            ) : (
-              <>
-                <Link href={`/epoch/${epochNumber}`}>
-                  {toThousands(epochNumber)}
-                </Link>{' '}
-                <CopyButton copyText={epochNumber} />
-              </>
-            )}
-          </SkeletonContainer>
-        </Description> */}
-        {/* <Description
-          title={
-            <Tooltip
-              title={t(translations.toolTip.tx.proposedEpoch)}
-            >
-              {t(translations.transaction.proposedEpoch)}
-            </Tooltip>
-          }
-        >
-          <SkeletonContainer shown={loading}>
-            <Link href={`/epoch/${epochHeight}`}>
-              {toThousands(epochHeight)}
-            </Link>{' '}
-            <CopyButton copyText={epochHeight} />
-          </SkeletonContainer>
-        </Description> */}
         <Description
           title={
             <Tooltip title={t(translations.toolTip.block.blockHeight)}>
@@ -755,7 +383,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             <Link href={`/block/${blockHash}`}>{toThousands(epochNumber)}</Link>{' '}
             <CopyButton copyText={epochNumber} />
           </SkeletonContainer>
@@ -767,7 +395,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             {_.isNil(blockHash) ? (
               '--'
             ) : (
@@ -785,7 +413,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             {_.isNil(syncTimestamp) ? (
               '--'
             ) : (
@@ -808,11 +436,9 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            {loading ? (
-              <SkeletonContainer shown={true}></SkeletonContainer>
-            ) : (
-              transactionActionElement.content
-            )}
+            <SkeletonContainer shown={loading}>
+              {transactionActionElement.content}
+            </SkeletonContainer>
           </Description>
         )}
         <Description
@@ -822,16 +448,14 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          {loading ? (
-            <SkeletonContainer shown={loading}></SkeletonContainer>
-          ) : (
+          <SkeletonContainer shown={outerLoading}>
             <Status
               type={status}
               txExecErrorInfo={txExecErrorInfo}
               address={formatAddress(from)}
               hash={routeHash}
             ></Status>
-          )}
+          </SkeletonContainer>
         </Description>
         <Description
           title={
@@ -840,7 +464,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             {_.isNil(blockHash) ? (
               '--'
             ) : (
@@ -870,7 +494,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             {addressContent(true, from)}
           </SkeletonContainer>
         </Description>
@@ -883,7 +507,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={loading}>
+            <SkeletonContainer shown={outerLoading}>
               <RowWrapper>
                 {renderAddress(
                   effectiveAuth.address,
@@ -897,11 +521,11 @@ export const Detail = ({
           </Description>
         )}
 
-        {/* @todo check if can be use new TokenTransfer component to instead of getTransferListDiv() */}
-        {/* {isContract ? (
-          <TokenTransfer tokenList={tokenList} transferList={transferList} />
-        ) : null} */}
-        {getTransferListDiv()}
+        <CFXTransfers transfers={cfxTransfers} nameMap={nameMap} />
+        <TokenTransfers
+          transferList={batchCombinedTransferList}
+          nameMap={nameMap}
+        />
 
         <Description
           title={
@@ -910,7 +534,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             {value ? `${fromDripToCfx(value, true)} CFX` : '--'}
           </SkeletonContainer>
         </Description>
@@ -921,7 +545,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={outerLoading}>
             <GasFee
               fee={gasFee}
               sponsored={gasCoveredBySponsor}
@@ -941,7 +565,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={loading}>
+            <SkeletonContainer shown={outerLoading}>
               {!_.isNil(gasPrice) && gasPrice !== '0'
                 ? `${fromDripToGdrip(gasPrice, false, {
                     precision: 9,
@@ -969,7 +593,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={loading}>
+            <SkeletonContainer shown={outerLoading}>
               {!_.isNil(gasUsed) && gasUsed !== '0' && gas ? (
                 <>
                   {`${toThousands(gas)} | ${toThousands(gasUsed)} (${getPercent(
@@ -997,7 +621,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={loading}>
+            <SkeletonContainer shown={outerLoading}>
               {isCrossSpaceCall ? (
                 '--'
               ) : (
@@ -1033,7 +657,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={loading}>
+            <SkeletonContainer shown={outerLoading}>
               {isCrossSpaceCall || !burntGasFee
                 ? '--'
                 : `🔥 ${fromDripToCfx(burntGasFee, true)} CFX`}
@@ -1047,7 +671,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={loading}>
+            <SkeletonContainer shown={outerLoading}>
               <AttributeWrapper>
                 <Text
                   className="attribute"
@@ -1094,9 +718,8 @@ export const Detail = ({
               }
               className="inputLine"
             >
-              <SkeletonContainer shown={loading}>
+              <SkeletonContainer shown={outerLoading}>
                 <InputDataNew
-                  txnHash={routeHash}
                   toHash={to}
                   data={data}
                   isContractCreated={!!contractCreated}
@@ -1168,13 +791,6 @@ const AttributeWrapper = styled.div`
     padding: 4px 16px 4px 16px;
     border-radius: 2px;
   }
-`;
-
-const IconImg = styled.img`
-  width: 1.2857rem;
-  margin-left: 0.3571rem;
-  padding-right: 0.2857rem;
-  margin-top: -0.2765rem;
 `;
 
 const StyledCardWrapper = styled.div`
@@ -1313,12 +929,6 @@ const StyledFoldButtonWrapper = styled.div`
       transform: rotate(0);
     }
   }
-`;
-
-const InlineWrapper = styled.div`
-  display: inline-block;
-  margin-left: 3px;
-  margin-right: 3px;
 `;
 
 const StyleToolTipText = styled.div`
