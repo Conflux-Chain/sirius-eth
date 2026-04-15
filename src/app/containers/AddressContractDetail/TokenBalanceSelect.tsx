@@ -16,6 +16,7 @@ import BigNumber from 'bignumber.js';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
+import verifiedIcon from 'images/nametag/verified.svg';
 
 const skeletonStyle = { width: '7rem', height: '2.5rem' };
 
@@ -26,12 +27,14 @@ export function TokenBalanceSelect({ address = '' } = {}) {
 
   return (
     <SkeletonContainer shown={loading} style={skeletonStyle}>
-      <Select account={address}>{tokens}</Select>
+      <Select account={address} nameMap={tokensData?.nameMap}>
+        {tokens}
+      </Select>
     </SkeletonContainer>
   );
 }
 
-function Select({ children = [], account = '' } = {}) {
+function Select({ children = [], account = '', nameMap = {} } = {}) {
   const { t } = useTranslation();
   const [expanded, toggle] = useToggle(false);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -40,15 +43,42 @@ function Select({ children = [], account = '' } = {}) {
 
   const children20 = children
     .filter((c: any) => c && c.transferType === CFX_TOKEN_TYPES.erc20)
-    .map((t: any, idx) => <SelectItem key={idx} account={account} {...t} />);
+    .map((t: any, idx) => (
+      <SelectItem
+        key={idx}
+        account={account}
+        {...t}
+        isOfficialVerified={nameMap[t.address]?.nameTag?.labels?.some(
+          i => i === 'Verified',
+        )}
+      />
+    ));
 
   const children721 = children
     .filter((c: any) => c && c.transferType === CFX_TOKEN_TYPES.erc721)
-    .map((t: any, idx) => <SelectItem key={idx} account={account} {...t} />);
+    .map((t: any, idx) => (
+      <SelectItem
+        key={idx}
+        account={account}
+        {...t}
+        isOfficialVerified={nameMap[t.address]?.nameTag?.labels?.some(
+          i => i === 'Verified',
+        )}
+      />
+    ));
 
   const children1155 = children
     .filter((c: any) => c && c.transferType === CFX_TOKEN_TYPES.erc1155)
-    .map((t: any, idx) => <SelectItem key={idx} account={account} {...t} />);
+    .map((t: any, idx) => (
+      <SelectItem
+        key={idx}
+        account={account}
+        {...t}
+        isOfficialVerified={nameMap[t.address]?.nameTag?.labels?.some(
+          i => i === 'Verified',
+        )}
+      />
+    ));
 
   return (
     <SelectWrapper ref={selectRef}>
@@ -97,6 +127,7 @@ function SelectItem({
   decimals,
   transferType,
   account,
+  isOfficialVerified,
 }) {
   const title = (
     <SelectItemTitle key="title">
@@ -105,8 +136,14 @@ function SelectItem({
         alt={`${name} icon`}
       />
       <SelectItemTextTitle>
-        <Link href={`/token/${formatAddress(address)}?a=${account}`}>
-          {name}
+        <Link
+          href={`/token/${formatAddress(address)}?a=${account}`}
+          className="title"
+        >
+          <span className="name">{name}</span>
+          {isOfficialVerified && (
+            <img src={verifiedIcon} className="status-icon" alt="Verified" />
+          )}
         </Link>
       </SelectItemTextTitle>
     </SelectItemTitle>
@@ -242,6 +279,21 @@ const SelectItemTokenIcon = styled.img`
 `;
 const SelectItemTextTitle = styled.span`
   color: #2f3c3f;
+  .title {
+    display: flex;
+    align-items: center;
+    .name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .status-icon {
+      flex-shrink: 0;
+      margin-left: 8px;
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 const SelectItemContent = styled.div`
   display: flex;
