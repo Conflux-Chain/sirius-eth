@@ -292,7 +292,6 @@ const SelectItemTextTitle = styled.span`
       margin-left: 8px;
       width: 16px;
       height: 16px;
-      margin-left: 8px;
     }
   }
 `;
