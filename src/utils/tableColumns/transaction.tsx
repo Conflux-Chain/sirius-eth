@@ -214,10 +214,10 @@ export const to = {
 
     if (row.toTokenInfo && row.toTokenInfo.name) alias = row.toTokenInfo.name;
     else if (row.toContractInfo && row.toContractInfo.name)
-      alias = `${row.toContractInfo.name}`;
+      alias = row.toContractInfo.name;
     else if (row.tokenInfo && row.tokenInfo.name) alias = row.tokenInfo.name;
     else if (row.contractInfo && row.contractInfo.name)
-      alias = `${row.contractInfo.name}`;
+      alias = row.contractInfo.name;
 
     if (row.toContractInfo) {
       verify =
