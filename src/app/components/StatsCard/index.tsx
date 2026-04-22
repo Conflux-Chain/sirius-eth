@@ -435,10 +435,10 @@ export const StatsCard = ({
                 <EVMAddressContainer
                   value={d.hex}
                   alias={
-                    d.contractInfo && d.contractInfo.name
-                      ? d.contractInfo.name
-                      : d.tokenInfo && d.tokenInfo.name
+                    d.tokenInfo && d.tokenInfo.name
                       ? d.tokenInfo.name
+                      : d.contractInfo && d.contractInfo.name
+                      ? d.contractInfo.name
                       : null
                   }
                   isMe={account ? isAddressEqual(account, d.hex) : false}
