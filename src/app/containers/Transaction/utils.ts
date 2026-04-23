@@ -16,11 +16,11 @@ export interface ContractNameItem {
   };
 }
 
-export const getItemByKey = (
-  key: 'contract' | 'token' | 'verification',
+export const getItemByKey = <T extends keyof ContractNameItem>(
+  key: T,
   nameMap: Record<string, ContractNameItem> | undefined,
   value: string,
-) => {
+): (ContractNameItem[T] & { address: string }) | null => {
   const item = nameMap?.[value]?.[key];
   return item
     ? {
