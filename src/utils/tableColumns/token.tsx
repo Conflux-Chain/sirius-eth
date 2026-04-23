@@ -151,10 +151,11 @@ export const renderAddress = (
     return (
       <ValueHighlight scope="address" value={value}>
         <ProxyContractAddress
-          address={value}
+          value={value}
           alias={alias}
           verify={verify}
           proxy={row.proxy}
+          nametagInfo={getNametagInfo(row)}
         />
       </ValueHighlight>
     );
