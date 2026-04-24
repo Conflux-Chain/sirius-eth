@@ -1,6 +1,7 @@
 import React from 'react';
 import { authorizationsColumns } from 'utils/tableColumns';
 import { TablePanel } from 'app/components/TablePanelNew';
+import { formatListResponseWithNameMap } from '@cfxjs/sirius-next-common/dist/utils/hooks/useEnhanceDataWithNameMap';
 
 export const AuthorizationList = ({ hash }: { hash: string }) => {
   const url = `/stat/list-auth-action-in-tx?txHash=${hash}`;
@@ -23,6 +24,7 @@ export const AuthorizationList = ({ hash }: { hash: string }) => {
       rowKey="id"
       hideDefaultTitle
       pagination={false}
+      formatResponse={formatListResponseWithNameMap}
     />
   );
 };

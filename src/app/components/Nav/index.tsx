@@ -97,7 +97,7 @@ export const Nav = memo(
             </a>
           </Brand>
           <Menu
-            visible={visible}
+            $visible={visible}
             className={clsx({ 'navbar-menu': true, 'is-active': visible })}
           >
             {bp === 's' || bp === 'm' ? (
@@ -109,7 +109,7 @@ export const Nav = memo(
         <Container className="secondary">
           {bp !== 's' && bp !== 'm' ? (
             <Menu
-              visible={visible}
+              $visible={visible}
               className={clsx({ 'navbar-menu': true, 'is-active': visible })}
             >
               <MenuStart className="navbar-start">{mainMenu}</MenuStart>
@@ -200,7 +200,7 @@ const Brand = styled.div`
   }
 `;
 
-const Menu = styled.div<{ visible: boolean }>`
+const Menu = styled.div<{ $visible: boolean }>`
   flex-grow: 1;
   flex-shrink: 0;
   align-items: stretch;
@@ -210,7 +210,7 @@ const Menu = styled.div<{ visible: boolean }>`
     width: 100vw;
     position: absolute;
     left: 0;
-    display: ${props => (props.visible ? 'block' : 'none')};
+    display: ${props => (props.$visible ? 'block' : 'none')};
   }
 `;
 const MenuStart = styled.div`
