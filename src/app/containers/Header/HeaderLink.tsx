@@ -77,9 +77,14 @@ export function genParseLinkFn(links: HeaderLinks, level = 0) {
         afterClick={afterClick}
         plain={plain}
       >
-        {title === false ? null : plain ? <span>{title}</span> : title}
+        {title === false ? null : plain ? (
+          <span key="title">{title}</span>
+        ) : (
+          title
+        )}
         <SubLinkWrap
           className={`sub-link-wrap level-${level} ${plain ? 'plain' : ''}`}
+          key="sub-link-wrap"
         >
           {childrenUI}
         </SubLinkWrap>

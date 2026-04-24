@@ -2,15 +2,12 @@ import React from 'react';
 import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { ColumnAge } from './utils';
+import { ColumnAge, renderAddressWithNameMap } from './utils';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Tag } from '@cfxjs/antd';
 import styled from 'styled-components';
 import imgInfo from 'images/info.svg';
-import { renderAddress } from './token';
-import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
-import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
 
 const StyleToolTip = styled.div`
@@ -66,12 +63,8 @@ export const authority = {
   dataIndex: 'author',
   key: 'author',
   width: 1,
-  render: value => {
-    return (
-      <ValueHighlight scope="address" value={value}>
-        <EVMAddressContainer value={value} />
-      </ValueHighlight>
-    );
+  render: (value, row) => {
+    return renderAddressWithNameMap(value, row);
   },
 };
 
@@ -83,7 +76,7 @@ export const delegatedAddress = {
   key: 'address',
   width: 1,
   render: (value, row) => {
-    return renderAddress(value, row, 'to', false);
+    return renderAddressWithNameMap(value, row);
   },
 };
 
@@ -93,7 +86,7 @@ export const txSender = {
   key: 'txSender',
   width: 1,
   render: (value, row) => {
-    return renderAddress(value, row, 'from', false);
+    return renderAddressWithNameMap(value, row);
   },
 };
 

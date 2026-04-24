@@ -14,13 +14,11 @@ import {
   isZeroAddress,
   getNametagInfo,
 } from 'utils';
-import imgOut from 'images/token/out.svg';
-import imgIn from 'images/token/in.svg';
 import imgInfo from 'images/info.svg';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { ProxyContractAddress } from '@cfxjs/sirius-next-common/dist/components/ProxyContractAddress';
 import { formatAddress } from 'utils';
-import { ColumnAge, ContentWrapper } from './utils';
+import { ColumnAge, ContentWrapper, fromTypeInfo, getFromType } from './utils';
 import BigNumber from 'bignumber.js';
 import { CFX_TOKEN_TYPES } from '../constants';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
@@ -35,60 +33,8 @@ import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
 import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 import { PhishingAddressContainer } from '@cfxjs/sirius-next-common/dist/components/PhishingAddressContainer';
-import imgArrow from 'images/token/arrow.svg';
-
-const fromTypeInfo = {
-  arrow: {
-    src: imgArrow,
-    text: (
-      <Translation>
-        {t => t(translations.general.table.token.fromTypeOut)}
-      </Translation>
-    ),
-  },
-  out: {
-    src: imgOut,
-    text: (
-      <Translation>
-        {t => t(translations.general.table.token.fromTypeOut)}
-      </Translation>
-    ),
-  },
-  in: {
-    src: imgIn,
-    text: (
-      <Translation>
-        {t => t(translations.general.table.token.fromTypeIn)}
-      </Translation>
-    ),
-  },
-};
 
 const reg = /address\/(.*)$/;
-
-type GetFromTypeReturnValueType = 'in' | 'out' | 'arrow';
-const getFromType = (value: string): GetFromTypeReturnValueType => {
-  let address = '';
-
-  try {
-    // fixed for multiple request in /address/:hash page
-    let r = reg.exec(window.location.pathname);
-    if (r) {
-      address = r[1];
-    }
-  } catch (e) {}
-
-  const { accountAddress = address } = queryString.parse(
-    window.location.search,
-  );
-  const filter = accountAddress as string;
-
-  return !filter
-    ? 'arrow'
-    : isAddressEqual(formatAddress(filter), formatAddress(value))
-    ? 'out'
-    : 'in';
-};
 
 export const renderAddress = (
   value,
@@ -113,19 +59,17 @@ export const renderAddress = (
   let alias = '';
 
   if (type === 'from') {
-    if (row.fromContractInfo && row.fromContractInfo.name)
+    if (row.fromTokenInfo && row.fromTokenInfo.name)
+      alias = row.fromTokenInfo.name;
+    else if (row.fromContractInfo && row.fromContractInfo.name)
       alias = row.fromContractInfo.name;
-    else if (row.fromTokenInfo && row.fromTokenInfo.name)
-      alias = `${row.fromTokenInfo.name}`;
   } else if (type === 'to') {
-    if (row.toContractInfo && row.toContractInfo.name)
+    if (row.toTokenInfo && row.toTokenInfo.name) alias = row.toTokenInfo.name;
+    else if (row.toContractInfo && row.toContractInfo.name)
       alias = row.toContractInfo.name;
-    else if (row.toTokenInfo && row.toTokenInfo.name)
-      alias = `${row.toTokenInfo.name}`;
+    else if (row.tokenInfo && row.tokenInfo.name) alias = row.tokenInfo.name;
     else if (row.contractInfo && row.contractInfo.name)
       alias = row.contractInfo.name;
-    else if (row.tokenInfo && row.tokenInfo.name)
-      alias = `${row.tokenInfo.name}`;
   }
 
   let verify = false;

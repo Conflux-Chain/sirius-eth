@@ -71,6 +71,7 @@ import { ContractDeployment } from './containers/ContractDeployment/Loadable';
 import { ContractVerification } from './containers/ContractVerification/Loadable';
 import { ABIVerification } from './containers/ABIVerification/Loadable';
 import { CFXTransfers } from './containers/CFXTransfers/Loadable';
+import { EIP7702Authorizations } from './containers/EIP7702Authorizations/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
 
@@ -477,6 +478,16 @@ export function App() {
                             exact
                             path="/cfx-transfers"
                             component={CFXTransfers}
+                          />
+                          <Route
+                            exact
+                            path="/aa-txs"
+                            component={CFXTransfers}
+                          />
+                          <Route
+                            exact
+                            path="/eip7702-authorizations"
+                            component={EIP7702Authorizations}
                           />
                           <Route
                             exact

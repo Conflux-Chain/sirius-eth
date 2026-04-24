@@ -296,6 +296,32 @@ export const Header = memo(() => {
               afterClick: menuClick,
               href: '/cfx-transfers',
             },
+            {
+              // AA Transactions
+              title: [
+                <BetaTitleWrapper key="title">
+                  {t(translations.header.aaTransactions)}
+                  <span className="beta">beta</span>
+                </BetaTitleWrapper>,
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.aaTransactions,
+              afterClick: menuClick,
+              href: '/aa-txs',
+            },
+            {
+              // EIP-7702 Authorizations
+              title: [
+                <BetaTitleWrapper key="title">
+                  {t(translations.header.eip7702Authorizations)}
+                  <span className="beta">beta</span>
+                </BetaTitleWrapper>,
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.eip7702Authorizations,
+              afterClick: menuClick,
+              href: '/eip7702-authorizations',
+            },
           ],
         },
         {
@@ -846,4 +872,23 @@ const WalletWrapper = styled.div`
 const NetWorkWrapper = styled.div`
   display: flex;
   gap: 4px;
+`;
+
+const BetaTitleWrapper = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  .beta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #e8e9ea;
+    background: var(--Gray-Gray-10, #f8f9fa);
+    color: #6c6d7f;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 12px;
+  }
 `;

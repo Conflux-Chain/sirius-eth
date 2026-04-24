@@ -9,6 +9,8 @@ export const ScanEvent = {
       blocks: 'blocks',
       transactions: 'transactions',
       cfxTransfers: 'cfx_transfers',
+      aaTransactions: 'aa_transactions',
+      eip7702Authorizations: 'eip7702_authorizations',
       accounts: 'accounts',
       tokens20: 'tokens_erc20',
       tokens721: 'tokens_erc721',
