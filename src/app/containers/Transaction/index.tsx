@@ -79,7 +79,7 @@ export function Transaction() {
     };
   }, [fetchTxDetail]);
 
-  const { from, to, eventLogCount, gasPrice, type } = txnDetail;
+  const { from, to, eventLogCount, gasPrice, type, nameMap } = txnDetail;
 
   let tabs = [
     {
@@ -98,7 +98,15 @@ export function Transaction() {
       value: 'internal-txns',
       action: 'transactionCfxTransfers',
       label: t(translations.transaction.txTrace.title),
-      content: <InternalTxns hash={hash} from={from} to={to} key={hash} />,
+      content: (
+        <InternalTxns
+          hash={hash}
+          from={from}
+          to={to}
+          nameMap={nameMap}
+          key={hash}
+        />
+      ),
       // hidden: cfxTransferAllCount < 2,
     },
     {

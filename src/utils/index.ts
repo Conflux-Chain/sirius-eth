@@ -285,43 +285,59 @@ export const getNametagInfo = (row: {
   let result = {};
 
   try {
-    if (row.from) {
+    if (row.from && row.fromNameTagInfo?.nameTag) {
       const addr = formatAddress(row.from);
       result[addr] = {
         address: addr,
-        nametag: row.fromNameTagInfo?.nameTag,
+        nametag: row.fromNameTagInfo.nameTag,
       };
     }
 
-    if (row.to) {
+    if (
+      row.to &&
+      row.toNameTagInfo?.nameTag &&
+      !result[formatAddress(row.to)]
+    ) {
       const addr = formatAddress(row.to);
       result[addr] = {
         address: addr,
-        nametag: row.toNameTagInfo?.nameTag,
+        nametag: row.toNameTagInfo.nameTag,
       };
     }
 
-    if (row.address) {
+    if (
+      row.address &&
+      row.nameTagInfo?.nameTag &&
+      !result[formatAddress(row.address)]
+    ) {
       const addr = formatAddress(row.address);
       result[addr] = {
         address: addr,
-        nametag: row.nameTagInfo?.nameTag,
+        nametag: row.nameTagInfo.nameTag,
       };
     }
 
-    if (row.base32address) {
+    if (
+      row.base32address &&
+      row.nameTagInfo?.nameTag &&
+      !result[formatAddress(row.base32address)]
+    ) {
       const addr = formatAddress(row.base32address);
       result[addr] = {
         address: addr,
-        nametag: row.nameTagInfo?.nameTag,
+        nametag: row.nameTagInfo.nameTag,
       };
     }
 
-    if (row.miner) {
+    if (
+      row.miner &&
+      row.minerNameTagInfo?.nameTag &&
+      !result[formatAddress(row.miner)]
+    ) {
       const addr = formatAddress(row.miner);
       result[addr] = {
         address: addr,
-        nametag: row.minerNameTagInfo?.nameTag,
+        nametag: row.minerNameTagInfo.nameTag,
       };
     }
   } catch (e) {}

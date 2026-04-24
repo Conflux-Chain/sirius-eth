@@ -23,7 +23,6 @@ import { TransactionAction } from '@cfxjs/sirius-next-common/dist/components/Tra
 import _ from 'lodash';
 
 import imgChevronDown from 'images/chevronDown.png';
-import { renderAddress } from 'utils/tableColumns/token';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { CreateTxNote } from '../Profile/CreateTxNote';
 import { useNametag } from 'utils/hooks/useNametag';
@@ -42,7 +41,7 @@ import { StyledHighlight } from './EventLogs/StyledComponents';
 import { EOACodeIcon } from 'app/components/EOACodeIcon';
 import { CFXTransfers } from './CFXTransfers';
 import { TokenTransfers } from './TokenTransfers';
-import { getItemByKey } from './utils';
+import { getItemByKey, renderAddressWithNameMap } from './utils';
 
 // Transaction Detail Page
 export const Detail = ({
@@ -92,6 +91,7 @@ export const Detail = ({
     cfxTransfers,
     nameMap,
   } = transactionDetail;
+  const renderAddress = renderAddressWithNameMap(nameMap);
   const [folded, setFolded] = useState(true);
   const nametags = useNametag([from, to]);
   const effectiveAuth = isZeroAddress(_effectiveAuth?.address)
