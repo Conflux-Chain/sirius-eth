@@ -58,6 +58,7 @@ export const GlobalStyle = createGlobalStyle`
     --theme-color-link-hover: ${theme.linkHoverColor};
     --theme-color-chart-title: ${theme.chartTitleColor};
     --theme-color-chart-link: ${theme.chartDetailLinkColor};
+    --theme-monospace-font: ${monospaceFont};
   }
 
   html,
