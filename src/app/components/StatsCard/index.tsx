@@ -351,27 +351,14 @@ export const StatsCard = ({
               );
               break;
           }
-          const { alias, verify, isContract, nametag } =
-            getAddressNameInfo(d.hex, d.nameMap) || {};
-          const nametagInfo = nametag
-            ? {
-                [d.hex]: {
-                  address: d.hex,
-                  nametag: nametag,
-                },
-              }
-            : undefined;
           return (
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
                 <EVMAddressContainer
                   value={d.hex}
-                  alias={alias}
+                  nameMap={d.nameMap}
                   isMe={account ? isAddressEqual(account, d.hex) : false}
-                  verify={verify}
-                  isContract={isContract}
-                  nametagInfo={nametagInfo}
                 />
               </td>
               <td className="text-right">
@@ -385,16 +372,14 @@ export const StatsCard = ({
         });
       case 'token':
         return data.map((d, i) => {
-          const { isContract, originInfo, nametag, alias } =
-            getAddressNameInfo(d.hex, d.nameMap) || {};
-          const nametagInfo = nametag
-            ? {
-                [d.base32address]: {
-                  address: d.base32address,
-                  nametag: nametag,
-                },
-              }
-            : undefined;
+          const {
+            isContract,
+            originInfo,
+            nametag,
+            tokenName,
+            contractName,
+            verificationName,
+          } = getAddressNameInfo(d.hex, d.nameMap) || {};
 
           return (
             <tr key={i}>
@@ -403,9 +388,11 @@ export const StatsCard = ({
                 {originInfo?.token ? (
                   token.render({
                     ...originInfo.token,
-                    alias,
                     isContract,
-                    nametagInfo,
+                    tokenName,
+                    contractName,
+                    verificationName,
+                    nametag,
                   })
                 ) : (
                   <EVMAddressContainer

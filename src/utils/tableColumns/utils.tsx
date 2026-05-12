@@ -20,7 +20,6 @@ import imgIn from 'images/token/in.svg';
 import imgArrow from 'images/token/arrow.svg';
 import { AddressNameMap } from '@cfxjs/sirius-next-common/dist/utils/request.types';
 import { ProxyType } from '@cfxjs/sirius-next-common/dist/utils/hooks/useTxTrace';
-import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
 
 export interface ContentWrapperProps {
   children: React.ReactNode;
@@ -253,9 +252,11 @@ export const renderAddress = (
   {
     withArrow = false,
     withProxy = false,
+    showVerificationName = false,
   }: {
     withArrow?: boolean;
     withProxy?: boolean;
+    showVerificationName?: boolean;
   } = {},
 ) => {
   let address = '';
@@ -273,25 +274,15 @@ export const renderAddress = (
   );
   const hexAddress = formatAddress(value);
   const filter = (accountAddress as string) || '';
-  const { alias, verify, isContract, nametag } =
-    getAddressNameInfo(hexAddress, row.nameMap) || {};
-  const nametagInfo = nametag
-    ? {
-        [hexAddress]: {
-          address: hexAddress,
-          nametag: nametag,
-        },
-      }
-    : undefined;
 
   if (withProxy && row.proxy) {
     return (
       <ValueHighlight scope="address" value={hexAddress}>
         <ProxyContractAddress
           value={hexAddress}
-          alias={alias}
-          verify={verify}
+          nameMap={row.nameMap}
           proxy={row.proxy}
+          showVerificationName={showVerificationName}
         />
       </ValueHighlight>
     );
@@ -302,12 +293,10 @@ export const renderAddress = (
       <ValueHighlight scope="address" value={hexAddress}>
         <EVMAddressContainer
           value={hexAddress}
-          alias={alias}
+          nameMap={row.nameMap}
           link={!isAddressEqual(filter, hexAddress)}
           contractCreated={row.contractCreated}
-          verify={verify}
-          isContract={isContract}
-          nametagInfo={nametagInfo}
+          showVerificationName={showVerificationName}
         />
       </ValueHighlight>
       {withArrow && <ImgWrap src={fromTypeInfo[getFromType(hexAddress)].src} />}

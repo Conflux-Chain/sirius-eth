@@ -88,10 +88,6 @@ export const Detail = ({
     cfxTransfers,
     nameMap,
   } = transactionDetail;
-  const toNameInfo = useMemo(() => getAddressNameInfo(to, nameMap), [
-    to,
-    nameMap,
-  ]);
   const [folded, setFolded] = useState(true);
   const effectiveAuth = isZeroAddress(_effectiveAuth?.address)
     ? null
@@ -151,6 +147,7 @@ export const Detail = ({
 
   const generatedToAddress = () => {
     if (to) {
+      const toNameInfo = getAddressNameInfo(to, nameMap);
       if (toNameInfo?.isContract) {
         return (
           <Description
@@ -289,6 +286,7 @@ export const Detail = ({
       }
     }
 
+    const toNameInfo = getAddressNameInfo(to, nameMap);
     if (toNameInfo) {
       transferListInfo.push({
         token: {
@@ -298,7 +296,7 @@ export const Detail = ({
       });
     }
     return transferListInfo;
-  }, [toNameInfo, nameMap, to, batchCombinedTransferList]);
+  }, [nameMap, to, batchCombinedTransferList]);
 
   const handleFolded = () => setFolded(folded => !folded);
 

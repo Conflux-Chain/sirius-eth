@@ -67,10 +67,13 @@ export const token = {
                 ) : (
                   <EVMAddressContainer
                     value={row?.address}
-                    alias={row?.alias}
+                    nameMap={row?.nameMap}
+                    tokenName={row?.tokenName}
+                    contractName={row?.contractName}
+                    verificationName={row?.verificationName}
+                    nametag={row?.nametag}
                     showIcon={false}
                     isContract={row?.isContract}
-                    nametagInfo={row?.nametagInfo}
                   />
                 )}
               </Text>
@@ -87,14 +90,6 @@ export const Token2 = ({ row }) => {
   const address = row?.address;
   const { isContract, tokenIconUrl, tokenName, tokenSymbol, nametag, verify } =
     getAddressNameInfo(address, row.nameMap) || {};
-  const nametagInfo = nametag
-    ? {
-        [address]: {
-          address: address,
-          nametag: nametag,
-        },
-      }
-    : undefined;
 
   return (
     <StyledIconWrapper>
@@ -123,11 +118,11 @@ export const Token2 = ({ row }) => {
               <StyledToken2NotAvailableWrapper>
                 <EVMAddressContainer
                   value={address}
-                  alias={t(translations.general.notAvailable)}
+                  tokenName={t(translations.general.notAvailable)}
                   showIcon={false}
                   isContract={isContract}
                   verify={verify}
-                  nametagInfo={nametagInfo}
+                  nametag={nametag}
                 />
                 &nbsp;
                 <InfoIconWithTooltip
@@ -378,13 +373,20 @@ export const to = {
   ),
   dataIndex: 'to',
   key: 'to',
-  render: (value, row) => {
+  render: (
+    value,
+    row,
+    _,
+    { withProxy = false, showVerificationName = false } = {},
+  ) => {
     return (
       <PhishingAddressContainer
         phishingData={row.toPhishingData}
         address={value}
       >
-        <FromWrap>{renderAddress(value, row)}</FromWrap>
+        <FromWrap>
+          {renderAddress(value, row, { withProxy, showVerificationName })}
+        </FromWrap>
       </PhishingAddressContainer>
     );
   },
@@ -397,7 +399,12 @@ export const from = {
   ),
   dataIndex: 'from',
   key: 'from',
-  render: (value, row, _, withArrow = true) => {
+  render: (
+    value,
+    row,
+    _,
+    { withArrow = true, showVerificationName = false } = {},
+  ) => {
     return (
       <PhishingAddressContainer
         phishingData={row.fromPhishingData}
@@ -406,6 +413,7 @@ export const from = {
         <FromWrap>
           {renderAddress(value, row, {
             withArrow,
+            showVerificationName,
           })}
         </FromWrap>
       </PhishingAddressContainer>
@@ -435,17 +443,6 @@ export const account = (token: string) => ({
   dataIndex: 'account',
   key: 'account',
   render: (value, row) => {
-    const { alias, verify, isContract, nametag } =
-      getAddressNameInfo(value.address, row.nameMap) || {};
-    const nametagInfo = nametag
-      ? {
-          [value.address]: {
-            address: value.address,
-            nametag: nametag,
-          },
-        }
-      : undefined;
-
     return (
       <AccountWrapper>
         <Link
@@ -454,11 +451,8 @@ export const account = (token: string) => ({
         >
           <EVMAddressContainer
             value={value.address}
-            alias={alias}
+            nameMap={row.nameMap}
             isFull={true}
-            isContract={isContract}
-            nametagInfo={nametagInfo}
-            verify={verify}
             link={false}
           />
         </Link>
@@ -710,25 +704,12 @@ export const NFTOwner = {
   dataIndex: 'owner',
   key: 'owner',
   render: (value, row) => {
-    const { alias, verify, isContract, nametag } =
-      getAddressNameInfo(value, row.nameMap) || {};
-    const nametagInfo = nametag
-      ? {
-          [value]: {
-            address: value,
-            nametag: nametag,
-          },
-        }
-      : undefined;
     return (
       <AccountWrapper>
         <EVMAddressContainer
           value={value}
-          alias={alias}
+          nameMap={row.nameMap}
           isFull={true}
-          nametagInfo={nametagInfo}
-          isContract={isContract}
-          verify={verify}
         />
       </AccountWrapper>
     );
