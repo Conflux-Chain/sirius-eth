@@ -8,7 +8,18 @@ import { translations } from 'locales/i18n';
 import { Age } from '@cfxjs/sirius-next-common/dist/components/Age';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
+import { ProxyContractAddress } from '@cfxjs/sirius-next-common/dist/components/ProxyContractAddress';
+import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 import queryString from 'query-string';
+import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
+import { formatAddress } from 'utils';
+import imgOut from 'images/token/out.svg';
+import imgIn from 'images/token/in.svg';
+import imgArrow from 'images/token/arrow.svg';
+import { AddressNameMap } from '@cfxjs/sirius-next-common/dist/utils/request.types';
+import { ProxyType } from '@cfxjs/sirius-next-common/dist/utils/hooks/useTxTrace';
 
 export interface ContentWrapperProps {
   children: React.ReactNode;
@@ -172,4 +183,135 @@ export const number = {
 
 const StyledNumberWrapper = styled.span`
   white-space: nowrap;
+`;
+
+const reg = /address\/(.*)$/;
+
+type GetFromTypeReturnValueType = 'in' | 'out' | 'arrow';
+export const getFromType = (value: string): GetFromTypeReturnValueType => {
+  let address = '';
+
+  try {
+    // fixed for multiple request in /address/:hash page
+    let r = reg.exec(window.location.pathname);
+    if (r) {
+      address = r[1];
+    }
+  } catch (e) {}
+
+  const { accountAddress = address } = queryString.parse(
+    window.location.search,
+  );
+  const filter = accountAddress as string;
+
+  return !filter
+    ? 'arrow'
+    : isAddressEqual(formatAddress(filter), formatAddress(value))
+    ? 'out'
+    : 'in';
+};
+
+export const fromTypeInfo = {
+  arrow: {
+    src: imgArrow,
+    text: (
+      <Translation>
+        {t => t(translations.general.table.token.fromTypeOut)}
+      </Translation>
+    ),
+  },
+  out: {
+    src: imgOut,
+    text: (
+      <Translation>
+        {t => t(translations.general.table.token.fromTypeOut)}
+      </Translation>
+    ),
+  },
+  in: {
+    src: imgIn,
+    text: (
+      <Translation>
+        {t => t(translations.general.table.token.fromTypeIn)}
+      </Translation>
+    ),
+  },
+};
+
+export const renderAddress = (
+  value: string,
+  row: {
+    nameMap?: Record<string, AddressNameMap>;
+    proxy?: {
+      type: ProxyType;
+      implAddress: string;
+      beaconAddress?: string;
+    };
+    contractCreated?: string;
+  },
+  {
+    withArrow = false,
+    withProxy = false,
+    showVerificationName = false,
+  }: {
+    withArrow?: boolean;
+    withProxy?: boolean;
+    showVerificationName?: boolean;
+  } = {},
+) => {
+  let address = '';
+
+  try {
+    // fixed for multiple request in /address/:hash page
+    let r = reg.exec(window.location.pathname);
+    if (r) {
+      address = r[1];
+    }
+  } catch (e) {}
+
+  const { accountAddress = address } = queryString.parse(
+    window.location.search,
+  );
+  const hexAddress = formatAddress(value);
+  const filter = (accountAddress as string) || '';
+
+  if (withProxy && row.proxy) {
+    return (
+      <ValueHighlight scope="address" value={hexAddress}>
+        <ProxyContractAddress
+          value={hexAddress}
+          nameMap={row.nameMap}
+          proxy={row.proxy}
+          showVerificationName={showVerificationName}
+        />
+      </ValueHighlight>
+    );
+  }
+
+  return (
+    <>
+      <ValueHighlight scope="address" value={hexAddress}>
+        <EVMAddressContainer
+          value={hexAddress}
+          nameMap={row.nameMap}
+          link={!isAddressEqual(formatAddress(filter), hexAddress)}
+          contractCreated={row.contractCreated}
+          showVerificationName={showVerificationName}
+        />
+      </ValueHighlight>
+      {withArrow && <ImgWrap src={fromTypeInfo[getFromType(hexAddress)].src} />}
+    </>
+  );
+};
+
+const ImgWrap = styled.img`
+  position: absolute;
+  width: 36px;
+  height: 20px;
+  right: -0.8571rem;
+  top: 0.1429rem;
+
+  ${media.s} {
+    right: -0.98rem;
+  }
 `;

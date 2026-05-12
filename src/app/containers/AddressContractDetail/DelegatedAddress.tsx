@@ -18,7 +18,8 @@ export const DelegatedAddress: React.FC = () => {
       <span>{t(translations.authList.delegateTo)}</span>
       <EVMAddressContainer
         value={delegatedAddress}
-        alias={delegatedTokenInfo?.name || delegatedContractInfo?.name}
+        tokenName={delegatedTokenInfo?.name}
+        contractName={delegatedContractInfo?.name}
         verify={delegatedContractInfo?.verify?.exactMatch}
         isContract={!!delegatedContractInfo}
       />

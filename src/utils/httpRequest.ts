@@ -89,14 +89,6 @@ export const reqContractAndToken = fetchWithCache(
   },
 );
 
-export const reqTransferList = (param?: object, extra?: object) => {
-  return sendRequest({
-    url: `/transfer`,
-    query: param,
-    ...extra,
-  });
-};
-
 export const reqTokenList = (param?: object, extra?: object) => {
   return sendRequest({
     url: `/token`,
@@ -131,16 +123,6 @@ export const reqTopStatistics = (param: any, extra?: object) => {
         span: param.span.slice(0, -1),
         type: param.span.slice(-1),
         action: param.action,
-        rows: 10,
-      },
-      ...extra,
-    });
-  } else if (['topMiner'].includes(param.action)) {
-    return sendRequest({
-      url: `${statPrefix}/miner/top-by-type`,
-      query: {
-        span: param.span.slice(0, -1),
-        type: param.span.slice(-1),
         rows: 10,
       },
       ...extra,

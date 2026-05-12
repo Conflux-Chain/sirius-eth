@@ -2,6 +2,7 @@ import React from 'react';
 import { authorizationsColumns } from 'utils/tableColumns';
 import { useAge } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAge';
 import { TablePanel } from 'app/components/TablePanelNew';
+import { formatListResponseWithNameMap } from '@cfxjs/sirius-next-common/dist/utils/hooks/useEnhanceDataWithNameMap';
 
 export const Authorizations = ({ address }: { address: string }) => {
   const [ageFormat, toggleAgeFormat] = useAge();
@@ -18,5 +19,12 @@ export const Authorizations = ({ address }: { address: string }) => {
     authorizationsColumns.age(ageFormat, toggleAgeFormat),
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
-  return <TablePanel url={url} columns={columns} rowKey="id"></TablePanel>;
+  return (
+    <TablePanel
+      url={url}
+      columns={columns}
+      rowKey="id"
+      formatResponse={formatListResponseWithNameMap}
+    ></TablePanel>
+  );
 };
