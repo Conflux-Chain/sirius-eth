@@ -4,128 +4,35 @@ import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
-import queryString from 'query-string';
 import { ICON_DEFAULT_TOKEN } from 'utils/constants';
 import {
   formatBalance,
   formatNumber,
   formatString,
-  checkIfContractByInfo,
   isZeroAddress,
-  getNametagInfo,
 } from 'utils';
 import imgInfo from 'images/info.svg';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
-import { ProxyContractAddress } from '@cfxjs/sirius-next-common/dist/components/ProxyContractAddress';
 import { formatAddress } from 'utils';
-import { ColumnAge, ContentWrapper, fromTypeInfo, getFromType } from './utils';
+import {
+  ColumnAge,
+  ContentWrapper,
+  fromTypeInfo,
+  getFromType,
+  renderAddress,
+} from './utils';
 import BigNumber from 'bignumber.js';
 import { CFX_TOKEN_TYPES } from '../constants';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { TxnHashRenderComponent } from './transaction';
 import { NFTPreview } from 'app/components/NFTPreview/Loadable';
-import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { useTranslation } from 'react-i18next';
 import { monospaceFont } from 'styles/variable';
 import { InfoIconWithTooltip } from '@cfxjs/sirius-next-common/dist/components/InfoIconWithTooltip';
 import { Tag } from '@cfxjs/antd';
 import { Price } from '@cfxjs/sirius-next-common/dist/components/Price';
-import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
-import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 import { PhishingAddressContainer } from '@cfxjs/sirius-next-common/dist/components/PhishingAddressContainer';
-
-const reg = /address\/(.*)$/;
-
-export const renderAddress = (
-  value,
-  row,
-  type?: 'to' | 'from',
-  withArrow = true,
-) => {
-  let address = '';
-
-  try {
-    // fixed for multiple request in /address/:hash page
-    let r = reg.exec(window.location.pathname);
-    if (r) {
-      address = r[1];
-    }
-  } catch (e) {}
-
-  const { accountAddress = address } = queryString.parse(
-    window.location.search,
-  );
-  const filter = (accountAddress as string) || '';
-  let alias = '';
-
-  if (type === 'from') {
-    if (row.fromTokenInfo && row.fromTokenInfo.name)
-      alias = row.fromTokenInfo.name;
-    else if (row.fromContractInfo && row.fromContractInfo.name)
-      alias = row.fromContractInfo.name;
-  } else if (type === 'to') {
-    if (row.toTokenInfo && row.toTokenInfo.name) alias = row.toTokenInfo.name;
-    else if (row.toContractInfo && row.toContractInfo.name)
-      alias = row.toContractInfo.name;
-    else if (row.tokenInfo && row.tokenInfo.name) alias = row.tokenInfo.name;
-    else if (row.contractInfo && row.contractInfo.name)
-      alias = row.contractInfo.name;
-  }
-
-  let verify = false;
-  const isContract = checkIfContractByInfo(value, row);
-
-  try {
-    // default verify info
-    let info = {
-      verify: {
-        result: 0,
-      },
-    };
-    let verification: { name?: string } | null = null;
-    if (type === 'to') {
-      info = row.toContractInfo;
-      verification = row.toVerification;
-    } else if (type === 'from') {
-      info = row.fromContractInfo;
-      verification = row.fromVerification;
-    }
-    verify = verification ? !!verification.name : info.verify.result !== 0;
-  } catch (e) {}
-
-  if (type === 'to' && row.proxy) {
-    return (
-      <ValueHighlight scope="address" value={value}>
-        <ProxyContractAddress
-          value={value}
-          alias={alias}
-          verify={verify}
-          proxy={row.proxy}
-          nametagInfo={getNametagInfo(row)}
-        />
-      </ValueHighlight>
-    );
-  }
-
-  return (
-    <>
-      <ValueHighlight scope="address" value={value}>
-        <EVMAddressContainer
-          value={value}
-          alias={alias}
-          link={!isAddressEqual(formatAddress(filter), formatAddress(value))}
-          contractCreated={row.contractCreated}
-          verify={verify}
-          isContract={isContract}
-          nametagInfo={getNametagInfo(row)}
-        />
-      </ValueHighlight>
-      {type === 'from' && withArrow && (
-        <ImgWrap src={fromTypeInfo[getFromType(value)].src} />
-      )}
-    </>
-  );
-};
+import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
 
 export const token = {
   width: 1,
@@ -134,8 +41,6 @@ export const token = {
   ),
   key: 'blockIndex',
   render: row => {
-    const isContract = checkIfContractByInfo(row?.address, row);
-
     return (
       <StyledIconWrapper>
         <img src={row?.iconUrl || ICON_DEFAULT_TOKEN} alt="token icon" />
@@ -162,10 +67,10 @@ export const token = {
                 ) : (
                   <EVMAddressContainer
                     value={row?.address}
-                    alias={row?.contractName || null}
+                    alias={row?.alias}
                     showIcon={false}
-                    isContract={isContract}
-                    nametagInfo={getNametagInfo(row)}
+                    isContract={row?.isContract}
+                    nametagInfo={row?.nametagInfo}
                   />
                 )}
               </Text>
@@ -179,50 +84,50 @@ export const token = {
 
 export const Token2 = ({ row }) => {
   const { t } = useTranslation();
-  const isContract = checkIfContractByInfo(
-    row?.transferTokenInfo?.address,
-    row,
-  );
+  const address = row?.address;
+  const { isContract, tokenIconUrl, tokenName, tokenSymbol, nametag, verify } =
+    getAddressNameInfo(address, row.nameMap) || {};
+  const nametagInfo = nametag
+    ? {
+        [address]: {
+          address: address,
+          nametag: nametag,
+        },
+      }
+    : undefined;
 
   return (
     <StyledIconWrapper>
-      {row?.transferTokenInfo && row?.transferTokenInfo?.address // show -- if transferTokenInfo is empty
+      {address
         ? [
             <img
               key="img"
-              src={row?.transferTokenInfo?.iconUrl || ICON_DEFAULT_TOKEN}
+              src={tokenIconUrl || ICON_DEFAULT_TOKEN}
               alt="token icon"
             />,
-            row?.transferTokenInfo?.name && row?.transferTokenInfo?.symbol ? (
-              <Link
-                key="link"
-                href={`/token/${row?.transferTokenInfo?.address}`}
-              >
-                {
-                  <Text
-                    tag="span"
-                    hoverValue={
-                      row?.transferTokenInfo?.name
-                        ? `${row?.transferTokenInfo?.name} (${row?.transferTokenInfo?.symbol})`
-                        : formatAddress(row?.transferTokenInfo?.address)
-                    }
-                    maxWidth="180px"
-                  >
-                    {formatString(
-                      `${row?.transferTokenInfo?.name} (${row?.transferTokenInfo?.symbol})`,
-                      36,
-                    )}
-                  </Text>
-                }
+            tokenName && tokenSymbol ? (
+              <Link key="link" href={`/token/${address}`}>
+                <Text
+                  tag="span"
+                  hoverValue={
+                    tokenName
+                      ? `${tokenName} (${tokenSymbol})`
+                      : formatAddress(address)
+                  }
+                  maxWidth="180px"
+                >
+                  {formatString(`${tokenName} (${tokenSymbol})`, 36)}
+                </Text>
               </Link>
             ) : (
               <StyledToken2NotAvailableWrapper>
                 <EVMAddressContainer
-                  value={row?.transferTokenInfo?.address}
+                  value={address}
                   alias={t(translations.general.notAvailable)}
                   showIcon={false}
                   isContract={isContract}
-                  nametagInfo={getNametagInfo(row)}
+                  verify={verify}
+                  nametagInfo={nametagInfo}
                 />
                 &nbsp;
                 <InfoIconWithTooltip
@@ -447,10 +352,10 @@ export const quantity = {
   ),
   dataIndex: 'value',
   key: 'value',
-  render: (value, row, index, opt?) => {
-    const decimals = opt
-      ? opt.decimals
-      : row.transferTokenInfo?.decimals || row.transferTokenInfo?.decimal || 0;
+  render: (value, row) => {
+    const { tokenDecimals } =
+      getAddressNameInfo(row?.address, row.nameMap) || {};
+    const decimals = tokenDecimals || 0;
     return value ? (
       <Text
         tag="span"
@@ -479,7 +384,7 @@ export const to = {
         phishingData={row.toPhishingData}
         address={value}
       >
-        <FromWrap>{renderAddress(value, row, 'to', false)}</FromWrap>
+        <FromWrap>{renderAddress(value, row)}</FromWrap>
       </PhishingAddressContainer>
     );
   },
@@ -498,7 +403,11 @@ export const from = {
         phishingData={row.fromPhishingData}
         address={value}
       >
-        <FromWrap>{renderAddress(value, row, 'from', withArrow)}</FromWrap>
+        <FromWrap>
+          {renderAddress(value, row, {
+            withArrow,
+          })}
+        </FromWrap>
       </PhishingAddressContainer>
     );
   },
@@ -526,7 +435,16 @@ export const account = (token: string) => ({
   dataIndex: 'account',
   key: 'account',
   render: (value, row) => {
-    const isContract = checkIfContractByInfo(value.address, row);
+    const { alias, verify, isContract, nametag } =
+      getAddressNameInfo(value.address, row.nameMap) || {};
+    const nametagInfo = nametag
+      ? {
+          [value.address]: {
+            address: value.address,
+            nametag: nametag,
+          },
+        }
+      : undefined;
 
     return (
       <AccountWrapper>
@@ -536,13 +454,11 @@ export const account = (token: string) => ({
         >
           <EVMAddressContainer
             value={value.address}
-            alias={
-              value.name ||
-              (row.tokenInfo && row.tokenInfo.name ? row.tokenInfo.name : null)
-            }
+            alias={alias}
             isFull={true}
             isContract={isContract}
-            nametagInfo={getNametagInfo(row)}
+            nametagInfo={nametagInfo}
+            verify={verify}
             link={false}
           />
         </Link>
@@ -675,7 +591,7 @@ export const percentage = total => ({
   },
 });
 
-export const tokenId = (contractAddress?: string) => ({
+export const tokenId = {
   width: 1,
   title: (
     <Translation>
@@ -691,15 +607,12 @@ export const tokenId = (contractAddress?: string) => ({
           <SpanWrap>{value || '-'}</SpanWrap>
         </Text>
         {!isZeroAddress(formatAddress(row.to)) && (
-          <NFTPreview
-            contractAddress={contractAddress || row?.transferTokenInfo?.address}
-            tokenId={value}
-          />
+          <NFTPreview contractAddress={row?.address} tokenId={value} />
         )}
       </>
     );
   },
-});
+};
 
 export const details = {
   width: 1,
@@ -712,9 +625,7 @@ export const details = {
   key: 'tokenId',
   render: (value, row) => {
     return (
-      <Link
-        href={`/nft/${formatAddress(row.transferTokenInfo?.address)}/${value}`}
-      >
+      <Link href={`/nft/${formatAddress(row.address)}/${value}`}>
         <Tag color="default">
           <Translation>
             {t => t(translations.general.table.token.view)}
@@ -798,21 +709,30 @@ export const NFTOwner = {
   ),
   dataIndex: 'owner',
   key: 'owner',
-  render: (value, row) => (
-    <AccountWrapper>
-      <EVMAddressContainer
-        value={value}
-        alias={
-          value.name ||
-          (row.ownerTokenInfo && row.ownerTokenInfo.name
-            ? row.ownerTokenInfo.name
-            : null)
+  render: (value, row) => {
+    const { alias, verify, isContract, nametag } =
+      getAddressNameInfo(value, row.nameMap) || {};
+    const nametagInfo = nametag
+      ? {
+          [value]: {
+            address: value,
+            nametag: nametag,
+          },
         }
-        isFull={true}
-        nametagInfo={getNametagInfo(row)}
-      />
-    </AccountWrapper>
-  ),
+      : undefined;
+    return (
+      <AccountWrapper>
+        <EVMAddressContainer
+          value={value}
+          alias={alias}
+          isFull={true}
+          nametagInfo={nametagInfo}
+          isContract={isContract}
+          verify={verify}
+        />
+      </AccountWrapper>
+    );
+  },
 };
 
 export const NFTQuantity = {
@@ -843,18 +763,6 @@ export const StyledIconWrapper = styled.div`
 
 const FromWrap = styled.div`
   position: relative;
-`;
-
-const ImgWrap = styled.img`
-  position: absolute;
-  width: 36px;
-  height: 20px;
-  right: -0.8571rem;
-  top: 0.1429rem;
-
-  ${media.s} {
-    right: -0.98rem;
-  }
 `;
 
 const SpanWrap = styled.span`
@@ -888,9 +796,5 @@ export const LinkA = styled.a`
 export const AccountWrapper = styled.div`
   .link-wrapper .sirius-text > div {
     cursor: pointer;
-  }
-  img {
-    margin-bottom: 6px;
-    margin-right: 2px;
   }
 `;

@@ -20,6 +20,7 @@ import imgIn from 'images/token/in.svg';
 import imgArrow from 'images/token/arrow.svg';
 import { AddressNameMap } from '@cfxjs/sirius-next-common/dist/utils/request.types';
 import { ProxyType } from '@cfxjs/sirius-next-common/dist/utils/hooks/useTxTrace';
+import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
 
 export interface ContentWrapperProps {
   children: React.ReactNode;
@@ -238,7 +239,7 @@ export const fromTypeInfo = {
   },
 };
 
-export const renderAddressWithNameMap = (
+export const renderAddress = (
   value: string,
   row: {
     nameMap?: Record<string, AddressNameMap>;
@@ -249,8 +250,13 @@ export const renderAddressWithNameMap = (
     };
     contractCreated?: string;
   },
-  type?: 'to' | 'from',
-  withArrow = true,
+  {
+    withArrow = false,
+    withProxy = false,
+  }: {
+    withArrow?: boolean;
+    withProxy?: boolean;
+  } = {},
 ) => {
   let address = '';
 
@@ -265,40 +271,24 @@ export const renderAddressWithNameMap = (
   const { accountAddress = address } = queryString.parse(
     window.location.search,
   );
-  const valueInLowerCase = value?.toLowerCase();
+  const hexAddress = formatAddress(value);
   const filter = (accountAddress as string) || '';
-  let alias = '';
-  let verify = false;
-  let isContract = false;
-  let nametagInfo:
-    | {
-        [k: string]: {
-          address: string;
-          nametag: string;
-        };
+  const { alias, verify, isContract, nametag } =
+    getAddressNameInfo(hexAddress, row.nameMap) || {};
+  const nametagInfo = nametag
+    ? {
+        [hexAddress]: {
+          address: hexAddress,
+          nametag: nametag,
+        },
       }
-    | undefined = undefined;
+    : undefined;
 
-  if (row.nameMap && row.nameMap[valueInLowerCase]) {
-    const nameInfo = row.nameMap[valueInLowerCase];
-    alias = nameInfo.token?.name || nameInfo.contract?.name || '';
-    verify = !!nameInfo.verification?.name;
-    isContract = !!nameInfo.contract;
-    nametagInfo = nameInfo.nameTag?.nameTag
-      ? {
-          [valueInLowerCase]: {
-            address: value,
-            nametag: nameInfo.nameTag.nameTag,
-          },
-        }
-      : undefined;
-  }
-
-  if (type === 'to' && row.proxy) {
+  if (withProxy && row.proxy) {
     return (
-      <ValueHighlight scope="address" value={value}>
+      <ValueHighlight scope="address" value={hexAddress}>
         <ProxyContractAddress
-          address={value}
+          value={hexAddress}
           alias={alias}
           verify={verify}
           proxy={row.proxy}
@@ -309,20 +299,18 @@ export const renderAddressWithNameMap = (
 
   return (
     <>
-      <ValueHighlight scope="address" value={value}>
+      <ValueHighlight scope="address" value={hexAddress}>
         <EVMAddressContainer
-          value={value}
+          value={hexAddress}
           alias={alias}
-          link={!isAddressEqual(formatAddress(filter), formatAddress(value))}
+          link={!isAddressEqual(filter, hexAddress)}
           contractCreated={row.contractCreated}
           verify={verify}
           isContract={isContract}
           nametagInfo={nametagInfo}
         />
       </ValueHighlight>
-      {type === 'from' && withArrow && (
-        <ImgWrap src={fromTypeInfo[getFromType(value)].src} />
-      )}
+      {withArrow && <ImgWrap src={fromTypeInfo[getFromType(hexAddress)].src} />}
     </>
   );
 };

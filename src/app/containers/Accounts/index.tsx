@@ -10,11 +10,12 @@ import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import { Option } from 'styles/global-styles';
 import { usePortal } from 'utils/hooks/usePortal';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
-import { checkIfContractByInfo } from 'utils';
 import { monospaceFont } from 'styles/variable';
 import { AccountWrapper } from 'utils/tableColumns/token';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
+import { formatListResponseWithNameMap } from '@cfxjs/sirius-next-common/dist/utils/hooks/useEnhanceDataWithNameMap';
 
 const { ContentWrapper } = tableColumnsUtils;
 
@@ -29,20 +30,31 @@ export function Accounts() {
     accountColunms.rank,
     {
       ...accountColunms.address,
-      render: (value, row: any) => (
-        <AccountWrapper>
-          <EVMAddressContainer
-            value={value}
-            alias={
-              row.name ||
-              (row.tokenInfo && row.tokenInfo.name ? row.tokenInfo.name : null)
+      render: (value, row: any) => {
+        const { isContract, alias, nametag, verify } =
+          getAddressNameInfo(value, row.nameMap) || {};
+        const nametagInfo = nametag
+          ? {
+              [value]: {
+                address: value,
+                nametag: nametag,
+              },
             }
-            isFull={true}
-            isMe={account ? isAddressEqual(account, value) : false}
-            isContract={checkIfContractByInfo(value, row)}
-          />
-        </AccountWrapper>
-      ),
+          : undefined;
+        return (
+          <AccountWrapper>
+            <EVMAddressContainer
+              value={value}
+              alias={alias}
+              isFull={true}
+              isMe={account ? isAddressEqual(account, value) : false}
+              isContract={isContract}
+              nametagInfo={nametagInfo}
+              verify={verify}
+            />
+          </AccountWrapper>
+        );
+      },
     },
     {
       ...accountColunms.balance,
@@ -120,6 +132,7 @@ export function Accounts() {
           rowKey="hex"
           pagination={false}
           title={() => tableTitle}
+          formatResponse={formatListResponseWithNameMap}
         ></TablePanelNew>
       </StyledTableWrapper>
     </>

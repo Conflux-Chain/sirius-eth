@@ -1,14 +1,8 @@
 import React from 'react';
 import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import {
-  toThousands,
-  formatNumber,
-  checkIfContractByInfo,
-  getNametagInfo,
-} from '../../utils/';
+import { toThousands, formatNumber } from '../../utils/';
 import { ContentWrapper } from './utils';
-import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 
 export const rank = {
   title: (
@@ -24,17 +18,6 @@ export const address = {
   ),
   dataIndex: 'hex',
   key: 'hex',
-  render: (value, row: any) => {
-    const isContract = checkIfContractByInfo(value, row);
-    return (
-      <EVMAddressContainer
-        value={value}
-        alias={row.name}
-        isFull={isContract}
-        nametagInfo={getNametagInfo(row)}
-      />
-    );
-  },
 };
 
 export const balance = {

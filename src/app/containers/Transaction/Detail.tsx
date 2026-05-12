@@ -11,11 +11,12 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Age } from '@cfxjs/sirius-next-common/dist/components/Age';
-import { reqContract, reqTransactionEventlogs } from 'utils/httpRequest';
+import { reqTransactionEventlogs } from 'utils/httpRequest';
 import { formatTimeStamp, getPercent, toThousands, isZeroAddress } from 'utils';
 import { formatAddress } from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
+import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
 import clsx from 'clsx';
 import { Security } from 'app/components/Security/Loadable';
 import { GasFee, InputDataNew, Status } from 'app/components/TxnComponents';
@@ -25,7 +26,6 @@ import _ from 'lodash';
 import imgChevronDown from 'images/chevronDown.png';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { CreateTxNote } from '../Profile/CreateTxNote';
-import { useNametag } from 'utils/hooks/useNametag';
 
 import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
@@ -33,7 +33,6 @@ import {
   fromDripToCfx,
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
-import { isEvmContractAddress } from '@cfxjs/sirius-next-common/dist/utils/address';
 import BigNumber from 'bignumber.js';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import dayjs from 'dayjs';
@@ -41,7 +40,7 @@ import { StyledHighlight } from './EventLogs/StyledComponents';
 import { EOACodeIcon } from 'app/components/EOACodeIcon';
 import { CFXTransfers } from './CFXTransfers';
 import { TokenTransfers } from './TokenTransfers';
-import { getItemByKey, renderAddressWithNameMap } from './utils';
+import { renderAddress } from 'utils/tableColumns/utils';
 
 // Transaction Detail Page
 export const Detail = ({
@@ -52,9 +51,7 @@ export const Detail = ({
   const [visible, setVisible] = useState(false);
   const [globalData] = useGlobalData();
   const { t } = useTranslation();
-  const [isContract, setIsContract] = useState(false);
   const [eventlogs, setEventlogs] = useState<any>([]);
-  const [contractInfo, setContractInfo] = useState({});
   const [innerLoading, setInnerLoading] = useState(false);
   const { hash: routeHash } = useParams<{
     hash: string;
@@ -91,9 +88,11 @@ export const Detail = ({
     cfxTransfers,
     nameMap,
   } = transactionDetail;
-  const renderAddress = renderAddressWithNameMap(nameMap);
+  const toNameInfo = useMemo(() => getAddressNameInfo(to, nameMap), [
+    to,
+    nameMap,
+  ]);
   const [folded, setFolded] = useState(true);
-  const nametags = useNametag([from, to]);
   const effectiveAuth = isZeroAddress(_effectiveAuth?.address)
     ? null
     : _effectiveAuth;
@@ -106,84 +105,53 @@ export const Detail = ({
     !notEnoughCash || new BigNumber(gasCharged).isEqualTo(gas);
 
   useEffect(() => {
-    if (!to) return;
-    const fetchTxInfo = async toCheckAddress => {
+    if (!routeHash) return;
+    const fetchTxInfo = async () => {
       setInnerLoading(true);
+      let logs = [];
 
       try {
-        const proArr: Promise<any>[] = [];
-        const _isContract =
-          toCheckAddress !== null &&
-          (await isEvmContractAddress(toCheckAddress));
-        if (_isContract) {
-          setIsContract(true);
+        const proRes = await reqTransactionEventlogs({
+          transactionHash: routeHash,
+          aggregate: false,
+        });
 
-          const contractFields = [
-            'address',
-            'type',
-            'name',
-            'website',
-            'tokenName',
-            'tokenSymbol',
-            'token',
-            'tokenDecimal',
-            'abi',
-            'bytecode',
-            'iconUrl',
-            'sourceCode',
-            'typeCode',
-          ];
-
-          proArr.push(
-            reqContract({ address: toCheckAddress, fields: contractFields }),
-          );
-        }
-
-        proArr.push(
-          reqTransactionEventlogs({
-            transactionHash: routeHash,
-            aggregate: false,
-          }),
-        );
-
-        const proRes = await Promise.all(proArr);
-
-        if (_isContract) {
-          const contractResponse = proRes.shift();
-          setContractInfo(contractResponse);
-        }
-
-        const eventlogsResponse = proRes[0];
-
-        setEventlogs(eventlogsResponse.list);
+        logs = proRes.list || [];
       } catch (e) {
-        console.error('fetchTxInfo error: ', e);
+        console.error('fetch event logs error: ', e);
       } finally {
+        setEventlogs(logs);
         setInnerLoading(false);
       }
     };
-    fetchTxInfo(to);
-  }, [to, routeHash]);
+    fetchTxInfo();
+  }, [routeHash]);
 
   const addressContent = useCallback(
     (isFull = false, address) => {
       const addr = formatAddress(address);
+      const nameInfo = getAddressNameInfo(addr, nameMap);
       return (
         <span>
           <StyledHighlight scope="address" value={addr}>
-            <EVMAddressContainer value={addr} isFull={isFull} />
+            <EVMAddressContainer
+              value={addr}
+              isFull={isFull}
+              isContract={nameInfo?.isContract}
+              verify={nameInfo?.verify}
+            />
           </StyledHighlight>{' '}
-          {nametags[addr]?.nameTag ? `(${nametags[addr]?.nameTag})` : null}{' '}
+          {nameInfo?.nametag ? `(${nameInfo.nametag})` : null}{' '}
           <CopyButton copyText={addr} />
         </span>
       );
     },
-    [nametags],
+    [nameMap],
   );
 
   const generatedToAddress = () => {
     if (to) {
-      if (isContract) {
+      if (toNameInfo?.isContract) {
         return (
           <Description
             title={
@@ -194,23 +162,17 @@ export const Detail = ({
           >
             <SkeletonContainer shown={loading}>
               {t(translations.transaction.contract)}{' '}
-              {contractInfo && (
+              {toNameInfo && (
                 <>
-                  {contractInfo['token'] && contractInfo['token']['iconUrl'] ? (
+                  {toNameInfo.tokenIconUrl ? (
                     <img
                       className="logo"
-                      src={
-                        contractInfo['token'] &&
-                        contractInfo['token']['iconUrl']
-                      }
+                      src={toNameInfo.tokenIconUrl}
                       alt="icon"
                     />
                   ) : null}
                   <Link href={`/address/${formatAddress(to)}`}>
-                    {contractInfo['name'] ||
-                      (contractInfo['token'] && contractInfo['token']['name']
-                        ? `${contractInfo['token']['name']}`
-                        : '')}
+                    {toNameInfo.alias || ''}
                   </Link>{' '}
                 </>
               )}
@@ -315,23 +277,28 @@ export const Detail = ({
     for (let i = 0; i < batchCombinedTransferList.length; i++) {
       const transferItem: any = batchCombinedTransferList[i];
 
-      const tokenItem = getItemByKey('token', nameMap, transferItem.address);
+      const nameInfo = getAddressNameInfo(transferItem.address, nameMap);
 
+      if (nameInfo) {
+        transferListInfo.push({
+          token: {
+            ...nameInfo.originInfo.token,
+            address: transferItem.address,
+          },
+        });
+      }
+    }
+
+    if (toNameInfo) {
       transferListInfo.push({
-        token: tokenItem,
+        token: {
+          ...toNameInfo.originInfo.token,
+          address: to,
+        },
       });
     }
-
-    if (_.isObject(contractInfo) && !_.isEmpty(contractInfo)) {
-      let contractInfoCopy: any = contractInfo;
-      if (contractInfoCopy.token && contractInfoCopy.address) {
-        contractInfoCopy.token.address = contractInfoCopy.address;
-      }
-
-      transferListInfo.push(contractInfoCopy);
-    }
     return transferListInfo;
-  }, [contractInfo, nameMap, batchCombinedTransferList]);
+  }, [toNameInfo, nameMap, to, batchCombinedTransferList]);
 
   const handleFolded = () => setFolded(folded => !folded);
 
@@ -509,12 +476,10 @@ export const Detail = ({
           >
             <SkeletonContainer shown={outerLoading}>
               <RowWrapper>
-                {renderAddress(
-                  effectiveAuth.address,
-                  effectiveAuth,
-                  'to',
-                  false,
-                )}
+                {renderAddress(effectiveAuth.address, {
+                  ...effectiveAuth,
+                  nameMap,
+                })}
                 <CopyButton copyText={effectiveAuth.address} size={14} />
               </RowWrapper>
             </SkeletonContainer>

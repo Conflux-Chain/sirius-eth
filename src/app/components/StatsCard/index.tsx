@@ -3,12 +3,8 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
-import { reqTokenList, reqTopStatistics } from '../../../utils/httpRequest';
-import {
-  formatNumber,
-  toThousands,
-  checkIfContractByInfo,
-} from '../../../utils';
+import { reqTopStatistics } from '../../../utils/httpRequest';
+import { formatNumber, toThousands } from '../../../utils';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { token } from '../../../utils/tableColumns/token';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
@@ -25,6 +21,8 @@ import {
   fromDripToGdrip,
 } from '@cfxjs/sirius-next-common/dist/utils';
 import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
+import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
+import { enhanceDataWithNameMap } from '@cfxjs/sirius-next-common/dist/utils/hooks/useEnhanceDataWithNameMap';
 
 export enum StatsType {
   overviewTransactions = 'overviewTransactions',
@@ -39,7 +37,6 @@ export enum StatsType {
   topTokensByReceivers = 'topTokensByReceivers',
   topTokensByTxnCount = 'topTokensByTxnCount',
   topTokensByTxnAccountsCount = 'topTokensByTxnAccountsCount',
-  topMinersByBlocksMined = 'topMinersByBlocksMined',
   topGasSpenders = 'topGasSpenders',
   topAccountsByTxnCount = 'topAccountsByTxnCount',
 }
@@ -103,7 +100,6 @@ export const StatsCard = ({
 }: Partial<Props>) => {
   const { t } = useTranslation();
   const [data, setData] = useState<any>([]);
-  const [totalDifficulty, setTotalDifficulty] = useState<string>('');
   const [totalGas, setTotalGas] = useState<number>(Infinity);
   const [loading, setLoading] = useState(true);
   const [loadingTokenInfo, setLoadingTokenInfo] = useState(true);
@@ -250,17 +246,6 @@ export const StatsCard = ({
       action = 'rank_contract_by_number_of_participants';
       category = 'token';
       break;
-    case StatsType.topMinersByBlocksMined:
-      columns = [
-        t(translations.statistics.column.address),
-        t(translations.statistics.column.totalBlocksMined),
-        t(translations.statistics.column.totalRewards),
-        t(translations.statistics.column.totalTxnFees),
-        t(translations.statistics.column.hashRate),
-      ];
-      action = 'topMiner';
-      category = 'miner';
-      break;
     case StatsType.topGasSpenders:
       columns = [
         t(translations.statistics.column.address),
@@ -294,57 +279,11 @@ export const StatsCard = ({
       })
         .then((res = {}) => {
           if (Object.keys(res)) {
-            if (category === 'token') {
-              // inject token info
-              let tokenAddress;
-              let sourceList = res.list;
-
-              tokenAddress = sourceList.reduce((acc, item) => {
-                if (item.hex && !acc.includes(item.hex)) acc.push(item.hex);
-                return acc;
-              }, []);
-
-              if (tokenAddress.length > 0) {
-                reqTokenList({
-                  addressArray: tokenAddress,
-                  fields: 'iconUrl',
-                })
-                  .then(tokens => {
-                    if (tokens && tokens.list) {
-                      const listWithTokenInfo = sourceList.map(item => {
-                        if (tokenAddress.includes(item.hex)) {
-                          const tokenInfo = tokens.list.find(t =>
-                            isAddressEqual(t.address, item.hex),
-                          );
-                          if (tokenInfo)
-                            return { ...item, token: { ...tokenInfo } };
-                        }
-                        return item;
-                      });
-                      setData(listWithTokenInfo);
-                    } else {
-                      setData(sourceList);
-                    }
-                  })
-                  .catch(e => {
-                    console.error(e);
-                    setData(sourceList);
-                  })
-                  .finally(() => {
-                    setLoadingTokenInfo(false);
-                  });
-              }
-            } else {
-              setData(res.list);
-              setLoadingTokenInfo(false);
-              if (category === 'miner' && res.allDifficulty) {
-                // calc proportion of hashRate
-                setTotalDifficulty(res.allDifficulty + '');
-              }
-              if (category === 'network' && res.totalGas) {
-                // calc proportion of gas used
-                setTotalGas(+(res.totalGas || Infinity));
-              }
+            setData(enhanceDataWithNameMap(res.list, res.nameMap));
+            setLoadingTokenInfo(false);
+            if (category === 'network' && res.totalGas) {
+              // calc proportion of gas used
+              setTotalGas(+(res.totalGas || Infinity));
             }
           } else {
             console.error(res);
@@ -375,17 +314,6 @@ export const StatsCard = ({
           <>
             <th>{columns[0]}</th>
             <th className="text-right">{columns[1]}</th>
-          </>
-        );
-      case 'miner':
-        return (
-          <>
-            <th>{columns[0]}</th>
-            <th className="text-right">{columns[1]}</th>
-            <th className="text-right">{columns[2]}</th>
-            <th className="text-right">{columns[3]}</th>
-            <th className="text-right">{columns[4]}</th>
-            <th className="text-right">{columns[5]}</th>
           </>
         );
       case 'network':
@@ -423,27 +351,27 @@ export const StatsCard = ({
               );
               break;
           }
-          let verify = false;
-          if (d.contractInfo && d.contractInfo.verify) {
-            verify = d.contractInfo.verify.result !== 0;
-          }
-          const isContract = checkIfContractByInfo(d.hex, d);
+          const { alias, verify, isContract, nametag } =
+            getAddressNameInfo(d.hex, d.nameMap) || {};
+          const nametagInfo = nametag
+            ? {
+                [d.hex]: {
+                  address: d.hex,
+                  nametag: nametag,
+                },
+              }
+            : undefined;
           return (
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
                 <EVMAddressContainer
                   value={d.hex}
-                  alias={
-                    d.tokenInfo && d.tokenInfo.name
-                      ? d.tokenInfo.name
-                      : d.contractInfo && d.contractInfo.name
-                      ? d.contractInfo.name
-                      : null
-                  }
+                  alias={alias}
                   isMe={account ? isAddressEqual(account, d.hex) : false}
                   verify={verify}
                   isContract={isContract}
+                  nametagInfo={nametagInfo}
                 />
               </td>
               <td className="text-right">
@@ -457,14 +385,28 @@ export const StatsCard = ({
         });
       case 'token':
         return data.map((d, i) => {
-          const isContract = checkIfContractByInfo(d.hex, d);
+          const { isContract, originInfo, nametag, alias } =
+            getAddressNameInfo(d.hex, d.nameMap) || {};
+          const nametagInfo = nametag
+            ? {
+                [d.base32address]: {
+                  address: d.base32address,
+                  nametag: nametag,
+                },
+              }
+            : undefined;
 
           return (
             <tr key={i}>
               <td>{i + 1}</td>
               <td className="address">
-                {d.token ? (
-                  token.render(d.token)
+                {originInfo?.token ? (
+                  token.render({
+                    ...originInfo.token,
+                    alias,
+                    isContract,
+                    nametagInfo,
+                  })
                 ) : (
                   <EVMAddressContainer
                     value={d.hex}
@@ -477,77 +419,8 @@ export const StatsCard = ({
             </tr>
           );
         });
-      case 'miner':
-        return data.map((d, i) => {
-          const isContract = checkIfContractByInfo(d.hex, d);
-
-          return (
-            <tr key={i}>
-              <td>{i + 1}</td>
-              <td className="address">
-                <EVMAddressContainer
-                  value={d.hex}
-                  isMe={account ? isAddressEqual(account, d.hex) : false}
-                  isContract={isContract}
-                />
-              </td>
-              <td className="text-right">{intValue(d.blockCount)}</td>
-              <td className="text-right">
-                {cfxValue(d.totalReward, { showUnit: true })}
-              </td>
-              <td className="text-right">
-                {cfxValue(d.txFee, {
-                  keepDecimal: true,
-                  keepZero: true,
-                  showUnit: true,
-                })}
-              </td>
-              <td className="text-right">
-                <Text
-                  hoverValue={
-                    formatNumber(d.hashRate, {
-                      withUnit: false,
-                    }) + ' H/s'
-                  }
-                >
-                  {formatNumber(
-                    new BigNumber(d.hashRate)
-                      .dividedBy(new BigNumber(10).pow(9))
-                      .toFixed(3),
-                    {
-                      withUnit: false,
-                      keepZero: true,
-                    },
-                  )}
-                </Text>
-
-                <Text
-                  hoverValue={
-                    (d.difficultySum && totalDifficulty
-                      ? new BigNumber(d.difficultySum)
-                          .dividedBy(new BigNumber(totalDifficulty))
-                          .multipliedBy(100)
-                          .toFixed(8)
-                      : '-') + '%'
-                  }
-                >
-                  &nbsp;(
-                  {d.difficultySum && totalDifficulty
-                    ? new BigNumber(d.difficultySum)
-                        .dividedBy(new BigNumber(totalDifficulty))
-                        .multipliedBy(100)
-                        .toFixed(3)
-                    : '-'}
-                  %)
-                </Text>
-              </td>
-            </tr>
-          );
-        });
       case 'network':
         return data.map((d, i) => {
-          const isContract = checkIfContractByInfo(d.hex, d);
-
           return (
             <tr key={i}>
               <td>{i + 1}</td>
@@ -555,7 +428,6 @@ export const StatsCard = ({
                 <EVMAddressContainer
                   value={d.hex}
                   isMe={account ? isAddressEqual(account, d.hex) : false}
-                  isContract={isContract}
                 />
               </td>
               <td className="text-right">
@@ -594,7 +466,6 @@ export const StatsCard = ({
     data,
     action,
     account,
-    totalDifficulty,
     totalGas,
   ]);
 

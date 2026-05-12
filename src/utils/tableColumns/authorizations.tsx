@@ -2,7 +2,7 @@ import React from 'react';
 import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { ColumnAge, renderAddressWithNameMap } from './utils';
+import { ColumnAge, renderAddress } from './utils';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Tag } from '@cfxjs/antd';
@@ -64,7 +64,7 @@ export const authority = {
   key: 'author',
   width: 1,
   render: (value, row) => {
-    return renderAddressWithNameMap(value, row);
+    return renderAddress(value, row);
   },
 };
 
@@ -76,7 +76,7 @@ export const delegatedAddress = {
   key: 'address',
   width: 1,
   render: (value, row) => {
-    return renderAddressWithNameMap(value, row);
+    return renderAddress(value, row);
   },
 };
 
@@ -86,7 +86,7 @@ export const txSender = {
   key: 'txSender',
   width: 1,
   render: (value, row) => {
-    return renderAddressWithNameMap(value, row);
+    return renderAddress(value, row);
   },
 };
 

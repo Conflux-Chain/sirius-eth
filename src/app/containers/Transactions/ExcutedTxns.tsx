@@ -10,6 +10,7 @@ import { Title, Footer, TxnSwitcher } from './components';
 import { isAddress } from 'utils';
 import { isEvmUserAddress } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { formatListResponseWithPhishingInfo } from '@cfxjs/sirius-next-common/dist/components/PhishingAddressContainer';
+import { formatListResponseWithNameMap } from '@cfxjs/sirius-next-common/dist/utils/hooks/useEnhanceDataWithNameMap';
 
 interface Props {
   address: string;
@@ -128,7 +129,9 @@ export const ExcutedTxns = ({ address }: Props) => {
       rowKey="hash"
       footer={footer}
       title={title}
-      formatResponse={formatListResponseWithPhishingInfo}
+      formatResponse={res =>
+        formatListResponseWithNameMap(formatListResponseWithPhishingInfo(res))
+      }
     ></TablePanel>
   );
 };
