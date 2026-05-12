@@ -255,10 +255,10 @@ export const TablePanel = ({
   };
 
   const { data, loading, total: stateTotal, listLimit: stateListLimit } = state;
-  const listLimit = _listLimit || stateListLimit;
+  const listLimit = _listLimit ?? stateListLimit;
   const total =
     dataSource && Array.isArray(dataSource)
-      ? _total || dataSource.length
+      ? _total ?? dataSource.length
       : stateTotal;
 
   let _columns: any = columns;

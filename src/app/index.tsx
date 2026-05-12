@@ -479,11 +479,11 @@ export function App() {
                             path="/cfx-transfers"
                             component={CFXTransfers}
                           />
-                          <Route
+                          {/* <Route
                             exact
                             path="/aa-txs"
                             component={CFXTransfers}
-                          />
+                          /> */}
                           <Route
                             exact
                             path="/eip7702-authorizations"
