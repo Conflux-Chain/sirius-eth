@@ -29,13 +29,25 @@ export const InternalTxns = ({ hash, from, to, nameMap }: Props) => {
 
   const fromContent = () => (
     <StyledAddressContainer>
-      {renderAddress(from, { nameMap })}{' '}
+      {renderAddress(
+        from,
+        { nameMap },
+        {
+          showVerificationName: true,
+        },
+      )}{' '}
       <CopyButton copyText={formatAddress(from)} />
     </StyledAddressContainer>
   );
   const toContent = () => (
     <StyledAddressContainer>
-      {renderAddress(to, { nameMap })}{' '}
+      {renderAddress(
+        to,
+        { nameMap },
+        {
+          showVerificationName: true,
+        },
+      )}{' '}
       <CopyButton copyText={formatAddress(to)} />
     </StyledAddressContainer>
   );
