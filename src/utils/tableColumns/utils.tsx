@@ -294,7 +294,7 @@ export const renderAddress = (
         <EVMAddressContainer
           value={hexAddress}
           nameMap={row.nameMap}
-          link={!isAddressEqual(filter, hexAddress)}
+          link={!isAddressEqual(formatAddress(filter), hexAddress)}
           contractCreated={row.contractCreated}
           showVerificationName={showVerificationName}
         />

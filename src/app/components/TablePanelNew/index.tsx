@@ -258,7 +258,7 @@ export const TablePanel = ({
   const listLimit = _listLimit || stateListLimit;
   const total =
     dataSource && Array.isArray(dataSource)
-      ? _total || dataSource.length
+      ? _total ?? dataSource.length
       : stateTotal;
 
   let _columns: any = columns;
