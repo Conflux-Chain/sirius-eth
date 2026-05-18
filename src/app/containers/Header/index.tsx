@@ -296,32 +296,32 @@ export const Header = memo(() => {
               afterClick: menuClick,
               href: '/cfx-transfers',
             },
-            // {
-            //   // AA Transactions
-            //   title: [
-            //     <BetaTitleWrapper key="title">
-            //       {t(translations.header.aaTransactions)}
-            //       <span className="beta">beta</span>
-            //     </BetaTitleWrapper>,
-            //     <Check size={18} key="check" />,
-            //   ],
-            //   name: ScanEvent.menu.action.aaTransactions,
-            //   afterClick: menuClick,
-            //   href: '/aa-txs',
-            // },
-            // {
-            //   // EIP-7702 Authorizations
-            //   title: [
-            //     <BetaTitleWrapper key="title">
-            //       {t(translations.header.eip7702Authorizations)}
-            //       <span className="beta">beta</span>
-            //     </BetaTitleWrapper>,
-            //     <Check size={18} key="check" />,
-            //   ],
-            //   name: ScanEvent.menu.action.eip7702Authorizations,
-            //   afterClick: menuClick,
-            //   href: '/eip7702-authorizations',
-            // },
+            {
+              // AA Transactions
+              title: [
+                <BetaTitleWrapper key="title">
+                  {t(translations.header.aaTransactions)}
+                  <span className="beta">beta</span>
+                </BetaTitleWrapper>,
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.aaTransactions,
+              afterClick: menuClick,
+              href: '/aa-txs',
+            },
+            {
+              // EIP-7702 Authorizations
+              title: [
+                <BetaTitleWrapper key="title">
+                  {t(translations.header.eip7702Authorizations)}
+                  <span className="beta">beta</span>
+                </BetaTitleWrapper>,
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.eip7702Authorizations,
+              afterClick: menuClick,
+              href: '/eip7702-authorizations',
+            },
           ],
         },
         {

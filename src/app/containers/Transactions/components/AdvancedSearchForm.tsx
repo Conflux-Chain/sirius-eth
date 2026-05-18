@@ -35,6 +35,9 @@ export interface AdvancedSearchFormProps {
   transactionHash?: SearchFormItemsProps;
   button?: SearchFormItemsProps;
   rangePicker?: SearchFormItemsProps;
+  sender?: SearchFormItemsProps;
+  bundler?: SearchFormItemsProps;
+  entryPoint?: SearchFormItemsProps;
 }
 
 interface QueryProps {
@@ -129,6 +132,33 @@ const defaultProps = {
       xl: 8,
     },
   },
+  sender: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
+  bundler: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
+  entryPoint: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
   button: {
     col: {
       xs: 24,
@@ -197,6 +227,9 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
     nonce,
     transactionHash,
     rangePicker,
+    sender,
+    bundler,
+    entryPoint,
   } = props;
 
   const validators = useMemo(() => {
@@ -309,6 +342,9 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
       to,
       minTimestamp,
       maxTimestamp,
+      sender,
+      bundler,
+      entryPoint,
       ...others
     } = qs.parse(search);
 
@@ -385,6 +421,16 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
         query.minTimestamp = dates[0];
         query.maxTimestamp = dates[1];
       }
+    }
+
+    if (props.sender && values.sender) {
+      query.sender = values.sender;
+    }
+    if (props.bundler && values.bundler) {
+      query.bundler = values.bundler;
+    }
+    if (props.entryPoint && values.entryPoint) {
+      query.entryPoint = values.entryPoint;
     }
 
     const urlWithQuery = qs.stringifyUrl({
@@ -721,6 +767,63 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
               min="0"
               allowClear
             />
+          </Form.Item>
+        </Col>,
+      );
+    }
+
+    if (sender) {
+      const col =
+        typeof sender !== 'boolean' ? sender?.col : defaultProps.sender.col;
+
+      children.push(
+        <Col {...col} key="sender">
+          <Form.Item
+            name="sender"
+            label={t(translations.general.advancedSearch.label.sender)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+            key={Math.random()}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (bundler) {
+      const col =
+        typeof bundler !== 'boolean' ? bundler?.col : defaultProps.bundler.col;
+
+      children.push(
+        <Col {...col} key="bundler">
+          <Form.Item
+            name="bundler"
+            label={t(translations.general.advancedSearch.label.bundler)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+            key={Math.random()}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (entryPoint) {
+      const col =
+        typeof entryPoint !== 'boolean'
+          ? entryPoint?.col
+          : defaultProps.entryPoint.col;
+
+      children.push(
+        <Col {...col} key="entryPoint">
+          <Form.Item
+            name="entryPoint"
+            label={t(translations.general.advancedSearch.label.entryPoint)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+            key={Math.random()}
+          >
+            <Input placeholder="" allowClear />
           </Form.Item>
         </Col>,
       );

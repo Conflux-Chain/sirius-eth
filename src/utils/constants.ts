@@ -168,8 +168,10 @@ export const OPEN_API_URLS = Object.entries({
   // NFT
   NFTTokens: '/nft/tokens',
   NFTBalance: '/nft/balances',
-  // eip-7702
+  // eip-7702 & eip4337
   eip7702Authorizations: '/eip7702/auths',
+  aaTransactions: '/eip4337/aa-txs',
+  bundleTransactions: '/eip4337/bundle-txs',
 })
   .map(item => ({
     [item[0]]: `${
