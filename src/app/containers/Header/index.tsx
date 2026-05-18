@@ -296,19 +296,19 @@ export const Header = memo(() => {
               afterClick: menuClick,
               href: '/cfx-transfers',
             },
-            // {
-            //   // AA Transactions
-            //   title: [
-            //     <BetaTitleWrapper key="title">
-            //       {t(translations.header.aaTransactions)}
-            //       <span className="beta">beta</span>
-            //     </BetaTitleWrapper>,
-            //     <Check size={18} key="check" />,
-            //   ],
-            //   name: ScanEvent.menu.action.aaTransactions,
-            //   afterClick: menuClick,
-            //   href: '/aa-txs',
-            // },
+            {
+              // AA Transactions
+              title: [
+                <BetaTitleWrapper key="title">
+                  {t(translations.header.aaTransactions)}
+                  <span className="beta">beta</span>
+                </BetaTitleWrapper>,
+                <Check size={18} key="check" />,
+              ],
+              name: ScanEvent.menu.action.aaTransactions,
+              afterClick: menuClick,
+              href: '/aa-txs',
+            },
             {
               // EIP-7702 Authorizations
               title: [
