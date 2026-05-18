@@ -192,6 +192,7 @@ export const formatContractAndTokenInfoMap = m => {
     return Object.entries(m)
       .map(a => ({
         [formatAddress(a[0])]: a[1],
+        [a[0].toLowerCase()]: a[1],
         [a[0]]: a[1],
       }))
       .reduce((prev, curr) => Object.assign(prev, curr), {});
