@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { EventLogs } from './EventLogs/Loadable';
 import { AuthorizationList } from './AuthorizationList';
 import { TabLabel } from 'app/components/TabsTablePanel/Label';
-import { reqTransactionDetail } from 'utils/httpRequest';
+import { reqBundleTxDetail, reqTransactionDetail } from 'utils/httpRequest';
 import { useHistory, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
@@ -18,6 +18,20 @@ import { getTransactionByHash } from 'utils/rpcRequest';
 import { ReactComponent as JsonIcon } from 'images/json.svg';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { viewJson } from '@cfxjs/sirius-next-common/dist/utils';
+import useSWR from 'swr';
+import { AATxns } from './AATxns';
+import { TagWrapper } from './styled';
+
+const BundleTxIcon = () => {
+  const { t } = useTranslation();
+  return (
+    <TagWrapper>
+      <Tooltip title={t(translations.toolTip.tx.bundleTx)}>
+        {t(translations.transaction.bundleTx)}
+      </Tooltip>
+    </TagWrapper>
+  );
+};
 
 export function Transaction() {
   const { t } = useTranslation();
@@ -28,6 +42,20 @@ export function Transaction() {
   const [txnDetail, setTxnDetail] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const [partLoading, setPartLoading] = useState(false); // partial update indicator
+
+  const { data: userOps } = useSWR<any[]>(
+    hash ? ['bundle tx detail', hash] : null,
+    async () => {
+      try {
+        const res = await reqBundleTxDetail({ query: { txHash: hash } });
+        return res?.userOps;
+      } catch (error) {
+        console.log('get bundle tx detail error', error);
+        return [];
+      }
+    },
+  );
+  const isBundleTx = userOps && userOps.length > 0;
 
   // get txn detail info
   const fetchTxDetail = useCallback(
@@ -120,6 +148,16 @@ export function Transaction() {
       hidden: !eventLogCount,
     },
     {
+      value: 'aa-txs',
+      label: (
+        <TabLabel showTooltip={false}>
+          {t(translations.accountAbstraction.tabs.aaTransactions)}
+        </TabLabel>
+      ),
+      content: <AATxns list={userOps!} key={hash} />,
+      hidden: !isBundleTx,
+    },
+    {
       value: 'authorization-list',
       label: (
         <TabLabel showTooltip={false}>
@@ -155,6 +193,7 @@ export function Transaction() {
               <div>{t(translations.general.table.tooltip.crossSpaceCall)}</div>
             </div>
           )}
+          {isBundleTx && <BundleTxIcon />}
         </StyledHeader>
       </PageHeader>
       <div className="content-wrapper">
