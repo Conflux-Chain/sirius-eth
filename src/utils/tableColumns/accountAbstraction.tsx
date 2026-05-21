@@ -10,6 +10,7 @@ import NotApplicable from 'app/components/TxnComponents/NotApplicable';
 import {
   formatBalance,
   formatNumber,
+  toThousands,
 } from '@cfxjs/sirius-next-common/dist/utils';
 import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 import { ErrorDecode } from '@cfxjs/sirius-next-common/dist/components/OutputData/ErrorDecode';
@@ -189,6 +190,50 @@ export const blockHeight = {
   render: value => <Link href={`/block/${value}`}>{value}</Link>,
 };
 
+export const position = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.aaTransaction.position)}
+    </Translation>
+  ),
+  dataIndex: 'position',
+  key: 'position',
+  width: 1,
+};
+
+export const internalTxns = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.aaTransaction.internalTxns)}
+    </Translation>
+  ),
+  dataIndex: 'internalTxnCount',
+  key: 'internalTxnCount',
+  width: 1,
+};
+
+export const tokenTxns = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.aaTransaction.tokenTxns)}
+    </Translation>
+  ),
+  dataIndex: 'tokenTxnCount',
+  key: 'tokenTxnCount',
+  width: 1,
+};
+
+export const nftTxns = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.aaTransaction.nftTxns)}
+    </Translation>
+  ),
+  dataIndex: 'nftTxnCount',
+  key: 'nftTxnCount',
+  width: 1,
+};
+
 export const aaGasFee = {
   title: (
     <Translation>
@@ -205,6 +250,29 @@ export const aaGasFee = {
           precision: 6,
           minNum: 1e-6,
         })}
+      </Text>
+    ) : (
+      <NotApplicable />
+    ),
+};
+
+export const aaTxnFee = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.aaTransaction.transactionFee)}
+    </Translation>
+  ),
+  dataIndex: 'txnFee',
+  key: 'txnFee',
+  width: 1,
+  render: value =>
+    value ? (
+      <Text tag="span" hoverValue={`${formatBalance(value, 0, true)} CFX`}>
+        {formatNumber(value, {
+          precision: 6,
+          minNum: 1e-6,
+        })}{' '}
+        CFX
       </Text>
     ) : (
       <NotApplicable />
@@ -242,6 +310,23 @@ export const txnFee = {
     ) : (
       <NotApplicable />
     ),
+};
+
+export const gasLimit = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.block.gasLimit)}
+    </Translation>
+  ),
+  dataIndex: 'gasLimit',
+  key: 'gasLimit',
+  width: 1,
+  render: value => {
+    if (value && value !== '0') {
+      return toThousands(value);
+    }
+    return <NotApplicable />;
+  },
 };
 
 export const value = {

@@ -6,7 +6,7 @@ import { useAddressNameMap } from '@cfxjs/sirius-next-common/dist/utils/hooks/us
 import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
 
 export const ContractDetail = ({ address }: { address: string }) => {
-  const { data: nameMap } = useAddressNameMap([address.toLowerCase()]);
+  const { data: nameMap } = useAddressNameMap([address]);
   const nameInfo = getAddressNameInfo(address, nameMap);
   if (nameInfo) {
     const {
