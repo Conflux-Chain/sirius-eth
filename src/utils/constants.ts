@@ -172,6 +172,7 @@ export const OPEN_API_URLS = Object.entries({
   eip7702Authorizations: '/eip7702/auths',
   aaTransactions: '/eip4337/aa-txs',
   bundleTransactions: '/eip4337/bundle-txs',
+  aaTxDetail: '/eip4337/aa-tx',
   bundleTxDetail: '/eip4337/bundle-tx',
 })
   .map(item => ({
