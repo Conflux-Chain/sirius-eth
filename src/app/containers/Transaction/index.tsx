@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { TabsTablePanel } from 'app/components/TabsTablePanel/Loadable';
-import styled from 'styled-components';
 import { EventLogs } from './EventLogs/Loadable';
 import { AuthorizationList } from './AuthorizationList';
 import { TabLabel } from 'app/components/TabsTablePanel/Label';
@@ -20,20 +19,22 @@ import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { viewJson } from '@cfxjs/sirius-next-common/dist/utils';
 import useSWR from 'swr';
 import { AATxns } from './AATxns';
-import { TagWrapper } from './styled';
+import { StyledHeader, StyledPageWrapper, TagWrapper } from './styled';
+import { AATransaction } from './AccountAbstraction';
+import { useAATxDetail } from 'utils/hooks/useAATxDetail';
 
 const BundleTxIcon = () => {
   const { t } = useTranslation();
   return (
     <TagWrapper>
       <Tooltip title={t(translations.toolTip.tx.bundleTx)}>
-        {t(translations.transaction.bundleTx)}
+        {t(translations.transaction.bundleTx.title)}
       </Tooltip>
     </TagWrapper>
   );
 };
 
-export function Transaction() {
+function CommonTransaction() {
   const { t } = useTranslation();
   const { hash } = useParams<{
     hash: string;
@@ -210,50 +211,34 @@ export function Transaction() {
   );
 }
 
-const StyledPageWrapper = styled.div`
-  margin-bottom: 2.2857rem;
-  .content-wrapper {
-    position: relative;
-    .raw-tx-json-wrapper {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 3.2857rem;
-      display: flex;
-      align-items: center;
-      .raw-tx-json {
-        cursor: pointer;
-        background: #fefefe;
-        border: 1px solid #ebeced;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        border-radius: 16px;
-        color: #686c7e;
-        padding: 0 16px;
-      }
-    }
-  }
-`;
+export function Transaction() {
+  const { t } = useTranslation();
+  const { hash } = useParams<{
+    hash: string;
+  }>();
 
-const StyledHeader = styled.div`
-  display: flex;
-  align-items: center;
-  .overview-cross {
-    width: fit-content;
-    margin-left: 16px;
-    line-height: 32px;
-    display: flex;
-    align-items: center;
-    background: #fff;
-    font-weight: 400;
-    border-radius: 16px;
-    padding: 0px 12px;
-    gap: 8px;
-    font-size: 14px;
-    img {
-      width: 16px;
-      height: 16px;
-    }
+  const { data: aaTx, isLoading } = useAATxDetail(hash);
+
+  const isAATx = aaTx && aaTx.txHash;
+  if (isLoading) {
+    return (
+      <StyledPageWrapper>
+        <Helmet>
+          <title>{t(translations.transaction.title)}</title>
+          <meta
+            name="description"
+            content={t(translations.transaction.description)}
+          />
+        </Helmet>
+        <PageHeader>
+          <StyledHeader>{t(translations.transaction.title)}</StyledHeader>
+        </PageHeader>
+      </StyledPageWrapper>
+    );
   }
-`;
+  if (!isAATx) {
+    return <CommonTransaction />;
+  }
+
+  return <AATransaction />;
+}
