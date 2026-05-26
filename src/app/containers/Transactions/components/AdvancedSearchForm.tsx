@@ -783,7 +783,6 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
             label={t(translations.general.advancedSearch.label.sender)}
             normalize={value => value.trim()}
             rules={[{ validator: validators.isAddress }]}
-            key={Math.random()}
           >
             <Input placeholder="" allowClear />
           </Form.Item>
@@ -801,7 +800,6 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
             label={t(translations.general.advancedSearch.label.bundler)}
             normalize={value => value.trim()}
             rules={[{ validator: validators.isAddress }]}
-            key={Math.random()}
           >
             <Input placeholder="" allowClear />
           </Form.Item>
@@ -821,7 +819,6 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
             label={t(translations.general.advancedSearch.label.entryPoint)}
             normalize={value => value.trim()}
             rules={[{ validator: validators.isAddress }]}
-            key={Math.random()}
           >
             <Input placeholder="" allowClear />
           </Form.Item>

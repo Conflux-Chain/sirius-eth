@@ -18,13 +18,14 @@ interface Props {
   from: string;
   to: string;
   nameMap?: Record<string, AddressNameMap>;
+  isAATx?: boolean;
 }
 
-export const InternalTxns = ({ hash, from, to, nameMap }: Props) => {
+export const InternalTxns = ({ hash, from, to, nameMap, isAATx }: Props) => {
   const { t } = useTranslation();
   const [showProxyCall, setShowProxyCall] = useState(false);
   const [viewMode, setViewMode] = useState('tree');
-  const { data, isLoading } = useTxTrace(hash, 'evm');
+  const { data, isLoading } = useTxTrace(hash, 'evm', { isAATx });
   const { list = [], total = 0 } = data ?? {};
 
   const fromContent = () => (

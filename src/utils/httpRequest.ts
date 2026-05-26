@@ -363,6 +363,13 @@ export const reqBundleTxDetail = (extra?: object) => {
 
 /** open api, end */
 
+export const reqAATxDetail = (hash: string, extra?: object) => {
+  return sendRequest({
+    url: `/aa-tx/${hash}`,
+    ...extra,
+  });
+};
+
 export const reqPendingTxs = (extra?: object) => {
   return sendRequest({
     url: `/stat/transaction/pending`,

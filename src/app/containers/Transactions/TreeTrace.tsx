@@ -33,7 +33,7 @@ export const TreeTrace = ({
       setExpandedKeys: setTreeExpandedKeys,
     }),
     traceColumns.traceType({ withIndex: false }),
-    transactionColunms.method,
+    traceColumns.method,
     {
       ...tokenColunms.from,
       render: (value, row, index) =>
@@ -47,6 +47,7 @@ export const TreeTrace = ({
       render: (value, row) =>
         tokenColunms.to.render(value, row, undefined, {
           withProxy: true,
+          withSmartAccount: true,
           showVerificationName: true,
         }),
     },

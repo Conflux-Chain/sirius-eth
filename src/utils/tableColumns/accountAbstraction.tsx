@@ -1,5 +1,5 @@
 import React from 'react';
-import { Translation, useTranslation } from 'react-i18next';
+import { Translation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
@@ -13,23 +13,12 @@ import {
   toThousands,
 } from '@cfxjs/sirius-next-common/dist/utils';
 import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
-import { ErrorDecode } from '@cfxjs/sirius-next-common/dist/components/OutputData/ErrorDecode';
+import { AAFailedReason } from '@cfxjs/sirius-next-common/dist/components/AAFailedReason';
 import {
   Failed,
   Warning,
 } from '@cfxjs/sirius-next-common/dist/components/Icons';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-
-const AAFailedReason = ({ data }) => {
-  const { t } = useTranslation();
-  return (
-    <ErrorDecode
-      errorData={data}
-      space="evm"
-      fallback={t(translations.accountAbstraction.aaTxFailed)}
-    />
-  );
-};
 
 export const aaHash = {
   title: (
@@ -46,7 +35,17 @@ export const aaHash = {
         {row.success === false && (
           <Tooltip
             title={
-              row.failedReason && <AAFailedReason data={row.failedReason} />
+              row.failedReason && (
+                <AAFailedReason
+                  data={row.failedReason}
+                  to={row.senderHex}
+                  fallback={
+                    <Translation>
+                      {t => t(translations.accountAbstraction.aaTxFailed)}
+                    </Translation>
+                  }
+                />
+              )
             }
             className="tooltip-trigger"
           >
@@ -245,11 +244,12 @@ export const aaGasFee = {
   width: 1,
   render: value =>
     value ? (
-      <Text tag="span" hoverValue={`${value} CFX`}>
+      <Text tag="span" hoverValue={`${formatBalance(value, 0, true)} CFX`}>
         {formatNumber(value, {
           precision: 6,
           minNum: 1e-6,
-        })}
+        })}{' '}
+        CFX
       </Text>
     ) : (
       <NotApplicable />
@@ -305,21 +305,22 @@ export const txnFee = {
         {formatNumber(value, {
           precision: 6,
           minNum: 1e-6,
-        })}
+        })}{' '}
+        CFX
       </Text>
     ) : (
       <NotApplicable />
     ),
 };
 
-export const gasLimit = {
+export const gasUsed = {
   title: (
     <Translation>
-      {t => t(translations.general.table.block.gasLimit)}
+      {t => t(translations.general.table.aaTransaction.gasUsed)}
     </Translation>
   ),
-  dataIndex: 'gasLimit',
-  key: 'gasLimit',
+  dataIndex: 'actualGasUsed',
+  key: 'actualGasUsed',
   width: 1,
   render: value => {
     if (value && value !== '0') {
