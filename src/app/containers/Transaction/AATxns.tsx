@@ -23,7 +23,7 @@ export const AATxns = ({ list }: { list: any[] }) => {
     accountAbstractionColumns.tokenTxns,
     accountAbstractionColumns.nftTxns,
     accountAbstractionColumns.aaTxnFee,
-    accountAbstractionColumns.gasLimit,
+    accountAbstractionColumns.gasUsed,
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
   return (

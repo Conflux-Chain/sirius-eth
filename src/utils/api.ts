@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import useSWR, { responseInterface } from 'swr';
+import useSWR, { SWRResponse } from 'swr';
 import qs from 'query-string';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -8,7 +8,6 @@ import {
   fetchWithPrefix,
   simpleGetFetcher,
 } from '@cfxjs/sirius-next-common/dist/utils/request';
-// import { getCurrency } from 'utils/constants';
 
 interface Params {
   [name: string]: string | string[];
@@ -18,96 +17,7 @@ type useApi = (
   params?: Params | any[],
   shouldFetch?: boolean,
   ...rest: any[]
-) => responseInterface<any, any>;
-
-export const useDashboardDag: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/dashboard/dag', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-export const useDashboardEpoch: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/dashboard/epoch', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-export const useDashboardPlot: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/dashboard/plot', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-export const useDashboardTrend: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/dashboard/trend', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-export const useAddressQuery: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/address/query', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-export const useBlockList: useApi = (params, shouldFetch = true, ...rest) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/block/list', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-
-export const useContractList: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/contract/list', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
+) => SWRResponse<any, any>;
 
 export const useTokenQuery: useApi = (params, shouldFetch = true, ...rest) => {
   if (!Array.isArray(params)) params = [params];
@@ -116,29 +26,6 @@ export const useTokenQuery: useApi = (params, shouldFetch = true, ...rest) => {
     shouldFetch
       ? [`/stat/tokens/by-address?address=${params[0].address}:''`, ...params]
       : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-export const useUtilType: useApi = (params, shouldFetch = true, ...rest) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/util/type', ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-
-export const useCMAccountTokenList: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/contract-manager/account/token/list', ...params] : null,
     rest[1] || simpleGetFetcher,
     rest[0],
   );
@@ -152,19 +39,6 @@ export const useCMContractQuery: useApi = (
   params = useRef(params).current;
   return useSWR(
     shouldFetch ? [`/contract/${params[0].address}`, ...params] : null,
-    rest[1] || simpleGetFetcher,
-    rest[0],
-  );
-};
-export const useCMContractList: useApi = (
-  params,
-  shouldFetch = true,
-  ...rest
-) => {
-  if (!Array.isArray(params)) params = [params];
-  params = useRef(params).current;
-  return useSWR(
-    shouldFetch ? ['/contract-manager/contract/list', ...params] : null,
     rest[1] || simpleGetFetcher,
     rest[0],
   );
@@ -205,7 +79,7 @@ export const useAccountTokenList = (
           };
         }),
     {
-      initialData: {
+      fallbackData: {
         loading: true,
         total: 0,
         list: [],
@@ -252,7 +126,7 @@ export const useAccount = (
           };
         }),
     {
-      initialData: {
+      fallbackData: {
         address: accountAddress,
         balance: loadingText,
         stakingBalance: loadingText,
@@ -329,7 +203,7 @@ export const useContract = (
           };
         }),
     {
-      initialData: {
+      fallbackData: {
         epochNumber: 0,
         address: contractAddress,
         from: loadingText,
@@ -398,7 +272,7 @@ export const useToken = (
           };
         }),
     {
-      initialData: {
+      fallbackData: {
         address: contractAddress,
         name: loadingText,
         symbol: loadingText,
@@ -413,23 +287,5 @@ export const useToken = (
       ...opts,
       revalidateOnMount: true,
     },
-  );
-};
-
-export const fetchRecentDagBlock = async (opts = {}) => {
-  let data;
-  try {
-    data = await fetchWithPrefix('/dag');
-  } catch (error) {
-    data = { total: 0, list: [] };
-  }
-
-  return data;
-};
-
-export const useCfxBalance: useApi = (params = {}) => {
-  return useSWR(
-    Object.keys(params).length ? ['/stat/get-cfx-balance-at', params] : null,
-    simpleGetFetcher,
   );
 };
