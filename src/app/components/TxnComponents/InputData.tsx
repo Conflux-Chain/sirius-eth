@@ -18,16 +18,19 @@ interface Props {
   data: Hex;
   toHash: string;
   isContractCreated: boolean;
+  implementation?: string;
 }
 
 export const InputData = ({
   data: originalData,
   toHash,
   isContractCreated,
+  implementation,
 }: Props) => {
   const { t } = useTranslation();
   const [decodedData] = useDecodeFunctionData({
     to: toHash,
+    implementation,
     input: originalData,
     space: 'evm',
     supportMethodAbi: true,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { reqTransactionEventlogs, reqContract } from 'utils/httpRequest';
+import { reqContract } from 'utils/httpRequest';
 import { toThousands } from 'utils';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Empty } from '@cfxjs/sirius-next-common/dist/components/Empty';
@@ -20,12 +20,11 @@ import { Event } from 'app/components/TxnComponents/Event';
 import { disassembleEvent } from 'app/components/TxnComponents/util';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
+import { useTxEventLogs } from 'utils/hooks/useTxEventLogs';
 
 interface Props {
   hash: string;
-  address?: string;
-  abi?: Array<any>;
-  bytecode?: string;
+  isAATx?: boolean;
 }
 
 const EventLog = ({ log }) => {
@@ -210,35 +209,20 @@ const EventLog = ({ log }) => {
   );
 };
 
-export const EventLogs = ({ hash }: Props) => {
+export const EventLogs = ({ hash, isAATx }: Props) => {
   // [{
   //   topics: [],
   //   data: '',
   //   address: '',
   // }]
-  const [eventlogs, setEventlogs] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
+  const { data: eventlogs, isLoading } = useTxEventLogs(hash, isAATx);
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setLoading(true);
-    reqTransactionEventlogs({
-      transactionHash: hash,
-      aggregate: false,
-    })
-      .then(body => {
-        setEventlogs(body.list);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [hash]);
 
   return (
     <StyledEventLogsWrapper>
       <Card>
-        {loading ? null : <Empty show={!eventlogs.length} />}
-        {eventlogs.length ? (
+        {isLoading ? null : <Empty show={!eventlogs?.length} />}
+        {eventlogs?.length ? (
           <>
             <div className="eventlog-title-total">
               {t(translations.general.totalRecord, {

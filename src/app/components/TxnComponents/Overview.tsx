@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
@@ -7,12 +7,12 @@ import { Description } from '@cfxjs/sirius-next-common/dist/components/Descripti
 import { formatAddress } from 'utils';
 import { TransactionAction } from '@cfxjs/sirius-next-common/dist/components/TransactionAction/evmTransactionAction';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
-import { reqTransactionEventlogs } from 'utils/httpRequest';
 import { GasFee } from './GasFee';
 import { Nonce } from './Nonce';
 import { Status } from './Status';
 import iconCross from 'images/icon-crossSpace.svg';
 import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
+import { useTxEventLogs } from 'utils/hooks/useTxEventLogs';
 
 export const Overview = ({ data }) => {
   const { t } = useTranslation();
@@ -30,8 +30,7 @@ export const Overview = ({ data }) => {
     txExecErrorInfo,
     nameMap,
   } = data;
-  const [loading, setLoading] = useState(true);
-  const [eventlogs, setEventlogs] = useState<any>([]);
+  const { data: eventlogs, isLoading: logLoading } = useTxEventLogs(hash);
   const tokenTransferTokenInfoList = useMemo(() => {
     if (tokenTransferTokenInfo && typeof tokenTransferTokenInfo === 'object') {
       return Object.keys(tokenTransferTokenInfo).map(key => ({
@@ -56,34 +55,9 @@ export const Overview = ({ data }) => {
     ];
   }, [tokenTransferTokenInfoList, nameMap, to]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!hash) return;
-      let logs = [];
-      try {
-        setLoading(true);
-
-        const res = await reqTransactionEventlogs({
-          transactionHash: hash,
-          aggregate: false,
-        });
-
-        if (res && res.list && res.list.length > 0) {
-          logs = res.list;
-        }
-      } catch (error) {
-        console.error('fetch event logs error: ', error);
-      } finally {
-        setEventlogs(logs);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [hash]);
-
   const transactionAction = TransactionAction({
     transaction: data,
-    event: eventlogs,
+    event: eventlogs || [],
     customInfo: customInfoList,
   });
   const isCrossSpaceCall = gasPrice === '0';
@@ -119,7 +93,7 @@ export const Overview = ({ data }) => {
           size="tiny"
           title={t(translations.transaction.action.title)}
         >
-          <SkeletonContainer shown={loading}>
+          <SkeletonContainer shown={logLoading}>
             {transactionAction.content}
           </SkeletonContainer>
         </Description>
