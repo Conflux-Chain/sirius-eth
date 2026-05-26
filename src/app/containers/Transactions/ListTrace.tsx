@@ -29,7 +29,7 @@ export const ListTrace = ({
   const columnsWidth = [320, 150, 250, 280, 120, 150, 50];
   const columns = [
     traceColumns.traceType(),
-    transactionColunms.method,
+    traceColumns.method,
     {
       ...tokenColunms.from,
       render: (value, row) =>
@@ -43,6 +43,7 @@ export const ListTrace = ({
       render: (value, row) =>
         tokenColunms.to.render(value, row, undefined, {
           withProxy: true,
+          withSmartAccount: true,
           showVerificationName: true,
         }),
     },
@@ -84,7 +85,9 @@ export const ListTrace = ({
                     outcome={record.result?.outcome}
                     isContractCreated={!!record.contractCreated}
                     space="evm"
-                    proxy={record.proxy}
+                    implementation={
+                      record.delegatedTo ?? record.proxy?.implAddress
+                    }
                   />
                 )}
               </div>

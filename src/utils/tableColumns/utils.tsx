@@ -10,6 +10,7 @@ import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { ProxyContractAddress } from '@cfxjs/sirius-next-common/dist/components/ProxyContractAddress';
+import { SmartAccountAddress } from '@cfxjs/sirius-next-common/dist/components/SmartAccountAddress';
 import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 import queryString from 'query-string';
 import { isAddressEqual } from '@cfxjs/sirius-next-common/dist/utils/address';
@@ -248,14 +249,17 @@ export const renderAddress = (
       beaconAddress?: string;
     };
     contractCreated?: string;
+    delegatedTo?: string;
   },
   {
     withArrow = false,
     withProxy = false,
+    withSmartAccount = false,
     showVerificationName = false,
   }: {
     withArrow?: boolean;
     withProxy?: boolean;
+    withSmartAccount?: boolean;
     showVerificationName?: boolean;
   } = {},
 ) => {
@@ -282,6 +286,19 @@ export const renderAddress = (
           value={hexAddress}
           nameMap={row.nameMap}
           proxy={row.proxy}
+          showVerificationName={showVerificationName}
+        />
+      </ValueHighlight>
+    );
+  }
+
+  if (withSmartAccount && row.delegatedTo) {
+    return (
+      <ValueHighlight scope="address" value={hexAddress}>
+        <SmartAccountAddress
+          value={hexAddress}
+          nameMap={row.nameMap}
+          delegatedTo={row.delegatedTo}
           showVerificationName={showVerificationName}
         />
       </ValueHighlight>
