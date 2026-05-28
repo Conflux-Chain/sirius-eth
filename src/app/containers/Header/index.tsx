@@ -309,19 +309,19 @@ export const Header = memo(() => {
             //   afterClick: menuClick,
             //   href: '/aa-txs',
             // },
-            {
-              // EIP-7702 Authorizations
-              title: [
-                <BetaTitleWrapper key="title">
-                  {t(translations.header.eip7702Authorizations)}
-                  <span className="beta">beta</span>
-                </BetaTitleWrapper>,
-                <Check size={18} key="check" />,
-              ],
-              name: ScanEvent.menu.action.eip7702Authorizations,
-              afterClick: menuClick,
-              href: '/eip7702-authorizations',
-            },
+            // {
+            //   // EIP-7702 Authorizations
+            //   title: [
+            //     <BetaTitleWrapper key="title">
+            //       {t(translations.header.eip7702Authorizations)}
+            //       <span className="beta">beta</span>
+            //     </BetaTitleWrapper>,
+            //     <Check size={18} key="check" />,
+            //   ],
+            //   name: ScanEvent.menu.action.eip7702Authorizations,
+            //   afterClick: menuClick,
+            //   href: '/eip7702-authorizations',
+            // },
           ],
         },
         {
