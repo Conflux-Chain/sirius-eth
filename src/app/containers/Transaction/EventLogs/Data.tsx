@@ -159,11 +159,9 @@ const StyledSelectItemWrapper = styled.div`
 export const Data = ({
   data,
   hexData,
-  contractAndTokenInfo,
 }: {
   data: Array<DecodedParams>;
   hexData: string;
-  contractAndTokenInfo: any;
 }) => {
   const { t } = useTranslation();
   if (!data.length) {
@@ -185,12 +183,10 @@ export const Data = ({
           let value: React.ReactNode = <pre>{d.value}</pre>;
 
           if (d.type === 'address') {
-            const contractInfo = contractAndTokenInfo[d.value];
-
             value = (
               <>
                 <Link href={`/address/${d.value}`}>{d.value} </Link>
-                <ContractDetail info={contractInfo}></ContractDetail>
+                <ContractDetail address={d.value}></ContractDetail>
                 <AddressLabel address={d.value} />
               </>
             );

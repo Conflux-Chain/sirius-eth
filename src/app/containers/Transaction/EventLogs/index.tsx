@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  reqTransactionEventlogs,
-  reqContract,
-  reqContractAndToken,
-} from 'utils/httpRequest';
+import { reqTransactionEventlogs, reqContract } from 'utils/httpRequest';
 import { toThousands } from 'utils';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { Empty } from '@cfxjs/sirius-next-common/dist/components/Empty';
@@ -15,11 +11,7 @@ import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/Ske
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import BigNumber from 'bignumber.js';
-import {
-  isZeroAddress,
-  formatAddress,
-  formatContractAndTokenInfoMap,
-} from 'utils';
+import { isZeroAddress, formatAddress } from 'utils';
 
 import { Address } from './Address';
 import { Topics } from './Topics';
@@ -63,7 +55,6 @@ const EventLog = ({ log }) => {
     };
   });
   const [loading, setLoading] = useState(false);
-  const [contractAndTokenInfo, setContractAndTokenInfo] = useState({});
 
   useEffect(() => {
     const fields = [
@@ -79,9 +70,6 @@ const EventLog = ({ log }) => {
     // get contract info
     async function fn() {
       try {
-        let outerTopics: Array<{
-          hexAddress?: string;
-        }> = [];
         let abi = '';
         const body = await reqContract({
           address: log.address,
@@ -140,8 +128,6 @@ const EventLog = ({ log }) => {
             },
           );
 
-          outerTopics = args;
-
           setEventInfo({
             address: log.address,
             fnName: decodedLog.name,
@@ -150,26 +136,6 @@ const EventLog = ({ log }) => {
             data,
             signature: decodedLog.signature,
           });
-        }
-
-        let addressList = outerTopics
-          .map(t => t.hexAddress)
-          .filter(t => t)
-          .concat(formatAddress(log.address));
-        addressList = _.uniq(addressList);
-
-        if (addressList.length) {
-          reqContractAndToken({
-            address: addressList,
-          })
-            .then(data => {
-              if (data.total) {
-                setContractAndTokenInfo(
-                  formatContractAndTokenInfoMap(data.map),
-                );
-              }
-            })
-            .catch(() => {});
         }
       } catch (e) {
         console.log('eventlog process error: ', e);
@@ -206,10 +172,7 @@ const EventLog = ({ log }) => {
               size="small"
               noBorder
             >
-              <Address
-                address={formatAddress(address)}
-                contract={contractAndTokenInfo[address]}
-              ></Address>
+              <Address address={formatAddress(address)}></Address>
               <AddressLabel address={formatAddress(address)} />
             </Description>
             {fnName ? (
@@ -228,11 +191,7 @@ const EventLog = ({ log }) => {
               size="small"
               noBorder
             >
-              <Topics
-                data={topics}
-                signature={signature}
-                contractAndTokenInfo={contractAndTokenInfo}
-              />
+              <Topics data={topics} signature={signature} />
             </Description>
             {!!data.length && (
               <Description
@@ -241,11 +200,7 @@ const EventLog = ({ log }) => {
                 size="small"
                 noBorder
               >
-                <Data
-                  data={data}
-                  hexData={log.data}
-                  contractAndTokenInfo={contractAndTokenInfo}
-                />
+                <Data data={data} hexData={log.data} />
               </Description>
             )}
           </div>

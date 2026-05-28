@@ -10,7 +10,8 @@ import { Switch } from '@cfxjs/sirius-next-common/dist/components/Switch';
 import { TreeTrace } from './TreeTrace';
 import { ListTrace } from './ListTrace';
 import { useTxTrace } from '@cfxjs/sirius-next-common/dist/utils/hooks/useTxTrace';
-import { AddressNameMap, renderAddressWithNameMap } from '../Transaction/utils';
+import { renderAddress } from 'utils/tableColumns/utils';
+import { AddressNameMap } from '@cfxjs/sirius-next-common/dist/utils/request.types';
 
 interface Props {
   hash: string;
@@ -25,17 +26,28 @@ export const InternalTxns = ({ hash, from, to, nameMap }: Props) => {
   const [viewMode, setViewMode] = useState('tree');
   const { data, isLoading } = useTxTrace(hash, 'evm');
   const { list = [], total = 0 } = data ?? {};
-  const renderAddress = renderAddressWithNameMap(nameMap);
 
   const fromContent = () => (
     <StyledAddressContainer>
-      {renderAddress(from, { from }, 'from', false)}{' '}
+      {renderAddress(
+        from,
+        { nameMap },
+        {
+          showVerificationName: true,
+        },
+      )}{' '}
       <CopyButton copyText={formatAddress(from)} />
     </StyledAddressContainer>
   );
   const toContent = () => (
     <StyledAddressContainer>
-      {renderAddress(to, { to }, 'to', false)}{' '}
+      {renderAddress(
+        to,
+        { nameMap },
+        {
+          showVerificationName: true,
+        },
+      )}{' '}
       <CopyButton copyText={formatAddress(to)} />
     </StyledAddressContainer>
   );

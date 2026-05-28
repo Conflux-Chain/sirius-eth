@@ -11,7 +11,7 @@ import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { StyledHighlight } from './StyledComponents';
 
-export const Topics = ({ data, signature, contractAndTokenInfo }) => {
+export const Topics = ({ data, signature }) => {
   const { t } = useTranslation();
   const [selectMap, setSelectMap] = useState(() => {
     return data.reduce((prev, curr) => {
@@ -71,8 +71,6 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
           value = valueMap[name];
 
           if (name === 'decode' && d.type === 'address') {
-            const contractInfo = contractAndTokenInfo[valueMap.decode];
-
             value = (
               <>
                 <StyledHighlight scope="address" value={value}>
@@ -80,7 +78,7 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
                     {typeof value === 'string' ? convertCheckSum(value) : value}
                   </Link>
                 </StyledHighlight>
-                <ContractDetail info={contractInfo}></ContractDetail>
+                <ContractDetail address={valueMap.decode}></ContractDetail>
                 <AddressLabel address={value} />
               </>
             );
@@ -119,9 +117,6 @@ export const Topics = ({ data, signature, contractAndTokenInfo }) => {
   );
 };
 
-Topics.defaultProps = {
-  contractAndTokenInfo: {},
-};
 const TextSelect = styled(Select)`
   background-color: #fff;
   border: 1px solid #ccc;
