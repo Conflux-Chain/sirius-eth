@@ -23,5 +23,8 @@
   "jest.autoEnable": false,
   "jest.runAllTestsFirst": false,
   "px-to-rem.px-per-rem": 14,
-  "cSpell.words": ["antd"]
+  "cSpell.words": [
+    "antd",
+    "eventlogs"
+  ]
 }

@@ -75,20 +75,6 @@ export const reqContract = fetchWithCache(
   },
 );
 
-export const reqContractAndToken = fetchWithCache(
-  (param?: object, extra?: object) => {
-    return sendRequest({
-      url: `/contract-and-token`,
-      query: param,
-      ...extra,
-    });
-  },
-  {
-    key: 'contract-and-token',
-    maxAge: 1000 * 60 * 60,
-  },
-);
-
 export const reqTokenList = (param?: object, extra?: object) => {
   return sendRequest({
     url: `/token`,
@@ -368,7 +354,21 @@ export const reqApprovals = (extra?: object) => {
   });
 };
 
+export const reqBundleTxDetail = (extra?: object) => {
+  return sendRequest({
+    url: OPEN_API_URLS.bundleTxDetail,
+    ...extra,
+  });
+};
+
 /** open api, end */
+
+export const reqAATxDetail = (hash: string, extra?: object) => {
+  return sendRequest({
+    url: `/aa-tx/${hash}`,
+    ...extra,
+  });
+};
 
 export const reqPendingTxs = (extra?: object) => {
   return sendRequest({

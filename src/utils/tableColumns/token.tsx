@@ -377,7 +377,11 @@ export const to = {
     value,
     row,
     _,
-    { withProxy = false, showVerificationName = false } = {},
+    {
+      withProxy = false,
+      showVerificationName = false,
+      withSmartAccount = false,
+    } = {},
   ) => {
     return (
       <PhishingAddressContainer
@@ -385,7 +389,11 @@ export const to = {
         address={value}
       >
         <FromWrap>
-          {renderAddress(value, row, { withProxy, showVerificationName })}
+          {renderAddress(value, row, {
+            withProxy,
+            showVerificationName,
+            withSmartAccount,
+          })}
         </FromWrap>
       </PhishingAddressContainer>
     );
