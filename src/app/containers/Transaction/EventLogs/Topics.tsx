@@ -5,7 +5,7 @@ import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
+import { ContractDetail } from '@cfxjs/sirius-next-common/dist/components/InputData/ContractDetail';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
@@ -78,7 +78,7 @@ export const Topics = ({ data, signature }) => {
                     {typeof value === 'string' ? convertCheckSum(value) : value}
                   </Link>
                 </StyledHighlight>
-                <ContractDetail address={valueMap.decode}></ContractDetail>
+                <ContractDetail address={valueMap.decode} addressType="hex" />
                 <AddressLabel address={value} />
               </>
             );
