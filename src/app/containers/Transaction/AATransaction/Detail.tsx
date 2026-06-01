@@ -210,10 +210,7 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
               </Tooltip>
             }
           >
-            <RowWrapper>
-              {effectiveAuth && <EOACodeIcon />}
-              {addressContent(true, to)}
-            </RowWrapper>
+            <RowWrapper>{addressContent(true, to)}</RowWrapper>
           </Description>
         );
       }
@@ -463,9 +460,11 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
             </Tooltip>
           }
         >
-          <SkeletonContainer>{addressContent(true, from)}</SkeletonContainer>
+          <SkeletonContainer>
+            {effectiveAuth && <EOACodeIcon />}
+            {addressContent(true, from)}
+          </SkeletonContainer>
         </Description>
-        {generatedToAddress()}
         {effectiveAuth && (
           <Description
             title={
@@ -485,6 +484,7 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
             </SkeletonContainer>
           </Description>
         )}
+        {generatedToAddress()}
 
         <CFXTransfers transfers={cfxTransfers} nameMap={nameMap} />
         <TokenTransfers
