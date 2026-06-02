@@ -3,7 +3,7 @@ import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { accountAbstractionColumns } from 'utils/tableColumns';
 import { useEnhanceDataWithNameMap } from '@cfxjs/sirius-next-common/dist/utils/hooks/useEnhanceDataWithNameMap';
 
-const keys = ['senderHex', 'bundlerHex', 'entryPointHex'];
+const keys = ['from'];
 
 export const AATxns = ({ list }: { list: any[] }) => {
   const { data: enhancedData } = useEnhanceDataWithNameMap(list, {
