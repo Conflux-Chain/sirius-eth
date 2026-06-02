@@ -49,6 +49,7 @@ import { renderAddress } from 'utils/tableColumns/utils';
 import { InputData as InputDataBody } from '@cfxjs/sirius-next-common/dist/components/InputData';
 import { Status } from './Status';
 import { useTxEventLogs } from 'utils/hooks/useTxEventLogs';
+import iconInfo from 'images/info.svg';
 
 // AA Transaction Detail Page
 export const Detail = ({ data: transactionDetail, partLoading }) => {
@@ -178,9 +179,12 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
         return (
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+              <>
                 {t(translations.transaction.aaTx.entryPoint)}
-              </Tooltip>
+                <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
             }
           >
             {t(translations.transaction.contract)}{' '}
@@ -205,9 +209,12 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
         return (
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+              <>
                 {t(translations.transaction.aaTx.entryPoint)}
-              </Tooltip>
+                <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
             }
           >
             <RowWrapper>{addressContent(true, to)}</RowWrapper>
@@ -218,9 +225,12 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
       return (
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+            <>
               {t(translations.transaction.aaTx.entryPoint)}
-            </Tooltip>
+              <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+                <IconImg src={iconInfo} alt="warning-icon" />
+              </Tooltip>
+            </>
           }
         >
           {t(translations.transaction.contractCreation)}
@@ -324,18 +334,24 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
       <Card className="sirius-Transactions-card">
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.aaTransactionHash)}>
+            <>
               {t(translations.transaction.aaTx.aaHash)}
-            </Tooltip>
+              <Tooltip title={t(translations.toolTip.tx.aaTransactionHash)}>
+                <IconImg src={iconInfo} alt="warning-icon" />
+              </Tooltip>
+            </>
           }
         >
           {userOpHash} <CopyButton copyText={userOpHash} />
         </Description>
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.bundleTransactionHash)}>
+            <>
               {t(translations.transaction.aaTx.bundleHash)}
-            </Tooltip>
+              <Tooltip title={t(translations.toolTip.tx.bundleTransactionHash)}>
+                <IconImg src={iconInfo} alt="warning-icon" />
+              </Tooltip>
+            </>
           }
         >
           <Link href={`/tx/${txHash}`}>{txHash}</Link>{' '}
@@ -492,7 +508,13 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
           nameMap={nameMap}
         />
 
-        <Description title={t(translations.transaction.aaTx.transactionFee)}>
+        <Description
+          title={
+            <Tooltip title={t(translations.toolTip.tx.transactionFee)}>
+              {t(translations.transaction.aaTx.transactionFee)}
+            </Tooltip>
+          }
+        >
           <SkeletonContainer>
             {`${_.isNil(actualGasCost) ? '--' : `${actualGasCost} CFX`}`}
           </SkeletonContainer>
@@ -584,9 +606,12 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
           </Description>
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.bundler)}>
+              <>
                 {t(translations.transaction.aaTx.bundler)}
-              </Tooltip>
+                <Tooltip title={t(translations.toolTip.tx.bundler)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
             }
           >
             {addressContent(true, bundlerHex)}
@@ -594,9 +619,12 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
           {paymasterDecoded?.address && (
             <Description
               title={
-                <Tooltip title={t(translations.toolTip.tx.paymaster)}>
+                <>
                   {t(translations.transaction.aaTx.paymaster)}
-                </Tooltip>
+                  <Tooltip title={t(translations.toolTip.tx.paymaster)}>
+                    <IconImg src={iconInfo} alt="warning-icon" />
+                  </Tooltip>
+                </>
               }
             >
               {addressContent(true, paymasterDecoded.address)}
@@ -671,9 +699,12 @@ export const Detail = ({ data: transactionDetail, partLoading }) => {
           </Description>
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.signature)}>
+              <>
                 {t(translations.transaction.aaTx.signature)}
-              </Tooltip>
+                <Tooltip title={t(translations.toolTip.tx.signature)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
             }
           >
             <SkeletonContainer>
@@ -938,4 +969,11 @@ const RowWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+`;
+
+const IconImg = styled.img`
+  width: 1.2857rem;
+  margin-left: 0.3571rem;
+  padding-right: 0.2857rem;
+  margin-top: -0.2765rem;
 `;
