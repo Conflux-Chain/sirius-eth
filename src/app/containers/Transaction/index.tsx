@@ -48,7 +48,10 @@ function CommonTransaction() {
     hash ? ['bundle tx detail', hash] : null,
     async () => {
       try {
-        const res = await reqBundleTxDetail({ query: { txHash: hash } });
+        const res = await reqBundleTxDetail({
+          query: { txHash: hash },
+          showErrorMessage: false,
+        });
         return res?.userOps;
       } catch (error) {
         console.log('get bundle tx detail error', error);
