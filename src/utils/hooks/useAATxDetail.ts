@@ -9,7 +9,7 @@ export const useAATxDetail = (
     hash ? ['aa tx detail', hash] : null,
     async () => {
       try {
-        const res = await reqAATxDetail(hash);
+        const res = await reqAATxDetail(hash, { showErrorMessage: false });
         return res;
       } catch (error) {
         console.log('get aa tx detail error', error);
