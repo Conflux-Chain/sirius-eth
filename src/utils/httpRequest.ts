@@ -19,6 +19,7 @@ export const sendRequest = config => {
     method: config.type || 'GET',
     body: config.body,
     headers: config.headers,
+    showErrorMessage: config.showErrorMessage,
   });
 };
 
