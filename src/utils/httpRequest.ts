@@ -4,6 +4,7 @@ import { OPEN_API_URLS } from './constants';
 import { fetchNFTMetadata } from '@cfx-kit/dapp-utils/dist/metadata';
 import ENV_CONFIG from 'env';
 import { fetchWithCache } from '@cfxjs/sirius-next-common/dist/utils/cache';
+import { detectIPFSGateways } from '@cfxjs/sirius-next-common/dist/utils/ipfsGateway';
 
 export const v1Prefix = '/v1';
 export const statPrefix = '/stat';
@@ -261,7 +262,7 @@ export const _reqNFTDetail = (extra?: object) => {
     ...extra,
   });
 };
-export const reqNFTDetail = ({
+export const reqNFTDetail = async ({
   address,
   tokenId,
   formatServerError,
@@ -271,8 +272,8 @@ export const reqNFTDetail = ({
   tokenId?: string;
   formatServerError?: (error: unknown, metadata?: object | undefined) => any;
   contractType?: Parameters<typeof fetchNFTMetadata>[0]['contractType'];
-}) =>
-  fetchNFTMetadata({
+}) => {
+  return fetchNFTMetadata({
     fetchServer: () =>
       _reqNFTDetail({
         query: { contractAddress: address, tokenId },
@@ -283,8 +284,13 @@ export const reqNFTDetail = ({
     rpcServer: ENV_CONFIG.ENV_RPC_SERVER,
     method: 'cfx_call',
     contractType,
+    getIPFSGateway: async () => {
+      const ipfsGateway = await detectIPFSGateways();
+      return ipfsGateway.fastest;
+    },
     formatContractMetadata: metadata => ({ detail: { metadata } }),
   });
+};
 
 export const reqProjectConfig = (extra?: object) => {
   return sendRequest({
