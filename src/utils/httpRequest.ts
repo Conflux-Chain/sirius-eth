@@ -262,7 +262,7 @@ export const _reqNFTDetail = (extra?: object) => {
     ...extra,
   });
 };
-export const reqNFTDetail = async ({
+export const reqNFTDetail = ({
   address,
   tokenId,
   formatServerError,
@@ -272,8 +272,8 @@ export const reqNFTDetail = async ({
   tokenId?: string;
   formatServerError?: (error: unknown, metadata?: object | undefined) => any;
   contractType?: Parameters<typeof fetchNFTMetadata>[0]['contractType'];
-}) => {
-  return fetchNFTMetadata({
+}) =>
+  fetchNFTMetadata({
     fetchServer: () =>
       _reqNFTDetail({
         query: { contractAddress: address, tokenId },
@@ -290,7 +290,6 @@ export const reqNFTDetail = async ({
     },
     formatContractMetadata: metadata => ({ detail: { metadata } }),
   });
-};
 
 export const reqProjectConfig = (extra?: object) => {
   return sendRequest({
