@@ -73,12 +73,12 @@ export const Topics = ({ data, signature }) => {
           value = valueMap[name];
 
           if (name === 'decode' && d.type === 'address') {
+            const address =
+              typeof value === 'string' ? convertCheckSum(value) : value;
             value = (
               <>
-                <StyledHighlight scope="address" value={value}>
-                  <Link href={`/address/${value}`}>
-                    {typeof value === 'string' ? convertCheckSum(value) : value}
-                  </Link>
+                <StyledHighlight scope="address" value={address}>
+                  <Link href={`/address/${value}`}>{address}</Link>
                 </StyledHighlight>
                 <ContractDetail address={valueMap.decode} addressType="hex" />
                 <AddressLabel address={value} />
