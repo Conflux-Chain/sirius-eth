@@ -4,7 +4,7 @@ import { Bookmark } from '@zeit-ui/react-icons';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 
 export const AddressLabel = ({ address }) => {
   const [globalData] = useGlobalData();

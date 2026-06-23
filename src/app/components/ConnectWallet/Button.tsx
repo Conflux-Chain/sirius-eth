@@ -23,7 +23,7 @@ import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 import iconLoadingWhite from './assets/loading-white.svg';
 import { Balance } from './Balance';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 
 interface Button {
   className?: string;
