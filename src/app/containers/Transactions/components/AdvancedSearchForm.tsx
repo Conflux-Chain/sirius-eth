@@ -381,7 +381,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
       bundler,
       entryPoint,
       author,
-      delegatedAddress,
+      address,
       txSender,
       ...others
     } = qs.parse(search);
