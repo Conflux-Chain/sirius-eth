@@ -5,8 +5,8 @@ import { fetchNFTMetadata } from '@cfx-kit/dapp-utils/dist/metadata';
 import ENV_CONFIG from 'env';
 import { fetchWithCache } from '@cfxjs/sirius-next-common/dist/utils/cache';
 
-export const v1Prefix = '/v1';
-export const statPrefix = '/stat';
+const v1Prefix = '/v1';
+const statPrefix = '/stat';
 
 export const sendRequest = config => {
   const url =
@@ -19,23 +19,6 @@ export const sendRequest = config => {
     method: config.type || 'GET',
     body: config.body,
     headers: config.headers,
-  });
-};
-
-export const reqGasPrice = () => {
-  return sendRequest({
-    url: `${statPrefix}/gasprice/tracker`,
-  });
-};
-
-export const reqReport = (param?: object) => {
-  return sendRequest({
-    url: `${statPrefix}/recaptcha/siteverify`,
-    type: 'POST',
-    body: JSON.stringify(param),
-    headers: {
-      'Content-Type': 'application/json',
-    },
   });
 };
 
@@ -160,13 +143,6 @@ export const reqTopStatistics = (param: any, extra?: object) => {
   }
 };
 
-export const reqCfxSupply = (extra?: object) => {
-  return sendRequest({
-    url: `/supply`,
-    ...extra,
-  });
-};
-
 export const reqHomeDashboard = (extra?: object) => {
   return sendRequest({
     url: `/homeDashboard`,
@@ -233,13 +209,6 @@ export const reqContractCrossSpaceSimilarMatch = param => {
   });
 };
 
-export const reqTransactions = (extra?: object) => {
-  return sendRequest({
-    url: `/transaction`,
-    ...extra,
-  });
-};
-
 export const reqNFTInfo = fetchWithCache(
   (extra?: object) => {
     // ?contractAddress=cfx:acb3fcbj8jantg52jbg66pc21jgj2ud02pj1v4hkwn&tokenId=424873
@@ -299,13 +268,6 @@ export const reqTokensOfAccountTransfered = (extra?: object) => {
   });
 };
 
-export const reqTransferTPS = (extra?: object) => {
-  return sendRequest({
-    url: `/stat/transfer/tps`,
-    ...extra,
-  });
-};
-
 export const reqTransferPlot = (extra?: object) => {
   return sendRequest({
     url: `/plot?interval=133&limit=7`,
@@ -313,25 +275,7 @@ export const reqTransferPlot = (extra?: object) => {
   });
 };
 
-export const reqNFT1155Tokens = (extra?: object) => {
-  return sendRequest({
-    url: `/stat/nft/list1155inventory`,
-    ...extra,
-  });
-};
-
 /** open api, start */
-
-/** charts, start */
-
-export const reqChartData = ({ url, query }) => {
-  return sendRequest({
-    url,
-    query,
-  });
-};
-
-/** charts, end */
 
 export const reqNFTTokens = (extra?: object) => {
   return sendRequest({
@@ -381,16 +325,6 @@ export const reqRefreshMetadata = (param?: object, extra?: object) => {
   return sendRequest({
     url: `/stat/nft/checker/refresh`,
     query: param,
-    ...extra,
-  });
-};
-
-export const reqAbiByMethodId = (methodId: string, extra?: object) => {
-  return sendRequest({
-    url: `/stat/list-abi-method`,
-    query: {
-      id: methodId,
-    },
     ...extra,
   });
 };

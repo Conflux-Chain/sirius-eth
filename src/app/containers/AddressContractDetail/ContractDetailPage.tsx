@@ -35,7 +35,7 @@ import { Bookmark } from '@zeit-ui/react-icons';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { CreateAddressLabel } from '../Profile/CreateAddressLabel';
 import Nametag from './Nametag';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
 
 interface RouteParams {
