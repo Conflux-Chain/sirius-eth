@@ -9,6 +9,7 @@ import { useEnhanceDataWithNameMap } from '@cfxjs/sirius-next-common/dist/utils/
 import { useTableData } from '@cfxjs/sirius-next-common/dist/utils/hooks/useTableData';
 import { TablePanel as TablePanelNew } from 'app/components/TablePanelNew';
 import { OPEN_API_URLS } from 'utils/constants';
+import { Title } from '../Transactions/components';
 
 const keys = ['author', 'address', 'txSender'];
 
@@ -34,6 +35,28 @@ export function EIP7702Authorizations() {
     authorizationsColumns.age(ageFormat, toggleAgeFormat),
   ].map((item, i) => ({ ...item, width: columnsWidth[i] }));
 
+  const title = ({ total, listLimit }) => (
+    <Title
+      total={total}
+      listLimit={listLimit}
+      showSearch={true}
+      searchOptions={{
+        author: true,
+        delegatedAddress: true,
+        txSender: true,
+        button: {
+          col: {
+            xs: 24,
+            sm: 6,
+            md: 6,
+            lg: 6,
+            xl: 6,
+          },
+        },
+      }}
+    />
+  );
+
   return (
     <>
       <Helmet>
@@ -46,6 +69,7 @@ export function EIP7702Authorizations() {
         pagination={pagination}
         loading={loading}
         onChange={setPagination}
+        title={title}
         columns={columns}
         total={data?.total}
         listLimit={data?.listLimit}
