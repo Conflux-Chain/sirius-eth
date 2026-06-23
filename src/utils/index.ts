@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { CFX, getCurrencySymbol } from 'utils/constants';
+import { CFX } from 'utils/constants';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 
 import {
@@ -134,37 +134,6 @@ export const formatString = (
   return result;
 };
 
-/**
- * 获取给定时间戳 from 到给定时间 to 的 duration
- * @param {string | number} from syncTimestamp
- * @param {string | number} to current serverTimestamp or current browserTimestamp
- */
-export const getDuration = (pFrom: number, pTo?: number) => {
-  try {
-    const to = pTo || +new Date();
-    const from = pFrom * 1000;
-
-    if (from > to) {
-      throw new Error('invalid timestamp pair');
-    }
-
-    const dayjsTo = dayjs(to);
-
-    const fullDay = dayjsTo.diff(from, 'day');
-    const fullHour = dayjsTo.diff(from, 'hour');
-    const fullMinute = dayjsTo.diff(from, 'minute');
-
-    const day = dayjsTo.diff(from, 'day');
-    const hour = dayjsTo.subtract(fullDay, 'day').diff(from, 'hour');
-    const minute = dayjsTo.subtract(fullHour, 'hour').diff(from, 'minute');
-    const second = dayjsTo.subtract(fullMinute, 'minute').diff(from, 'second');
-
-    return [day, hour, minute, second];
-  } catch (e) {
-    return [0, 0, 0, 0];
-  }
-};
-
 // Is input match epoch number format
 // 0x??? need to convert to decimal int
 export function isBlockNumber(str: string) {
@@ -172,62 +141,8 @@ export function isBlockNumber(str: string) {
   return n !== Infinity && String(n) === str && n >= 0;
 }
 
-export function padLeft(n: string, totalLength?: number): string;
-export function padLeft(n: number, totalLength?: number): string;
-export function padLeft(n, totalLength = 1) {
-  const num = parseInt(n);
-  if (window.isNaN(num)) {
-    return String(n);
-  } else {
-    let result = String(num);
-    while (result.length < totalLength) {
-      result = '0' + result;
-    }
-    return result;
-  }
-}
-
 export const getDomainTLD = () =>
   (window.location.host.match(/scan\.(.*)$/) || [])[1] || 'net';
-
-const cSymbol = getCurrencySymbol();
-
-export const formatPrice = (
-  price: string | number,
-  symbol: string = cSymbol,
-): string[] => {
-  const p = new BigNumber(price);
-  let precision = 2;
-
-  if (p.eq(0)) {
-    return ['0', ''];
-  } else if (p.lt(0.0001)) {
-    return [
-      '<0.0001',
-      formatNumber(price || 0, {
-        withUnit: false,
-        precision: 18,
-        keepZero: false,
-      }),
-    ];
-  } else if (p.lt(1)) {
-    precision = 4;
-  } else if (p.lt(10)) {
-    precision = 3;
-  } else {
-    precision = 2;
-  }
-
-  return [
-    symbol +
-      formatNumber(price || 0, {
-        withUnit: false,
-        keepZero: false,
-        precision,
-      }),
-    '',
-  ];
-};
 
 export const getEvmGasTargetUsedPercent = (_gasUsed: string | number) => {
   const gasUsed = new BigNumber(_gasUsed);

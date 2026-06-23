@@ -5,25 +5,6 @@ import {
 import create from 'zustand';
 import { reqContract, reqToken } from './httpRequest';
 
-export const useNametagCacheStore = create(set => ({
-  nametagCache: {},
-  contractCache: {},
-  setNametagCache: e =>
-    set(state => ({
-      nametagCache: {
-        ...state.nametagCache,
-        ...e,
-      },
-    })),
-  setContractCache: e =>
-    set(state => ({
-      contractCache: {
-        ...state.contractCache,
-        ...e,
-      },
-    })),
-}));
-
 interface DelegatedInfoStore {
   delegatedAddress: string | null;
   delegatedContractInfo: any;

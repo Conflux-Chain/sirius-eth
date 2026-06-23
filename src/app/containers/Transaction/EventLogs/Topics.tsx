@@ -51,12 +51,14 @@ export const Topics = ({ data, signature }) => {
       ) : null}
       {data.map((d, index) => {
         let value: React.ReactNode = '';
+        let argName: React.ReactNode = '';
         let select: React.ReactNode = null;
 
         if (typeof d === 'string') {
           value = d;
         } else {
           const name = selectMap[d.argName] || 'hex';
+          argName = d.argName;
           const valueMap: {
             hex: string;
             decode: string;
@@ -109,6 +111,7 @@ export const Topics = ({ data, signature }) => {
           <div key={index} className="topic-item">
             <span className="index">{index + baseIndex}</span>
             {select}
+            {argName && <span className="name">{argName}: </span>}
             <span className="value">{value}</span>
           </div>
         );
@@ -148,6 +151,9 @@ const StyledTopicsWrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    .name {
+      margin-right: 0.8571rem;
     }
 
     .select {

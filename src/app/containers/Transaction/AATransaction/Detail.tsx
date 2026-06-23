@@ -32,7 +32,7 @@ import imgChevronDown from 'images/chevronDown.png';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import { CreateTxNote } from '../../Profile/CreateTxNote';
 
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import {
   fromCfxToDrip,
