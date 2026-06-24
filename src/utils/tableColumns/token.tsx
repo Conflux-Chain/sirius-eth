@@ -304,17 +304,11 @@ export const contract = (isFull = false) => ({
   dataIndex: 'address',
   key: 'address',
   render: (value, row) => {
-    let verify = false;
-    if (row.contractInfo) {
-      verify = row.contractInfo.verify.result !== 0;
-    } else if (row.verified === true) {
-      verify = true;
-    }
     return (
       <EVMAddressContainer
         value={value}
         isFull={isFull}
-        verify={verify}
+        verify={row.verified}
         isContract={true}
         showAddressLabel={false}
       />
