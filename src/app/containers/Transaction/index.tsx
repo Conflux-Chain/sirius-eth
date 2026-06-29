@@ -142,16 +142,6 @@ function CommonTransaction() {
       // hidden: cfxTransferAllCount < 2,
     },
     {
-      value: 'logs',
-      label: (
-        <TabLabel showTooltip={false}>
-          {t(translations.transaction.logs.title)}
-        </TabLabel>
-      ),
-      content: <EventLogs hash={hash} key={hash}></EventLogs>,
-      hidden: !eventLogCount,
-    },
-    {
       value: 'aa-txs',
       label: (
         <TabLabel showTooltip={false}>
@@ -160,6 +150,16 @@ function CommonTransaction() {
       ),
       content: <AATxns list={userOps!} key={hash} />,
       hidden: !isBundleTx,
+    },
+    {
+      value: 'logs',
+      label: (
+        <TabLabel showTooltip={false}>
+          {t(translations.transaction.logs.title)}
+        </TabLabel>
+      ),
+      content: <EventLogs hash={hash} key={hash}></EventLogs>,
+      hidden: !eventLogCount,
     },
     {
       value: 'authorization-list',
