@@ -9,7 +9,7 @@ import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
  * 1. handle JSON.stringify issue
  */
 export const formatData = (data, type, option?) => {
-  if (!data) return '';
+  if (data === null || data === undefined) return '';
   const _option = option || {
     space: 4,
   };
