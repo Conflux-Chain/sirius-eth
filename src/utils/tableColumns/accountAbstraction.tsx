@@ -38,7 +38,6 @@ export const aaHash = {
               row.failedReason && (
                 <AAFailedReason
                   data={row.failedReason}
-                  to={row.senderHex}
                   fallback={
                     <Translation>
                       {t => t(translations.accountAbstraction.aaTxFailed)}

@@ -63,8 +63,6 @@ const StatusComponent = ({
         <span className="description">
           <AAFailedReason
             data={failedReason}
-            to={to}
-            implementation={implementation}
             fallback={t(translations.accountAbstraction.aaTxFailed)}
           />
         </span>
