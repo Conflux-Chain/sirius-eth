@@ -22,6 +22,7 @@ import { AATxns } from './AATxns';
 import { StyledHeader, StyledPageWrapper, TagWrapper } from './styled';
 import { AATransaction } from './AATransaction';
 import { useAATxDetail } from 'utils/hooks/useAATxDetail';
+import { useBreakpoint } from '@cfxjs/sirius-next-common/dist/utils/media';
 
 const BundleTxIcon = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ const BundleTxIcon = () => {
 };
 
 function CommonTransaction() {
+  const bp = useBreakpoint();
   const { t } = useTranslation();
   const { hash } = useParams<{
     hash: string;
@@ -201,13 +203,15 @@ function CommonTransaction() {
         </StyledHeader>
       </PageHeader>
       <div className="content-wrapper">
-        <div className="raw-tx-json-wrapper">
-          <Tooltip title={t(translations.toolTip.tx.getRawTxJson)}>
-            <div className="raw-tx-json" onClick={handleViewRawTxJson}>
-              <JsonIcon style={{ width: '24px', height: '24px' }} />
-            </div>
-          </Tooltip>
-        </div>
+        {bp !== 's' && (
+          <div className="raw-tx-json-wrapper">
+            <Tooltip title={t(translations.toolTip.tx.getRawTxJson)}>
+              <div className="raw-tx-json" onClick={handleViewRawTxJson}>
+                <JsonIcon style={{ width: '24px', height: '24px' }} />
+              </div>
+            </Tooltip>
+          </div>
+        )}
         <TabsTablePanel tabs={tabs} />
       </div>
     </StyledPageWrapper>
