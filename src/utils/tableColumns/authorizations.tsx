@@ -107,7 +107,6 @@ export const valid = {
             {t => t(translations.authList.tooltip.valid)}
           </Translation>
         }
-        portalled
       >
         <img src={imgInfo} alt="tips" />
       </Tooltip>
