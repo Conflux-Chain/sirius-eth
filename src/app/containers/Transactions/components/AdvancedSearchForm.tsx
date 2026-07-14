@@ -35,6 +35,12 @@ export interface AdvancedSearchFormProps {
   transactionHash?: SearchFormItemsProps;
   button?: SearchFormItemsProps;
   rangePicker?: SearchFormItemsProps;
+  sender?: SearchFormItemsProps;
+  bundler?: SearchFormItemsProps;
+  entryPoint?: SearchFormItemsProps;
+  author?: SearchFormItemsProps;
+  delegatedAddress?: SearchFormItemsProps;
+  txSender?: SearchFormItemsProps;
 }
 
 interface QueryProps {
@@ -129,6 +135,60 @@ const defaultProps = {
       xl: 8,
     },
   },
+  sender: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
+  bundler: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
+  entryPoint: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
+  author: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
+  delegatedAddress: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
+  txSender: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
   button: {
     col: {
       xs: 24,
@@ -197,6 +257,12 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
     nonce,
     transactionHash,
     rangePicker,
+    sender,
+    bundler,
+    entryPoint,
+    author,
+    delegatedAddress,
+    txSender,
   } = props;
 
   const validators = useMemo(() => {
@@ -270,6 +336,8 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
         rangePicker: [minT ? moment(minT) : null, maxT ? moment(maxT) : null],
         minEpochNumber: minEpoch,
         maxEpochNumber: maxEpoch,
+        // special handle with delegatedAddress value
+        address: query.address || '',
       };
 
       form.setFieldsValue(value);
@@ -309,6 +377,12 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
       to,
       minTimestamp,
       maxTimestamp,
+      sender,
+      bundler,
+      entryPoint,
+      author,
+      address,
+      txSender,
       ...others
     } = qs.parse(search);
 
@@ -387,6 +461,26 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
       }
     }
 
+    if (props.sender && values.sender) {
+      query.sender = values.sender;
+    }
+    if (props.bundler && values.bundler) {
+      query.bundler = values.bundler;
+    }
+    if (props.entryPoint && values.entryPoint) {
+      query.entryPoint = values.entryPoint;
+    }
+
+    if (props.author && values.author) {
+      query.author = values.author;
+    }
+    if (props.delegatedAddress && values.address) {
+      query.address = values.address;
+    }
+    if (props.txSender && values.txSender) {
+      query.txSender = values.txSender;
+    }
+
     const urlWithQuery = qs.stringifyUrl({
       url: pathname,
       query,
@@ -406,6 +500,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
         'maxEpochNumber',
         'minEpochNumber',
         'tokenArray',
+        'address',
       ),
     );
 
@@ -721,6 +816,117 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
               min="0"
               allowClear
             />
+          </Form.Item>
+        </Col>,
+      );
+    }
+
+    if (sender) {
+      const col =
+        typeof sender !== 'boolean' ? sender?.col : defaultProps.sender.col;
+
+      children.push(
+        <Col {...col} key="sender">
+          <Form.Item
+            name="sender"
+            label={t(translations.general.advancedSearch.label.sender)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (bundler) {
+      const col =
+        typeof bundler !== 'boolean' ? bundler?.col : defaultProps.bundler.col;
+
+      children.push(
+        <Col {...col} key="bundler">
+          <Form.Item
+            name="bundler"
+            label={t(translations.general.advancedSearch.label.bundler)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (entryPoint) {
+      const col =
+        typeof entryPoint !== 'boolean'
+          ? entryPoint?.col
+          : defaultProps.entryPoint.col;
+
+      children.push(
+        <Col {...col} key="entryPoint">
+          <Form.Item
+            name="entryPoint"
+            label={t(translations.general.advancedSearch.label.entryPoint)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (author) {
+      const col =
+        typeof author !== 'boolean' ? author?.col : defaultProps.author.col;
+
+      children.push(
+        <Col {...col} key="author">
+          <Form.Item
+            name="author"
+            label={t(translations.general.advancedSearch.label.author)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (delegatedAddress) {
+      const col =
+        typeof delegatedAddress !== 'boolean'
+          ? delegatedAddress?.col
+          : defaultProps.delegatedAddress.col;
+
+      children.push(
+        <Col {...col} key="address">
+          <Form.Item
+            name="address"
+            label={t(
+              translations.general.advancedSearch.label.delegatedAddress,
+            )}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (txSender) {
+      const col =
+        typeof txSender !== 'boolean'
+          ? txSender?.col
+          : defaultProps.txSender.col;
+
+      children.push(
+        <Col {...col} key="txSender">
+          <Form.Item
+            name="txSender"
+            label={t(translations.general.advancedSearch.label.txSender)}
+            normalize={value => value.trim()}
+            rules={[{ validator: validators.isAddress }]}
+          >
+            <Input placeholder="" allowClear />
           </Form.Item>
         </Col>,
       );

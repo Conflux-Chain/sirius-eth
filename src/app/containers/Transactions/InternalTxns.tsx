@@ -12,19 +12,21 @@ import { ListTrace } from './ListTrace';
 import { useTxTrace } from '@cfxjs/sirius-next-common/dist/utils/hooks/useTxTrace';
 import { renderAddress } from 'utils/tableColumns/utils';
 import { AddressNameMap } from '@cfxjs/sirius-next-common/dist/utils/request.types';
+import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 
 interface Props {
   hash: string;
   from: string;
   to: string;
   nameMap?: Record<string, AddressNameMap>;
+  isAATx?: boolean;
 }
 
-export const InternalTxns = ({ hash, from, to, nameMap }: Props) => {
+export const InternalTxns = ({ hash, from, to, nameMap, isAATx }: Props) => {
   const { t } = useTranslation();
   const [showProxyCall, setShowProxyCall] = useState(false);
   const [viewMode, setViewMode] = useState('tree');
-  const { data, isLoading } = useTxTrace(hash, 'evm');
+  const { data, isLoading } = useTxTrace(hash, 'evm', { isAATx });
   const { list = [], total = 0 } = data ?? {};
 
   const fromContent = () => (
@@ -126,6 +128,10 @@ const StyledTipWrapper = styled.span`
   border-bottom: 1px solid #ebeced;
   .tip-title {
     flex: 1;
+  }
+  ${media.s} {
+    flex-direction: column;
+    height: auto;
   }
 `;
 

@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
+import BigNumber from 'bignumber.js';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { Spinner } from '@cfxjs/react-ui';
@@ -11,43 +12,47 @@ import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import { Age } from '@cfxjs/sirius-next-common/dist/components/Age';
-import { formatTimeStamp, getPercent, toThousands, isZeroAddress } from 'utils';
-import { formatAddress } from 'utils';
+import {
+  formatAddress,
+  formatTimeStamp,
+  getPercent,
+  toThousands,
+  isZeroAddress,
+} from 'utils';
 import { CFX_TOKEN_TYPES } from 'utils/constants';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
 import clsx from 'clsx';
 import { Security } from 'app/components/Security/Loadable';
-import { GasFee, InputDataNew, Status } from 'app/components/TxnComponents';
+import { InputDataNew } from 'app/components/TxnComponents';
 import { TransactionAction } from '@cfxjs/sirius-next-common/dist/components/TransactionAction/evmTransactionAction';
 import _ from 'lodash';
 
 import imgChevronDown from 'images/chevronDown.png';
 import { useGlobalData } from 'utils/hooks/useGlobal';
-import { CreateTxNote } from '../Profile/CreateTxNote';
+import { CreateTxNote } from '../../Profile/CreateTxNote';
 
 import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import {
-  fromDripToCfx,
+  fromCfxToDrip,
   fromDripToGdrip,
+  decodeAANonce,
 } from '@cfxjs/sirius-next-common/dist/utils';
-import BigNumber from 'bignumber.js';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import dayjs from 'dayjs';
-import { StyledHighlight } from './EventLogs/StyledComponents';
+import { StyledHighlight } from '../EventLogs/StyledComponents';
 import { EOACodeIcon } from 'app/components/EOACodeIcon';
-import { CFXTransfers } from './CFXTransfers';
-import { TokenTransfers } from './TokenTransfers';
+import { CFXTransfers } from '../CFXTransfers';
+import { TokenTransfers } from '../TokenTransfers';
 import { renderAddress } from 'utils/tableColumns/utils';
+import { InputData as InputDataBody } from '@cfxjs/sirius-next-common/dist/components/InputData';
+import { Status } from './Status';
 import { useTxEventLogs } from 'utils/hooks/useTxEventLogs';
+import iconInfo from 'images/info.svg';
 
-// Transaction Detail Page
-export const Detail = ({
-  data: transactionDetail,
-  loading: outerLoading,
-  partLoading,
-}) => {
+// AA Transaction Detail Page
+export const Detail = ({ data: transactionDetail, partLoading }) => {
   const [visible, setVisible] = useState(false);
   const [globalData] = useGlobalData();
   const { t } = useTranslation();
@@ -55,49 +60,95 @@ export const Detail = ({
     hash: string;
   }>();
   const {
-    from,
-    to,
-    value,
-    gasPrice,
-    gas,
-    nonce,
+    senderHex: from,
+    entryPointHex: to,
+    bundlerHex,
+    userOpHash,
+    txHash,
+    nonce: originNonce,
     blockHash,
-    transactionIndex,
-    epochNumber,
-    syncTimestamp,
-    gasFee,
-    gasUsed,
-    gasCharged,
-    status,
+    epoch,
+    createdAt,
+    success,
     data,
-    contractCreated,
+    actualGasCost,
+    actualGasUsed,
     confirmedEpochCount,
-    txExecErrorInfo,
-    gasCoveredBySponsor,
-    baseFeePerGas,
+    blockBaseFeePerGas,
     maxFeePerGas,
     maxPriorityFeePerGas,
-    burntGasFee,
-    type,
-    typeDesc,
-    txExecErrorMsg,
+    callGasLimit,
+    verificationGasLimit,
+    preVerificationGas,
     effectiveAuth: _effectiveAuth,
     tokenTransfers,
     cfxTransfers,
     nameMap,
+    position,
+    signature,
+    paymasterDecoded,
+    paymasterPostOpGasLimit,
+    paymasterVerificationGasLimit,
+    initCode,
+    failedReason,
   } = transactionDetail;
-  const { data: eventlogs, isLoading: logLoading } = useTxEventLogs(routeHash);
+  const hasInitCode = !_.isNil(initCode) && initCode !== '0x';
+  const {
+    nonce,
+    key,
+    keyHex,
+    syncTimestamp,
+    gasPrice,
+    gasLimit,
+  } = useMemo(() => {
+    const syncTimestamp = createdAt ? dayjs(createdAt).unix() : null;
+    let nonce = originNonce;
+    let key = '0';
+    let keyHex = '0x0';
+    try {
+      const decoded = decodeAANonce(originNonce);
+      nonce = decoded.nonce;
+      key = decoded.key;
+      keyHex = decoded.keyHex;
+    } catch (error) {
+      console.log('nonce decode error:', error);
+    }
+    const gasUsedBn = new BigNumber(actualGasUsed || 0);
+    const gasPriceBn = gasUsedBn.isZero()
+      ? null
+      : fromCfxToDrip(actualGasCost).div(gasUsedBn);
+    const gasLimit = new BigNumber(callGasLimit || 0)
+      .plus(verificationGasLimit || 0)
+      .plus(preVerificationGas || 0)
+      .plus(paymasterVerificationGasLimit || 0)
+      .plus(paymasterPostOpGasLimit || 0);
+    return {
+      nonce,
+      key,
+      keyHex,
+      syncTimestamp,
+      gasPrice: gasPriceBn?.toFixed(),
+      gasLimit: gasLimit.toFixed(),
+    };
+  }, [
+    originNonce,
+    createdAt,
+    actualGasCost,
+    actualGasUsed,
+    callGasLimit,
+    verificationGasLimit,
+    preVerificationGas,
+    paymasterVerificationGasLimit,
+    paymasterPostOpGasLimit,
+  ]);
+  const { data: eventlogs, isLoading: logLoading } = useTxEventLogs(
+    routeHash,
+    true,
+  );
   const [folded, setFolded] = useState(true);
   const effectiveAuth = isZeroAddress(_effectiveAuth?.address)
     ? null
     : _effectiveAuth;
-
-  const loading = logLoading || outerLoading;
-  const isPending = _.isNil(status) || status === 4;
-  const isCrossSpaceCall = gasPrice === '0';
-  const notEnoughCash = txExecErrorMsg && /^NotEnoughCash/.test(txExecErrorMsg);
-  const isValidGasCharged =
-    !notEnoughCash || new BigNumber(gasCharged).isEqualTo(gas);
 
   const addressContent = useCallback(
     (isFull = false, address) => {
@@ -128,86 +179,61 @@ export const Detail = ({
         return (
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.to)}>
-                {t(translations.transaction.to)}
-              </Tooltip>
+              <>
+                {t(translations.transaction.aaTx.entryPoint)}
+                <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
             }
           >
-            <SkeletonContainer shown={loading}>
-              {t(translations.transaction.contract)}{' '}
-              {toNameInfo && (
-                <>
-                  {toNameInfo.tokenIconUrl ? (
-                    <img
-                      className="logo"
-                      src={toNameInfo.tokenIconUrl}
-                      alt="icon"
-                    />
-                  ) : null}
-                  <Link href={`/address/${formatAddress(to)}`}>
-                    {toNameInfo.alias || ''}
-                  </Link>{' '}
-                </>
-              )}
-              {addressContent(true, to)}
-            </SkeletonContainer>
+            {t(translations.transaction.contract)}{' '}
+            {toNameInfo && (
+              <>
+                {toNameInfo.tokenIconUrl ? (
+                  <img
+                    className="logo"
+                    src={toNameInfo.tokenIconUrl}
+                    alt="icon"
+                  />
+                ) : null}
+                <Link href={`/address/${formatAddress(to)}`}>
+                  {toNameInfo.alias || ''}
+                </Link>{' '}
+              </>
+            )}
+            {addressContent(true, to)}
           </Description>
         );
       } else {
         return (
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.to)}>
-                {t(translations.transaction.to)}
-              </Tooltip>
+              <>
+                {t(translations.transaction.aaTx.entryPoint)}
+                <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
             }
           >
-            <SkeletonContainer shown={loading}>
-              <RowWrapper>
-                {effectiveAuth && <EOACodeIcon />}
-                {addressContent(true, to)}
-              </RowWrapper>
-            </SkeletonContainer>
+            <RowWrapper>{addressContent(true, to)}</RowWrapper>
           </Description>
         );
       }
-    } else if (contractCreated) {
-      return (
-        <Description
-          title={
-            <Tooltip title={t(translations.toolTip.tx.to)}>
-              {t(translations.transaction.to)}
-            </Tooltip>
-          }
-        >
-          <SkeletonContainer shown={loading}>
-            <span className="label">
-              {t(translations.transaction.contract)}
-            </span>
-            <EVMAddressContainer
-              value={transactionDetail['contractCreated']}
-              isFull={true}
-              isContract={true}
-            />{' '}
-            <CopyButton
-              copyText={formatAddress(transactionDetail['contractCreated'])}
-            />
-            &nbsp; {t(translations.transaction.created)}
-          </SkeletonContainer>
-        </Description>
-      );
     } else {
       return (
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.to)}>
-              {t(translations.transaction.to)}
-            </Tooltip>
+            <>
+              {t(translations.transaction.aaTx.entryPoint)}
+              <Tooltip title={t(translations.toolTip.tx.entryPoint)}>
+                <IconImg src={iconInfo} alt="warning-icon" />
+              </Tooltip>
+            </>
           }
         >
-          <SkeletonContainer shown={loading}>
-            {t(translations.transaction.contractCreation)}
-          </SkeletonContainer>
+          {t(translations.transaction.contractCreation)}
         </Description>
       );
     }
@@ -308,14 +334,28 @@ export const Detail = ({
       <Card className="sirius-Transactions-card">
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.transactionHash)}>
-              {t(translations.transaction.hash)}
-            </Tooltip>
+            <>
+              {t(translations.transaction.aaTx.aaHash)}
+              <Tooltip title={t(translations.toolTip.tx.aaTransactionHash)}>
+                <IconImg src={iconInfo} alt="warning-icon" />
+              </Tooltip>
+            </>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
-            {routeHash} <CopyButton copyText={routeHash} />
-          </SkeletonContainer>
+          {userOpHash} <CopyButton copyText={userOpHash} />
+        </Description>
+        <Description
+          title={
+            <>
+              {t(translations.transaction.aaTx.bundleHash)}
+              <Tooltip title={t(translations.toolTip.tx.bundleTransactionHash)}>
+                <IconImg src={iconInfo} alt="warning-icon" />
+              </Tooltip>
+            </>
+          }
+        >
+          <Link href={`/tx/${txHash}`}>{txHash}</Link>{' '}
+          <CopyButton copyText={txHash} />
         </Description>
         <Description
           title={
@@ -324,9 +364,9 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
-            <Link href={`/block/${blockHash}`}>{toThousands(epochNumber)}</Link>{' '}
-            <CopyButton copyText={epochNumber} />
+          <SkeletonContainer>
+            <Link href={`/block/${blockHash}`}>{toThousands(epoch)}</Link>{' '}
+            <CopyButton copyText={epoch} />
           </SkeletonContainer>
         </Description>
         <Description
@@ -336,7 +376,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
+          <SkeletonContainer>
             {_.isNil(blockHash) ? (
               '--'
             ) : (
@@ -354,7 +394,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
+          <SkeletonContainer>
             {_.isNil(syncTimestamp) ? (
               '--'
             ) : (
@@ -369,7 +409,8 @@ export const Detail = ({
             )}
           </SkeletonContainer>
         </Description>
-        {status === 0 && transactionActionElement.show && (
+
+        {success && transactionActionElement.show && (
           <Description
             title={
               <Tooltip title={t(translations.transaction.action.tooltip)}>
@@ -377,7 +418,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={loading}>
+            <SkeletonContainer shown={logLoading}>
               {transactionActionElement.content}
             </SkeletonContainer>
           </Description>
@@ -389,12 +430,12 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
+          <SkeletonContainer>
             <Status
-              type={status}
-              txExecErrorInfo={txExecErrorInfo}
-              address={formatAddress(from)}
-              hash={routeHash}
+              success={success}
+              failedReason={failedReason}
+              to={from}
+              implementation={effectiveAuth?.address}
             ></Status>
           </SkeletonContainer>
         </Description>
@@ -405,7 +446,7 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
+          <SkeletonContainer>
             {_.isNil(blockHash) ? (
               '--'
             ) : (
@@ -435,11 +476,11 @@ export const Detail = ({
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
+          <SkeletonContainer>
+            {effectiveAuth && <EOACodeIcon />}
             {addressContent(true, from)}
           </SkeletonContainer>
         </Description>
-        {generatedToAddress()}
         {effectiveAuth && (
           <Description
             title={
@@ -448,7 +489,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={outerLoading}>
+            <SkeletonContainer>
               <RowWrapper>
                 {renderAddress(effectiveAuth.address, {
                   ...effectiveAuth,
@@ -459,6 +500,7 @@ export const Detail = ({
             </SkeletonContainer>
           </Description>
         )}
+        {generatedToAddress()}
 
         <CFXTransfers transfers={cfxTransfers} nameMap={nameMap} />
         <TokenTransfers
@@ -468,28 +510,13 @@ export const Detail = ({
 
         <Description
           title={
-            <Tooltip title={t(translations.toolTip.tx.value)}>
-              {t(translations.transaction.value)}
-            </Tooltip>
-          }
-        >
-          <SkeletonContainer shown={outerLoading}>
-            {value ? `${fromDripToCfx(value, true)} CFX` : '--'}
-          </SkeletonContainer>
-        </Description>
-        <Description
-          title={
             <Tooltip title={t(translations.toolTip.tx.transactionFee)}>
-              {t(translations.transaction.transactionFee)}
+              {t(translations.transaction.aaTx.transactionFee)}
             </Tooltip>
           }
         >
-          <SkeletonContainer shown={outerLoading}>
-            <GasFee
-              fee={gasFee}
-              sponsored={gasCoveredBySponsor}
-              isCrossSpaceCall={isCrossSpaceCall}
-            />
+          <SkeletonContainer>
+            {`${_.isNil(actualGasCost) ? '--' : `${actualGasCost} CFX`}`}
           </SkeletonContainer>
         </Description>
         <div
@@ -504,7 +531,7 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={outerLoading}>
+            <SkeletonContainer>
               {!_.isNil(gasPrice) && gasPrice !== '0'
                 ? `${fromDripToGdrip(gasPrice, false, {
                     precision: 9,
@@ -522,23 +549,19 @@ export const Detail = ({
                     <br />
                     <br />
                     {t(translations.toolTip.tx.gasUsedTip)}
-                    <br />
-                    <br />
-                    {t(translations.toolTip.tx.gasChargedip)}
                   </StyleToolTipText>
                 }
               >
-                {t(translations.transaction.gasUsed)}
+                {t(translations.transaction.aaTx.gasUsed)}
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={outerLoading}>
-              {!_.isNil(gasUsed) && gasUsed !== '0' && gas ? (
+            <SkeletonContainer>
+              {!_.isNil(actualGasUsed) && actualGasUsed !== 0 && gasLimit ? (
                 <>
-                  {`${toThousands(gas)} | ${toThousands(gasUsed)} (${getPercent(
-                    gasUsed,
-                    gas,
-                  )}) | ${isValidGasCharged ? toThousands(gasCharged) : '--'}`}
+                  {`${toThousands(gasLimit)} | ${toThousands(
+                    actualGasUsed,
+                  )} (${getPercent(actualGasUsed, gasLimit)})`}
                 </>
               ) : (
                 <>--</>
@@ -560,48 +583,53 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={outerLoading}>
-              {isCrossSpaceCall ? (
-                '--'
-              ) : (
+            <SkeletonContainer>
+              <GasFeeLabelWrapper>
+                {t(translations.transaction.baseFee)}
+              </GasFeeLabelWrapper>
+              {`${fromDripToGdrip(blockBaseFeePerGas, true)} Gdrip`}
+              {maxFeePerGas && (
                 <>
+                  {' | '}
                   <GasFeeLabelWrapper>
-                    {t(translations.transaction.baseFee)}
+                    {t(translations.transaction.maxFee)}
                   </GasFeeLabelWrapper>
-                  {isPending
-                    ? '--'
-                    : `${fromDripToGdrip(baseFeePerGas, true)} Gdrip`}
-                  {type !== 0 && type !== 1 && (
-                    <>
-                      {' | '}
-                      <GasFeeLabelWrapper>
-                        {t(translations.transaction.maxFee)}
-                      </GasFeeLabelWrapper>
-                      {fromDripToGdrip(maxFeePerGas, true)} Gdrip
-                      {' | '}
-                      <GasFeeLabelWrapper>
-                        {t(translations.transaction.maxPriorityFee)}
-                      </GasFeeLabelWrapper>
-                      {fromDripToGdrip(maxPriorityFeePerGas, true)} Gdrip
-                    </>
-                  )}
+                  {fromDripToGdrip(maxFeePerGas, true)} Gdrip
+                  {' | '}
+                  <GasFeeLabelWrapper>
+                    {t(translations.transaction.maxPriorityFee)}
+                  </GasFeeLabelWrapper>
+                  {fromDripToGdrip(maxPriorityFeePerGas, true)} Gdrip
                 </>
               )}
             </SkeletonContainer>
           </Description>
           <Description
             title={
-              <Tooltip title={t(translations.toolTip.tx.burntFees)}>
-                {t(translations.transaction.burntFees)}
-              </Tooltip>
+              <>
+                {t(translations.transaction.aaTx.bundler)}
+                <Tooltip title={t(translations.toolTip.tx.bundler)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
             }
           >
-            <SkeletonContainer shown={outerLoading}>
-              {isCrossSpaceCall || !burntGasFee
-                ? '--'
-                : `🔥 ${fromDripToCfx(burntGasFee, true)} CFX`}
-            </SkeletonContainer>
+            {addressContent(true, bundlerHex)}
           </Description>
+          {paymasterDecoded?.address && (
+            <Description
+              title={
+                <>
+                  {t(translations.transaction.aaTx.paymaster)}
+                  <Tooltip title={t(translations.toolTip.tx.paymaster)}>
+                    <IconImg src={iconInfo} alt="warning-icon" />
+                  </Tooltip>
+                </>
+              }
+            >
+              {addressContent(true, paymasterDecoded.address)}
+            </Description>
+          )}
 
           <Description
             title={
@@ -610,43 +638,100 @@ export const Detail = ({
               </Tooltip>
             }
           >
-            <SkeletonContainer shown={outerLoading}>
+            <SkeletonContainer>
               <AttributeWrapper>
-                <Text
-                  className="attribute"
-                  hoverValue={t(translations.toolTip.tx.txnType[type])}
-                  hideTooltip={isCrossSpaceCall || _.isNil(type)}
-                  tag="span"
-                >
-                  {t(translations.transaction.txnType, {
-                    type: isCrossSpaceCall || _.isNil(type) ? '--' : type,
-                    typeDesc:
-                      isCrossSpaceCall || _.isNil(typeDesc)
-                        ? ''
-                        : `(${typeDesc})`,
+                <Text className="attribute" tag="span" hideTooltip>
+                  {t(translations.transaction.aaTx.aaPosition, {
+                    num: _.isNil(position) ? '--' : position,
                   })}
                 </Text>
-                <Text
-                  className="attribute"
-                  hoverValue={t(translations.toolTip.tx.nonce)}
-                  tag="span"
-                >
+                <Text className="attribute" tag="span" hideTooltip>
                   {t(translations.transaction.nonce, {
                     num: toThousands(nonce),
                   })}
                 </Text>
-                <Text
-                  className="attribute"
-                  hoverValue={t(translations.toolTip.tx.position)}
-                  tag="span"
-                >
-                  {t(translations.transaction.position, {
-                    num: _.isNil(transactionIndex) ? '--' : transactionIndex,
+                {key !== '0' && (
+                  <Text className="attribute" tag="span" hideTooltip>
+                    {t(translations.transaction.aaTx.key, {
+                      key: keyHex,
+                    })}
+                  </Text>
+                )}
+                <Text className="attribute" tag="span" hideTooltip>
+                  {t(translations.transaction.aaTx.callGasLimit, {
+                    num: toThousands(callGasLimit),
                   })}
                 </Text>
+                {verificationGasLimit && (
+                  <Text className="attribute" tag="span" hideTooltip>
+                    {t(translations.transaction.aaTx.verificationGasLimit, {
+                      num: toThousands(verificationGasLimit),
+                    })}
+                  </Text>
+                )}
+                {preVerificationGas && (
+                  <Text className="attribute" tag="span" hideTooltip>
+                    {t(translations.transaction.aaTx.preVerificationGas, {
+                      num: toThousands(preVerificationGas),
+                    })}
+                  </Text>
+                )}
+                {paymasterVerificationGasLimit && (
+                  <Text className="attribute" tag="span" hideTooltip>
+                    {t(
+                      translations.transaction.aaTx
+                        .paymasterVerificationGasLimit,
+                      {
+                        num: toThousands(paymasterVerificationGasLimit),
+                      },
+                    )}
+                  </Text>
+                )}
+                {paymasterPostOpGasLimit && (
+                  <Text className="attribute" tag="span" hideTooltip>
+                    {t(translations.transaction.aaTx.paymasterPostOpGas, {
+                      num: toThousands(paymasterPostOpGasLimit),
+                    })}
+                  </Text>
+                )}
               </AttributeWrapper>
             </SkeletonContainer>
           </Description>
+          <Description
+            title={
+              <>
+                {t(translations.transaction.aaTx.signature)}
+                <Tooltip title={t(translations.toolTip.tx.signature)}>
+                  <IconImg src={iconInfo} alt="warning-icon" />
+                </Tooltip>
+              </>
+            }
+          >
+            <SkeletonContainer>
+              <InputDataBody
+                dataType="original"
+                input={signature}
+                space="evm"
+              />
+            </SkeletonContainer>
+          </Description>
+          {hasInitCode && (
+            <Description
+              title={
+                <Tooltip title={t(translations.toolTip.tx.initCode)}>
+                  {t(translations.transaction.aaTx.initCode)}
+                </Tooltip>
+              }
+            >
+              <SkeletonContainer>
+                <InputDataBody
+                  dataType="original"
+                  input={initCode}
+                  space="evm"
+                />
+              </SkeletonContainer>
+            </Description>
+          )}
           {/* only send to user type will with empty data */}
           {!data || data === '0x' ? null : (
             <Description
@@ -657,11 +742,13 @@ export const Detail = ({
               }
               className="inputLine"
             >
-              <SkeletonContainer shown={outerLoading}>
+              {/* aa tx use from or effectiveAuth?.address to decode tx data */}
+              <SkeletonContainer>
                 <InputDataNew
-                  toHash={to}
+                  toHash={from}
                   data={data}
-                  isContractCreated={!!contractCreated}
+                  isContractCreated={false}
+                  implementation={effectiveAuth?.address}
                 ></InputDataNew>
               </SkeletonContainer>
             </Description>
@@ -721,6 +808,7 @@ const GasFeeLabelWrapper = styled.span`
 const AttributeWrapper = styled.div`
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
   ${media.s} {
     flex-direction: column;
   }
@@ -881,4 +969,11 @@ const RowWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+`;
+
+const IconImg = styled.img`
+  width: 1.2857rem;
+  margin-left: 0.3571rem;
+  padding-right: 0.2857rem;
+  margin-top: -0.2765rem;
 `;

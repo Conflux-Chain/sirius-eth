@@ -5,7 +5,7 @@ import { Option } from 'styles/global-styles';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
-import { ContractDetail } from 'app/components/TxnComponents/ContractDetail';
+import { ContractDetail } from '@cfxjs/sirius-next-common/dist/components/InputData/ContractDetail';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
 import { convertCheckSum } from '@cfxjs/sirius-next-common/dist/utils/address';
@@ -51,12 +51,14 @@ export const Topics = ({ data, signature }) => {
       ) : null}
       {data.map((d, index) => {
         let value: React.ReactNode = '';
+        let argName: React.ReactNode = '';
         let select: React.ReactNode = null;
 
         if (typeof d === 'string') {
           value = d;
         } else {
           const name = selectMap[d.argName] || 'hex';
+          argName = d.argName;
           const valueMap: {
             hex: string;
             decode: string;
@@ -71,14 +73,14 @@ export const Topics = ({ data, signature }) => {
           value = valueMap[name];
 
           if (name === 'decode' && d.type === 'address') {
+            const address =
+              typeof value === 'string' ? convertCheckSum(value) : value;
             value = (
               <>
-                <StyledHighlight scope="address" value={value}>
-                  <Link href={`/address/${value}`}>
-                    {typeof value === 'string' ? convertCheckSum(value) : value}
-                  </Link>
+                <StyledHighlight scope="address" value={address}>
+                  <Link href={`/address/${value}`}>{address}</Link>
                 </StyledHighlight>
-                <ContractDetail address={valueMap.decode}></ContractDetail>
+                <ContractDetail address={valueMap.decode} addressType="hex" />
                 <AddressLabel address={value} />
               </>
             );
@@ -109,6 +111,7 @@ export const Topics = ({ data, signature }) => {
           <div key={index} className="topic-item">
             <span className="index">{index + baseIndex}</span>
             {select}
+            {argName && <span className="name">{argName}: </span>}
             <span className="value">{value}</span>
           </div>
         );
@@ -148,6 +151,9 @@ const StyledTopicsWrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+    .name {
+      margin-right: 0.8571rem;
     }
 
     .select {

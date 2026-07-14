@@ -304,17 +304,11 @@ export const contract = (isFull = false) => ({
   dataIndex: 'address',
   key: 'address',
   render: (value, row) => {
-    let verify = false;
-    if (row.contractInfo) {
-      verify = row.contractInfo.verify.result !== 0;
-    } else if (row.verified === true) {
-      verify = true;
-    }
     return (
       <EVMAddressContainer
         value={value}
         isFull={isFull}
-        verify={verify}
+        verify={row.verified}
         isContract={true}
         showAddressLabel={false}
       />
@@ -377,7 +371,11 @@ export const to = {
     value,
     row,
     _,
-    { withProxy = false, showVerificationName = false } = {},
+    {
+      withProxy = false,
+      showVerificationName = false,
+      withSmartAccount = false,
+    } = {},
   ) => {
     return (
       <PhishingAddressContainer
@@ -385,7 +383,11 @@ export const to = {
         address={value}
       >
         <FromWrap>
-          {renderAddress(value, row, { withProxy, showVerificationName })}
+          {renderAddress(value, row, {
+            withProxy,
+            showVerificationName,
+            withSmartAccount,
+          })}
         </FromWrap>
       </PhishingAddressContainer>
     );

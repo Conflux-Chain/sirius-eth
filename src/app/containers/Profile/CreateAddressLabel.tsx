@@ -5,7 +5,7 @@ import { Form, Modal, Input, message } from '@cfxjs/antd';
 import { publishRequestError } from '@cfxjs/sirius-next-common/dist/utils/pubsub';
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
-import { LOCALSTORAGE_KEYS_MAP } from 'utils/enum';
+import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 
 type Type = {
   a: string;

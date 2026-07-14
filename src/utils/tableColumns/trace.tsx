@@ -10,6 +10,10 @@ import {
   Failed,
 } from '@cfxjs/sirius-next-common/dist/components/Icons';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
+import ContractIcon from 'images/contract-icon.png';
+import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
+import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
+import { getAddressNameInfo } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/utils';
 
 export const gas = {
   width: 1,
@@ -145,6 +149,60 @@ export const traceType = ({
   render: (_, row) => <TraceTypeElement info={row} withIndex={withIndex} />,
 });
 
+export const method = {
+  title: (
+    <Translation>
+      {t => t(translations.general.table.transaction.method)}
+    </Translation>
+  ),
+  dataIndex: 'method',
+  key: 'method',
+  width: 1,
+  render: (value, row) => {
+    if (value === '0x' || value === null || value === undefined || !row.to) {
+      return '--';
+    }
+    const reg = /([^(]*)(?=\(.*\))/;
+    const match = reg.exec(value);
+    let text = '';
+    if (match) {
+      text = match[0];
+    } else {
+      text = value;
+    }
+    // if delegatedTo exists, it means the method is called on the delegatedTo address, otherwise it's called on the to address
+    const verify = getAddressNameInfo(row.delegatedTo || row.to, row.nameMap)
+      ?.verify;
+    const showWarning = !value.startsWith('0x') && !verify;
+
+    return (
+      <StyledMethodContainerWrapper>
+        {showWarning && (
+          <Tooltip
+            title={
+              <Translation>
+                {t => t(translations.general.table.tooltip.methodWarning)}
+              </Translation>
+            }
+            className="method-warning"
+          >
+            <img
+              src={ContractIcon}
+              alt="warning"
+              className="method-warning-icon"
+            />
+          </Tooltip>
+        )}
+        <MethodHighlight scope="method" value={text}>
+          <Text tag="span" hoverValue={text}>
+            <StyledMethodWrapper>{text}</StyledMethodWrapper>
+          </Text>
+        </MethodHighlight>
+      </StyledMethodContainerWrapper>
+    );
+  },
+};
+
 const StyledIconWrapper = styled.div`
   width: 16px;
   height: 16px;
@@ -177,4 +235,35 @@ const StyledTraceTypeWrapper = styled.span`
     display: inline-block;
     vertical-align: middle;
   }
+`;
+
+const StyledMethodContainerWrapper = styled.span`
+  display: flex;
+  .method-warning {
+    flex-shrink: 0;
+  }
+  .method-warning-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
+    margin-bottom: 3px;
+  }
+`;
+const MethodHighlight = styled(ValueHighlight)`
+  height: 20px;
+  padding: 0;
+`;
+const StyledMethodWrapper = styled.span`
+  background: rgba(171, 172, 181, 0.1);
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #424a71;
+  line-height: 12px;
+  max-width: 95px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;

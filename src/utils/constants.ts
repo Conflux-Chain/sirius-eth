@@ -1,7 +1,7 @@
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import lodash from 'lodash';
 import ENV_CONFIG, { DOMAIN, IS_STAGE } from 'env';
-import { LOCALSTORAGE_KEYS_MAP } from './enum';
+import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 import {
   NetworksType,
   NetworksTypeEnv,
@@ -70,20 +70,6 @@ export const CONTRACTS: ContractsType = (() => {
   return contracts;
 })();
 
-export const CONTRACTS_NAME_LABEL: ContractNameTagType = (() => {
-  let contractNameTag = {};
-  try {
-    const cachedContracts = JSON.parse(
-      localStorage.getItem(LOCALSTORAGE_KEYS_MAP.contractNameTag) as string,
-    );
-    if (Object.prototype.toString.call(cachedContracts) === '[object Object]') {
-      contractNameTag = cachedContracts;
-    }
-  } catch (e) {}
-
-  return contractNameTag;
-})();
-
 export const CFX_TOKEN_TYPES = {
   erc20: 'ERC20',
   erc777: 'ERC777',
@@ -112,23 +98,6 @@ export enum TXN_ACTION {
   tranferNFT1155 = 115,
   abiVerification = 116,
 }
-
-export const CURRENCY_SYMBOLS = {
-  USD: '$',
-  CNY: '¥',
-  GBP: '£',
-  KRW: '₩',
-  RUB: '₽',
-  EUR: '€',
-};
-
-export const getCurrency = () => {
-  return localStorage.getItem(LOCALSTORAGE_KEYS_MAP.currency) || 'USD';
-};
-
-export const getCurrencySymbol = () => {
-  return CURRENCY_SYMBOLS[getCurrency()];
-};
 
 export const CFXToDecode = new SDK.Conflux({
   url: ENV_CONFIG.ENV_RPC_SERVER,
@@ -168,8 +137,12 @@ export const OPEN_API_URLS = Object.entries({
   // NFT
   NFTTokens: '/nft/tokens',
   NFTBalance: '/nft/balances',
-  // eip-7702
+  // eip-7702 & eip4337
   eip7702Authorizations: '/eip7702/auths',
+  aaTransactions: '/eip4337/aa-txs',
+  bundleTransactions: '/eip4337/bundle-txs',
+  aaTxDetail: '/eip4337/aa-tx',
+  bundleTxDetail: '/eip4337/bundle-tx',
 })
   .map(item => ({
     [item[0]]: `${
