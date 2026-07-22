@@ -17,6 +17,7 @@ import { formatAddressHexToBase32 } from '@cfxjs/sirius-next-common/dist/utils/a
 import { publishRequestError } from '@cfxjs/sirius-next-common/dist/utils/pubsub';
 import { usePortal } from 'utils/hooks/usePortal';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { AbiItem } from '@cfxjs/sirius-next-common/dist/utils/sdk';
 
 interface ContractAbiProps {
   type?: 'read' | 'write';
@@ -50,6 +51,7 @@ export const ContractAbi = ({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [abiJSON, setAbiJSON] = useState<AbiItem[]>([]);
 
   const [contract, setContract] = useState(() =>
     CFX.Contract({
@@ -76,6 +78,7 @@ export const ContractAbi = ({
         }
 
         const abiJSON = JSON.parse(abiInfo);
+        setAbiJSON(JSON.parse(abiInfo));
 
         const contract = CFX.Contract({
           abi: abiJSON,
@@ -144,7 +147,7 @@ export const ContractAbi = ({
             dataForRead.forEach(function (dValue) {
               if (dValue['inputs'].length === 0) {
                 const r = batchResult[i];
-                if (r['code']) {
+                if (r?.['code']) {
                   dValue['error'] = r['message'];
                 } else {
                   const val = r;
@@ -220,6 +223,7 @@ export const ContractAbi = ({
           data={data[type]}
           contractAddress={proxyAddress || address}
           contract={contract}
+          abi={abiJSON}
         ></FuncList>
       ) : (
         <StyledTipWrapper>

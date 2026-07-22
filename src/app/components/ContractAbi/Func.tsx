@@ -7,16 +7,11 @@ import React, {
 } from 'react';
 import { Form, FormInstance } from '@cfxjs/antd';
 import { useTranslation } from 'react-i18next';
-import { Buffer } from 'buffer';
 import styled from 'styled-components';
 import { Button } from '@cfxjs/react-ui';
 import { usePortal } from 'utils/hooks/usePortal';
 import lodash from 'lodash';
-import FuncBody from './FuncBody';
-import OutputParams from './OutputParams';
-import FuncResponse from './FuncResponse';
 import OutputItem from './OutputItem';
-import Error from './Error';
 import { translations } from 'locales/i18n';
 import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import {
@@ -25,9 +20,8 @@ import {
   checkBytes,
   checkCfxType,
   isAddress,
-  convertBigNumbersToStrings,
-  convertObjBigNumbersToStrings,
   constprocessResultArray,
+  toThousands,
 } from '../../../utils';
 import { formatAddress } from '../../../utils';
 import { TXN_ACTION } from '../../../utils/constants';
@@ -36,11 +30,23 @@ import { formatType } from 'js-conflux-sdk/src/contract/abi';
 import { TxnStatusModal } from 'app/components/ConnectWallet/TxnStatusModal';
 import { trackEvent } from 'utils/ga';
 import { ScanEvent } from 'utils/gaConstants';
-import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import JSONBigint from 'json-bigint';
 import InputItem from './InputItem';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
+import { ErrorDecode } from '@cfxjs/sirius-next-common/dist/components/OutputData/ErrorDecode';
+import {
+  Error,
+  FuncBody,
+  FuncResponse,
+  OutputParams,
+  formatValuesToArgs,
+} from '@cfxjs/sirius-next-common/dist/components/ContractAbi';
 import { ExternalLink } from '@zeit-ui/react-icons';
+import {
+  simulateContract,
+  Hex,
+  AbiItem,
+} from '@cfxjs/sirius-next-common/dist/utils/sdk';
 
 interface FuncProps {
   type?: string;
@@ -48,12 +54,20 @@ interface FuncProps {
   contractAddress: string;
   contract: object;
   id?: string;
+  abi: AbiItem[];
 }
-type NativeAttrs = Omit<React.HTMLAttributes<any>, keyof FuncProps>;
 
-export declare type Props = FuncProps & NativeAttrs;
+const parseResponse = (res: unknown) =>
+  JSONBigint.parse(JSONBigint.stringify(res));
 
-const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
+const Func = ({
+  abi,
+  type,
+  data,
+  contractAddress,
+  contract,
+  id = '',
+}: FuncProps) => {
   const { addRecord } = useTxnHistory();
   const { t } = useTranslation();
   const { account, sendTransaction } = usePortal();
@@ -80,6 +94,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
       }),
     [data],
   );
+  const hasValue = type === 'write' && data['stateMutability'] === 'payable';
 
   useEffect(() => {
     if (data['value']) {
@@ -88,76 +103,14 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
     } else {
       setOutputShown(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (data['error']) {
       setOutputShown(false);
       setOutputError(data['error']);
     }
   }, [data]);
 
-  const formatValuesToArgs = values => {
-    // {type: 'string', val: ''} Only string has no set check, it can be '', undefined is an unfilled string,See getValidator type === 'string'.
-    const newValues = JSONBigint.parse(
-      JSONBigint.stringify(values, (key, value) =>
-        value === undefined
-          ? { type: 'string', val: '' }
-          : value['type'] === 'tuple'
-          ? {
-              type: 'string',
-              val: convertObjBigNumbersToStrings(
-                JSONBigint.parse(value['val']),
-              ),
-            }
-          : /u?int[\d]{2,3}\[/.test(value['type'])
-          ? {
-              type: 'string',
-              val: convertObjBigNumbersToStrings(
-                JSONBigint.parse(value['val']),
-              ),
-            }
-          : value,
-      ),
-    );
-    const items: object[] = Object.values(newValues);
-    const objValues: any[] = [];
-    // Special convert for various types before call sdk
-    items.forEach(function (value, index) {
-      let val = value['val'];
-      if (value['type'] === 'bool') {
-        if (val === 'true' || val === '1') {
-          value['val'] = true;
-        } else if (val === 'false' || val === '0') {
-          value['val'] = false;
-        }
-      } else if (value['type'].startsWith('tuple')) {
-        value['val'] = JSON.parse(value['val']);
-      } else if (value['type'].endsWith(']')) {
-        // array: convert to array
-        value['val'] = Array.from(JSON.parse(value['val']));
-        // TODO byte array support
-      } else if (value['type'].startsWith('byte')) {
-        value['val'] = Buffer.from(value['val'].substr(2), 'hex');
-      }
-      objValues.push(value['val']);
-    });
-
-    const args = convertBigNumbersToStrings(objValues);
-
-    // change cfx input to value in payable function
-    if (type === 'write' && data['stateMutability'] === 'payable') {
-      return {
-        args: args.slice(1),
-        value: SDK.format.bigUIntHex(SDK.Drip.fromCFX(args[0])),
-      };
-    }
-
-    return {
-      args,
-    };
-  };
-
   const onFinish = async values => {
-    const { args, value } = formatValuesToArgs(values);
+    const { args, value } = formatValuesToArgs(values, hasValue);
 
     switch (type) {
       case 'read':
@@ -170,19 +123,11 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
           setQueryLoading(false);
           if (data['outputs'].length === 1) {
             let arr: any[] = [];
-            arr.push(
-              constprocessResultArray(
-                JSONBigint.parse(JSONBigint.stringify(res)),
-              ),
-            );
+            arr.push(constprocessResultArray(parseResponse(res)));
             setOutputValue(arr);
           } else {
             setOutputValue(
-              Object.values(
-                constprocessResultArray(
-                  JSONBigint.parse(JSONBigint.stringify(res)),
-                ),
-              ),
+              Object.values(constprocessResultArray(parseResponse(res))),
             );
           }
           // setOutputValue(res)
@@ -336,7 +281,7 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
           if (checkCfxType(val)) {
             return Promise.resolve();
           }
-          return Promise.reject(t(translations.contract.error.numberLimit));
+          return Promise.reject(t(translations.contract.error.cfx));
         }
       };
       return check;
@@ -344,26 +289,122 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
     [t],
   );
 
+  const [simulateLoading, setSimulateLoading] = useState(false);
+  const [simulateResult, setSimulateResult] = useState<{
+    success: boolean;
+    result: unknown[] | null;
+  }>({
+    success: false,
+    result: null,
+  });
+  const [simulateError, setSimulateError] = useState('');
+  const [simulateGasError, setSimulateGasError] = useState('');
+  const [simulateGas, setSimulateGas] = useState('');
+
+  const simulateShown = simulateResult.success || simulateError;
+
+  const clearSimulateResult = () => {
+    setSimulateLoading(false);
+    setSimulateGas('');
+    setSimulateGasError('');
+    setSimulateError('');
+    setSimulateResult({
+      success: false,
+      result: null,
+    });
+  };
+
+  const simulateFunctionCall = async () => {
+    if (!formRef.current || !account) return;
+    try {
+      await formRef.current.validateFields();
+      clearSimulateResult();
+      const values = formRef.current.getFieldsValue();
+      const { args, value } = formatValuesToArgs(values, hasValue, false);
+      const func = contract[fullNameWithType](...args);
+      setSimulateLoading(true);
+      let simulateGasLoading = true;
+      let simulateCallLoading = true;
+      func
+        .estimateGasAndCollateral({
+          from: account,
+          value,
+        })
+        .then(gasRes => {
+          setSimulateGas(parseResponse(gasRes).gasUsed);
+        })
+        .catch(error => {
+          setSimulateGasError(error.message);
+        })
+        .finally(() => {
+          simulateGasLoading = false;
+          setSimulateLoading(simulateGasLoading || simulateCallLoading);
+        });
+      simulateContract({
+        address: contractAddress,
+        account,
+        value,
+        abi,
+        args,
+        functionName: data['name'],
+        space: 'evm',
+      })
+        .then(({ result: simulateRes }) => {
+          if (outputs.length === 0) {
+            setSimulateResult({
+              success: true,
+              result: [],
+            });
+            return;
+          }
+
+          const result = constprocessResultArray(parseResponse(simulateRes));
+
+          setSimulateResult({
+            success: true,
+            result: outputs.length === 1 ? [result] : Object.values(result),
+          });
+        })
+        .catch(error => {
+          setSimulateError(error?.cause?.raw || error?.message || '');
+        })
+        .finally(() => {
+          simulateCallLoading = false;
+          setSimulateLoading(simulateGasLoading || simulateCallLoading);
+        });
+    } catch (error) {
+      setSimulateError(error.message || '');
+    }
+  };
+
   const getCallData = async () => {
     if (!formRef.current) return;
     try {
       await formRef.current.validateFields();
       const values = formRef.current.getFieldsValue();
-      const objValuesNew = formatValuesToArgs(values);
-      const params = contract[fullNameWithType](...objValuesNew.args);
-      return params.data;
+      const { args } = formatValuesToArgs(values, hasValue);
+      const func = contract[fullNameWithType](...args);
+      return func.data;
     } catch (error) {
       console.log('get calldata failed:', error);
     }
   };
 
   const goToDebug = async () => {
-    const calldata = await getCallData();
-    if (!calldata) return;
-    window.open(
-      `${window.location.origin}/simulate-trace?data=${calldata}&to=${contractAddress}`,
-      '_blank',
-    );
+    if (!formRef.current) return;
+    try {
+      await formRef.current.validateFields();
+      const values = formRef.current.getFieldsValue();
+      const { args, value } = formatValuesToArgs(values, hasValue);
+      const func = contract[fullNameWithType](...args);
+      let url = `${window.location.origin}/simulate-trace?data=${func.data}&to=${contractAddress}`;
+      if (value) {
+        url += `&value=${value}`;
+      }
+      window.open(url, '_blank');
+    } catch (error) {
+      console.log('get debug params failed:', error);
+    }
   };
 
   const btnComp =
@@ -406,7 +447,13 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
           </Button>
         </ConnectButton>
         <ConnectButton>
-          <Button variant="solid" color="primary" className="btnComp">
+          <Button
+            variant="solid"
+            color="primary"
+            className="btnComp"
+            onClick={simulateFunctionCall}
+            loading={simulateLoading}
+          >
             {t(translations.simulateTrace.button.simulate)}
           </Button>
         </ConnectButton>
@@ -484,6 +531,56 @@ const Func = ({ type, data, contractAddress, contract, id = '' }: Props) => {
               />
             ))}
           {<Error message={outputError} />}
+          {simulateShown && (
+            <div className={`simulate-result ${simulateError && 'error'}`}>
+              <div className="simulate-result-title">
+                {t(translations.simulateTrace.simulatedResult)}
+              </div>
+              {simulateResult.success && (
+                <div>
+                  <div className="simulate-result-success">
+                    <span>{t(translations.simulateTrace.success)}</span>
+                    {outputs.length === 0 && (
+                      <div
+                        style={{
+                          marginLeft: '16px',
+                        }}
+                      >
+                        {t(translations.simulateTrace.bool)}
+                      </div>
+                    )}
+                  </div>
+                  {outputs.map((item, index) => (
+                    <OutputItem
+                      output={item}
+                      value={simulateResult.result?.[index]}
+                      key={id + index}
+                    />
+                  ))}
+                </div>
+              )}
+              {simulateError && (
+                <div>
+                  {simulateError.startsWith('0x') ? (
+                    <ErrorDecode
+                      to={contractAddress}
+                      space="evm"
+                      errorData={simulateError as Hex}
+                      contentClassName="simulate-error-content"
+                    />
+                  ) : (
+                    simulateError
+                  )}
+                </div>
+              )}
+
+              <div className="simulate-gas">
+                {t(translations.simulateTrace.estimatedGas)}:{' '}
+                {(simulateGas || simulateGasError) &&
+                  (simulateGas ? toThousands(simulateGas) : simulateGasError)}
+              </div>
+            </div>
+          )}
         </FuncBody>
       </Form>
 
@@ -529,9 +626,46 @@ const Container = styled.div`
       border-color: var(--theme-color-green2);
     } */
   }
+  .simulate-result {
+    border-radius: 4px;
+    background: #f8f8fa;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 16px;
+
+    &.error {
+      background: #fbebeb;
+    }
+
+    .simulate-result-success {
+      span {
+        color: #7cd77b;
+      }
+      display: flex;
+    }
+
+    .simulate-result-title {
+      color: #000;
+      font-size: 12px;
+    }
+
+    .simulate-error-content {
+      background-color: unset;
+    }
+
+    .simulate-gas {
+      color: #4f4f4e;
+      font-size: 14px;
+      font-weight: 450;
+      line-height: 22px;
+    }
+  }
 `;
 const BtnGroup = styled.div`
   margin: 12px 0;
+  display: flex;
+  align-items: center;
 `;
 const ButtonList = styled.div`
   display: flex;
