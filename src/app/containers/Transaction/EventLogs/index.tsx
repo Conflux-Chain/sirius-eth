@@ -27,7 +27,7 @@ interface Props {
   isAATx?: boolean;
 }
 
-const EventLog = ({ log }) => {
+export const EventLog = ({ log }) => {
   const { t } = useTranslation();
   const [eventInfo, setEventInfo] = useState<any>(() => {
     const splitData = _.words(log.data.substr(2), /.{64}/g).map(w => ({

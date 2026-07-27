@@ -121,6 +121,7 @@ module.exports = function (config, mode) {
               path.resolve(__dirname, 'node_modules/@cfx-kit/react-utils'),
               path.resolve(__dirname, 'node_modules/@cfx-kit/dapp-utils'),
               path.resolve(__dirname, 'node_modules/viem'),
+              path.resolve(__dirname, 'node_modules/cive'),
               path.resolve(__dirname, 'node_modules/ox'),
             ],
             use: {
@@ -177,6 +178,7 @@ module.exports = function (config, mode) {
             path.resolve(__dirname, 'node_modules/@cfx-kit/react-utils'),
             path.resolve(__dirname, 'node_modules/@cfx-kit/dapp-utils'),
             path.resolve(__dirname, 'node_modules/viem'),
+            path.resolve(__dirname, 'node_modules/cive'),
             path.resolve(__dirname, 'node_modules/ox'),
           ],
           use: {
