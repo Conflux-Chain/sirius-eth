@@ -4,7 +4,7 @@
  *
  */
 import React, { useState, useEffect } from 'react';
-import FuncList from './FuncList';
+import FuncList, { FuncDataItem } from './FuncList';
 import { CFX } from 'utils/constants';
 import { formatType } from 'js-conflux-sdk/src/contract/abi';
 import { reqContract } from 'utils/httpRequest';
@@ -17,6 +17,7 @@ import { formatAddressHexToBase32 } from '@cfxjs/sirius-next-common/dist/utils/a
 import { publishRequestError } from '@cfxjs/sirius-next-common/dist/utils/pubsub';
 import { usePortal } from 'utils/hooks/usePortal';
 import { Link } from '@cfxjs/sirius-next-common/dist/components/Link';
+import { AbiItem } from '@cfxjs/sirius-next-common/dist/utils/sdk';
 
 interface ContractAbiProps {
   type?: 'read' | 'write';
@@ -29,7 +30,7 @@ interface ContractAbiProps {
 type NativeAttrs = Omit<React.HTMLAttributes<any>, keyof ContractAbiProps>;
 export declare type Props = ContractAbiProps & NativeAttrs;
 
-type DataType = Array<Object>;
+type DataType = Array<FuncDataItem>;
 
 export const ContractAbi = ({
   type = 'read',
@@ -50,6 +51,7 @@ export const ContractAbi = ({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [abiJSON, setAbiJSON] = useState<AbiItem[]>([]);
 
   const [contract, setContract] = useState(() =>
     CFX.Contract({
@@ -76,6 +78,7 @@ export const ContractAbi = ({
         }
 
         const abiJSON = JSON.parse(abiInfo);
+        setAbiJSON(JSON.parse(abiInfo));
 
         const contract = CFX.Contract({
           abi: abiJSON,
@@ -92,24 +95,31 @@ export const ContractAbi = ({
             for (let abiItem of abi) {
               if (abiItem.name !== '' && abiItem.type === 'function') {
                 const stateMutability = abiItem.stateMutability;
+                const fullNameWithType =
+                  formatType({
+                    name: abiItem['name'],
+                    inputs: abiItem['inputs'],
+                  }) || abiItem.name;
                 switch (stateMutability) {
                   case 'pure':
                   case 'view':
                     if (abiItem.inputs && abiItem.inputs.length === 0) {
-                      const fullNameWithType = formatType({
-                        name: abiItem['name'],
-                        inputs: abiItem['inputs'],
-                      });
                       batcher.add(
                         contract[fullNameWithType]().request({
                           from: account,
                         }),
                       );
                     }
-                    dataForRead.push(abiItem);
+                    dataForRead.push({
+                      ...abiItem,
+                      signature: contract[fullNameWithType]?.signature,
+                    });
                     break;
                   case 'nonpayable':
-                    dataForWrite.push(abiItem);
+                    dataForWrite.push({
+                      ...abiItem,
+                      signature: contract[fullNameWithType]?.signature,
+                    });
                     break;
                   case 'payable':
                     const payableObjs = [
@@ -120,7 +130,10 @@ export const ContractAbi = ({
                       },
                     ];
                     abiItem['inputs'] = payableObjs.concat(abiItem['inputs']);
-                    dataForWrite.push(abiItem);
+                    dataForWrite.push({
+                      ...abiItem,
+                      signature: contract[fullNameWithType]?.signature,
+                    });
                     break;
                   default:
                     break;
@@ -134,7 +147,7 @@ export const ContractAbi = ({
             dataForRead.forEach(function (dValue) {
               if (dValue['inputs'].length === 0) {
                 const r = batchResult[i];
-                if (r['code']) {
+                if (r?.['code']) {
                   dValue['error'] = r['message'];
                 } else {
                   const val = r;
@@ -210,6 +223,7 @@ export const ContractAbi = ({
           data={data[type]}
           contractAddress={proxyAddress || address}
           contract={contract}
+          abi={abiJSON}
         ></FuncList>
       ) : (
         <StyledTipWrapper>
