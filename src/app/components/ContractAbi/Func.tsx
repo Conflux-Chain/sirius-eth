@@ -317,8 +317,8 @@ const Func = ({
   const simulateFunctionCall = async () => {
     if (!formRef.current || !account) return;
     try {
-      await formRef.current.validateFields();
       clearSimulateResult();
+      await formRef.current.validateFields();
       const values = formRef.current.getFieldsValue();
       const { args, value } = formatValuesToArgs(values, hasValue, false);
       const func = contract[fullNameWithType](...args);
@@ -346,7 +346,7 @@ const Func = ({
         value,
         abi,
         args,
-        functionName: data['name'],
+        functionName: func.data.slice(0, 10),
         space: 'evm',
       })
         .then(({ result: simulateRes }) => {
