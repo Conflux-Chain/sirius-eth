@@ -33,6 +33,7 @@ import { ScanEvent } from 'utils/gaConstants';
 import JSONBigint from 'json-bigint';
 import InputItem from './InputItem';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
+import { ExternalLink } from '@cfxjs/sirius-next-common/dist/components/Icons';
 import { ErrorDecode } from '@cfxjs/sirius-next-common/dist/components/OutputData/ErrorDecode';
 import {
   Error,
@@ -41,7 +42,6 @@ import {
   OutputParams,
   formatValuesToArgs,
 } from '@cfxjs/sirius-next-common/dist/components/ContractAbi';
-import { ExternalLink } from '@zeit-ui/react-icons';
 import {
   simulateContract,
   Hex,
@@ -431,7 +431,7 @@ const Func = ({
           onClick={goToDebug}
         >
           {t(translations.simulateTrace.button.debug)}
-          <ExternalLink size={14} />
+          <ExternalLink />
         </Button>
       </ButtonList>
     ) : (
@@ -470,7 +470,7 @@ const Func = ({
             onClick={goToDebug}
           >
             {t(translations.simulateTrace.button.debug)}
-            <ExternalLink size={14} />
+            <ExternalLink />
           </Button>
         </ConnectButton>
       </ButtonList>
@@ -647,7 +647,9 @@ const Container = styled.div`
 
     .simulate-result-title {
       color: #000;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: 450;
+      line-height: 22px;
     }
 
     .simulate-error-content {
