@@ -9,35 +9,69 @@ import { TabsTablePanel } from 'app/components/TabsTablePanel';
 import { SimulateTrace } from './SimulateTrace';
 import { EVMAddressContainer } from '@cfxjs/sirius-next-common/dist/components/AddressContainer/EVMAddressContainer';
 import { useDecodeFunctionData } from '@cfxjs/sirius-next-common/dist/utils/hooks/useDecodeFunctionData';
-import { Hex } from '@cfxjs/sirius-next-common/dist/utils/sdk';
 import { ValueHighlight } from '@cfxjs/sirius-next-common/dist/components/Highlight';
 import simulateImg from 'images/simulate.svg';
 import { useSimulateTrace } from '@cfxjs/sirius-next-common/dist/utils/hooks/useSimulateTrace';
 import { transformNameMapKeysToLowerCase } from '@cfxjs/sirius-next-common/dist/utils/hooks/useAddressNameMap';
+import { decodeCalldataFromUrl } from '@cfxjs/sirius-next-common/dist/utils/calldataUrl';
 import { SimulateLogs } from './SimulateLogs';
 import { Button } from '@cfxjs/react-ui';
 import { ConnectButton } from 'app/components/ConnectWallet';
+import { isAddress } from 'utils';
+import { Hex } from '@cfxjs/sirius-next-common/dist/utils/types';
+import { ZERO_ADDRESS_HEX } from '@cfxjs/sirius-next-common/dist/utils/constants';
+
+const useSimulateParams = (params: Record<string, string>) => {
+  const { account } = usePortal();
+  const encodedData =
+    typeof params.data === 'string'
+      ? params.data
+      : params.data === undefined
+      ? undefined
+      : '';
+  const decodedData = useMemo(() => decodeCalldataFromUrl(encodedData), [
+    encodedData,
+  ]);
+  const to = isAddress(params.to, false) ? (params.to as Hex) : undefined;
+  if (!decodedData.ok || !to) return;
+  const from = isAddress(params.from, false)
+    ? (params.from as Hex)
+    : (account as Hex) || ZERO_ADDRESS_HEX;
+  const value = Number.isNaN(Number(params.value)) ? '0x0' : params.value;
+  const priceInParams = params.gasPrice || params.price;
+  const gasPrice = Number.isNaN(Number(priceInParams))
+    ? undefined
+    : priceInParams;
+  const gas = Number.isNaN(Number(params.gas)) ? undefined : params.gas;
+  return {
+    from,
+    to,
+    value,
+    data: decodedData.data,
+    gasPrice,
+    gas,
+    space: 'evm',
+  } as const;
+};
 
 export const SimulatePage = () => {
   const { t } = useTranslation();
   const { search } = useLocation();
-  const { account } = usePortal();
-  const params = useMemo(() => qs.parse(search), [search]);
-  const from = account || '';
-  const to = params.to as string;
-  const data = params.data as Hex;
-  const value = params.value as string;
+  const params = useMemo(() => qs.parse(search) as Record<string, string>, [
+    search,
+  ]);
+  const simulateParams = useSimulateParams(params);
   const [result] = useDecodeFunctionData({
-    to,
-    input: data,
+    to: simulateParams?.to,
+    input: simulateParams?.data,
     space: 'evm',
   });
+  const isViewMethod =
+    result.abiItem?.stateMutability === 'view' ||
+    result.abiItem?.stateMutability === 'pure';
   const { data: traceData, isValidating, mutate } = useSimulateTrace({
-    from: account,
-    to,
-    value,
-    data,
-    space: 'evm',
+    tx: simulateParams,
+    disabled: !simulateParams,
   });
   const { list = [], total = 0, logs } = traceData ?? {};
   const nameMap = useMemo(() => {
@@ -54,6 +88,8 @@ export const SimulatePage = () => {
           list={list}
           total={total}
           isLoading={isValidating}
+          from={simulateParams?.from}
+          to={simulateParams?.to}
         />
       ),
     },
@@ -67,7 +103,12 @@ export const SimulatePage = () => {
 
   const functionName =
     result.abiItem?.name ||
-    (to && data && data.length > 10 ? data.slice(0, 10) : undefined);
+    (simulateParams && simulateParams.data && simulateParams.data.length > 10
+      ? simulateParams.data.slice(0, 10)
+      : undefined);
+  const calldataError = simulateParams
+    ? ''
+    : t(translations.simulateTrace.invalidUrl);
 
   return (
     <StyledContainer>
@@ -77,12 +118,24 @@ export const SimulatePage = () => {
           <span>{t(translations.simulateTrace.simulateTransaction)}</span>
         </div>
         <div className="simulate-info">
-          {to && (
+          {simulateParams?.from && (
+            <div className="simulate-contract">
+              {t(translations.simulateTrace.from)}:{' '}
+              <ValueHighlight scope="address" value={simulateParams.from}>
+                <EVMAddressContainer
+                  value={simulateParams.from}
+                  nameMap={nameMap}
+                  showVerificationName
+                />
+              </ValueHighlight>
+            </div>
+          )}
+          {simulateParams?.to && (
             <div className="simulate-contract">
               {t(translations.simulateTrace.contract)}:{' '}
-              <ValueHighlight scope="address" value={to}>
+              <ValueHighlight scope="address" value={simulateParams.to}>
                 <EVMAddressContainer
-                  value={to}
+                  value={simulateParams.to}
                   nameMap={nameMap}
                   showVerificationName
                 />
@@ -95,15 +148,16 @@ export const SimulatePage = () => {
             </div>
           )}
         </div>
-        {!from && (
+        {!isViewMethod && !simulateParams?.from && (
           <div className="connect-wallet-tip">
             {t(translations.connectWallet.tip)}
           </div>
         )}
+        {calldataError && <div className="calldata-error">{calldataError}</div>}
       </StyledHeader>
-      {from && (
+      {simulateParams && (
         <ContentContainer>
-          <ConnectButton>
+          {isViewMethod ? (
             <Button
               variant="solid"
               color="primary"
@@ -112,13 +166,27 @@ export const SimulatePage = () => {
             >
               {t(translations.simulateTrace.button.reSimulate)}
             </Button>
-          </ConnectButton>
+          ) : (
+            <ConnectButton>
+              <Button
+                variant="solid"
+                color="primary"
+                className="btnComp"
+                onClick={() => mutate()}
+              >
+                {t(translations.simulateTrace.button.reSimulate)}
+              </Button>
+            </ConnectButton>
+          )}
           <TabsTablePanel
             tabs={tabs}
             query={{
-              to,
-              data,
-              value,
+              from: params.from,
+              to: params.to,
+              data: params.data,
+              value: params.value,
+              gas: params.gas,
+              gasPrice: params.gasPrice || params.price,
             }}
           />
         </ContentContainer>
@@ -171,6 +239,9 @@ const StyledHeader = styled.div`
     }
   }
   .connect-wallet-tip {
+    color: red;
+  }
+  .calldata-error {
     color: red;
   }
 `;

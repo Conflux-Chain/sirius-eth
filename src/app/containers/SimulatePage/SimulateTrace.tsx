@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import { CopyButton } from '@cfxjs/sirius-next-common/dist/components/CopyButton';
@@ -11,54 +11,62 @@ import { renderAddress } from 'utils/tableColumns/utils';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { ListTrace } from '../Transactions/ListTrace';
 import { TreeTrace } from '../Transactions/TreeTrace';
-import { useLocation } from 'react-router-dom';
-import qs from 'query-string';
-import { usePortal } from 'utils/hooks/usePortal';
 import { TreeTraceForUI } from '@cfxjs/sirius-next-common/dist/utils/hooks/useTxTrace';
 import { AddressNameMap } from '@cfxjs/sirius-next-common/dist/utils/request.types';
 
 export const SimulateTrace = ({
+  from,
+  to,
   nameMap,
   total,
   list = [],
   isLoading,
 }: {
+  from?: string;
+  to?: string;
   isLoading?: boolean;
   total?: number;
   list?: TreeTraceForUI[];
   nameMap?: Record<string, AddressNameMap>;
 }) => {
   const { t } = useTranslation();
-  const { search } = useLocation();
-  const { account } = usePortal();
-  const params = useMemo(() => qs.parse(search), [search]);
-  const from = account || '';
-  const to = params.to as string;
   const [showProxyCall, setShowProxyCall] = useState(false);
   const [viewMode, setViewMode] = useState('tree');
 
   const fromContent = () => (
     <StyledAddressContainer>
-      {renderAddress(
-        from,
-        { nameMap },
-        {
-          showVerificationName: true,
-        },
-      )}{' '}
-      <CopyButton copyText={formatAddress(from)} />
+      {from ? (
+        <>
+          {renderAddress(
+            from,
+            { nameMap },
+            {
+              showVerificationName: true,
+            },
+          )}{' '}
+          <CopyButton copyText={formatAddress(from)} />
+        </>
+      ) : (
+        '--'
+      )}
     </StyledAddressContainer>
   );
   const toContent = () => (
     <StyledAddressContainer>
-      {renderAddress(
-        to,
-        { nameMap },
-        {
-          showVerificationName: true,
-        },
-      )}{' '}
-      <CopyButton copyText={formatAddress(to)} />
+      {to ? (
+        <>
+          {renderAddress(
+            to,
+            { nameMap },
+            {
+              showVerificationName: true,
+            },
+          )}{' '}
+          <CopyButton copyText={formatAddress(to)} />
+        </>
+      ) : (
+        '--'
+      )}
     </StyledAddressContainer>
   );
 
