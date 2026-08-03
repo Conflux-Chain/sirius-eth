@@ -44,9 +44,10 @@ import {
 } from '@cfxjs/sirius-next-common/dist/components/ContractAbi';
 import {
   simulateContract,
-  Hex,
   AbiItem,
 } from '@cfxjs/sirius-next-common/dist/utils/sdk';
+import { encodeCalldataForUrl } from '@cfxjs/sirius-next-common/dist/utils/calldataUrl';
+import { Hex } from '@cfxjs/sirius-next-common/dist/utils/types';
 
 interface FuncProps {
   type?: string;
@@ -331,7 +332,7 @@ const Func = ({
           value,
         })
         .then(gasRes => {
-          setSimulateGas(parseResponse(gasRes).gasUsed);
+          setSimulateGas(parseResponse(gasRes).gasLimit);
         })
         .catch(error => {
           setSimulateGasError(error.message);
@@ -391,15 +392,21 @@ const Func = ({
   };
 
   const goToDebug = async () => {
-    if (!formRef.current) return;
+    if (!formRef.current || (!account && type === 'write')) return;
     try {
       await formRef.current.validateFields();
       const values = formRef.current.getFieldsValue();
       const { args, value } = formatValuesToArgs(values, hasValue);
       const func = contract[fullNameWithType](...args);
-      let url = `${window.location.origin}/simulate-trace?data=${func.data}&to=${contractAddress}`;
+      let url = `${window.location.origin}/simulate-trace?to=${contractAddress}`;
+      if (account) {
+        url += `&from=${account}`;
+      }
       if (value) {
         url += `&value=${value}`;
+      }
+      if (func.data) {
+        url += `&data=${encodeCalldataForUrl(func.data)}`;
       }
       window.open(url, '_blank');
     } catch (error) {
