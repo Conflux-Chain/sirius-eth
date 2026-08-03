@@ -21,16 +21,29 @@ import { isAddress } from 'utils';
 import { Hex } from '@cfxjs/sirius-next-common/dist/utils/types';
 import { ZERO_ADDRESS_HEX } from '@cfxjs/sirius-next-common/dist/utils/constants';
 
+const getStringParam = (value: unknown) =>
+  typeof value === 'string' ? value : undefined;
+
+const getTabQuery = (params: Record<string, unknown>) => {
+  const query: Record<string, string> = {};
+  const keys = ['from', 'to', 'data', 'value', 'gas'] as const;
+
+  keys.forEach(key => {
+    const value = getStringParam(params[key]);
+    if (value !== undefined) query[key] = value;
+  });
+
+  const gasPrice =
+    getStringParam(params.gasPrice) || getStringParam(params.price);
+  if (gasPrice !== undefined) query.gasPrice = gasPrice;
+
+  return query;
+};
+
 const useSimulateParams = (params: Record<string, string>) => {
   const { account } = usePortal();
-  const encodedData =
-    typeof params.data === 'string'
-      ? params.data
-      : params.data === undefined
-      ? undefined
-      : '';
-  const decodedData = useMemo(() => decodeCalldataFromUrl(encodedData), [
-    encodedData,
+  const decodedData = useMemo(() => decodeCalldataFromUrl(params.data), [
+    params.data,
   ]);
   const to = isAddress(params.to, false) ? (params.to as Hex) : undefined;
   if (!decodedData.ok || !to) return;
@@ -38,10 +51,9 @@ const useSimulateParams = (params: Record<string, string>) => {
     ? (params.from as Hex)
     : (account as Hex) || ZERO_ADDRESS_HEX;
   const value = Number.isNaN(Number(params.value)) ? '0x0' : params.value;
-  const priceInParams = params.gasPrice || params.price;
-  const gasPrice = Number.isNaN(Number(priceInParams))
+  const gasPrice = Number.isNaN(Number(params.gasPrice))
     ? undefined
-    : priceInParams;
+    : params.gasPrice;
   const gas = Number.isNaN(Number(params.gas)) ? undefined : params.gas;
   return {
     from,
@@ -57,10 +69,9 @@ const useSimulateParams = (params: Record<string, string>) => {
 export const SimulatePage = () => {
   const { t } = useTranslation();
   const { search } = useLocation();
-  const params = useMemo(() => qs.parse(search) as Record<string, string>, [
-    search,
-  ]);
-  const simulateParams = useSimulateParams(params);
+  const params = useMemo(() => qs.parse(search), [search]);
+  const tabQuery = useMemo(() => getTabQuery(params), [params]);
+  const simulateParams = useSimulateParams(tabQuery);
   const [result] = useDecodeFunctionData({
     to: simulateParams?.to,
     input: simulateParams?.data,
@@ -178,17 +189,7 @@ export const SimulatePage = () => {
               </Button>
             </ConnectButton>
           )}
-          <TabsTablePanel
-            tabs={tabs}
-            query={{
-              from: params.from,
-              to: params.to,
-              data: params.data,
-              value: params.value,
-              gas: params.gas,
-              gasPrice: params.gasPrice || params.price,
-            }}
-          />
+          <TabsTablePanel tabs={tabs} query={tabQuery} />
         </ContentContainer>
       )}
     </StyledContainer>
