@@ -19,6 +19,7 @@ import { Button } from '@cfxjs/react-ui';
 import { isAddress } from 'utils';
 import { Hex } from '@cfxjs/sirius-next-common/dist/utils/types';
 import { ZERO_ADDRESS_HEX } from '@cfxjs/sirius-next-common/dist/utils/constants';
+import BigNumber from 'bignumber.js';
 
 const getStringParam = (value: unknown) =>
   typeof value === 'string' && value ? value : undefined;
@@ -76,11 +77,14 @@ export const SimulatePage = () => {
     input: simulateParams?.data,
     space: 'evm',
   });
-  const isViewMethod =
-    result.abiItem?.stateMutability === 'view' ||
-    result.abiItem?.stateMutability === 'pure';
+  const valueBN = new BigNumber(simulateParams?.value ?? '');
+  const supportZeroAddressAsFrom =
+    (result.abiItem?.stateMutability === 'view' ||
+      result.abiItem?.stateMutability === 'pure') &&
+    valueBN.eq(0);
   const from =
-    simulateParams?.from || (isViewMethod ? ZERO_ADDRESS_HEX : undefined);
+    simulateParams?.from ||
+    (supportZeroAddressAsFrom ? ZERO_ADDRESS_HEX : undefined);
   const { data: traceData, isValidating, mutate } = useSimulateTrace({
     tx: simulateParams
       ? {
