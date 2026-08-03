@@ -16,13 +16,12 @@ import { transformNameMapKeysToLowerCase } from '@cfxjs/sirius-next-common/dist/
 import { decodeCalldataFromUrl } from '@cfxjs/sirius-next-common/dist/utils/calldataUrl';
 import { SimulateLogs } from './SimulateLogs';
 import { Button } from '@cfxjs/react-ui';
-import { ConnectButton } from 'app/components/ConnectWallet';
 import { isAddress } from 'utils';
 import { Hex } from '@cfxjs/sirius-next-common/dist/utils/types';
 import { ZERO_ADDRESS_HEX } from '@cfxjs/sirius-next-common/dist/utils/constants';
 
 const getStringParam = (value: unknown) =>
-  typeof value === 'string' ? value : undefined;
+  typeof value === 'string' && value ? value : undefined;
 
 const getTabQuery = (params: Record<string, unknown>) => {
   const query: Record<string, string> = {};
@@ -49,7 +48,7 @@ const useSimulateParams = (params: Record<string, string>) => {
   if (!decodedData.ok || !to) return;
   const from = isAddress(params.from, false)
     ? (params.from as Hex)
-    : (account as Hex) || ZERO_ADDRESS_HEX;
+    : (account as Hex);
   const value = Number.isNaN(Number(params.value)) ? '0x0' : params.value;
   const gasPrice = Number.isNaN(Number(params.gasPrice))
     ? undefined
@@ -80,9 +79,16 @@ export const SimulatePage = () => {
   const isViewMethod =
     result.abiItem?.stateMutability === 'view' ||
     result.abiItem?.stateMutability === 'pure';
+  const from =
+    simulateParams?.from || (isViewMethod ? ZERO_ADDRESS_HEX : undefined);
   const { data: traceData, isValidating, mutate } = useSimulateTrace({
-    tx: simulateParams,
-    disabled: !simulateParams,
+    tx: simulateParams
+      ? {
+          ...simulateParams,
+          from: from as Hex,
+        }
+      : undefined,
+    disabled: !simulateParams || !from,
   });
   const { list = [], total = 0, logs } = traceData ?? {};
   const nameMap = useMemo(() => {
@@ -99,7 +105,7 @@ export const SimulatePage = () => {
           list={list}
           total={total}
           isLoading={isValidating}
-          from={simulateParams?.from}
+          from={from}
           to={simulateParams?.to}
         />
       ),
@@ -129,12 +135,12 @@ export const SimulatePage = () => {
           <span>{t(translations.simulateTrace.simulateTransaction)}</span>
         </div>
         <div className="simulate-info">
-          {simulateParams?.from && (
+          {from && (
             <div className="simulate-contract">
               {t(translations.simulateTrace.from)}:{' '}
-              <ValueHighlight scope="address" value={simulateParams.from}>
+              <ValueHighlight scope="address" value={from}>
                 <EVMAddressContainer
-                  value={simulateParams.from}
+                  value={from}
                   nameMap={nameMap}
                   showVerificationName
                 />
@@ -159,36 +165,23 @@ export const SimulatePage = () => {
             </div>
           )}
         </div>
-        {!isViewMethod && !simulateParams?.from && (
+        {!from && (
           <div className="connect-wallet-tip">
             {t(translations.connectWallet.tip)}
           </div>
         )}
         {calldataError && <div className="calldata-error">{calldataError}</div>}
       </StyledHeader>
-      {simulateParams && (
+      {simulateParams && from && (
         <ContentContainer>
-          {isViewMethod ? (
-            <Button
-              variant="solid"
-              color="primary"
-              className="btnComp"
-              onClick={() => mutate()}
-            >
-              {t(translations.simulateTrace.button.reSimulate)}
-            </Button>
-          ) : (
-            <ConnectButton>
-              <Button
-                variant="solid"
-                color="primary"
-                className="btnComp"
-                onClick={() => mutate()}
-              >
-                {t(translations.simulateTrace.button.reSimulate)}
-              </Button>
-            </ConnectButton>
-          )}
+          <Button
+            variant="solid"
+            color="primary"
+            className="btnComp"
+            onClick={() => mutate()}
+          >
+            {t(translations.simulateTrace.button.reSimulate)}
+          </Button>
           <TabsTablePanel tabs={tabs} query={tabQuery} />
         </ContentContainer>
       )}
