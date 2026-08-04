@@ -574,24 +574,29 @@ const Func = ({
               )}
               {simulateError && (
                 <div>
+                  <div>Reverted</div>
                   {simulateError.startsWith('0x') ? (
-                    <ErrorDecode
-                      to={contractAddress}
-                      space="evm"
-                      errorData={simulateError as Hex}
-                      contentClassName="simulate-error-content"
-                    />
+                    simulateError === '0x' ? null : (
+                      <ErrorDecode
+                        to={contractAddress}
+                        space="evm"
+                        errorData={simulateError as Hex}
+                        contentClassName="simulate-error-content"
+                      />
+                    )
                   ) : (
                     simulateError
                   )}
                 </div>
               )}
 
-              <div className="simulate-gas">
-                {t(translations.simulateTrace.estimatedGas)}:{' '}
-                {(simulateGas || simulateGasError) &&
-                  (simulateGas ? toThousands(simulateGas) : simulateGasError)}
-              </div>
+              {!simulateError && (
+                <div className="simulate-gas">
+                  {t(translations.simulateTrace.estimatedGas)}:{' '}
+                  {(simulateGas || simulateGasError) &&
+                    (simulateGas ? toThousands(simulateGas) : simulateGasError)}
+                </div>
+              )}
             </div>
           )}
         </FuncBody>
