@@ -118,7 +118,6 @@ export const txns = {
   ),
   dataIndex: 'txns',
   key: 'txns',
-  sortable: true,
   render: value => <span>{formatNumber(value, { withUnit: false })}</span>,
 };
 
@@ -130,7 +129,6 @@ export const setting = {
   ),
   dataIndex: 'setting',
   key: 'setting',
-  sortable: true,
   render: setting => {
     const optimizationEnabled = setting?.optimizationEnabled;
     const constructorArguments = setting?.constructorArguments;
@@ -174,7 +172,6 @@ export const verified = {
   ),
   dataIndex: 'verifiedAt',
   key: 'verifiedAt',
-  sortable: true,
   render: value => <span>{dayjs.utc(value * 1000).format('MM/DD/YYYY')}</span>,
 };
 
@@ -186,7 +183,6 @@ export const license = {
   ),
   dataIndex: 'license',
   key: 'license',
-  sortable: true,
   render: value => value || '-',
 };
 
