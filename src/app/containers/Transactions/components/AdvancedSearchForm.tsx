@@ -41,6 +41,7 @@ export interface AdvancedSearchFormProps {
   author?: SearchFormItemsProps;
   delegatedAddress?: SearchFormItemsProps;
   txSender?: SearchFormItemsProps;
+  contractName?: SearchFormItemsProps;
 }
 
 interface QueryProps {
@@ -189,6 +190,15 @@ const defaultProps = {
       xl: 6,
     },
   },
+  contractName: {
+    col: {
+      xs: 24,
+      sm: 6,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+  },
   button: {
     col: {
       xs: 24,
@@ -263,6 +273,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
     author,
     delegatedAddress,
     txSender,
+    contractName,
   } = props;
 
   const validators = useMemo(() => {
@@ -383,6 +394,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
       author,
       address,
       txSender,
+      contractName,
       ...others
     } = qs.parse(search);
 
@@ -479,6 +491,9 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
     }
     if (props.txSender && values.txSender) {
       query.txSender = values.txSender;
+    }
+    if (props.contractName && values.contractName) {
+      query.contractName = values.contractName;
     }
 
     const urlWithQuery = qs.stringifyUrl({
@@ -925,6 +940,24 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
             label={t(translations.general.advancedSearch.label.txSender)}
             normalize={value => value.trim()}
             rules={[{ validator: validators.isAddress }]}
+          >
+            <Input placeholder="" allowClear />
+          </Form.Item>
+        </Col>,
+      );
+    }
+    if (contractName) {
+      const col =
+        typeof contractName !== 'boolean'
+          ? contractName?.col
+          : defaultProps.contractName.col;
+
+      children.push(
+        <Col {...col} key="contractName">
+          <Form.Item
+            name="contractName"
+            label={t(translations.general.advancedSearch.label.contractName)}
+            normalize={value => value.trim()}
           >
             <Input placeholder="" allowClear />
           </Form.Item>

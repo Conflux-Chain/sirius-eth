@@ -128,6 +128,7 @@ export const OPEN_API_URLS = Object.entries({
   accountGrowth: '/statistics/account/growth',
   activeAccounts: '/statistics/account/active/overall',
   contracts: '/statistics/contract',
+  verifiedContracts: '/statistics/contract/verified',
   approvals: '/account/approvals',
   baseFeePerBlock: '/statistics/block/base-fee',
   averagePriorityFeePerBlock: '/statistics/block/avg-priority-fee',
@@ -137,6 +138,8 @@ export const OPEN_API_URLS = Object.entries({
   // NFT
   NFTTokens: '/nft/tokens',
   NFTBalance: '/nft/balances',
+  // contracts
+  verifiedContractsLatest: '/contract/verified/latest',
   // eip-7702 & eip4337
   eip7702Authorizations: '/eip7702/auths',
   aaTransactions: '/eip4337/aa-txs',
