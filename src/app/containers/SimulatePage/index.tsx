@@ -124,7 +124,7 @@ export const SimulatePage = () => {
 
   const functionName =
     result.abiItem?.name ||
-    (simulateParams && simulateParams.data && simulateParams.data.length > 10
+    (simulateParams && simulateParams.data && simulateParams.data.length >= 10
       ? simulateParams.data.slice(0, 10)
       : undefined);
   const calldataError = simulateParams
