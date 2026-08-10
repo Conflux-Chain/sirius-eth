@@ -73,6 +73,7 @@ import { ContractVerification } from './containers/ContractVerification/Loadable
 import { ABIVerification } from './containers/ABIVerification/Loadable';
 import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 import { EIP7702Authorizations } from './containers/EIP7702Authorizations/Loadable';
+import { SimulatePage } from './containers/SimulatePage/Loadable';
 import { AccountAbstraction } from './containers/AccountAbstraction/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
@@ -129,7 +130,7 @@ WebFontLoader.load({
   },
 });
 
-BigNumber.config({ EXPONENTIAL_AT: [-18, 34] });
+BigNumber.config({ EXPONENTIAL_AT: [-80, 80], DECIMAL_PLACES: 80 });
 
 // @ts-ignore
 window.recaptchaOptions = {
@@ -480,6 +481,11 @@ export function App() {
                           exact
                           path="/eip7702-authorizations"
                           component={EIP7702Authorizations}
+                        />
+                        <Route
+                          exact
+                          path="/simulate-trace"
+                          component={SimulatePage}
                         />
                         <Route
                           exact

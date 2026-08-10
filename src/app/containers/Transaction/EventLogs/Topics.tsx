@@ -77,7 +77,7 @@ export const Topics = ({ data, signature }) => {
               typeof value === 'string' ? convertCheckSum(value) : value;
             value = (
               <>
-                <StyledHighlight scope="address" value={address}>
+                <StyledHighlight scope="address" value={address as string}>
                   <Link href={`/address/${value}`}>{address}</Link>
                 </StyledHighlight>
                 <ContractDetail address={valueMap.decode} addressType="hex" />
