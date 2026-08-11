@@ -75,6 +75,7 @@ import { CFXTransfers } from './containers/CFXTransfers/Loadable';
 import { EIP7702Authorizations } from './containers/EIP7702Authorizations/Loadable';
 import { SimulatePage } from './containers/SimulatePage/Loadable';
 import { AccountAbstraction } from './containers/AccountAbstraction/Loadable';
+import { VerifiedContracts } from './containers/VerifiedContracts/Loadable';
 // import { PackingPage } from './containers/PackingPage/Loadable';
 // import { Contracts } from './containers/Contracts/Loadable';
 
@@ -102,6 +103,7 @@ import {
   AccountGrowth,
   ActiveAccounts,
   Contracts as ContractsCharts,
+  VerifiedContracts as VerifiedContractsCharts,
 } from './containers/Charts/Loadable';
 import { Chart as EIP1559Metrics } from './containers/Charts/eip1559Metrics/Loadable';
 
@@ -409,7 +411,9 @@ export function App() {
                               if (/[A-Z]/.test(address)) {
                                 return (
                                   <Redirect
-                                    to={`/address/${address.toLowerCase()}`}
+                                    to={`/address/${address.toLowerCase()}${
+                                      routeProps.location.search
+                                    }`}
                                   />
                                 );
                               }
@@ -638,12 +642,24 @@ export function App() {
                           component={ContractsCharts}
                         />
 
+                        <Route
+                          exact
+                          path="/charts/verified-contracts"
+                          component={VerifiedContractsCharts}
+                        />
+
                         <Route exact path="/Profile" component={Profile} />
 
                         <Route
                           exact
                           path={['/approval']}
                           component={Approval}
+                        />
+
+                        <Route
+                          exact
+                          path="/verified-contracts"
+                          component={VerifiedContracts}
                         />
 
                         {/* <Route

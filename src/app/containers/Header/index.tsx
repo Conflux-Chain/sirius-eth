@@ -137,12 +137,11 @@ export const Header = memo(() => {
       afterClick: menuClick,
       href: '/abi-verification',
     },
-    // {
-    //   title: t(translations.header.contracts),
-    //   name: ScanEvent.menu.action.contractsList,
-    //   afterClick: menuClick,
-    //   href: '/contracts',
-    // },
+    {
+      title: t(translations.header.verifiedContracts),
+      afterClick: menuClick,
+      href: '/verified-contracts',
+    },
   ];
 
   const toolItems = [
