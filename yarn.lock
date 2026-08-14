@@ -2646,10 +2646,10 @@
     vite "^5.1.6"
     zustand "^4.5.2"
 
-"@cfxjs/sirius-next-i18n@0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.3.2.tgz#96da68ea131d97eff445eca4d8d5ae60eed80b0e"
-  integrity sha512-DFJYUBrG2Ld2G4dW+/fKtWbWKDfdZzZS94mCzY//RUsndaYaOpZ43TEdSd5gp91EqCjMuuSFBW97jRDuUVZGRw==
+"@cfxjs/sirius-next-i18n@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.3.3.tgz#29c4ec517abbaa614b56f4547fa74b18d2a68696"
+  integrity sha512-Gocg18PC4aqCvzFgrC5s5s8dr3sEKJ54u0MH/isNkrCTbykcR2kIa6WljcIkJQES3zFHqJSE0qhOLvbKZIyV+A==
 
 "@cfxjs/use-wallet-react@^0.0.8":
   version "0.0.8"
