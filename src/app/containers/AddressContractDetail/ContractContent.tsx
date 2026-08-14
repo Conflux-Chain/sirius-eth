@@ -665,7 +665,7 @@ export const ContractContent = ({ contractInfo }) => {
         content: (
           <ContractAbi
             type="read"
-            address={address}
+            contractAddress={address}
             abi={abi}
             key={`contract-read-${address}`}
           ></ContractAbi>
@@ -678,7 +678,7 @@ export const ContractContent = ({ contractInfo }) => {
         content: (
           <ContractAbi
             type="write"
-            address={address}
+            contractAddress={address}
             abi={abi}
             key={`contract-write-${address}`}
           ></ContractAbi>
@@ -703,9 +703,9 @@ export const ContractContent = ({ contractInfo }) => {
           content: (
             <ContractAbi
               type="read"
-              address={implementation.address}
+              implementationAddress={implementation.address}
               pattern={proxy.proxyPattern}
-              proxyAddress={address}
+              contractAddress={address}
               beaconAddress={beacon.address}
               key={`contract-implementation-read-${address}`}
             ></ContractAbi>
@@ -717,9 +717,9 @@ export const ContractContent = ({ contractInfo }) => {
           content: (
             <ContractAbi
               type="write"
-              address={implementation.address}
+              implementationAddress={implementation.address}
               pattern={proxy.proxyPattern}
-              proxyAddress={address}
+              contractAddress={address}
               beaconAddress={beacon.address}
               key={`contract-implementation-write-${address}`}
             ></ContractAbi>
