@@ -53,6 +53,7 @@ interface FuncProps {
   type?: string;
   data: object;
   contractAddress: string;
+  implementationAddress?: string;
   contract: object;
   id?: string;
   abi: AbiItem[];
@@ -66,6 +67,7 @@ const Func = ({
   type,
   data,
   contractAddress,
+  implementationAddress,
   contract,
   id = '',
 }: FuncProps) => {
@@ -580,6 +582,7 @@ const Func = ({
                     simulateError === '0x' ? null : (
                       <ErrorDecode
                         to={contractAddress}
+                        implementation={implementationAddress}
                         space="evm"
                         errorData={simulateError as Hex}
                         contentClassName="simulate-error-content"

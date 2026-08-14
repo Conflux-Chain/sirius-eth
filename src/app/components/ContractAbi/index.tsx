@@ -21,10 +21,10 @@ import { AbiItem } from '@cfxjs/sirius-next-common/dist/utils/sdk';
 
 interface ContractAbiProps {
   type?: 'read' | 'write';
-  address: string;
+  contractAddress: string;
   abi?: any;
   pattern?: React.ReactNode;
-  proxyAddress?: string;
+  implementationAddress?: string;
   beaconAddress?: string;
 }
 type NativeAttrs = Omit<React.HTMLAttributes<any>, keyof ContractAbiProps>;
@@ -34,10 +34,10 @@ type DataType = Array<FuncDataItem>;
 
 export const ContractAbi = ({
   type = 'read',
-  address,
+  contractAddress,
   abi,
   pattern,
-  proxyAddress,
+  implementationAddress,
   beaconAddress,
 }: Props) => {
   const { account } = usePortal();
@@ -56,7 +56,7 @@ export const ContractAbi = ({
   const [contract, setContract] = useState(() =>
     CFX.Contract({
       abi: [],
-      address: formatAddressHexToBase32(proxyAddress || address),
+      address: formatAddressHexToBase32(contractAddress),
     }),
   );
 
@@ -70,7 +70,7 @@ export const ContractAbi = ({
 
         if (!abiInfo) {
           const resp = await reqContract({
-            address,
+            address: implementationAddress || contractAddress,
             fields: ['abi'],
           });
 
@@ -82,7 +82,7 @@ export const ContractAbi = ({
 
         const contract = CFX.Contract({
           abi: abiJSON,
-          address: formatAddressHexToBase32(proxyAddress || address),
+          address: formatAddressHexToBase32(contractAddress),
         });
 
         setContract(contract);
@@ -183,7 +183,7 @@ export const ContractAbi = ({
     fn();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, abi, type]);
+  }, [contractAddress, implementationAddress, abi, type]);
 
   return (
     <div>
@@ -199,7 +199,10 @@ export const ContractAbi = ({
                 EIP-1967 Beacon Proxy
               </Link>
               pattern. Its current implementation contract is
-              <EVMAddressContainer link={true} value={address} />
+              <EVMAddressContainer
+                link={true}
+                value={implementationAddress ?? ''}
+              />
               , and its Beacon contract is
               <EVMAddressContainer link={true} value={beaconAddress} />
             </Trans>
@@ -208,7 +211,10 @@ export const ContractAbi = ({
       ) : pattern ? (
         <StyledContractAbiWrapper>
           <Trans i18nKey="contract.pattern">
-            <EVMAddressContainer link={true} value={address} />
+            <EVMAddressContainer
+              link={true}
+              value={implementationAddress ?? ''}
+            />
             {pattern}
           </Trans>
         </StyledContractAbiWrapper>
@@ -221,7 +227,8 @@ export const ContractAbi = ({
         <FuncList
           type={type}
           data={data[type]}
-          contractAddress={proxyAddress || address}
+          contractAddress={contractAddress}
+          implementationAddress={implementationAddress}
           contract={contract}
           abi={abiJSON}
         ></FuncList>

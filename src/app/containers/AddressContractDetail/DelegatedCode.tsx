@@ -50,7 +50,8 @@ export const DelegatedCode = ({ address, delegatedContractInfo }) => {
         content: (
           <ContractAbi
             type="read"
-            address={address}
+            contractAddress={address}
+            implementationAddress={delegatedContractInfo.address}
             abi={abi}
             key={`contract-read-${address}`}
           ></ContractAbi>
@@ -62,7 +63,8 @@ export const DelegatedCode = ({ address, delegatedContractInfo }) => {
         content: (
           <ContractAbi
             type="write"
-            address={address}
+            contractAddress={address}
+            implementationAddress={delegatedContractInfo.address}
             abi={abi}
             key={`contract-write-${address}`}
           ></ContractAbi>

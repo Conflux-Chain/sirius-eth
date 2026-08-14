@@ -662,6 +662,7 @@ export const Detail = ({
                   toHash={to}
                   data={data}
                   isContractCreated={!!contractCreated}
+                  implementation={effectiveAuth?.address}
                 ></InputDataNew>
               </SkeletonContainer>
             </Description>

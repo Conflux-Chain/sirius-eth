@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { isAddress, isHash, isSafeNumberOrNumericStringInput } from 'utils';
 import styled from 'styled-components';
 import qs from 'query-string';
@@ -8,7 +8,6 @@ import { Form, Row, Col, Input, Button, Select, DatePicker } from '@cfxjs/antd';
 import { ColProps } from '@cfxjs/antd/es/col';
 import {
   DebounceTokenSelect,
-  TokenType,
   getTokenListByAddress,
 } from './DebounceTokenSelect';
 import moment from 'moment';
@@ -232,6 +231,17 @@ const getMinAndMaxEpochNumber = (min, max) => {
   return [minEpoch, maxEpoch];
 };
 
+const normalizeTokenArray = (
+  tokenArray: string | string[] | null | undefined,
+): string[] => {
+  const tokenList = Array.isArray(tokenArray) ? tokenArray : [tokenArray];
+
+  return tokenList.filter(
+    (address): address is string =>
+      typeof address === 'string' && address.length > 0,
+  );
+};
+
 // @todo, props should be changed to Array like, easy to sort filter items
 export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
   const { t, i18n } = useTranslation();
@@ -240,7 +250,6 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
   const history = useHistory();
   const [form] = Form.useForm();
   const [fromOrToValue, setFromOrToValue] = useState('from');
-  const [tokenValue, setTokenValue] = useState<TokenType[]>([]);
   const fromOrToOptions = useMemo(() => {
     return [
       {
@@ -275,6 +284,13 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
     txSender,
     contractName,
   } = props;
+  const hasTokenField = Boolean(token);
+  const tokenAddresses = useMemo(() => {
+    return Array.from(new Set(normalizeTokenArray(query.tokenArray))).sort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+  const tokenAddressesKey = tokenAddresses.join(',');
+  const tokenLoadKeyRef = useRef('');
 
   const validators = useMemo(() => {
     return {
@@ -305,7 +321,6 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
     const {
       from,
       to,
-      tokenArray,
       minTimestamp,
       maxTimestamp,
       minEpochNumber,
@@ -340,9 +355,7 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
         // special handle with fromOrTo value
         fromOrTo: from || to,
         // special handle with token value
-        token: tokenValue
-          .filter(t => tokenArray?.includes(t.address))
-          .map(t => t.address),
+        token: tokenAddresses,
         // special handle with range picker value
         rangePicker: [minT ? moment(minT) : null, maxT ? moment(maxT) : null],
         minEpochNumber: minEpoch,
@@ -357,19 +370,47 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
   }, [search]);
 
   useEffect(() => {
-    // update token field when init component on first time
-    const { tokenArray = [] } = query;
-    if (!tokenValue.length || tokenArray?.length) {
-      getTokenListByAddress(tokenArray as Array<string>).then(resp => {
+    if (!hasTokenField) {
+      tokenLoadKeyRef.current = '';
+      return;
+    }
+
+    if (!tokenAddresses.length) {
+      tokenLoadKeyRef.current = '';
+      form.setFieldsValue({ token: [] });
+      return;
+    }
+
+    if (tokenLoadKeyRef.current === tokenAddressesKey) {
+      return;
+    }
+
+    tokenLoadKeyRef.current = tokenAddressesKey;
+    let cancelled = false;
+
+    getTokenListByAddress(tokenAddresses)
+      .then(resp => {
+        if (cancelled) {
+          return;
+        }
+
+        const tokenAddressSet = new Set(tokenAddresses);
         form.setFieldsValue({
           token: resp
-            .filter(t => tokenArray?.includes(t.address))
+            .filter(t => tokenAddressSet.has(t.address))
             .map(t => t.address),
         });
+      })
+      .catch(() => {
+        // Allow a later token change to retry without surfacing an
+        // unhandled promise rejection from the initialization request.
       });
-    }
+
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [hasTokenField, tokenAddressesKey]);
 
   const handleFromOrToChange = value => {
     setFromOrToValue(value);
@@ -773,9 +814,6 @@ export const AdvancedSearchForm = (props: AdvancedSearchFormProps) => {
               placeholder={t(
                 translations.general.advancedSearch.placeholder.pleaseSelect,
               )}
-              onChange={newValue => {
-                setTokenValue(newValue);
-              }}
               style={{ width: '100%' }}
               maxTagCount="responsive"
             />
