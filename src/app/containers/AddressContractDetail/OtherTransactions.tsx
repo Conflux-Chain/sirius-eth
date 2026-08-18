@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
+import qs from 'query-string';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Card } from '@cfxjs/sirius-next-common/dist/components/Card';
 import { SubTabs } from 'app/components/Tabs/Loadable';
 import { Authorizations } from './Authorizations';
@@ -24,6 +26,8 @@ export const OtherTransactions = ({
   showAATxns: boolean;
 }) => {
   const { t } = useTranslation();
+  const history = useHistory();
+  const { pathname, search } = useLocation();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const tabs: Array<TabsItemType> = [];
@@ -44,6 +48,15 @@ export const OtherTransactions = ({
 
   const clickHandler = (key, index) => {
     setActiveIndex(index);
+    history.push(
+      qs.stringifyUrl({
+        url: pathname,
+        query: {
+          ...qs.parse(search),
+          skip: '0',
+        },
+      }),
+    );
   };
 
   useEffect(() => {
