@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
@@ -16,6 +16,8 @@ type TabsItemType = {
   content: React.ReactNode;
 };
 
+const OTHER_TAB_QUERY = 'otherTab';
+
 export const OtherTransactions = ({
   address,
   showAuthorizations,
@@ -28,7 +30,7 @@ export const OtherTransactions = ({
   const { t } = useTranslation();
   const history = useHistory();
   const { pathname, search } = useLocation();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const query = qs.parse(search);
 
   const tabs: Array<TabsItemType> = [];
   if (showAuthorizations) {
@@ -46,33 +48,34 @@ export const OtherTransactions = ({
     });
   }
 
-  const clickHandler = (key, index) => {
-    if (index === activeIndex) {
+  const activeIndexFromQuery = tabs.findIndex(
+    tab => tab.key === query[OTHER_TAB_QUERY],
+  );
+  const activeIndex = activeIndexFromQuery >= 0 ? activeIndexFromQuery : 0;
+  const activeKey = tabs[activeIndex]?.key;
+
+  const clickHandler = key => {
+    if (key === activeKey) {
       return;
     }
 
-    setActiveIndex(index);
-    history.replace(
+    history.push(
       qs.stringifyUrl({
         url: pathname,
         query: {
-          ...qs.parse(search),
+          ...query,
+          [OTHER_TAB_QUERY]: key,
           skip: '0',
         },
       }),
     );
   };
 
-  useEffect(() => {
-    // reset index
-    setActiveIndex(0);
-  }, [address]);
-
   return (
     <Container>
       <SubTabs
         tabs={tabs}
-        activeKey={tabs[activeIndex]?.key}
+        activeKey={activeKey}
         onChange={clickHandler}
         className="other-transactions-subtabs"
       ></SubTabs>
