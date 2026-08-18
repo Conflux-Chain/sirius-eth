@@ -47,8 +47,12 @@ export const OtherTransactions = ({
   }
 
   const clickHandler = (key, index) => {
+    if (index === activeIndex) {
+      return;
+    }
+
     setActiveIndex(index);
-    history.push(
+    history.replace(
       qs.stringifyUrl({
         url: pathname,
         query: {
