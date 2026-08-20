@@ -6,6 +6,12 @@ import { publishRequestError } from '@cfxjs/sirius-next-common/dist/utils/pubsub
 import { useGlobalData } from 'utils/hooks/useGlobal';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
+import {
+  DEFAULT_ADDRESS_LABEL_LENGTH_LIMIT,
+  isValidAddressLabel,
+  normalizeAddressLabel,
+  sanitizeAddressLabels,
+} from '@cfxjs/sirius-next-common/dist/utils/addressLabel';
 
 type Type = {
   a: string;
@@ -13,6 +19,8 @@ type Type = {
   t: number;
   u: number;
 };
+
+type ListChangeHandler = (list: Type[]) => void;
 
 type Props = {
   visible: boolean;
@@ -24,7 +32,7 @@ type Props = {
   };
   list?: null | Array<Type>;
   labelLengthLimit?: number;
-  onOk: () => void;
+  onOk: ListChangeHandler;
   onCancel: () => void;
 };
 
@@ -36,13 +44,15 @@ export function CreateAddressLabel({
     label: '',
   },
   list: outerList,
-  labelLengthLimit = 20,
+  labelLengthLimit = DEFAULT_ADDRESS_LABEL_LENGTH_LIMIT,
   onOk = () => {},
   onCancel = () => {},
 }: Props) {
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const [list, setList] = useState<Type[]>(outerList || []);
+  const [list, setList] = useState<Type[]>(
+    sanitizeAddressLabels(outerList || [], labelLengthLimit),
+  );
   const [loading, setLoading] = useState(false);
   const [globalData, setGlobalData] = useGlobalData();
 
@@ -51,16 +61,23 @@ export function CreateAddressLabel({
       if (!outerList) {
         setLoading(true);
         const l = localStorage.getItem(LOCALSTORAGE_KEYS_MAP.addressLabel);
-        if (l) {
-          setList(JSON.parse(l));
+        const rawList = l ? JSON.parse(l) : [];
+        const validList = sanitizeAddressLabels(rawList, labelLengthLimit);
+
+        setList(validList);
+        if (l && JSON.stringify(rawList) !== JSON.stringify(validList)) {
+          localStorage.setItem(
+            LOCALSTORAGE_KEYS_MAP.addressLabel,
+            JSON.stringify(validList),
+          );
         }
-        setLoading(false);
       } else {
-        setList(outerList);
+        setList(sanitizeAddressLabels(outerList, labelLengthLimit));
       }
     } catch (e) {}
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [outerList]);
+  }, [outerList, labelLengthLimit]);
 
   useEffect(() => {
     form.setFieldsValue(data);
@@ -70,7 +87,8 @@ export function CreateAddressLabel({
   const handleOk = () => {
     form.validateFields().then(async function ({ address, label }) {
       try {
-        let newList: Array<Type> = list;
+        const normalizedLabel = normalizeAddressLabel(label);
+        let newList: Array<Type> = [...list];
         const timestamp = Math.floor(+new Date() / 1000);
 
         if (stage === 'create') {
@@ -79,7 +97,7 @@ export function CreateAddressLabel({
             if (a === address) {
               message.error(t(translations.profile.address.error.duplicated));
               return;
-            } else if (l === label) {
+            } else if (l === normalizedLabel) {
               message.error(
                 t(translations.profile.address.error.duplicatedNameTag),
               );
@@ -89,7 +107,7 @@ export function CreateAddressLabel({
 
           const item: Type = {
             a: address as string, // address
-            l: label as string, // label
+            l: normalizedLabel, // label
             t: timestamp, // create timestamp
             u: timestamp, // update timestamp
           };
@@ -97,6 +115,9 @@ export function CreateAddressLabel({
           newList = [item].concat(list);
         } else if (stage === 'edit') {
           const i = list.findIndex(l => l.a === address);
+          if (i < 0) {
+            return;
+          }
           const old = list[i];
 
           newList.splice(i, 1);
@@ -104,7 +125,7 @@ export function CreateAddressLabel({
             {
               ...old,
               u: timestamp,
-              l: label as string,
+              l: normalizedLabel,
             },
           ].concat(newList);
         }
@@ -127,7 +148,7 @@ export function CreateAddressLabel({
         });
 
         setLoading(false);
-        onOk();
+        onOk(newList);
       } catch (e) {
         publishRequestError(e, 'code');
       }
@@ -156,17 +177,25 @@ export function CreateAddressLabel({
   const tagValidator = useCallback(() => {
     return {
       validator(_, value) {
-        if (value.length > labelLengthLimit) {
+        const label = normalizeAddressLabel(value);
+
+        if (label.length > labelLengthLimit) {
           return Promise.reject(
             new Error(
               t(translations.profile.address.error.invalidLabelRange, {
-                amount: 20,
+                amount: labelLengthLimit,
               }),
             ),
           );
-        } else {
-          return Promise.resolve();
         }
+
+        if (!isValidAddressLabel(label, labelLengthLimit)) {
+          return Promise.reject(
+            new Error(t(translations.profile.address.error.invalidLabel)),
+          );
+        }
+
+        return Promise.resolve();
       },
     };
   }, [labelLengthLimit, t]);
