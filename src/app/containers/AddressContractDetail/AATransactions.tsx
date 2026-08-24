@@ -49,6 +49,7 @@ export const AATransactions = ({ address }: { address: string }) => {
       total={data?.total}
       listLimit={data?.listLimit}
       rowKey="id"
+      hideShadow
     />
   );
 };

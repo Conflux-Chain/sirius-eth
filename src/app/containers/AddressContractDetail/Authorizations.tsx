@@ -25,6 +25,7 @@ export const Authorizations = ({ address }: { address: string }) => {
       columns={columns}
       rowKey="id"
       formatResponse={formatListResponseWithNameMap}
+      hideShadow
     ></TablePanel>
   );
 };
