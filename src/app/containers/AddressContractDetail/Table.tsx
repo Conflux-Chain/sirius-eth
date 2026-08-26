@@ -18,9 +18,9 @@ import { NFTAsset } from 'app/containers/NFTAsset/Loadable';
 import styled from 'styled-components';
 import { ContractStatus } from '../AddressContractDetail/ContractStatus';
 import type { EvmAddressType } from '@cfxjs/sirius-next-common/dist/utils/address';
-import { Authorizations } from './Loadable';
 import { DelegatedCode } from './DelegatedCode';
 import { useDelegatedInfoStore } from 'utils/store';
+import { OtherTransactions } from './OtherTransactions';
 
 export const Table = memo(
   ({
@@ -123,15 +123,19 @@ export const Table = memo(
         ),
       });
     }
-    if (!isContract) {
-      tabs.push({
-        hidden: !addressInfo.authorizationsTab,
-        value: 'auth-list',
-        action: 'authList',
-        label: t(translations.authList.authorizations),
-        content: <Authorizations address={address} />,
-      });
-    }
+    tabs.push({
+      hidden: !addressInfo.authorizationsTab && !addressInfo.aaTxTab,
+      value: 'other-transactions',
+      action: 'otherTransactions',
+      label: t(translations.otherTransactions.title),
+      content: (
+        <OtherTransactions
+          address={address}
+          showAuthorizations={!!addressInfo.authorizationsTab}
+          showAATxns={!!addressInfo.aaTxTab}
+        />
+      ),
+    });
 
     return <TabsTablePanel key="table" tabs={tabs} />;
   },

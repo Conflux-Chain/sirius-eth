@@ -19,6 +19,7 @@ import { AccountGrowth } from './AccountGrowth';
 import { ActiveAccounts } from './ActiveAccounts';
 import { Contracts } from './Contracts';
 import { CIP1559Metrics } from './Dashboard';
+import { VerifiedContracts } from './VerifiedContracts';
 
 export function NewChart() {
   const { t, i18n } = useTranslation();
@@ -98,6 +99,9 @@ export function NewChart() {
         </Divider>
         <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
           <Contracts preview={true} />
+        </Col>
+        <Col xxl={12} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <VerifiedContracts preview={true} />
         </Col>
         <Divider orientation="left">
           {t(translations.highcharts.preview.dashboard)}

@@ -194,7 +194,7 @@ export const Basic = ({
       totalSupply !== undefined ? (
         <Text
           hoverValue={`${formatBalance(
-            totalSupply,
+            totalSupply || 0,
             transferType === CFX_TOKEN_TYPES.erc20 ? decimals : 0,
             true,
           )} ${symbol}`}
@@ -202,7 +202,7 @@ export const Basic = ({
           mobileMaxCount={39}
         >
           {`${formatBalance(
-            totalSupply,
+            totalSupply || 0,
             transferType === CFX_TOKEN_TYPES.erc20 ? decimals : 0,
           )} ${symbol}`}
         </Text>

@@ -13,6 +13,7 @@ import qs from 'query-string';
 import { CreateAddressLabel } from './CreateAddressLabel';
 import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 import Button from '@cfxjs/sirius-next-common/dist/components/Button';
+import { sanitizeAddressLabels } from '@cfxjs/sirius-next-common/dist/utils/addressLabel';
 
 const { confirm, warning } = Modal;
 const { Search } = Input;
@@ -23,6 +24,8 @@ type Type = {
   t: number;
   u: number;
 };
+
+type ListChangeHandler = (list: Type[]) => void;
 
 export function AddressLabel() {
   const history = useHistory();
@@ -46,11 +49,18 @@ export function AddressLabel() {
     try {
       setLoading(true);
       const l = localStorage.getItem(LOCALSTORAGE_KEYS_MAP.addressLabel);
-      if (l) {
-        setList(JSON.parse(l));
+      const rawList = l ? JSON.parse(l) : [];
+      const validList = sanitizeAddressLabels(rawList);
+
+      setList(validList);
+      if (l && JSON.stringify(rawList) !== JSON.stringify(validList)) {
+        localStorage.setItem(
+          LOCALSTORAGE_KEYS_MAP.addressLabel,
+          JSON.stringify(validList),
+        );
       }
-      setLoading(false);
     } catch (e) {}
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -162,8 +172,10 @@ export function AddressLabel() {
     });
   };
 
-  const handleOk = () => {
-    setVisible(true);
+  const handleOk: ListChangeHandler = newList => {
+    setList(newList);
+    setSelectedRowKeys([]);
+    setVisible(false);
   };
 
   const handleCancel = () => {
