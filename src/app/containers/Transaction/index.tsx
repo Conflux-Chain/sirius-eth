@@ -6,7 +6,7 @@ import { EventLogs } from './EventLogs/Loadable';
 import { AuthorizationList } from './AuthorizationList';
 import { TabLabel } from 'app/components/TabsTablePanel/Label';
 import { reqBundleTxDetail, reqTransactionDetail } from 'utils/httpRequest';
-import { useHistory, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Detail } from './Detail';
@@ -220,7 +220,6 @@ function CommonTransaction() {
 
 export function Transaction() {
   const { t } = useTranslation();
-  const history = useHistory();
   const { hash } = useParams<{
     hash: string;
   }>();
@@ -228,14 +227,10 @@ export function Transaction() {
 
   const { data: aaTx, isLoading } = useAATxDetail(isHashHex ? hash : undefined);
 
-  useEffect(() => {
-    if (!isHash(hash)) {
-      history.replace('/404');
-      return;
-    }
-  }, [history, hash]);
-
   const isAATx = aaTx && aaTx.txHash;
+  if (!isHashHex) {
+    return <Redirect to="/404" />;
+  }
   if (isLoading) {
     return (
       <StyledPageWrapper>
