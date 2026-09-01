@@ -230,7 +230,7 @@ export function Transaction() {
 
   useEffect(() => {
     if (!isHash(hash)) {
-      history.push('/404');
+      history.replace('/404');
       return;
     }
   }, [history, hash]);
