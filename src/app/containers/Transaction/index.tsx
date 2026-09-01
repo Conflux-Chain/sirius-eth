@@ -16,7 +16,7 @@ import iconCross from 'images/icon-crossSpace.svg';
 import { getTransactionByHash } from 'utils/rpcRequest';
 import { ReactComponent as JsonIcon } from 'images/json.svg';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import { viewJson } from '@cfxjs/sirius-next-common/dist/utils';
+import { isHash, viewJson } from '@cfxjs/sirius-next-common/dist/utils';
 import useSWR from 'swr';
 import { AATxns } from './AATxns';
 import { StyledHeader, StyledPageWrapper, TagWrapper } from './styled';
@@ -220,11 +220,20 @@ function CommonTransaction() {
 
 export function Transaction() {
   const { t } = useTranslation();
+  const history = useHistory();
   const { hash } = useParams<{
     hash: string;
   }>();
+  const isHashHex = isHash(hash);
 
-  const { data: aaTx, isLoading } = useAATxDetail(hash);
+  const { data: aaTx, isLoading } = useAATxDetail(isHashHex ? hash : undefined);
+
+  useEffect(() => {
+    if (!isHash(hash)) {
+      history.push('/404');
+      return;
+    }
+  }, [history, hash]);
 
   const isAATx = aaTx && aaTx.txHash;
   if (isLoading) {
