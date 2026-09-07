@@ -6,7 +6,7 @@ import { EventLogs } from './EventLogs/Loadable';
 import { AuthorizationList } from './AuthorizationList';
 import { TabLabel } from 'app/components/TabsTablePanel/Label';
 import { reqBundleTxDetail, reqTransactionDetail } from 'utils/httpRequest';
-import { useHistory, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { PageHeader } from '@cfxjs/sirius-next-common/dist/components/PageHeader';
 import { Detail } from './Detail';
@@ -16,7 +16,7 @@ import iconCross from 'images/icon-crossSpace.svg';
 import { getTransactionByHash } from 'utils/rpcRequest';
 import { ReactComponent as JsonIcon } from 'images/json.svg';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
-import { viewJson } from '@cfxjs/sirius-next-common/dist/utils';
+import { isHash, viewJson } from '@cfxjs/sirius-next-common/dist/utils';
 import useSWR from 'swr';
 import { AATxns } from './AATxns';
 import { StyledHeader, StyledPageWrapper, TagWrapper } from './styled';
@@ -223,10 +223,14 @@ export function Transaction() {
   const { hash } = useParams<{
     hash: string;
   }>();
+  const isHashHex = isHash(hash);
 
-  const { data: aaTx, isLoading } = useAATxDetail(hash);
+  const { data: aaTx, isLoading } = useAATxDetail(isHashHex ? hash : undefined);
 
   const isAATx = aaTx && aaTx.txHash;
+  if (!isHashHex) {
+    return <Redirect to="/404" />;
+  }
   if (isLoading) {
     return (
       <StyledPageWrapper>
