@@ -20,25 +20,7 @@ import { isAddress } from 'utils';
 import { Hex } from '@cfxjs/sirius-next-common/dist/utils/types';
 import { ZERO_ADDRESS_HEX } from '@cfxjs/sirius-next-common/dist/utils/constants';
 import BigNumber from 'bignumber.js';
-
-const getStringParam = (value: unknown) =>
-  typeof value === 'string' && value ? value : undefined;
-
-const getTabQuery = (params: Record<string, unknown>) => {
-  const query: Record<string, string> = {};
-  const keys = ['from', 'to', 'data', 'value', 'gas'] as const;
-
-  keys.forEach(key => {
-    const value = getStringParam(params[key]);
-    if (value !== undefined) query[key] = value;
-  });
-
-  const gasPrice =
-    getStringParam(params.gasPrice) || getStringParam(params.price);
-  if (gasPrice !== undefined) query.gasPrice = gasPrice;
-
-  return query;
-};
+import { getTabQuery, parseGasParams } from './params';
 
 const useSimulateParams = (params: Record<string, string>) => {
   const { account } = usePortal();
@@ -46,22 +28,18 @@ const useSimulateParams = (params: Record<string, string>) => {
     params.data,
   ]);
   const to = isAddress(params.to, false) ? (params.to as Hex) : undefined;
+  const gasParams = parseGasParams(params);
   if (!decodedData.ok || !to) return;
   const from = isAddress(params.from, false)
     ? (params.from as Hex)
     : (account as Hex);
   const value = Number.isNaN(Number(params.value)) ? '0x0' : params.value;
-  const gasPrice = Number.isNaN(Number(params.gasPrice))
-    ? undefined
-    : params.gasPrice;
-  const gas = Number.isNaN(Number(params.gas)) ? undefined : params.gas;
   return {
     from,
     to,
     value,
     data: decodedData.data,
-    gasPrice,
-    gas,
+    ...gasParams,
     space: 'evm',
   } as const;
 };
