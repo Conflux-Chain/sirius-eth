@@ -3,10 +3,8 @@ import type { SimulateTraceTxParams } from '@cfxjs/sirius-next-common/dist/utils
 
 type GasParams = Pick<
   SimulateTraceTxParams,
-  'gas' | 'gasPrice' | 'maxFeePerGas'
-> & {
-  maxPriorityFeePerGas?: string;
-};
+  'gas' | 'gasPrice' | 'maxFeePerGas' | 'maxPriorityFeePerGas'
+>;
 
 const getStringParam = (value: unknown) =>
   typeof value === 'string' && value ? value : undefined;
