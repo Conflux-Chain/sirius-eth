@@ -221,3 +221,23 @@ Please make sure to read the [Contributing Guide](.github/CONTRIBUTING.md) befor
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
+
+## Simulate transaction lists
+
+The EVM Simulate page accepts optional `accessList` and `authorizationList` URL
+parameters. Each must be a single JSON array, encoded with `URLSearchParams.set`.
+Access-list addresses are 20-byte hex strings and storage keys are 32-byte hex
+strings. Signed authorization entries contain `address`, `chainId`, `nonce`,
+`yParity`, `r`, and `s`; all numeric fields use hex strings to avoid precision loss.
+An authorization list must be non-empty and requires a transaction `to` address.
+Authorization chain ID zero is allowed; signing and execution validity remain
+the caller's and node's responsibility.
+
+Malformed, repeated, or oversized list parameters (more than 128 Ki characters
+per decoded query value) stop simulation and display an error. List order and
+duplicates are retained, including when switching Trace/Logs tabs. Gas estimation
+and tracing both receive the lists. These changes require a common/i18n package
+build containing the transaction-list helpers and translations; the currently
+pinned published packages must be upgraded before release. The backend and node
+must support the supplied lists, including EIP-7702 execution and authorization
+metadata enrichment. Local tests do not establish deployed-node support.

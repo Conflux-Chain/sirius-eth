@@ -18,6 +18,8 @@ export const getTabQuery = (params: Record<string, unknown>) => {
     'value',
     'maxFeePerGas',
     'maxPriorityFeePerGas',
+    'accessList',
+    'authorizationList',
   ] as const;
 
   keys.forEach(key => {
