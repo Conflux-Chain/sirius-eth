@@ -2308,17 +2308,17 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.12.0", "@babel/runtime@^7.12.13", "@babel/runtime@^7.13.10", "@babel/runtime@^7.23.2", "@babel/runtime@^7.24.1":
-  version "7.24.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.6.tgz#5b76eb89ad45e2e4a0a8db54c456251469a3358e"
-  integrity sha512-Ja18XcETdEl5mzzACGd+DKgaGJzPTCow7EglgwTmHdwokzDFYh/MHua6lU6DV/hjF2IaOJ4oX2nqnjG7RElKOw==
-  dependencies:
-    regenerator-runtime "^0.14.0"
-
 "@babel/runtime@^7.12.1":
   version "7.23.9"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.9.tgz#47791a15e4603bb5f905bc0753801cf21d6345f7"
   integrity sha512-0CX6F+BI2s9dkUqr08KFrAIZgNFj75rdBU/DjCyYLIaV/quFjkk6T+EJ2LkZHyZTbEV4L5p97mNkUsHl2wLFAw==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
+"@babel/runtime@^7.13.10", "@babel/runtime@^7.23.2", "@babel/runtime@^7.24.1":
+  version "7.24.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.6.tgz#5b76eb89ad45e2e4a0a8db54c456251469a3358e"
+  integrity sha512-Ja18XcETdEl5mzzACGd+DKgaGJzPTCow7EglgwTmHdwokzDFYh/MHua6lU6DV/hjF2IaOJ4oX2nqnjG7RElKOw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -2603,10 +2603,10 @@
     react-popper "^2.2.3"
     styled-jsx "^3.2.5"
 
-"@cfxjs/sirius-next-common@0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-common/-/sirius-next-common-0.3.7.tgz#3f0c383095961cd7dba1389ca9e0057414dc20e3"
-  integrity sha512-RvpGl5LORQIRx7jr/gPJtqwjMfPM4hnrNzU+Wru/LTOAgyw2ABvcVKyKRIPqWyctqUqs9borx47/Fu4tsx4DgQ==
+"@cfxjs/sirius-next-common@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-common/-/sirius-next-common-0.5.0.tgz#bdc1901306cbd86e42d6b2dfef8145c2b805cb2a"
+  integrity sha512-8RFEV5Jj1NGDE53wk8oFymU0aqhIfsGtj6qbp/bp4AS4cx16Dbc5CX2SmiNUwoXK5ASU+iq3lQRDfUMBCC/I3Q==
   dependencies:
     "@cfx-kit/dapp-utils" "^0.2.12"
     "@cfx-kit/react-utils" "^0.0.65"
@@ -2625,7 +2625,6 @@
     ethers "5.7.0"
     highcharts "^10.0.0"
     highcharts-react-official "^3.1.0"
-    i18next "^19.3.4"
     i18next-browser-languagedetector "^7.2.1"
     js-conflux-sdk "2.5.1"
     json-bigint "1.0.0"
@@ -2635,9 +2634,7 @@
     query-string "6.13.1"
     react-ace "9.1.3"
     react-google-recaptcha "^3.1.0"
-    react-i18next "^11.18.6"
     react-merge-refs "3.0.2"
-    react-router-dom "^5.1.2"
     react-use "^17.5.0"
     swr "2.2.5"
     tailwind-merge "^2.3.0"
@@ -2646,10 +2643,10 @@
     vite "^5.1.6"
     zustand "^4.5.2"
 
-"@cfxjs/sirius-next-i18n@0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.3.3.tgz#29c4ec517abbaa614b56f4547fa74b18d2a68696"
-  integrity sha512-Gocg18PC4aqCvzFgrC5s5s8dr3sEKJ54u0MH/isNkrCTbykcR2kIa6WljcIkJQES3zFHqJSE0qhOLvbKZIyV+A==
+"@cfxjs/sirius-next-i18n@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.3.4.tgz#542567567cbf97940b679bc37652aff82280c50d"
+  integrity sha512-nWUambThUlt0/KlVARrzYSSR1W5PkMGiD+cj3nehPHHFnPnIjMwHNi7/31DemuJMRQZZTqkFPTG3K/xu/kzLKQ==
 
 "@cfxjs/use-wallet-react@^0.0.8":
   version "0.0.8"
@@ -11863,13 +11860,6 @@ i18next@19.3.4:
   dependencies:
     "@babel/runtime" "^7.3.1"
 
-i18next@^19.3.4:
-  version "19.9.2"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.9.2.tgz#ea5a124416e3c5ab85fddca2c8e3c3669a8da397"
-  integrity sha512-0i6cuo6ER6usEOtKajUUDj92zlG+KArFia0857xxiEHAQcUwh/RtOQocui1LPJwunSYT574Pk64aNva1kwtxZg==
-  dependencies:
-    "@babel/runtime" "^7.12.0"
-
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -13237,7 +13227,7 @@ jest-snapshot@^24.9.0:
 
 jest-styled-components@7.0.2:
   version "7.0.2"
-  resolved "https://registry.npmjs.org/jest-styled-components/-/jest-styled-components-7.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-7.0.2.tgz#b7711871ea74a04491b12bad123fa35cc65a2a80"
   integrity sha512-i1Qke8Jfgx0Why31q74ohVj9S2FmMLUE8bNRSoK4DgiurKkXG6HC4NPhcOLAz6VpVd9wXkPn81hOt4aAQedqsA==
   dependencies:
     css "^2.2.4"
@@ -18184,7 +18174,7 @@ react-helmet-async@1.0.6:
     react-fast-compare "^3.0.1"
     shallowequal "^1.1.0"
 
-react-i18next@11, react-i18next@^11.18.6:
+react-i18next@11:
   version "11.18.6"
   resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-11.18.6.tgz#e159c2960c718c1314f1e8fcaa282d1c8b167887"
   integrity sha512-yHb2F9BiT0lqoQDt8loZ5gWP331GwctHz9tYQ8A2EIEUu+CcEdjBLQWli1USG3RdWQt3W+jqQLg/d4rrQR96LA==
@@ -18274,19 +18264,6 @@ react-router-dom@5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router-dom@^5.1.2:
-  version "5.3.4"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.3.4.tgz#2ed62ffd88cae6db134445f4a0c0ae8b91d2e5e6"
-  integrity sha512-m4EqFMHv/Ih4kpcBCONHbkT68KoAeHN4p3lAGoNryfHi0dMy0kCzEZakiKRsvg5wHZ/JLrLW8o8KomWiz/qbYQ==
-  dependencies:
-    "@babel/runtime" "^7.12.13"
-    history "^4.9.0"
-    loose-envify "^1.3.1"
-    prop-types "^15.6.2"
-    react-router "5.3.4"
-    tiny-invariant "^1.0.2"
-    tiny-warning "^1.0.0"
-
 react-router@5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-5.1.2.tgz#6ea51d789cb36a6be1ba5f7c0d48dd9e817d3418"
@@ -18297,21 +18274,6 @@ react-router@5.1.2:
     hoist-non-react-statics "^3.1.0"
     loose-envify "^1.3.1"
     mini-create-react-context "^0.3.0"
-    path-to-regexp "^1.7.0"
-    prop-types "^15.6.2"
-    react-is "^16.6.0"
-    tiny-invariant "^1.0.2"
-    tiny-warning "^1.0.0"
-
-react-router@5.3.4:
-  version "5.3.4"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-5.3.4.tgz#8ca252d70fcc37841e31473c7a151cf777887bb5"
-  integrity sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==
-  dependencies:
-    "@babel/runtime" "^7.12.13"
-    history "^4.9.0"
-    hoist-non-react-statics "^3.1.0"
-    loose-envify "^1.3.1"
     path-to-regexp "^1.7.0"
     prop-types "^15.6.2"
     react-is "^16.6.0"
