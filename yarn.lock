@@ -2603,10 +2603,10 @@
     react-popper "^2.2.3"
     styled-jsx "^3.2.5"
 
-"@cfxjs/sirius-next-common@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-common/-/sirius-next-common-0.4.1.tgz#537fe979989d89c1c4e0add56161d598a505e1cb"
-  integrity sha512-PTvoGAsE6+UFFi9/ZECCGnQENig8G7jy8M0wzgqp0sddv9KzN1DW4wNDvuVjiwNF0R1OiLMwec7veLmMYAftTg==
+"@cfxjs/sirius-next-common@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-common/-/sirius-next-common-0.5.0.tgz#bdc1901306cbd86e42d6b2dfef8145c2b805cb2a"
+  integrity sha512-8RFEV5Jj1NGDE53wk8oFymU0aqhIfsGtj6qbp/bp4AS4cx16Dbc5CX2SmiNUwoXK5ASU+iq3lQRDfUMBCC/I3Q==
   dependencies:
     "@cfx-kit/dapp-utils" "^0.2.12"
     "@cfx-kit/react-utils" "^0.0.65"
@@ -2643,10 +2643,10 @@
     vite "^5.1.6"
     zustand "^4.5.2"
 
-"@cfxjs/sirius-next-i18n@0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.3.3.tgz#29c4ec517abbaa614b56f4547fa74b18d2a68696"
-  integrity sha512-Gocg18PC4aqCvzFgrC5s5s8dr3sEKJ54u0MH/isNkrCTbykcR2kIa6WljcIkJQES3zFHqJSE0qhOLvbKZIyV+A==
+"@cfxjs/sirius-next-i18n@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@cfxjs/sirius-next-i18n/-/sirius-next-i18n-0.3.4.tgz#542567567cbf97940b679bc37652aff82280c50d"
+  integrity sha512-nWUambThUlt0/KlVARrzYSSR1W5PkMGiD+cj3nehPHHFnPnIjMwHNi7/31DemuJMRQZZTqkFPTG3K/xu/kzLKQ==
 
 "@cfxjs/use-wallet-react@^0.0.8":
   version "0.0.8"
@@ -13227,7 +13227,7 @@ jest-snapshot@^24.9.0:
 
 jest-styled-components@7.0.2:
   version "7.0.2"
-  resolved "https://registry.npmjs.org/jest-styled-components/-/jest-styled-components-7.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-7.0.2.tgz#b7711871ea74a04491b12bad123fa35cc65a2a80"
   integrity sha512-i1Qke8Jfgx0Why31q74ohVj9S2FmMLUE8bNRSoK4DgiurKkXG6HC4NPhcOLAz6VpVd9wXkPn81hOt4aAQedqsA==
   dependencies:
     css "^2.2.4"

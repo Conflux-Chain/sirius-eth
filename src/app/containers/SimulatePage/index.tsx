@@ -21,26 +21,43 @@ import { Hex } from '@cfxjs/sirius-next-common/dist/utils/types';
 import { ZERO_ADDRESS_HEX } from '@cfxjs/sirius-next-common/dist/utils/constants';
 import BigNumber from 'bignumber.js';
 import { getTabQuery, parseGasParams } from './params';
+import { parseTransactionListsFromUrl } from '@cfxjs/sirius-next-common/dist/utils/transactionLists';
 
-const useSimulateParams = (params: Record<string, string>) => {
+const useSimulateParams = (params: Record<string, unknown>) => {
   const { account } = usePortal();
-  const decodedData = useMemo(() => decodeCalldataFromUrl(params.data), [
-    params.data,
+  const tabQuery = useMemo(() => getTabQuery(params), [params]);
+  const decodedData = useMemo(() => decodeCalldataFromUrl(tabQuery.data), [
+    tabQuery.data,
   ]);
-  const to = isAddress(params.to, false) ? (params.to as Hex) : undefined;
-  const gasParams = parseGasParams(params);
-  if (!decodedData.ok || !to) return;
-  const from = isAddress(params.from, false)
-    ? (params.from as Hex)
+  const to =
+    typeof params.to === 'string' && isAddress(params.to, false)
+      ? (params.to as Hex)
+      : undefined;
+  const gasParams = parseGasParams(tabQuery);
+  const transactionLists = useMemo(() => parseTransactionListsFromUrl(params), [
+    params,
+  ]);
+  const from = isAddress(tabQuery.from, false)
+    ? (tabQuery.from as Hex)
     : (account as Hex);
-  const value = Number.isNaN(Number(params.value)) ? '0x0' : params.value;
+  const value = Number.isNaN(Number(tabQuery.value)) ? '0x0' : tabQuery.value;
   return {
     from,
     to,
-    value,
-    data: decodedData.data,
-    ...gasParams,
-    space: 'evm',
+    tabQuery,
+    listError: transactionLists.ok ? undefined : transactionLists.field,
+    simulateParams:
+      decodedData.ok && transactionLists.ok && (params.to === undefined || to)
+        ? {
+            from,
+            to,
+            value,
+            data: decodedData.data,
+            ...gasParams,
+            ...transactionLists.lists,
+            space: 'evm' as const,
+          }
+        : undefined,
   } as const;
 };
 
@@ -48,8 +65,13 @@ export const SimulatePage = () => {
   const { t } = useTranslation();
   const { search } = useLocation();
   const params = useMemo(() => qs.parse(search), [search]);
-  const tabQuery = useMemo(() => getTabQuery(params), [params]);
-  const simulateParams = useSimulateParams(tabQuery);
+  const {
+    simulateParams,
+    from: sender,
+    to,
+    tabQuery,
+    listError,
+  } = useSimulateParams(params);
   const [result] = useDecodeFunctionData({
     to: simulateParams?.to,
     input: simulateParams?.data,
@@ -61,8 +83,7 @@ export const SimulatePage = () => {
       result.abiItem?.stateMutability === 'pure') &&
     valueBN.eq(0);
   const from =
-    simulateParams?.from ||
-    (supportZeroAddressAsFrom ? ZERO_ADDRESS_HEX : undefined);
+    sender || (supportZeroAddressAsFrom ? ZERO_ADDRESS_HEX : undefined);
   const { data: traceData, isValidating, mutate } = useSimulateTrace({
     tx: simulateParams
       ? {
@@ -105,7 +126,13 @@ export const SimulatePage = () => {
     (simulateParams && simulateParams.data && simulateParams.data.length >= 10
       ? simulateParams.data.slice(0, 10)
       : undefined);
-  const calldataError = simulateParams
+  const urlError = listError
+    ? t(
+        listError === 'accessList'
+          ? translations.simulateTrace.invalidAccessList
+          : translations.simulateTrace.invalidAuthorizationList,
+      )
+    : simulateParams
     ? ''
     : t(translations.simulateTrace.invalidUrl);
 
@@ -129,12 +156,12 @@ export const SimulatePage = () => {
               </ValueHighlight>
             </div>
           )}
-          {simulateParams?.to && (
+          {to && (
             <div className="simulate-contract">
               {t(translations.simulateTrace.contract)}:{' '}
-              <ValueHighlight scope="address" value={simulateParams.to}>
+              <ValueHighlight scope="address" value={to}>
                 <EVMAddressContainer
-                  value={simulateParams.to}
+                  value={to}
                   nameMap={nameMap}
                   showVerificationName
                 />
@@ -147,12 +174,12 @@ export const SimulatePage = () => {
             </div>
           )}
         </div>
-        {!from && (
+        {simulateParams && !from && (
           <div className="connect-wallet-tip">
             {t(translations.connectWallet.tip)}
           </div>
         )}
-        {calldataError && <div className="calldata-error">{calldataError}</div>}
+        {urlError && <div className="calldata-error">{urlError}</div>}
       </StyledHeader>
       {simulateParams && from && (
         <ContentContainer>
