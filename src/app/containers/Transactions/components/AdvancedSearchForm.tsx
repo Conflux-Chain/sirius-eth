@@ -232,7 +232,7 @@ const getMinAndMaxEpochNumber = (min, max) => {
 };
 
 const normalizeTokenArray = (
-  tokenArray: string | string[] | null | undefined,
+  tokenArray: string | (string | null)[] | null | undefined,
 ): string[] => {
   const tokenList = Array.isArray(tokenArray) ? tokenArray : [tokenArray];
 

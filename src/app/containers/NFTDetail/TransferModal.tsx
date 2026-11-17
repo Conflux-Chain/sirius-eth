@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import styled from 'styled-components';
 import { usePortal } from 'utils/hooks/usePortal';
-import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
-import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
+import ERC1155Artifact from 'utils/contract/ERC1155.json';
+import ERC721Artifact from 'utils/contract/ERC721.json';
 import { TXN_ACTION, CFX, CFXToDecode } from 'utils/constants';
 import { useTxnHistory } from 'utils/hooks/useTxnHistory';
 import { useGlobalData } from 'utils/hooks/useGlobal';
@@ -16,6 +16,9 @@ import {
   convertCheckSum,
   isAddressEqual,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
+
+const { abi: ERC1155ABI } = ERC1155Artifact;
+const { abi: ERC721ABI } = ERC721Artifact;
 
 export const TransferModal = ({
   id = '',

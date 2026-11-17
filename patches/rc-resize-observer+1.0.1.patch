@@ -1,0 +1,98 @@
+diff --git a/node_modules/rc-resize-observer/es/index.js b/node_modules/rc-resize-observer/es/index.js
+index 257cf3b..effd896 100644
+--- a/node_modules/rc-resize-observer/es/index.js
++++ b/node_modules/rc-resize-observer/es/index.js
+@@ -27,6 +27,7 @@ var ReactResizeObserver = /*#__PURE__*/function (_React$Component) {
+ 
+     _this = _super.call.apply(_super, [this].concat(args));
+     _this.resizeObserver = null;
++    _this.resizeFrame = null;
+     _this.childNode = null;
+     _this.currentElement = null;
+     _this.state = {
+@@ -70,6 +71,7 @@ var ReactResizeObserver = /*#__PURE__*/function (_React$Component) {
+           var mergedOffsetHeight = offsetHeight === Math.round(height) ? height : offsetHeight; // defer the callback but not defer to next frame
+ 
+           Promise.resolve().then(function () {
++            if (!_this.resizeObserver || _this.props.disabled || _this.currentElement !== target) return;
+             onResize(_objectSpread(_objectSpread({}, size), {}, {
+               offsetWidth: mergedOffsetWidth,
+               offsetHeight: mergedOffsetHeight
+@@ -121,13 +123,27 @@ var ReactResizeObserver = /*#__PURE__*/function (_React$Component) {
+       }
+ 
+       if (!this.resizeObserver && element) {
+-        this.resizeObserver = new ResizeObserver(this.onResize);
++        var instance = this;
++        var observer = new ResizeObserver(function (entries) {
++          if (instance.resizeObserver !== observer) return;
++          // Table measurements can change layout; leave the current delivery cycle.
++          if (instance.resizeFrame !== null) cancelAnimationFrame(instance.resizeFrame);
++          instance.resizeFrame = requestAnimationFrame(function () {
++            instance.resizeFrame = null;
++            instance.onResize(entries);
++          });
++        });
++        this.resizeObserver = observer;
+         this.resizeObserver.observe(element);
+       }
+     }
+   }, {
+     key: "destroyObserver",
+     value: function destroyObserver() {
++      if (this.resizeFrame !== null) {
++        cancelAnimationFrame(this.resizeFrame);
++        this.resizeFrame = null;
++      }
+       if (this.resizeObserver) {
+         this.resizeObserver.disconnect();
+         this.resizeObserver = null;
+diff --git a/node_modules/rc-resize-observer/lib/index.js b/node_modules/rc-resize-observer/lib/index.js
+index 3c0cff5..4cb1589 100644
+--- a/node_modules/rc-resize-observer/lib/index.js
++++ b/node_modules/rc-resize-observer/lib/index.js
+@@ -49,6 +49,7 @@ var ReactResizeObserver = /*#__PURE__*/function (_React$Component) {
+ 
+     _this = _super.call.apply(_super, [this].concat(args));
+     _this.resizeObserver = null;
++    _this.resizeFrame = null;
+     _this.childNode = null;
+     _this.currentElement = null;
+     _this.state = {
+@@ -92,6 +93,7 @@ var ReactResizeObserver = /*#__PURE__*/function (_React$Component) {
+           var mergedOffsetHeight = offsetHeight === Math.round(height) ? height : offsetHeight; // defer the callback but not defer to next frame
+ 
+           Promise.resolve().then(function () {
++            if (!_this.resizeObserver || _this.props.disabled || _this.currentElement !== target) return;
+             onResize((0, _objectSpread2.default)((0, _objectSpread2.default)({}, size), {}, {
+               offsetWidth: mergedOffsetWidth,
+               offsetHeight: mergedOffsetHeight
+@@ -143,13 +145,27 @@ var ReactResizeObserver = /*#__PURE__*/function (_React$Component) {
+       }
+ 
+       if (!this.resizeObserver && element) {
+-        this.resizeObserver = new _resizeObserverPolyfill.default(this.onResize);
++        var instance = this;
++        var observer = new _resizeObserverPolyfill.default(function (entries) {
++          if (instance.resizeObserver !== observer) return;
++          // Table measurements can change layout; leave the current delivery cycle.
++          if (instance.resizeFrame !== null) cancelAnimationFrame(instance.resizeFrame);
++          instance.resizeFrame = requestAnimationFrame(function () {
++            instance.resizeFrame = null;
++            instance.onResize(entries);
++          });
++        });
++        this.resizeObserver = observer;
+         this.resizeObserver.observe(element);
+       }
+     }
+   }, {
+     key: "destroyObserver",
+     value: function destroyObserver() {
++      if (this.resizeFrame !== null) {
++        cancelAnimationFrame(this.resizeFrame);
++        this.resizeFrame = null;
++      }
+       if (this.resizeObserver) {
+         this.resizeObserver.disconnect();
+         this.resizeObserver = null;
