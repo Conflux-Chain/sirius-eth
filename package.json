@@ -193,6 +193,7 @@
     "@types/react": "18.2.58",
     "@types/react-dom": "18.2.19",
     "lodash": "4.18.1",
-    "@walletconnect/sign-client": "2.26.0"
+    "@walletconnect/sign-client": "2.26.0",
+    "**/request/form-data": "2.5.6"
   }
 }
