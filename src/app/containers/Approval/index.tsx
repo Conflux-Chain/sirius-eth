@@ -19,9 +19,9 @@ import { Select } from '@cfxjs/sirius-next-common/dist/components/Select';
 import { Option } from 'styles/global-styles';
 import queryString from 'query-string';
 import { AuthConnectStatus, usePortal } from 'utils/hooks/usePortal';
-import { abi as ERC20ABI } from 'utils/contract/ERC20.json';
-import { abi as ERC721ABI } from 'utils/contract/ERC721.json';
-import { abi as ERC1155ABI } from 'utils/contract/ERC1155.json';
+import ERC20Artifact from 'utils/contract/ERC20.json';
+import ERC721Artifact from 'utils/contract/ERC721.json';
+import ERC1155Artifact from 'utils/contract/ERC1155.json';
 import SDK from 'js-conflux-sdk/dist/js-conflux-sdk.umd.min.js';
 import BigNumber from 'bignumber.js';
 import { NFTPreview } from 'app/components/NFTPreview/Loadable';
@@ -34,6 +34,10 @@ import {
   isAddressEqual,
 } from '@cfxjs/sirius-next-common/dist/utils/address';
 import { CFXToDecode } from 'utils/constants';
+
+const { abi: ERC20ABI } = ERC20Artifact;
+const { abi: ERC721ABI } = ERC721Artifact;
+const { abi: ERC1155ABI } = ERC1155Artifact;
 
 // @ts-ignore
 window.aaa = aaa;

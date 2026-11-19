@@ -54,7 +54,7 @@ export const useConfirmRisk = (blockHash: string) => {
 
   const reTry = () => {
     // getRisk again
-    ref.current = setTimeout(() => {
+    ref.current = window.setTimeout(() => {
       getRisk();
     }, 2000);
   };
@@ -65,7 +65,7 @@ export const useConfirmRisk = (blockHash: string) => {
     getRiskFnRef.current();
 
     return () => {
-      clearInterval(ref.current);
+      window.clearTimeout(ref.current);
     };
   }, [blockHash, getRiskFnRef]);
 
