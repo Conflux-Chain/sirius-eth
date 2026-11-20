@@ -1,4 +1,5 @@
 {
+  "ignoreFiles": ["src/styles/antd.custom.css"],
   "extends": ["stylelint-config-recommended"],
   "overrides": [
     {
