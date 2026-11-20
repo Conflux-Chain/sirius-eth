@@ -203,6 +203,7 @@
     "**/find-versions/semver-regex": "3.1.4",
     "**/viem/ws": "8.23.0",
     "**/@ethersproject/providers/ws": "8.23.0",
+    "**/react-scripts/@svgr/webpack": "6.5.1",
     "**/react-scripts/resolve-url-loader": "5.0.0"
   }
 }
