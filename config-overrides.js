@@ -254,3 +254,44 @@ module.exports.jest = config => ({
     '^.+\\.module\\.(css|sass|scss)$',
   ],
 });
+
+// CRA 5 supplies v4 hooks. Keep its handlers behind the v5 security checks.
+module.exports.devServer = createConfig => (proxy, allowedHost) => {
+  const config = createConfig(proxy, allowedHost);
+  const { https, onBeforeSetupMiddleware, onAfterSetupMiddleware } = config;
+  delete config.https;
+  delete config.onBeforeSetupMiddleware;
+  delete config.onAfterSetupMiddleware;
+  delete config.headers;
+  config.allowedHosts = 'auto';
+  config.server =
+    typeof https === 'object'
+      ? { type: 'https', options: https }
+      : https
+      ? 'https'
+      : 'http';
+  config.devMiddleware.publicPath = config.historyApiFallback.index;
+  config.setupMiddlewares = (middlewares, server) => {
+    // Mount each CRA hook in its own router so app.use() preserves route paths
+    // without registering anything ahead of the server's host/origin checks.
+    const { Router } = require('express');
+    const before = Router();
+    const after = Router();
+    onBeforeSetupMiddleware({
+      app: before,
+      // CRA's error overlay reads the v4 name for the latest compilation.
+      get _stats() {
+        return server.stats;
+      },
+    });
+    onAfterSetupMiddleware({ app: after });
+    const assets = middlewares.findIndex(
+      m => m.name === 'webpack-dev-middleware',
+    );
+    if (assets < 0) throw new Error('Missing webpack dev middleware');
+    middlewares.splice(assets, 0, before);
+    middlewares.push(after);
+    return middlewares;
+  };
+  return config;
+};
