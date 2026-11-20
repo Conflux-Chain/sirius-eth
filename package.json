@@ -204,6 +204,8 @@
     "**/viem/ws": "8.23.0",
     "**/@ethersproject/providers/ws": "8.23.0",
     "**/react-scripts/@svgr/webpack": "6.5.1",
-    "**/react-scripts/resolve-url-loader": "5.0.0"
+    "**/react-scripts/resolve-url-loader": "5.0.0",
+    "**/react-scripts/webpack-dev-server": "5.2.7",
+    "**/webpack-dev-server/webpack-dev-middleware": "7.4.6"
   }
 }
