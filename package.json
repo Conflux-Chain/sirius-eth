@@ -79,15 +79,14 @@
     "shelljs": "0.8.5",
     "stream-browserify": "3.0.0",
     "styled-components": "6.1.8",
-    "stylelint": "13.13.1",
-    "stylelint-config-recommended": "3.0.0",
-    "stylelint-config-styled-components": "0.1.1",
-    "stylelint-processor-styled-components": "1.10.0",
+    "stylelint": "16.26.1",
+    "stylelint-config-recommended": "16.0.0",
     "swr": "2.2.5",
     "vm-browserify": "1.1.2",
     "webfontloader": "1.6.28",
     "zustand": "4.1.4",
-    "patch-package": "8.0.1"
+    "patch-package": "8.0.1",
+    "postcss-styled-syntax": "0.7.4"
   },
   "scripts": {
     "start:base": "react-app-rewired start",
@@ -203,6 +202,7 @@
     "**/jsonpath/underscore": "1.13.8",
     "**/find-versions/semver-regex": "3.1.4",
     "**/viem/ws": "8.23.0",
-    "**/@ethersproject/providers/ws": "8.23.0"
+    "**/@ethersproject/providers/ws": "8.23.0",
+    "**/react-scripts/resolve-url-loader": "5.0.0"
   }
 }
