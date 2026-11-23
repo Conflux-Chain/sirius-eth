@@ -33,7 +33,7 @@
     "eslint-plugin-prettier": "3.1.2",
     "highcharts": "11.4.9",
     "highcharts-react-official": "3.2.1",
-    "husky": "4.2.3",
+    "husky": "4.3.8",
     "i18next": "19.3.4",
     "i18next-browser-languagedetector": "4.0.2",
     "jest-styled-components": "7.4.1",
@@ -62,7 +62,7 @@
     "serve": "14.2.8",
     "shelljs": "0.8.5",
     "stream-browserify": "3.0.0",
-    "styled-components": "6.1.8",
+    "styled-components": "6.4.3",
     "stylelint": "16.26.1",
     "stylelint-config-recommended": "16.0.0",
     "swr": "2.2.5",
@@ -116,7 +116,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run checkTs && lint-staged",
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+      "prepare-commit-msg": "if ( : </dev/tty ) 2>/dev/null; then git cz --hook </dev/tty || true; fi"
     }
   },
   "jest": {
@@ -175,12 +175,10 @@
     "@types/react": "18.2.58",
     "@types/react-dom": "18.2.19",
     "@walletconnect/sign-client": "2.26.0",
-    "**/styled-components/postcss": "8.5.33",
     "**/styled-jsx/loader-utils": "1.4.2",
     "**/css-minimizer-webpack-plugin/serialize-javascript": "7.1.3",
     "**/rollup-plugin-terser/serialize-javascript": "7.1.3",
     "**/jsonpath/underscore": "1.13.8",
-    "**/find-versions/semver-regex": "3.1.4",
     "**/viem/ws": "8.23.0",
     "**/@ethersproject/providers/ws": "8.23.0",
     "**/react-scripts/@svgr/webpack": "6.5.1",
