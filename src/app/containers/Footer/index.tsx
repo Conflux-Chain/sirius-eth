@@ -14,6 +14,7 @@ import { TextLogo } from '@cfxjs/sirius-next-common/dist/components/TextLogo';
 import { translations } from 'locales/i18n';
 import { Language } from './Language';
 // import { Currency } from './Currency';
+import { matchesDomain } from 'utils/hostname';
 import { ScanEvent } from 'utils/gaConstants';
 // import { getDomainTLD } from 'utils';
 
@@ -360,7 +361,7 @@ export function Footer() {
     // ),
   };
   const ICP = useMemo(() => {
-    return window.location.hostname.includes('confluxscan.net') ? (
+    return matchesDomain(window.location.hostname, 'confluxscan.net') ? (
       <CopyRight>
         <ICPLink href="https://beian.miit.gov.cn">沪ICP备20007940号-2</ICPLink>
         <ICPLink href="https://beian.mps.gov.cn/#/query/webSearch?code=31010402333972">
