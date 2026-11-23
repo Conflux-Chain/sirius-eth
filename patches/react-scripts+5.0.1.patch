@@ -1,0 +1,50 @@
+diff --git a/node_modules/react-scripts/scripts/start.js b/node_modules/react-scripts/scripts/start.js
+--- a/node_modules/react-scripts/scripts/start.js
++++ b/node_modules/react-scripts/scripts/start.js
+@@ -119,6 +119,7 @@
+       ...createDevServerConfig(proxyConfig, urls.lanUrlForConfig),
+       host: HOST,
+       port,
++      setupExitSignals: false, // CRA handles both signals and stdin below.
+     };
+     const devServer = new WebpackDevServer(serverConfig, compiler);
+     // Launch WebpackDevServer.
+@@ -139,19 +140,28 @@
+       openBrowser(urls.localUrlForBrowser);
+     });
+ 
+-    ['SIGINT', 'SIGTERM'].forEach(function (sig) {
+-      process.on(sig, function () {
+-        devServer.close();
+-        process.exit();
+-      });
+-    });
++    let stopping = false;
++    async function shutdown() {
++      if (stopping) return;
++      stopping = true;
++      try {
++        await devServer.stop();
++        compiler.close(err => {
++          if (err) console.error(err);
++          process.exit(err ? 1 : 0);
++        });
++      } catch (err) {
++        console.error(err);
++        process.exit(1);
++      }
++    }
++    process.on('SIGINT', shutdown);
++    process.on('SIGTERM', shutdown);
+ 
+     if (process.env.CI !== 'true') {
+       // Gracefully exit when stdin ends
+-      process.stdin.on('end', function () {
+-        devServer.close();
+-        process.exit();
+-      });
++      process.stdin.once('end', shutdown);
++      process.stdin.resume();
+     }
+   })
+   .catch(err => {
