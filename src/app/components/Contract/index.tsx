@@ -41,9 +41,6 @@ interface Props {
   loading?: boolean;
 }
 
-interface RequestBody {
-  [key: string]: any;
-}
 const MAX_SIZE_FOR_ICON = 30; //kb
 const fieldsContract = ['token'];
 export const ContractOrTokenInfo = ({

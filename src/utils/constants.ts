@@ -23,10 +23,6 @@ interface ContractsType {
   zero: string;
 }
 
-interface ContractNameTagType {
-  [index: string]: string;
-}
-
 export const NETWORK_ID = (() => {
   let networkId = ENV_CONFIG.ENV_NETWORK_ID;
   let cacheNetworkId = Number(

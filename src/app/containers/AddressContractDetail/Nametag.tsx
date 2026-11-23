@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useNametag } from 'utils/hooks/useNametag';
 import { Tooltip } from '@cfxjs/sirius-next-common/dist/components/Tooltip';
 import externallinkIcon from 'images/nametag/externallink.svg';
@@ -13,18 +13,8 @@ import { StyledLabelWrapper } from './layouts';
 const Nametag = ({ address }) => {
   const { t } = useTranslation();
   const nametags = useNametag([address]);
-  const nametag = {
-    ...nametags[address],
-    labels: nametags[address]?.labels || [],
-  };
-
-  const { label: labelOfNametag /* icon: iconOfNametag */ } = useMemo(
-    () =>
-      nametag
-        ? getLabelInfo(nametag.nameTag, 'nametag')
-        : { label: '', icon: '' },
-    [nametag],
-  );
+  const nametag = nametags[address];
+  const { label: labelOfNametag } = getLabelInfo(nametag?.nameTag, 'nametag');
 
   let tag = (
     <StyledLabelWrapper show={!!labelOfNametag}>
@@ -71,7 +61,7 @@ const Nametag = ({ address }) => {
         </Tooltip>
       )}
 
-      {nametag?.labels.map(label => (
+      {nametag?.labels?.map(label => (
         <StyledLabelWrapper
           show={!!nametag?.labels.length}
           color={nametag?.caution ? '#E15C56' : ''}
