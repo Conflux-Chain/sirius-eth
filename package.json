@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "4.7.0",
     "@cfx-kit/dapp-utils": "0.2.15",
     "@cfx-kit/react-utils": "0.0.65",
     "@cfxjs/antd": "1.0.6",
@@ -10,19 +11,13 @@
     "@cfxjs/sirius-next-common": "0.7.0",
     "@cfxjs/sirius-next-i18n": "0.3.4",
     "@conflux-dev/conflux-address-js": "1.1.7",
-    "@ethersproject/abi": "^5.7.0",
-    "@ethersproject/bignumber": "^5.7.0",
-    "@ethersproject/units": "^5.7.0",
     "@google/model-viewer": "2.1.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "10.0.1",
-    "@types/fontfaceobserver": "0.0.6",
     "@types/jest": "27.5.2",
     "@types/node": "22.20.5",
-    "@types/numeral": "0.0.28",
     "@types/react": "18.2.58",
     "@types/react-dom": "18.2.19",
-    "@types/react-helmet": "5.0.15",
     "@types/react-router-dom": "5.1.3",
     "@types/react-test-renderer": "16.9.2",
     "@types/webpack-env": "1.15.1",
@@ -32,17 +27,14 @@
     "bignumber.js": "9.0.1",
     "buffer": "6.0.3",
     "clsx": "1.1.1",
-    "conflux-sponsorfaucet": "1.1.5",
     "core-js": "3.22.5",
-    "cross-env": "7.0.2",
     "crypto-browserify": "3.12.1",
-    "d3-array": "2.8.0",
+    "dayjs": "1.8.30",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-prettier": "3.1.2",
-    "fontfaceobserver": "2.1.0",
     "highcharts": "11.4.9",
     "highcharts-react-official": "3.2.1",
-    "husky": "4.2.3",
+    "husky": "4.3.8",
     "i18next": "19.3.4",
     "i18next-browser-languagedetector": "4.0.2",
     "jest-styled-components": "7.4.1",
@@ -51,24 +43,16 @@
     "lint-staged": "10.0.8",
     "lodash": "4.18.1",
     "md5.js": "1.3.5",
-    "node-plop": "0.32.3",
-    "numeral": "2.0.6",
-    "pako": "2.0.2",
-    "plop": "4.0.5",
+    "moment": "2.29.4",
     "prettier": "2.0.1",
     "process": "0.11.10",
     "qrcode.react": "1.0.0",
     "query-string": "10.0.0",
     "react": "18.2.0",
-    "react-ace": "9.1.3",
     "react-app-polyfill": "3.0.0",
-    "react-component-benchmark": "1.0.0",
     "react-dom": "18.2.0",
-    "react-google-recaptcha": "2.1.0",
     "react-helmet-async": "1.0.6",
     "react-i18next": "11.18.6",
-    "react-json-pretty": "2.2.0",
-    "react-json-view": "1.19.1",
     "react-router-dom": "5.1.2",
     "react-scripts": "5.0.1",
     "react-test-renderer": "16.13.0",
@@ -76,9 +60,8 @@
     "recoil": "0.0.10",
     "sanitize.css": "11.0.0",
     "serve": "14.2.8",
-    "shelljs": "0.8.5",
     "stream-browserify": "3.0.0",
-    "styled-components": "6.1.8",
+    "styled-components": "6.4.3",
     "stylelint": "16.26.1",
     "stylelint-config-recommended": "16.0.0",
     "swr": "2.2.5",
@@ -132,7 +115,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run checkTs && lint-staged",
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+      "prepare-commit-msg": "if ( : </dev/tty ) 2>/dev/null; then git cz --hook </dev/tty || true; fi"
     }
   },
   "jest": {
@@ -150,22 +133,6 @@
       "ace-builds": "<rootDir>/node_modules/ace-builds"
     }
   },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/github"
-    ],
-    "branches": [
-      "+([0-9])?(.{+([0-9]),x}).x",
-      "master",
-      {
-        "name": "dev",
-        "channel": "alpha",
-        "prerelease": "alpha"
-      }
-    ]
-  },
   "devDependencies": {
     "@babel/core": "7.29.13",
     "@babel/preset-env": "7.29.14",
@@ -174,13 +141,13 @@
     "babel-jest": "27.5.1",
     "babel-loader": "8.4.1",
     "cz-conventional-changelog": "3.3.0",
+    "express": "4.22.3",
     "http-proxy-middleware": "2.0.12",
     "jest-fetch-mock": "3.0.3",
     "react-app-rewired": "2.2.1",
-    "semantic-release": "24.2.9",
     "speed-measure-webpack-plugin": "1.5.0",
-    "tsx": "4.22.5",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.2",
+    "webpack": "5.112.2"
   },
   "config": {
     "commitizen": {
@@ -190,17 +157,11 @@
   "resolutions": {
     "@types/react": "18.2.58",
     "@types/react-dom": "18.2.19",
-    "lodash": "4.18.1",
     "@walletconnect/sign-client": "2.26.0",
-    "**/request/form-data": "2.5.6",
-    "**/request/qs": "6.16.2",
-    "**/fbjs/isomorphic-fetch": "3.0.0",
-    "**/styled-components/postcss": "8.5.33",
     "**/styled-jsx/loader-utils": "1.4.2",
     "**/css-minimizer-webpack-plugin/serialize-javascript": "7.1.3",
     "**/rollup-plugin-terser/serialize-javascript": "7.1.3",
     "**/jsonpath/underscore": "1.13.8",
-    "**/find-versions/semver-regex": "3.1.4",
     "**/viem/ws": "8.23.0",
     "**/@ethersproject/providers/ws": "8.23.0",
     "**/react-scripts/@svgr/webpack": "6.5.1",

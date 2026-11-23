@@ -24,6 +24,54 @@ function configureCssNano(minimizer) {
 }
 
 module.exports = function (config, mode) {
+  if (mode === 'development') {
+    // WDS checks raw browser stacks synchronously, before source maps are read.
+    config.optimization.splitChunks = {
+      chunks: 'all',
+      cacheGroups: {
+        dependencies: {
+          test: /[\\/]node_modules[\\/]/,
+          filename: 'static/js/dependencies/[id].js',
+          enforce: true,
+          priority: 10,
+        },
+      },
+    };
+  }
+
+  // These releases publish source maps with missing sources or invalid URLs.
+  const sourceMapRule = config.module.rules.find(
+    rule =>
+      rule &&
+      rule.enforce === 'pre' &&
+      /[\\/]source-map-loader[\\/]/.test(rule.loader),
+  );
+  if (sourceMapRule) {
+    const brokenMaps = [
+      /\/node_modules\/@walletconnect\/(environment|events|jsonrpc-utils|safe-json|time|window-getters|window-metadata)\/dist\//,
+      /\/node_modules\/jsbi\/dist\/jsbi-umd\.js$/,
+      /\/node_modules\/@cfxjs\/antd\/dist\/@cfxjs\/antd\.css$/,
+      /\/node_modules\/ace-builds\/src-noconflict\/worker-coffee\.js$/,
+    ];
+    sourceMapRule.options = {
+      ...sourceMapRule.options,
+      filterSourceMappingUrl: (_, resourcePath) => {
+        const file = resourcePath.split(path.sep).join('/');
+        return brokenMaps.some(pattern => pattern.test(file))
+          ? 'remove'
+          : 'consume';
+      },
+    };
+  }
+
+  // These large brand SVGs are only used as image URLs.
+  config.module.rules
+    .find(rule => rule && rule.oneOf)
+    .oneOf.unshift({
+      test: /[\\/]images[\\/]espace[\\/]logo(?:-testnet)?\.svg$/,
+      type: 'asset/resource',
+    });
+
   // Webpack 5 resolves absolute package aliases before their package metadata.
   const moduleScope = config.resolve.plugins.find(
     plugin => plugin.constructor.name === 'ModuleScopePlugin',
@@ -263,6 +311,16 @@ module.exports.devServer = createConfig => (proxy, allowedHost) => {
   delete config.onBeforeSetupMiddleware;
   delete config.onAfterSetupMiddleware;
   delete config.headers;
+  // WDS serializes this callback into the client, so keep it self-contained.
+  config.client.overlay.runtimeErrors = error => {
+    const frames = (error.stack || '')
+      .split('\n')
+      .filter(line => /^\s*at\s|@/.test(line));
+    const dependencyFrame = /\/static\/js\/dependencies\/[^/\s)]+\.js:\d+(?::\d+)?\)?$/;
+    return (
+      !frames.length || !frames.every(frame => dependencyFrame.test(frame))
+    );
+  };
   config.allowedHosts = 'auto';
   config.server =
     typeof https === 'object'

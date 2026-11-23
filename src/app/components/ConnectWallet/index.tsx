@@ -11,7 +11,7 @@ import { useCheckHook } from './useCheckHook';
 import { Text } from '@cfxjs/sirius-next-common/dist/components/Text';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { switchChain } from 'utils/chainManage';
 
 interface Props {

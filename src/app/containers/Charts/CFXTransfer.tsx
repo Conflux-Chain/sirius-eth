@@ -28,7 +28,7 @@ export function CFXTransfer({ preview = false }: ChildProps) {
         const data2: any = [];
         const data3: any = [];
 
-        data?.list?.map((d, i) => {
+        data?.list?.forEach(d => {
           const t = dayjs.utc(d.statTime).valueOf();
           data3.push([t, Number(d.transferCount)]);
           data2.push([t, Number(d.userCount)]);

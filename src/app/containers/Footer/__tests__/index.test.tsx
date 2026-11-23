@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 
 import { Footer } from '..';
 import { HelmetProvider } from 'react-helmet-async';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 
 const renderComponent = () =>
   render(

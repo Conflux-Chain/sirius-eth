@@ -25,13 +25,13 @@ import iconLoadingWhite from './assets/loading-white.svg';
 import { Balance } from './Balance';
 import { LOCALSTORAGE_KEYS_MAP } from '@cfxjs/sirius-next-common/dist/utils/constants';
 
-interface Button {
+interface ButtonProps {
   className?: string;
   onClick?: () => void;
   showBalance?: boolean;
 }
 
-export const Button = ({ className, onClick, showBalance }: Button) => {
+export const Button = ({ className, onClick, showBalance }: ButtonProps) => {
   const [globalData] = useGlobalData();
   const { t } = useTranslation();
   const { authConnectStatus, account } = usePortal();

@@ -20,7 +20,7 @@ export function AveragePriorityFeePerBlock({ preview = false }: ChildProps) {
       formatter: data => {
         const data1: any = [];
 
-        data?.list?.map(d => {
+        data?.list?.forEach(d => {
           data1.push({
             x: d.blockNumber,
             y: new BigNumber(d.avgPriorityFee).div(1e9).toNumber(),
