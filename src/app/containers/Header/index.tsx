@@ -18,7 +18,7 @@ import { Nav } from 'app/components/Nav';
 import { genParseLinkFn, HeaderLinks } from './HeaderLink';
 import { Check } from '@zeit-ui/react-icons';
 import { translations } from 'locales/i18n';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { ScanEvent } from 'utils/gaConstants';
 import { trackEvent } from 'utils/ga';
 import { useToggle } from 'react-use';
