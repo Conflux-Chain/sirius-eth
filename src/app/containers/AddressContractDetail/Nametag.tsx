@@ -63,6 +63,7 @@ const Nametag = ({ address }) => {
 
       {nametag?.labels?.map(label => (
         <StyledLabelWrapper
+          key={label}
           show={!!nametag?.labels.length}
           color={nametag?.caution ? '#E15C56' : ''}
           backgroundColor={nametag?.caution ? '#FBEBEB' : ''}

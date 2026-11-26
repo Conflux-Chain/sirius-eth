@@ -7,6 +7,7 @@ import * as authorizationsColumns from './authorizations';
 import * as accountAbstractionColumns from './accountAbstraction';
 import * as traceColumns from './trace';
 import * as verifiedContractsColumns from './verified-contracts';
+import * as eventLogsColumns from './eventLogs';
 
 export {
   blockColunms,
@@ -18,4 +19,5 @@ export {
   accountAbstractionColumns,
   traceColumns,
   verifiedContractsColumns,
+  eventLogsColumns,
 };

@@ -48,7 +48,7 @@ export const sendRawTransaction = async (...args) => {
 
 export default request;
 
-const evmRequest = async (method: string, ...args: any[]) => {
+export const evmRequest = async (method: string, ...args: any[]) => {
   try {
     if (!ENV_CONFIG.ENV_EVM_RPC_SERVER) {
       throw new Error('evm rpc server is not set');
@@ -65,7 +65,30 @@ const evmRequest = async (method: string, ...args: any[]) => {
         id: `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`,
       }),
     });
-    const data = await response.json();
+    const data = await response.json().catch(() => null);
+    if (data?.error) {
+      const error = new Error(
+        data.error.message ?? 'Unknown Error',
+      ) as Error & {
+        code: number;
+      };
+      error.code = data.error.code;
+      throw error;
+    }
+    if (!response.ok) {
+      const error = new Error(
+        `HTTP ${response.status}${
+          response.statusText ? ` ${response.statusText}` : ''
+        }`,
+      ) as Error & {
+        code: number;
+      };
+      error.code = response.status;
+      throw error;
+    }
+    if (!data || !('result' in data)) {
+      throw new Error('Invalid JSON-RPC response');
+    }
     return data.result;
   } catch (e) {
     e.method = method;
