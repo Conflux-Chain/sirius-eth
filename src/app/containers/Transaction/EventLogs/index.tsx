@@ -8,6 +8,7 @@ import { Description } from '@cfxjs/sirius-next-common/dist/components/Descripti
 import styled from 'styled-components';
 import _ from 'lodash';
 import { SkeletonContainer } from '@cfxjs/sirius-next-common/dist/components/SkeletonContainer';
+import { EventName } from '@cfxjs/sirius-next-common/dist/components/EventLog/EventName';
 import { useTranslation } from 'react-i18next';
 import { translations } from 'locales/i18n';
 import BigNumber from 'bignumber.js';
@@ -16,7 +17,6 @@ import { isZeroAddress, formatAddress } from 'utils';
 import { Address } from './Address';
 import { Topics } from './Topics';
 import { Data } from './Data';
-import { Event } from 'app/components/TxnComponents/Event';
 import { disassembleEvent } from 'app/components/TxnComponents/util';
 import { media } from '@cfxjs/sirius-next-common/dist/utils/media';
 import { AddressLabel } from 'app/components/TxnComponents/AddressLabel';
@@ -27,7 +27,7 @@ interface Props {
   isAATx?: boolean;
 }
 
-const createRawEventInfo = log => {
+export const createRawEventInfo = log => {
   const splitData = _.words(log.data.substr(2), /.{64}/g).map(w => ({
     hexValue: w,
   }));
@@ -188,16 +188,14 @@ export const EventLog = ({ log }) => {
               <Address address={formatAddress(address)}></Address>
               <AddressLabel address={formatAddress(address)} />
             </Description>
-            {fnName ? (
-              <Description
-                className="description"
-                title={t(translations.transaction.logs.name)}
-                size="small"
-                noBorder
-              >
-                <Event fnName={fnName} args={args} />
-              </Description>
-            ) : null}
+            <Description
+              className="description"
+              title={t(translations.transaction.logs.name)}
+              size="small"
+              noBorder
+            >
+              <EventName name={fnName} args={args} />
+            </Description>
             <Description
               className="description"
               title={t(translations.transaction.logs.topics)}

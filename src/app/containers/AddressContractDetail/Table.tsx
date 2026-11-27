@@ -21,6 +21,7 @@ import type { EvmAddressType } from '@cfxjs/sirius-next-common/dist/utils/addres
 import { DelegatedCode } from './DelegatedCode';
 import { useDelegatedInfoStore } from 'utils/store';
 import { OtherTransactions } from './OtherTransactions';
+import { ContractEventLogs } from './ContractEventLogs';
 
 export const Table = memo(
   ({
@@ -107,6 +108,15 @@ export const Table = memo(
             </div>
           ),
           content: <ContractContent contractInfo={addressInfo} />,
+        },
+        {
+          hidden: !addressInfo.verify?.exactMatch || !addressInfo.abi,
+          value: 'event-log',
+          action: 'eventLog',
+          label: <div>{t(translations.eventLogs.events)}</div>,
+          content: (
+            <ContractEventLogs address={address} contractInfo={addressInfo} />
+          ),
         },
       );
     }

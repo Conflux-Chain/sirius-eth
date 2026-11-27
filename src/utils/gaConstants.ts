@@ -99,6 +99,7 @@ export const ScanEvent = {
       transfersErc721: 'transfers_erc721',
       transfersErc1155: 'transfers_erc1155',
       contractViewer: 'contract_viewer',
+      eventLog: 'event_log',
       minedBlocks: 'mined_blocks',
       tokenTransfers: 'token_transfers',
       tokenHolders: 'token_holders',
